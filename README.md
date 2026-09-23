@@ -6,7 +6,7 @@
 2. It is used to deploy Pages on Cloudflare
 3. Each Kubernetes Website branch stores only the latest build result, with no history, to keep the repository from
    growing too large
-4. The size of each branch is available at: https://xuxiaowei.io/t/kubernetes/1320
+4. The size of each branch is available at: https://xuxiaowei.io/t/1320
 5. Do not clone this repository. If you need it, clone only the code of the specified branch
 
 ```shell
