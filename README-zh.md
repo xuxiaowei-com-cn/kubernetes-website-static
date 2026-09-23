@@ -3,6 +3,7 @@
 [English](README.md) | **简体中文**
 
 1. 该项目是 https://github.com/xuxiaowei-com-cn/kubernetes-website 编译产物储存仓库
+    - 由于某些方面的限制，Kubernetes 1.19 及之前的编译产物放在 https://github.com/xuxiaoweicom/kubernetes-website-static
 2. 该项目用于 CloudFlare 部署 Pages
 3. 每个 Kubernetes Website 分支仅储存最新一次编译结果，无历史记录，避免仓库过大
 4. 仓库各分支大小见：https://xuxiaowei.io/t/1320

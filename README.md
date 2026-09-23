@@ -3,6 +3,8 @@
 **English** | [简体中文](README-zh.md)
 
 1. This repository stores the build artifacts of https://github.com/xuxiaowei-com-cn/kubernetes-website
+    - Due to certain limitations, the build artifacts of Kubernetes 1.19 and earlier are stored at
+      https://github.com/xuxiaoweicom/kubernetes-website-static
 2. It is used to deploy Pages on Cloudflare
 3. Each Kubernetes Website branch stores only the latest build result, with no history, to keep the repository from
    growing too large
