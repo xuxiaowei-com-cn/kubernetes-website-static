@@ -1,10 +1,13 @@
 # Kubernetes Website Static Resource
 
-1. 该项目是 https://github.com/xuxiaowei-com-cn/kubernetes-website 编译产物储存仓库
-2. 该项目用于 CloudFlare 部署 Pages
-3. 每个 Kubernetes Website 分支仅储存最新一次编译结果，无历史记录，避免仓库过大
-4. 仓库各分支大小见：https://xuxiaowei.io/t/kubernetes/1320
-5. 请勿克隆此仓库，如需使用，请只克隆指定分支的代码
+**English** | [简体中文](README-zh.md)
+
+1. This repository stores the build artifacts of https://github.com/xuxiaowei-com-cn/kubernetes-website
+2. It is used to deploy Pages on Cloudflare
+3. Each Kubernetes Website branch stores only the latest build result, with no history, to keep the repository from
+   growing too large
+4. The size of each branch is available at: https://xuxiaowei.io/t/kubernetes/1320
+5. Do not clone this repository. If you need it, clone only the code of the specified branch
 
 ```shell
 git clone -b static/release-1.24/public https://github.com/xuxiaowei-com-cn/kubernetes-website-static
