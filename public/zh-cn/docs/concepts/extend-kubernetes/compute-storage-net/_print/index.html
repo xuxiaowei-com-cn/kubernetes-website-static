@@ -1,0 +1,364 @@
+<!doctype html><html itemscope itemtype=http://schema.org/WebPage dir=ltr lang=zh-cn class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/zh-cn/docs/concepts/extend-kubernetes/compute-storage-net/><meta name=robots content="noindex, nofollow"><link rel="shortcut icon" type=image/png href=/images/kubernetes.png><link rel=icon type=image/png sizes=64x64 href=/icons/favicon-64.png><link rel=icon type=image/png sizes=32x32 href=/icons/favicon-32.png><link rel=icon type=image/png sizes=16x16 href=/icons/favicon-16.png><link rel=apple-touch-icon-256x256 href=/icons/apple-touch-icon-256x256.png><link rel=apple-touch-icon-196x196 href=/icons/apple-touch-icon-196x196.png><link rel=apple-touch-icon-192x192 href=/icons/apple-touch-icon-192x192.png><link rel=apple-touch-icon-180x180 href=/icons/apple-touch-icon-180x180.png><link rel=apple-touch-icon-167x167 href=/icons/apple-touch-icon-167x167.png><link rel=apple-touch-icon-160x160 href=/icons/apple-touch-icon-160x160.png><link rel=apple-touch-icon-152x152 href=/icons/apple-touch-icon-152x152.png><link rel=apple-touch-icon-120x120 href=/icons/apple-touch-icon-120x120.png><link rel=apple-touch-icon-76x76 href=/icons/apple-touch-icon-76x76.png><link rel=icon type=image/png href=/icons/icon-128x128.png sizes=128x128><meta name=theme-color content="#326de6"><title>计算、存储和网络扩展 | Kubernetes</title>
+<meta name=description content="本节介绍不属于 Kubernetes 本身组成部分的一些集群扩展。 你可以使用这些扩展来增强集群中的节点，或者提供将 Pod 关联在一起的网络结构。
+CSI 和 FlexVolume 存储插件
+容器存储接口（CSI）插件提供了一种扩展 Kubernetes 的方式使其支持新类别的卷。 这些卷可以由持久的外部存储提供支持，可以提供临时存储，还可以使用文件系统范型为信息提供只读接口。"><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/zh-cn/docs/concepts/extend-kubernetes/compute-storage-net/"><meta property="og:site_name" content="Kubernetes"><meta property="og:title" content="计算、存储和网络扩展"><meta property="og:description" content="本节介绍不属于 Kubernetes 本身组成部分的一些集群扩展。 你可以使用这些扩展来增强集群中的节点，或者提供将 Pod 关联在一起的网络结构。
+CSI 和 FlexVolume 存储插件
+容器存储接口（CSI）插件提供了一种扩展 Kubernetes 的方式使其支持新类别的卷。 这些卷可以由持久的外部存储提供支持，可以提供临时存储，还可以使用文件系统范型为信息提供只读接口。"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="website"><meta itemprop=name content="计算、存储和网络扩展"><meta itemprop=description content="本节介绍不属于 Kubernetes 本身组成部分的一些集群扩展。 你可以使用这些扩展来增强集群中的节点，或者提供将 Pod 关联在一起的网络结构。
+CSI 和 FlexVolume 存储插件
+容器存储接口（CSI）插件提供了一种扩展 Kubernetes 的方式使其支持新类别的卷。 这些卷可以由持久的外部存储提供支持，可以提供临时存储，还可以使用文件系统范型为信息提供只读接口。"><meta itemprop=dateModified content="2026-09-25T21:27:26+08:00"><meta itemprop=wordCount content="68"><meta name=twitter:card content="summary"><meta name=twitter:title content="计算、存储和网络扩展"><meta name=twitter:description content="本节介绍不属于 Kubernetes 本身组成部分的一些集群扩展。 你可以使用这些扩展来增强集群中的节点，或者提供将 Pod 关联在一起的网络结构。
+CSI 和 FlexVolume 存储插件
+容器存储接口（CSI）插件提供了一种扩展 Kubernetes 的方式使其支持新类别的卷。 这些卷可以由持久的外部存储提供支持，可以提供临时存储，还可以使用文件系统范型为信息提供只读接口。"><link href=/scss/main.css rel=stylesheet><script src=/js/jquery-3.7.1.min.js integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin=anonymous></script><meta property="og:image" content="/images/kubernetes-open-graph.png"><link rel=manifest href=/manifest.webmanifest><link rel=alternate hreflang=en href=https://kubernetes.xuxiaowei.com.cn/docs/concepts/extend-kubernetes/compute-storage-net/><link rel=alternate hreflang=bn href=https://kubernetes.xuxiaowei.com.cn/bn/docs/concepts/extend-kubernetes/compute-storage-net/><link rel=alternate hreflang=fr href=https://kubernetes.xuxiaowei.com.cn/fr/docs/concepts/extend-kubernetes/compute-storage-net/><link rel=alternate hreflang=id href=https://kubernetes.xuxiaowei.com.cn/id/docs/concepts/extend-kubernetes/compute-storage-net/><link rel=alternate hreflang=ja href=https://kubernetes.xuxiaowei.com.cn/ja/docs/concepts/extend-kubernetes/compute-storage-net/><link rel=alternate hreflang=ko href=https://kubernetes.xuxiaowei.com.cn/ko/docs/concepts/extend-kubernetes/compute-storage-net/><link rel=alternate hreflang=pl href=https://kubernetes.xuxiaowei.com.cn/pl/docs/concepts/extend-kubernetes/compute-storage-net/><link rel=alternate hreflang=pt-br href=https://kubernetes.xuxiaowei.com.cn/pt-br/docs/concepts/extend-kubernetes/compute-storage-net/><link rel=alternate hreflang=es href=https://kubernetes.xuxiaowei.com.cn/es/docs/concepts/extend-kubernetes/compute-storage-net/><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png","potentialAction":{"@type":"SearchAction","target":"https://kubernetes.xuxiaowei.com.cn/search/?q={search_term_string}","query-input":"required name=search_term_string"}}</script><meta name=theme-color content="#326ce5"><script defer src=/js/banner-dismiss.js></script><script src=/js/legacy-script.js></script><script type=text/javascript>(function(e,t,n,s,o,i,a){e[n]=e[n]||function(){(e[n].q=e[n].q||[]).push(arguments)},i=t.createElement(s),i.async=1,i.src="https://www.clarity.ms/tag/"+o,a=t.getElementsByTagName(s)[0],a.parentNode.insertBefore(i,a)})(window,document,"clarity","script","yn9u1cds4q")</script></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand flex-md-column flex-xl-row td-navbar" data-bs-theme=dark data-auto-burger=primary><a class=navbar-brand href=/zh-cn/><span class="navbar-brand__logo navbar-logo"><svg role="img" viewBox="-6.09 -6.09 446.94 115.94"><defs><style>.cls-1{fill:#fff}.cls-2{fill:#326ce5}</style></defs><g id="its-pronounced"><g id="kyoob-cuttle"><path id="kkkkkkk" d="M139.583 53.815c.823-.926 1.646-1.852 2.572-2.778q1.29-1.436 2.572-2.88c.823-1.03 1.646-1.956 2.367-2.78s1.44-1.645 1.954-2.262h9.98c-1.955 2.263-3.91 4.527-5.864 6.584q-2.778 3.087-6.173 6.482a41.554 41.554.0 013.498 3.704c1.234 1.44 2.366 2.88 3.498 4.32a43.93 43.93.0 013.086 4.528c.926 1.543 1.75 2.88 2.367 4.115h-9.67c-.619-1.03-1.339-2.058-2.059-3.19a37.46 37.46.0 00-2.47-3.6 29.584 29.584.0 00-2.777-3.498 17.678 17.678.0 00-2.778-2.778v12.963h-8.436v-42.49l8.436-1.338v24.898" class="cls-1"/><path id="uuuuuuu" d="M188.761 71.819a40.037 40.037.0 01-5.555 1.132 39.77 39.77.0 01-7.1.514 16.577 16.577.0 01-6.378-1.028 9.45 9.45.0 01-5.967-7.202 24.194 24.194.0 01-.618-5.556V43.115h8.437V58.65c0 2.675.31 4.63 1.03 5.865s2.056 1.852 4.011 1.852a13.117 13.117.0 001.955-.103c.72-.103 1.235-.103 1.852-.206V43.115h8.436l-.103 28.704" class="cls-1"/><path id="bbbbbbb" d="M215.82 57.724c0-5.452-1.955-8.127-5.968-8.127a10.99 10.99.0 00-2.572.308 7.775 7.775.0 00-2.057.823v15.33c.411.103.926.103 1.543.206.617.0 1.337.103 2.058.103A6.37 6.37.0 00214.071 64a10.55 10.55.0 001.75-6.276m8.538.206a18.63 18.63.0 01-1.029 6.482 13.242 13.242.0 01-2.983 4.938 15.823 15.823.0 01-4.836 3.19 18.829 18.829.0 01-6.585 1.028c-1.028.0-2.057-.103-3.189-.205s-2.16-.206-3.292-.31c-1.029-.102-2.058-.308-3.087-.514a13.002 13.002.0 01-2.572-.72V30.254l8.437-1.337v14.815a14.37 14.37.0 012.983-.926 17.028 17.028.0 013.293-.308 13.036 13.036.0 015.555 1.13 11.142 11.142.0 014.116 3.088 12.408 12.408.0 012.47 4.938 29.216 29.216.0 01.72 6.276" class="cls-1"/><path id="eeeeeee0" d="M229.401 58.239a17.557 17.557.0 011.234-6.893 15.744 15.744.0 013.19-4.94 11.991 11.991.0 014.526-2.982 13.75 13.75.0 015.35-1.03 13.168 13.168.0 019.98 3.91c2.47 2.572 3.703 6.38 3.703 11.317a9.413 9.413.0 01-.102 1.647c0 .514-.103 1.028-.103 1.543h-19.138a5.64 5.64.0 002.47 4.115 9.79 9.79.0 005.761 1.543 21.806 21.806.0 004.527-.411 18.455 18.455.0 003.704-1.03l1.131 6.894c-.41.206-1.028.412-1.85.72a10.37 10.37.0 01-2.574.515 23.221 23.221.0 01-2.983.41c-1.029.104-2.16.207-3.19.207a18.09 18.09.0 01-6.996-1.234 15.148 15.148.0 01-4.938-3.19 14.85 14.85.0 01-2.88-4.938 24.165 24.165.0 01-.824-6.173m19.857-3.292a6.652 6.652.0 00-.412-2.058 6.254 6.254.0 00-.926-1.852 4.915 4.915.0 00-4.115-1.852 6.216 6.216.0 00-2.47.514 4.092 4.092.0 00-1.645 1.235 5.395 5.395.0 00-1.03 1.852 15.044 15.044.0 00-.514 2.058h11.112" class="cls-1"/><path id="rrrrrrr" d="M281.768 50.523a15.46 15.46.0 00-2.675-.515 17.027 17.027.0 00-3.292-.31 18.138 18.138.0 00-1.955.207 16.165 16.165.0 00-1.646.309V72.95h-8.437V44.658a43.765 43.765.0 015.35-1.44 28.942 28.942.0 016.893-.72 10.015 10.015.0 011.646.102 14.058 14.058.0 011.955.206c.618.103 1.235.206 1.955.309.617.103 1.235.309 1.646.41l-1.44 6.998" class="cls-1"/><path id="nnnnnnn" d="M287.735 44.144a49.746 49.746.0 0112.655-1.646 15.693 15.693.0 016.276 1.028 8.813 8.813.0 014.012 2.778 12.018 12.018.0 012.058 4.32 22.95 22.95.0 01.617 5.557v16.77h-8.437V57.21c0-2.675-.308-4.63-1.028-5.762s-2.058-1.646-4.013-1.646a13.116 13.116.0 00-1.955.103 10.193 10.193.0 00-1.85.206v22.943h-8.335v-28.91" class="cls-1"/><path id="eeeeeee1" d="M319.63 58.239a17.556 17.556.0 011.233-6.893 15.745 15.745.0 013.19-4.94 11.99 11.99.0 014.527-2.982 13.75 13.75.0 015.35-1.03 13.168 13.168.0 019.98 3.91c2.468 2.572 3.703 6.38 3.703 11.317a9.412 9.412.0 01-.103 1.647c0 .514-.103 1.028-.103 1.543h-19.136a5.64 5.64.0 002.47 4.115 9.789 9.789.0 005.76 1.543 21.805 21.805.0 004.528-.411 18.455 18.455.0 003.703-1.03l1.132 6.894c-.41.206-1.029.412-1.852.72a10.37 10.37.0 01-2.572.515 23.226 23.226.0 01-2.984.41c-1.028.104-2.16.207-3.189.207a18.09 18.09.0 01-6.996-1.234 15.148 15.148.0 01-4.938-3.19 14.85 14.85.0 01-2.88-4.938 24.16 24.16.0 01-.824-6.173m19.856-3.292a6.653 6.653.0 00-.41-2.058 6.255 6.255.0 00-.927-1.852 4.915 4.915.0 00-4.116-1.852 6.216 6.216.0 00-2.469.514 4.092 4.092.0 00-1.646 1.235 5.396 5.396.0 00-1.029 1.852 15.037 15.037.0 00-.514 2.058h11.111" class="cls-1"/><path id="ttttttt" d="M353.89 35.707l8.435-1.337v8.745h10.083v6.995h-10.083v10.494a8.273 8.273.0 00.926 4.218c.618 1.03 1.955 1.544 3.807 1.544a25.227 25.227.0 002.778-.206 16.728 16.728.0 002.675-.72l1.234 6.584a16.386 16.386.0 01-3.395 1.029 19.779 19.779.0 01-4.63.41 15.723 15.723.0 01-5.76-.924 9.522 9.522.0 01-3.602-2.573 10.208 10.208.0 01-1.955-4.115 26.665 26.665.0 01-.514-5.247V35.707" class="cls-1"/><path id="eeeeeee2" d="M376.73 58.239a17.556 17.556.0 011.234-6.893 15.744 15.744.0 013.19-4.94 11.99 11.99.0 014.526-2.982 13.75 13.75.0 015.35-1.03 13.168 13.168.0 019.98 3.91c2.47 2.572 3.703 6.38 3.703 11.317a9.413 9.413.0 01-.103 1.647c0 .514-.103 1.028-.103 1.543h-19.136a5.64 5.64.0 002.47 4.115 9.789 9.789.0 005.76 1.543 21.805 21.805.0 004.528-.411 18.455 18.455.0 003.703-1.03l1.132 6.894c-.41.206-1.029.412-1.852.72a10.371 10.371.0 01-2.572.515 23.226 23.226.0 01-2.983.41c-1.03.104-2.16.207-3.19.207a18.09 18.09.0 01-6.996-1.234 15.147 15.147.0 01-4.938-3.19 14.85 14.85.0 01-2.88-4.938 20.343 20.343.0 01-.824-6.173m19.754-3.292a6.652 6.652.0 00-.412-2.058 6.254 6.254.0 00-.926-1.852 4.915 4.915.0 00-4.115-1.852 6.216 6.216.0 00-2.47.514 4.092 4.092.0 00-1.646 1.235 5.395 5.395.0 00-1.028 1.852 15.037 15.037.0 00-.515 2.058h11.112" class="cls-1"/><path id="sssssss" d="M419.631 66.778a8.454 8.454.0 003.293-.411 1.802 1.802.0 00.925-1.75c0-.72-.41-1.234-1.234-1.748a19.516 19.516.0 00-3.807-1.75c-1.337-.514-2.572-1.028-3.6-1.543a10.286 10.286.0 01-2.676-1.852 8.046 8.046.0 01-1.749-2.675 9.968 9.968.0 01-.617-3.703 7.828 7.828.0 013.086-6.585c2.058-1.646 4.94-2.47 8.54-2.47a29.267 29.267.0 015.247.515 19.02 19.02.0 013.91 1.03l-1.44 6.584a122.23 122.23.0 00-3.19-.926 14.394 14.394.0 00-3.807-.412c-2.675.0-3.91.72-3.91 2.16a3.004 3.004.0 00.206.927 1.728 1.728.0 00.72.823c.31.206.823.514 1.338.823.617.308 1.337.514 2.263.926a33.94 33.94.0 014.63 2.057 7.682 7.682.0 012.778 2.16 5.374 5.374.0 011.44 2.573 10.677 10.677.0 01.412 3.292 7.669 7.669.0 01-3.293 6.688c-2.16 1.543-5.247 2.263-9.362 2.263a23.783 23.783.0 01-6.584-.72 18.78 18.78.0 01-3.6-1.132l1.44-6.893a31.442 31.442.0 004.423 1.337 18.932 18.932.0 004.218.412" class="cls-1"/></g></g><path d="M4.233 60.98h4.881v3.877h-4.88z" class="cls-1"/><path d="M62.304 58.789a1.65 1.65.0 00-.393-.03 1.694 1.694.0 00-.655.17 1.712 1.712.0 00-.829 2.218l-.012.017 3.92 9.47a20.008 20.008.0 008.087-10.16l-10.1-1.705zm-15.717 1.34a1.71 1.71.0 00-1.64-1.33 1.68 1.68.0 00-.337.03l-.017-.02-10.013 1.7a20.084 20.084.0 008.062 10.087l3.88-9.376-.03-.037a1.693 1.693.0 00.095-1.053zm8.386 3.678a1.709 1.709.0 00-3.014.004h-.008l-4.924 8.904a20.057 20.057.0 0010.946.563q1.01-.23 1.973-.551l-4.936-8.92zm15.588-20.682-7.576 6.78.004.022a1.712 1.712.0 00.671 2.939l.01.04 9.813 2.828a20.352 20.352.0 00-2.922-12.61zm-14.075.759a1.712 1.712.0 002.718 1.305l.03.013 8.29-5.878A20.155 20.155.0 0055.901 33.72l.576 10.16zm-8.779 1.343a1.71 1.71.0 002.714-1.31l.042-.02.576-10.176a20.533 20.533.0 00-2.069.356 19.979 19.979.0 00-9.623 5.244l8.344 5.915zm-4.448 7.689a1.71 1.71.0 00.672-2.94l.008-.04-7.618-6.814a19.973 19.973.0 00-2.835 12.645l9.765-2.818zm7.4 2.993 2.81 1.35 2.801-1.347.696-3.025-1.939-2.425h-3.12l-1.946 2.42z" class="cls-2"/><path d="M99.925 61.869l-8.008-34.783a6.252 6.252.0 00-3.352-4.17L56.151 7.44a6.246 6.246.0 00-5.38.0L18.364 22.924a6.25 6.25.0 00-3.353 4.17L7.016 61.876a6.12 6.12.0 00-.002 2.67 6.206 6.206.0 00.226.79 6.022 6.022.0 00.617 1.253c.11.168.226.33.352.489l22.432 27.89c.098.12.206.232.313.345a6.17 6.17.0 001.183.98 6.4 6.4.0 001.773.77 6.112 6.112.0 001.576.218h.35l35.623-.008a5.976 5.976.0 00.648-.038 6.19 6.19.0 00.914-.174 6.372 6.372.0 00.635-.203q.244-.09.48-.2a6.407 6.407.0 00.68-.377 6.115 6.115.0 001.488-1.317l.684-.85 21.74-27.045a6.06 6.06.0 00.97-1.74 6.283 6.283.0 00.23-.792 6.105 6.105.0 00-.003-2.67zm-33.62 13.528a6.67 6.67.0 00.322.783 1.523 1.523.0 00-.15 1.144 18.097 18.097.0 001.72 3.08 16.123 16.123.0 011.04 1.546c.078.145.18.369.254.522a1.949 1.949.0 11-3.507 1.658c-.074-.152-.177-.354-.24-.497a16.21 16.21.0 01-.563-1.778 18.067 18.067.0 00-1.33-3.262 1.533 1.533.0 00-.99-.601c-.063-.107-.293-.528-.416-.746A25.104 25.104.0 0144.543 77.2l-.439.796a1.576 1.576.0 00-.836.407 13.567 13.567.0 00-1.502 3.485 16.04 16.04.0 01-.56 1.778c-.062.142-.166.342-.24.493v.004l-.003.004a1.948 1.948.0 11-3.502-1.662c.073-.154.171-.377.248-.522a16.168 16.168.0 011.04-1.55 18.95 18.95.0 001.756-3.156 1.925 1.925.0 00-.173-1.097l.353-.846A25.244 25.244.0 0129.498 61.367l-.845.144a2.151 2.151.0 00-1.116-.393 18.167 18.167.0 00-3.38.995 16.355 16.355.0 01-1.742.667c-.14.038-.342.077-.502.112-.013.004-.024.01-.037.013l-.03.003a1.947 1.947.0 11-.86-3.78l.027-.007.017-.005c.162-.038.37-.092.518-.12a16.212 16.212.0 011.861-.15 18.105 18.105.0 003.477-.571 2.682 2.682.0 00.834-.841l.812-.237a25.102 25.102.0 013.96-17.5l-.623-.554a2.155 2.155.0 00-.39-1.12 18.094 18.094.0 00-2.885-2.027 16.202 16.202.0 01-1.608-.94c-.118-.088-.274-.22-.402-.324l-.029-.02a2.056 2.056.0 01-.477-2.86 1.869 1.869.0 011.546-.684 2.312 2.312.0 011.352.51c.132.104.313.242.43.343a16.205 16.205.0 011.278 1.356A18.103 18.103.0 0033.3 35.74a1.532 1.532.0 001.152.112c.111.082.486.35.7.497a24.953 24.953.0 0112.675-7.241 25.302 25.302.0 013.507-.54l.046-.82a2.115 2.115.0 00.63-1.003 18.142 18.142.0 00-.216-3.518 16.306 16.306.0 01-.265-1.845c-.005-.141.003-.336.005-.497.0-.018-.005-.036-.005-.054a1.95 1.95.0 113.88-.002c0 .17.01.396.004.552a16.14 16.14.0 01-.266 1.844 18.169 18.169.0 00-.22 3.519 1.537 1.537.0 00.634.97c.007.14.03.608.047.866a25.422 25.422.0 0116.102 7.78l.738-.527a2.156 2.156.0 001.177-.128 18.17 18.17.0 002.615-2.366 16.095 16.095.0 011.281-1.356c.12-.102.3-.24.43-.343a1.95 1.95.0 112.417 3.033c-.13.105-.302.252-.427.345a16.133 16.133.0 01-1.612.94 18.153 18.153.0 00-2.885 2.027 1.534 1.534.0 00-.364 1.099c-.108.099-.487.435-.688.617a25.205 25.205.0 014.041 17.458l.783.228a2.181 2.181.0 00.837.842 18.14 18.14.0 003.478.572 16.384 16.384.0 011.86.149c.163.03.4.095.565.133a1.947 1.947.0 11-.863 3.78l-.028-.004c-.013-.003-.025-.01-.038-.013-.16-.035-.36-.07-.5-.107a16.154 16.154.0 01-1.74-.672 18.146 18.146.0 00-3.385-.995 1.534 1.534.0 00-1.086.403q-.413-.08-.829-.145A25.243 25.243.0 0166.305 75.397z" class="cls-2"/><path d="M104.153 62.76l-8.736-37.947a6.82 6.82.0 00-3.658-4.55L56.397 3.38a6.814 6.814.0 00-5.87.0L15.168 20.273a6.82 6.82.0 00-3.659 4.548L2.79 62.77a6.742 6.742.0 00.916 5.14 6.526 6.526.0 00.385.535l24.474 30.43a6.885 6.885.0 005.285 2.522l39.247-.01a6.888 6.888.0 005.286-2.518l24.465-30.433a6.766 6.766.0 001.306-5.675zm-4.227 1.778a6.285 6.285.0 01-.229.792 6.06 6.06.0 01-.97 1.74l-21.74 27.044-.683.85a6.115 6.115.0 01-1.489 1.318 6.41 6.41.0 01-.678.378q-.236.109-.48.198a6.373 6.373.0 01-.636.204 6.191 6.191.0 01-.914.174 5.973 5.973.0 01-.648.038l-35.624.008h-.349a6.113 6.113.0 01-1.576-.217 6.4 6.4.0 01-1.772-.771 6.17 6.17.0 01-1.184-.98c-.107-.113-.215-.224-.313-.345L8.21 67.079q-.188-.236-.352-.49a6.022 6.022.0 01-.617-1.253 6.207 6.207.0 01-.226-.79 6.12 6.12.0 01.002-2.67l7.995-34.783a6.25 6.25.0 013.353-4.17L50.772 7.442a6.246 6.246.0 015.38.0l32.413 15.476a6.252 6.252.0 013.352 4.17l8.008 34.783a6.105 6.105.0 01.001 2.669z" class="cls-1"/><path d="M85.955 59.083c-.166-.038-.402-.103-.564-.133a16.382 16.382.0 00-1.86-.15 18.14 18.14.0 01-3.479-.571 2.18 2.18.0 01-.837-.842l-.783-.228a25.205 25.205.0 00-4.04-17.458c.2-.182.58-.518.687-.617a1.534 1.534.0 01.364-1.1 18.154 18.154.0 012.885-2.026 16.127 16.127.0 001.612-.94c.125-.093.296-.24.427-.345a1.95 1.95.0 10-2.416-3.033c-.132.104-.312.24-.43.343a16.09 16.09.0 00-1.282 1.356 18.17 18.17.0 01-2.615 2.366 2.156 2.156.0 01-1.177.128l-.738.527a25.422 25.422.0 00-16.102-7.78c-.018-.258-.04-.725-.047-.866a1.537 1.537.0 01-.633-.97 18.172 18.172.0 01.22-3.52 16.137 16.137.0 00.264-1.843c.006-.156-.003-.383-.003-.552a1.95 1.95.0 10-3.88.002c0 .018.004.036.005.054-.002.16-.01.356-.005.497a16.308 16.308.0 00.265 1.845 18.143 18.143.0 01.216 3.518 2.115 2.115.0 01-.63 1.003l-.046.82a25.302 25.302.0 00-3.507.54 24.953 24.953.0 00-12.674 7.24q-.354-.243-.7-.496a1.532 1.532.0 01-1.153-.112 18.1 18.1.0 01-2.615-2.363 16.206 16.206.0 00-1.277-1.356c-.118-.101-.299-.24-.43-.344a2.312 2.312.0 00-1.353-.51 1.869 1.869.0 00-1.546.684 2.056 2.056.0 00.477 2.86l.03.02c.127.105.283.238.401.324a16.202 16.202.0 001.608.94 18.094 18.094.0 012.885 2.029 2.155 2.155.0 01.39 1.119l.621.555a25.102 25.102.0 00-3.958 17.5l-.812.236a2.682 2.682.0 01-.834.84 18.106 18.106.0 01-3.477.573 16.212 16.212.0 00-1.86.15c-.15.027-.357.08-.519.12l-.017.004-.028.008a1.947 1.947.0 10.862 3.78l.03-.004c.012-.003.023-.01.036-.012.16-.036.361-.075.502-.113a16.358 16.358.0 001.74-.667 18.167 18.167.0 013.382-.995 2.151 2.151.0 011.115.394l.846-.145a25.244 25.244.0 0011.187 13.967l-.353.846a1.925 1.925.0 01.173 1.097 18.949 18.949.0 01-1.756 3.155 16.173 16.173.0 00-1.04 1.55c-.077.146-.175.37-.249.523a1.948 1.948.0 103.503 1.662l.003-.004v-.004c.074-.152.178-.351.24-.493a16.04 16.04.0 00.56-1.778 13.567 13.567.0 011.502-3.485 1.576 1.576.0 01.836-.408l.44-.795a25.104 25.104.0 0017.901.045c.123.22.353.64.414.746a1.533 1.533.0 01.99.602 18.067 18.067.0 011.332 3.262 16.219 16.219.0 00.563 1.778c.063.143.166.345.24.497a1.949 1.949.0 103.507-1.658c-.074-.153-.176-.377-.253-.522a16.121 16.121.0 00-1.04-1.546 18.095 18.095.0 01-1.72-3.08 1.523 1.523.0 01.15-1.144 6.671 6.671.0 01-.324-.783A25.243 25.243.0 0077.486 61.33c.251.04.688.116.83.145a1.534 1.534.0 011.085-.403 18.144 18.144.0 013.383.995 16.149 16.149.0 001.741.672c.14.037.34.072.501.107.013.004.025.01.038.013l.028.004a1.947 1.947.0 10.863-3.78zM67.523 39.325l-8.29 5.877-.029-.013a1.711 1.711.0 01-2.718-1.305l-.009-.004-.576-10.16a20.155 20.155.0 0111.622 5.605zM51.906 50.46h3.12l1.94 2.425-.696 3.025-2.802 1.348-2.81-1.351-.697-3.026zM48.97 34.075a20.535 20.535.0 012.07-.356l-.577 10.175-.042.02a1.71 1.71.0 01-2.714 1.31l-.016.01-8.344-5.916a19.98 19.98.0 019.623-5.243zm-12.649 9.047 7.618 6.813-.008.042a1.71 1.71.0 01-.672 2.939l-.008.033-9.765 2.818a19.973 19.973.0 012.835-12.645zm10.2 18.1-3.88 9.375a20.084 20.084.0 01-8.06-10.088l10.012-1.7.017.022a1.68 1.68.0 01.336-.03 1.71 1.71.0 011.546 2.383zm11.452 12.057a20.057 20.057.0 01-10.946-.563l4.924-8.904h.008a1.712 1.712.0 013.014-.003h.037l4.936 8.919q-.96.32-1.973.55zm6.362-2.644-3.92-9.471.012-.017a1.712 1.712.0 01.83-2.217 1.694 1.694.0 01.654-.17 1.65 1.65.0 01.393.029l.017-.021 10.101 1.707a20.008 20.008.0 01-8.087 10.16zm9.148-14.901-9.814-2.827-.009-.041a1.712 1.712.0 01-.67-2.94l-.005-.02 7.576-6.78a20.352 20.352.0 012.922 12.608z" class="cls-1"/></svg></span><span class=navbar-brand__name>Kubernetes</span></a><div class="td-navbar-nav-scroll d-none d-md-block ms-xl-auto" id=main_navbar><ul class="navbar-nav mt-lg-0"><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/zh-cn/docs/home/><span>文档</span></a></li><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/zh-cn/blog/><span>博客</span></a></li><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/zh-cn/training/><span>培训</span></a></li><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/zh-cn/partners/><span>合作伙伴</span></a></li><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/zh-cn/community/><span>社区</span></a></li><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/zh-cn/careers/><span>职业</span></a></li><li class="nav-item dropdown me-4 d-none d-lg-block"><div class=dropdown><a class="nav-link dropdown-toggle" href=# role=button data-bs-toggle=dropdown aria-haspopup=true aria-expanded=false>版本列表</a><ul class=dropdown-menu><li><a class=dropdown-item href=/zh-cn/releases>发布信息</a></li><li><a class=dropdown-item href=https://xuxiaowei.io/t/1320>Kubernetes 文档说明</a></li><li><a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn>v1.38</a></li><li><a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn>v1.37</a></li><li><a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn>v1.36</a></li><li><a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn>v1.35</a></li><li><a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn>v1.34</a></li><li><a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn>v1.33</a></li><li><a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn>v1.32</a></li><li><a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn>v1.31</a></li><li><a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn>v1.30</a></li><li><a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn>v1.29</a></li><li><a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn>v1.28</a></li><li><a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn>v1.27</a></li><li><a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn>v1.26</a></li><li><a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn>v1.25</a></li><li><a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn>v1.24</a></li><li><a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn>v1.23</a></li><li><a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn>v1.22</a></li><li><a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn>v1.21</a></li><li><a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn>v1.20</a></li></ul></div></li><li class="nav-item dropdown me-xl-4 d-none d-lg-block"><div class=dropdown><a class="nav-link dropdown-toggle" href=# role=button data-bs-toggle=dropdown aria-haspopup=true aria-expanded=false>中文 (Chinese)</a><ul class="dropdown-menu dropdown-menu-end"><li><a class=dropdown-item href=/docs/concepts/extend-kubernetes/compute-storage-net/>English</a></li><li><a class=dropdown-item href=/bn/docs/concepts/extend-kubernetes/compute-storage-net/>বাংলা (Bengali)</a></li><li><a class=dropdown-item href=/fr/docs/concepts/extend-kubernetes/compute-storage-net/>Français (French)</a></li><li><a class=dropdown-item href=/id/docs/concepts/extend-kubernetes/compute-storage-net/>Bahasa Indonesia (Indonesian)</a></li><li><a class=dropdown-item href=/ja/docs/concepts/extend-kubernetes/compute-storage-net/>日本語 (Japanese)</a></li><li><a class=dropdown-item href=/ko/docs/concepts/extend-kubernetes/compute-storage-net/>한국어 (Korean)</a></li><li><a class=dropdown-item href=/pl/docs/concepts/extend-kubernetes/compute-storage-net/>Polski (Polish)</a></li><li><a class=dropdown-item href=/pt-br/docs/concepts/extend-kubernetes/compute-storage-net/>Português (Portuguese)</a></li><li><a class=dropdown-item href=/es/docs/concepts/extend-kubernetes/compute-storage-net/>Español (Spanish)</a></li><li><span class="dropdown-item text-muted" title="This page is not available in Deutsch (German)">Deutsch (German)
+<a href=/de/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in हिन्दी (Hindi)">हिन्दी (Hindi)
+<a href=/hi/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Italiano (Italian)">Italiano (Italian)
+<a href=/it/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in فارسی (Persian)">فارسی (Persian)
+<a href=/fa/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Русский (Russian)">Русский (Russian)
+<a href=/ru/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Українська (Ukrainian)">Українська (Ukrainian)
+<a href=/uk/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Tiếng Việt (Vietnamese)">Tiếng Việt (Vietnamese)
+<a href=/vi/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in العربية (Arabic)">العربية (Arabic)
+<a href=/ar/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li></ul></div></li><li class="td-light-dark-menu nav-item dropdown"><svg class="d-none"><symbol id="check2" viewBox="0 0 16 16"><path d="M13.854 3.646a.5.5.0 010 .708l-7 7a.5.5.0 01-.708.0l-3.5-3.5a.5.5.0 11.708-.708L6.5 10.293l6.646-6.647a.5.5.0 01.708.0z"/></symbol><symbol id="circle-half" viewBox="0 0 16 16"><path d="M8 15A7 7 0 108 1v14zm0 1A8 8 0 118 0a8 8 0 010 16z"/></symbol><symbol id="moon-stars-fill" viewBox="0 0 16 16"><path d="M6 .278a.768.768.0 01.08.858 7.208 7.208.0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527.0 1.04-.055 1.533-.16a.787.787.0 01.81.316.733.733.0 01-.031.893A8.349 8.349.0 018.344 16C3.734 16 0 12.286.0 7.71.0 4.266 2.114 1.312 5.124.06A.752.752.0 016 .278z"/><path d="M10.794 3.148a.217.217.0 01.412.0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217.0 010 .412l-1.162.387A1.734 1.734.0 0011.593 7.69l-.387 1.162a.217.217.0 01-.412.0l-.387-1.162A1.734 1.734.0 009.31 6.593l-1.162-.387a.217.217.0 010-.412l1.162-.387a1.734 1.734.0 001.097-1.097l.387-1.162zM13.863.099a.145.145.0 01.274.0l.258.774c.115.346.386.617.732.732l.774.258a.145.145.0 010 .274l-.774.258a1.156 1.156.0 00-.732.732l-.258.774a.145.145.0 01-.274.0l-.258-.774a1.156 1.156.0 00-.732-.732l-.774-.258a.145.145.0 010-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/></symbol><symbol id="sun-fill" viewBox="0 0 16 16"><path d="M8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 0zm0 13a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 13zm8-5a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2a.5.5.0 01.5.5zM3 8a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2A.5.5.0 013 8zm10.657-5.657a.5.5.0 010 .707l-1.414 1.415a.5.5.0 11-.707-.708l1.414-1.414a.5.5.0 01.707.0zm-9.193 9.193a.5.5.0 010 .707L3.05 13.657a.5.5.0 01-.707-.707l1.414-1.414a.5.5.0 01.707.0zm9.193 2.121a.5.5.0 01-.707.0l-1.414-1.414a.5.5.0 01.707-.707l1.414 1.414a.5.5.0 010 .707zM4.464 4.465a.5.5.0 01-.707.0L2.343 3.05a.5.5.0 11.707-.707l1.414 1.414a.5.5.0 010 .708z"/></symbol></svg>
+<button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center" id=bd-theme type=button aria-expanded=false data-bs-toggle=dropdown data-bs-display=static aria-label="Toggle theme (auto)"><svg class="bi my-1 theme-icon-active"><use href="#circle-half"/></svg></button><ul class="dropdown-menu dropdown-menu-end" aria-labelledby=bd-theme-text><li><button type=button class="dropdown-item d-flex align-items-center" data-bs-theme-value=light aria-pressed=false>
+<svg class="bi me-2 opacity-50"><use href="#sun-fill"/></svg>
+Light<svg class="bi ms-auto d-none"><use href="#check2"/></svg></button></li><li><button type=button class="dropdown-item d-flex align-items-center" data-bs-theme-value=dark aria-pressed=false>
+<svg class="bi me-2 opacity-50"><use href="#moon-stars-fill"/></svg>
+Dark<svg class="bi ms-auto d-none"><use href="#check2"/></svg></button></li><li><button type=button class="dropdown-item d-flex align-items-center active" data-bs-theme-value=auto aria-pressed=true>
+<svg class="bi me-2 opacity-50"><use href="#circle-half"/></svg>
+Auto<svg class="bi ms-auto d-none"><use href="#check2"/></svg></button></li></ul></li></ul></div><div class="navbar-nav d-none k8s-1500-block"><div class=td-search><div class=td-search__icon></div><input type=search class="td-search__input form-control dark-theme-focus td-search-input" placeholder=搜索 aria-label=搜索 autocomplete=off data-search-page=/zh-cn/search/></div></div><button id=hamburger class="btn fas fa-bars" onclick=kub.toggleMenu() data-auto-burger-exclude></button></nav></header><div class="container-fluid td-outer"><div class=td-main><div class="row flex-xl-nowrap"><main class="col-12 col-md-9 col-xl-8 ps-md-5" role=main><div class=td-content><div class="pageinfo pageinfo-primary d-print-none"><p>这是本节的多页打印视图。
+<a href=# onclick="return print(),!1">点击此处打印</a>.</p><p><a href=/zh-cn/docs/concepts/extend-kubernetes/compute-storage-net/>返回本页常规视图</a>.</p></div><h1 class=title>计算、存储和网络扩展</h1><ul><li>1: <a href=#pg-1ac2260db9ecccbf0303a899bc27ce6d>网络插件</a></li><li>2: <a href=#pg-53e1ea8892ceca307ba19e8d6a7b8d32>设备插件</a></li></ul><div class=content><p>本节介绍不属于 Kubernetes 本身组成部分的一些集群扩展。
+你可以使用这些扩展来增强集群中的节点，或者提供将 Pod 关联在一起的网络结构。</p><ul><li><p><a href=/zh-cn/docs/concepts/storage/volumes/#csi>CSI</a> 和
+<a href=/zh-cn/docs/concepts/storage/volumes/#flexvolume>FlexVolume</a> 存储插件</p><p><a class=glossary-tooltip title='容器存储接口 （CSI）定义了存储系统暴露给容器的标准接口。' data-bs-toggle=tooltip data-bs-placement=top href=/zh-cn/docs/concepts/storage/volumes/#csi target=_blank aria-label=容器存储接口>容器存储接口</a>（CSI）插件提供了一种扩展
+Kubernetes 的方式使其支持新类别的卷。
+这些卷可以由持久的外部存储提供支持，可以提供临时存储，还可以使用文件系统范型为信息提供只读接口。</p><p>Kubernetes 还包括对 <a href=/zh-cn/docs/concepts/storage/volumes/#flexvolume>FlexVolume</a>
+插件的扩展支持，该插件自 Kubernetes v1.23 起被弃用（被 CSI 替代）。</p><p>FlexVolume 插件允许用户挂载 Kubernetes 本身不支持的卷类型。
+当你运行依赖于 FlexVolume 存储的 Pod 时，kubelet 会调用一个二进制插件来挂载该卷。
+归档的 <a href=https://git.k8s.io/design-proposals-archive/storage/flexvolume-deployment.md>FlexVolume</a>
+设计提案对此方法有更多详细说明。</p><p><a href=https://github.com/kubernetes/community/blob/main/sig-storage/volume-plugin-faq.md#kubernetes-volume-plugin-faq-for-storage-vendors>Kubernetes 存储供应商的卷插件 FAQ</a>
+包含了有关存储插件的通用信息。</p></li></ul><ul><li><p><a href=/zh-cn/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/>设备插件</a></p><p>设备插件允许一个节点发现新的 Node 设施（除了 <code>cpu</code> 和 <code>memory</code> 等内置的节点资源之外），
+并向请求资源的 Pod 提供了这些自定义的节点本地设施。</p></li></ul><ul><li><p><a href=/zh-cn/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/>网络插件</a></p><p>网络插件可以让 Kubernetes 使用不同的网络拓扑和技术。
+你的 Kubernetes 集群需要一个<strong>网络插件</strong>才能拥有一个正常工作的 Pod 网络，
+才能支持 Kubernetes 网络模型的其他方面。</p><p>Kubernetes 1.37 兼容
+<a class=glossary-tooltip title='容器网络接口 (Container network interface；CNI) 插件是遵循 appc/CNI 协议的一类网络插件。' data-bs-toggle=tooltip data-bs-placement=top href=/zh-cn/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/ target=_blank aria-label=CNI>CNI</a> 网络插件。</p></li></ul></div></div><div class=td-content style=page-break-before:always><h1 id=pg-1ac2260db9ecccbf0303a899bc27ce6d>1 - 网络插件</h1><p>Kubernetes（1.3 版本至最新 1.37，并可能包括未来版本）
+允许你使用<a href=https://github.com/containernetworking/cni>容器网络接口</a>（CNI）
+插件来完成集群联网。
+你必须使用和你的集群相兼容并且满足你的需求的 CNI 插件。
+在更广泛的 Kubernetes 生态系统中你可以使用不同的插件（开源和闭源）。</p><p>要实现 <a href=/zh-cn/docs/concepts/services-networking/#the-kubernetes-network-model>Kubernetes 网络模型</a>，你需要一个 CNI 插件。</p><p>你必须使用与 <a href=https://github.com/containernetworking/cni/blob/spec-v0.4.0/SPEC.md>v0.4.0</a>
+或更高版本的 CNI 规范相符合的 CNI 插件。
+Kubernetes 推荐使用一个兼容 <a href=https://github.com/containernetworking/cni/blob/spec-v1.0.0/SPEC.md>v1.0.0</a>
+CNI 规范的插件（插件可以兼容多个规范版本）。</p><h2 id=installation>安装 <a class=td-heading-self-link href=#installation aria-label="Heading self-link"></a></h2><p>在网络语境中，容器运行时（Container Runtime）是在节点上的守护进程，
+被配置用来为 kubelet 提供 CRI 服务。具体而言，容器运行时必须配置为加载所需的
+CNI 插件，从而实现 Kubernetes 网络模型。</p><div class="alert alert-info" role=note><h4 class=alert-heading>说明：</h4><p>在 Kubernetes 1.24 之前，CNI 插件也可以由 kubelet 使用命令行参数 <code>cni-bin-dir</code>
+和 <code>network-plugin</code> 管理。Kubernetes 1.24 移除了这些命令行参数，
+CNI 的管理不再是 kubelet 的工作。</p><p>如果你在移除 dockershim 之后遇到问题，
+请参阅<a href=/zh-cn/docs/tasks/administer-cluster/migrating-from-dockershim/troubleshooting-cni-plugin-related-errors/>排查 CNI 插件相关的错误</a>。</p></div><p>要了解容器运行时如何管理 CNI 插件的具体信息，可参见对应容器运行时的文档，例如：</p><ul><li><a href=https://github.com/containerd/containerd/blob/main/script/setup/install-cni>containerd</a></li><li><a href=https://github.com/cri-o/cri-o/blob/main/contrib/cni/README.md>CRI-O</a></li></ul><p>要了解如何安装和管理 CNI 插件的具体信息，可参阅对应的插件或
+<a href=/zh-cn/docs/concepts/cluster-administration/networking/#how-to-implement-the-kubernetes-network-model>网络驱动（Networking Provider）</a>
+的文档。</p><h2 id=network-plugin-requirements>网络插件要求 <a class=td-heading-self-link href=#network-plugin-requirements aria-label="Heading self-link"></a></h2><h3 id=loopback-cni>本地回路 CNI <a class=td-heading-self-link href=#loopback-cni aria-label="Heading self-link"></a></h3><p>除了安装到节点上用于实现 Kubernetes 网络模型的 CNI 插件外，Kubernetes
+还需要容器运行时提供一个本地回路接口 <code>lo</code>，用于各个沙箱（Pod 沙箱、虚机沙箱……）。
+实现本地回路接口的工作可以通过复用
+<a href=https://github.com/containernetworking/plugins/blob/master/plugins/main/loopback/loopback.go>CNI 本地回路插件</a>来实现，
+也可以通过开发自己的代码来实现
+（参阅 <a href=https://github.com/cri-o/ocicni/blob/release-1.24/pkg/ocicni/util_linux.go#L91>CRI-O 中的示例</a>）。</p><h3 id=support-hostport>支持 hostPort <a class=td-heading-self-link href=#support-hostport aria-label="Heading self-link"></a></h3><p>CNI 网络插件支持 <code>hostPort</code>。你可以使用官方
+<a href=https://github.com/containernetworking/plugins/tree/master/plugins/meta/portmap>portmap</a>
+插件，它由 CNI 插件团队提供，或者使用你自己的带有 portMapping 功能的插件。</p><p>如果你想要启动 <code>hostPort</code> 支持，则必须在 <code>cni-conf-dir</code> 指定 <code>portMappings capability</code>。
+例如：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;k8s-pod-network&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;cniVersion&#34;</span><span class=p>:</span> <span class=s2>&#34;0.4.0&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;plugins&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;calico&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;log_level&#34;</span><span class=p>:</span> <span class=s2>&#34;info&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;datastore_type&#34;</span><span class=p>:</span> <span class=s2>&#34;kubernetes&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;nodename&#34;</span><span class=p>:</span> <span class=s2>&#34;127.0.0.1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;ipam&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;host-local&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;subnet&#34;</span><span class=p>:</span> <span class=s2>&#34;usePodCidr&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;policy&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;k8s&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;kubernetes&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;kubeconfig&#34;</span><span class=p>:</span> <span class=s2>&#34;/etc/cni/net.d/calico-kubeconfig&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;portmap&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;capabilities&#34;</span><span class=p>:</span> <span class=p>{</span><span class=nt>&#34;portMappings&#34;</span><span class=p>:</span> <span class=kc>true</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;externalSetMarkChain&#34;</span><span class=p>:</span> <span class=s2>&#34;KUBE-MARK-MASQ&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></div><h3 id=support-traffic-shaping>支持流量整形 <a class=td-heading-self-link href=#support-traffic-shaping aria-label="Heading self-link"></a></h3><p><strong>实验功能</strong></p><p>CNI 网络插件还支持 Pod 入站和出站流量整形。
+你可以使用 CNI 插件团队提供的
+<a href=https://github.com/containernetworking/plugins/tree/master/plugins/meta/bandwidth>bandwidth</a>
+插件，也可以使用你自己的具有带宽控制功能的插件。</p><p>如果你想要启用流量整形支持，你必须将 <code>bandwidth</code> 插件添加到 CNI 配置文件
+（默认是 <code>/etc/cni/net.d</code>）并保证该可执行文件包含在你的 CNI 的 bin
+文件夹内（默认为 <code>/opt/cni/bin</code>）。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;k8s-pod-network&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;cniVersion&#34;</span><span class=p>:</span> <span class=s2>&#34;0.4.0&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;plugins&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;calico&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;log_level&#34;</span><span class=p>:</span> <span class=s2>&#34;info&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;datastore_type&#34;</span><span class=p>:</span> <span class=s2>&#34;kubernetes&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;nodename&#34;</span><span class=p>:</span> <span class=s2>&#34;127.0.0.1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;ipam&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;host-local&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;subnet&#34;</span><span class=p>:</span> <span class=s2>&#34;usePodCidr&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;policy&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;k8s&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;kubernetes&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;kubeconfig&#34;</span><span class=p>:</span> <span class=s2>&#34;/etc/cni/net.d/calico-kubeconfig&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;bandwidth&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;capabilities&#34;</span><span class=p>:</span> <span class=p>{</span><span class=nt>&#34;bandwidth&#34;</span><span class=p>:</span> <span class=kc>true</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></div><p>现在，你可以将 <code>kubernetes.io/ingress-bandwidth</code> 和 <code>kubernetes.io/egress-bandwidth</code>
+注解添加到 Pod 中。例如：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Pod</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>annotations</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>kubernetes.io/ingress-bandwidth</span><span class=p>:</span><span class=w> </span><span class=l>1M</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>kubernetes.io/egress-bandwidth</span><span class=p>:</span><span class=w> </span><span class=l>1M</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nn>...</span><span class=w>
+</span></span></span></code></pre></div><h2 id=接下来>接下来<a class=td-heading-self-link href=#%e6%8e%a5%e4%b8%8b%e6%9d%a5 aria-label="Heading self-link"></a></h2><ul><li>进一步了解关于<a href=/zh-cn/docs/concepts/cluster-administration/networking/>集群网络</a>的信息</li><li>进一步了解关于<a href=/zh-cn/docs/concepts/services-networking/network-policies/>网络策略</a>的信息</li><li>进一步了解关于<a href=/zh-cn/docs/tasks/administer-cluster/migrating-from-dockershim/troubleshooting-cni-plugin-related-errors/>排查 CNI 插件相关错误</a>的信息</li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-53e1ea8892ceca307ba19e8d6a7b8d32>2 - 设备插件</h1><div class=lead>设备插件可以让你配置集群以支持需要特定于供应商设置的设备或资源，例如 GPU、NIC、FPGA 或非易失性主存储器。</div><div class="feature-state-notice feature-stable"><span class=feature-state-name>特性状态：</span>
+<span class=feature-state-details><span class=feature-state-stage>GA</span> since Kubernetes v1.26</span></div><p>Kubernetes 提供了一个设备插件框架，你可以用它来将系统硬件资源发布到
+<a class=glossary-tooltip title='一个在集群中每个节点上运行的代理。它保证容器都运行在 Pod 中。' data-bs-toggle=tooltip data-bs-placement=top href=/zh-cn/docs/reference/command-line-tools-reference/kubelet target=_blank aria-label=Kubelet>Kubelet</a>。</p><p>供应商可以实现设备插件，由你手动部署或作为 <a class=glossary-tooltip title='确保 Pod 的副本在集群中的一组节点上运行。' data-bs-toggle=tooltip data-bs-placement=top href=/zh-cn/docs/concepts/workloads/controllers/daemonset/ target=_blank aria-label=DaemonSet>DaemonSet</a>
+来部署，而不必定制 Kubernetes 本身的代码。目标设备包括 GPU、高性能 NIC、FPGA、
+InfiniBand 适配器以及其他类似的、可能需要特定于供应商的初始化和设置的计算资源。</p><h2 id=device-plugin-registration>注册设备插件 <a class=td-heading-self-link href=#device-plugin-registration aria-label="Heading self-link"></a></h2><p><code>kubelet</code> 提供了一个 <code>Registration</code> 的 gRPC 服务：</p><pre tabindex=0><code class=language-gRPC data-lang=gRPC>service Registration {
+	rpc Register(RegisterRequest) returns (Empty) {}
+}
+</code></pre><p>设备插件可以通过此 gRPC 服务在 kubelet 进行注册。在注册期间，设备插件需要发送下面几样内容：</p><ul><li>设备插件的 UNIX 套接字。</li><li>设备插件的 API 版本。</li><li><code>ResourceName</code> 是需要公布的。这里 <code>ResourceName</code>
+需要遵循<a href=/zh-cn/docs/concepts/configuration/manage-resources-containers/#extended-resources>扩展资源命名方案</a>，
+类似于 <code>vendor-domain/resourcetype</code>。（比如 NVIDIA GPU 就被公布为 <code>nvidia.com/gpu</code>。）</li></ul><p>成功注册后，设备插件就向 kubelet 发送它所管理的设备列表，然后 kubelet
+负责将这些资源发布到 API 服务器，作为 kubelet 节点状态更新的一部分。</p><p>比如，设备插件在 kubelet 中注册了 <code>hardware-vendor.example/foo</code>
+并报告了节点上的两个运行状况良好的设备后，节点状态将更新以通告该节点已安装 2 个
+"Foo" 设备并且是可用的。</p><p>然后，用户可以请求设备作为 Pod 规范的一部分，
+参见 <a href=/zh-cn/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container>Container</a>。
+请求扩展资源类似于管理请求和限制的方式，
+其他资源，有以下区别：</p><ul><li>扩展资源仅可作为整数资源使用，并且不能被过量使用</li><li>设备不能在容器之间共享</li></ul><h3 id=example-pod>示例<a class=td-heading-self-link href=#example-pod aria-label="Heading self-link"></a></h3><p>假设 Kubernetes 集群正在运行一个设备插件，该插件在一些节点上公布的资源为 <code>hardware-vendor.example/foo</code>。
+下面就是一个 Pod 示例，请求此资源以运行一个工作负载的示例：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nn>---</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Pod</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>demo-pod</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>containers</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>demo-container-1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>registry.k8s.io/pause:3.8</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>resources</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>limits</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>hardware-vendor.example/foo</span><span class=p>:</span><span class=w> </span><span class=m>2</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># 这个 Pod 需要两个 hardware-vendor.example/foo 设备</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># 而且只能够调度到满足需求的节点上</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># 如果该节点中有 2 个以上的设备可用，其余的可供其他 Pod 使用</span><span class=w>
+</span></span></span></code></pre></div><h2 id=device-plugin-implementation>设备插件的实现 <a class=td-heading-self-link href=#device-plugin-implementation aria-label="Heading self-link"></a></h2><p>设备插件的常规工作流程包括以下几个步骤：</p><ol><li><p>初始化。在这个阶段，设备插件将执行特定于供应商的初始化和设置，以确保设备处于就绪状态。</p></li><li><p>插件启动一个 gRPC 服务，该服务使用主机路径
+<code>/var/lib/kubelet/device-plugins/</code> 下的 UNIX 套接字
+（此路径是硬编码的，不受 kubelet 的 <code>--root-dir</code> 或其他配置的影响），
+并实现了以下接口：</p><pre tabindex=0><code class=language-gRPC data-lang=gRPC>service DevicePlugin {
+   // GetDevicePluginOptions 返回与设备管理器沟通的选项。
+   rpc GetDevicePluginOptions(Empty) returns (DevicePluginOptions) {}
+
+   // ListAndWatch 返回 Device 列表构成的数据流。
+   // 当 Device 状态发生变化或者 Device 消失时，ListAndWatch
+   // 会返回新的列表。
+   rpc ListAndWatch(Empty) returns (stream ListAndWatchResponse) {}
+
+   // Allocate 在容器创建期间调用，这样设备插件可以运行一些特定于设备的操作，
+   // 并告诉 kubelet 如何令 Device 可在容器中访问的所需执行的具体步骤
+   rpc Allocate(AllocateRequest) returns (AllocateResponse) {}
+
+   // GetPreferredAllocation 从一组可用的设备中返回一些优选的设备用来分配，
+   // 所返回的优选分配结果不一定会是设备管理器的最终分配方案。
+   // 此接口的设计仅是为了让设备管理器能够在可能的情况下做出更有意义的决定。
+   rpc GetPreferredAllocation(PreferredAllocationRequest) returns (PreferredAllocationResponse) {}
+
+   // PreStartContainer 在设备插件注册阶段根据需要被调用，调用发生在容器启动之前。
+   // 在将设备提供给容器使用之前，设备插件可以运行一些诸如重置设备之类的特定于
+   // 具体设备的操作，
+   rpc PreStartContainer(PreStartContainerRequest) returns (PreStartContainerResponse) {}
+}
+</code></pre><div class="alert alert-info" role=note><h4 class=alert-heading>说明：</h4><p>插件并非必须为 <code>GetPreferredAllocation()</code> 或 <code>PreStartContainer()</code> 提供有用的实现逻辑，
+调用 <code>GetDevicePluginOptions()</code> 时所返回的 <code>DevicePluginOptions</code>
+消息中应该设置一些标志，表明这些调用（如果有）是否可用。<code>kubelet</code> 在直接调用这些函数之前，总会调用
+<code>GetDevicePluginOptions()</code> 来查看哪些可选的函数可用。</p></div></li></ol><ol start=3><li><p>插件通过位于主机路径 <code>/var/lib/kubelet/device-plugins/kubelet.sock</code> 下的 UNIX
+套接字向 kubelet 注册自身。</p><div class="alert alert-info" role=note><h4 class=alert-heading>说明：</h4><p>工作流程的顺序很重要。插件必须在向 kubelet 注册自己之前开始提供 gRPC 服务，才能保证注册成功。</p></div></li></ol><ol start=4><li><p>成功注册自身后，设备插件将以提供服务的模式运行，在此期间，它将持续监控设备运行状况，
+并在设备状态发生任何变化时向 kubelet 报告。它还负责响应 <code>Allocate</code> gRPC 请求。
+在 <code>Allocate</code> 期间，设备插件可能还会做一些特定于设备的准备；例如 GPU 清理或 QRNG 初始化。
+如果操作成功，则设备插件将返回 <code>AllocateResponse</code>，其中包含用于访问被分配的设备容器运行时的配置。
+kubelet 将此信息传递到容器运行时。</p><p><code>AllocateResponse</code> 包含零个或多个 <code>ContainerAllocateResponse</code> 对象。
+设备插件在这些对象中给出为了访问设备而必须对容器定义所进行的修改。
+这些修改包括：</p><ul><li><a href=/zh-cn/docs/concepts/overview/working-with-objects/annotations/>注解</a></li><li>设备节点</li><li>环境变量</li><li>挂载点</li><li>完全限定的 CDI 设备名称</li></ul><div class="alert alert-info" role=note><h4 class=alert-heading>说明：</h4><p>设备管理器处理完全限定的 CDI 设备名称时，
+需要为 kubelet 和 kube-apiserver 启用 <code>DevicePluginCDIDevices</code>
+<a href=/zh-cn/docs/reference/command-line-tools-reference/feature-gates/>特性门控</a>。
+在 Kubernetes v1.28 版本中作为 Alpha 特性被加入，在 v1.29 版本中升级为 Beta 特性并在
+v1.31 版本升级为稳定可用特性。</p></div></li></ol><h3 id=handling-kubelet-restarts>处理 kubelet 重启 <a class=td-heading-self-link href=#handling-kubelet-restarts aria-label="Heading self-link"></a></h3><p>设备插件应能监测到 kubelet 重启，并且向新的 kubelet 实例来重新注册自己。
+新的 kubelet 实例启动时会删除 <code>/var/lib/kubelet/device-plugins</code> （设备插件的硬编码路径）下所有已经存在的 UNIX 套接字。
+设备插件需要能够监控到它的 UNIX 套接字被删除，并且当发生此类事件时重新注册自己。</p><h3 id=设备插件和不健康的设备>设备插件和不健康的设备<a class=td-heading-self-link href=#%e8%ae%be%e5%a4%87%e6%8f%92%e4%bb%b6%e5%92%8c%e4%b8%8d%e5%81%a5%e5%ba%b7%e7%9a%84%e8%ae%be%e5%a4%87 aria-label="Heading self-link"></a></h3><p>有时会发生设备出现故障或者被关闭的情况，这时，设备插件的职责是使用
+<code>ListAndWatch Response</code> API 将相关情况通报给 kubelet。</p><p>一旦设备被标记为不健康，kubelet 将减少节点上此资源的可分配数量，
+以反映有多少设备可用于调度新的 Pod，资源的容量数量不会因此发生改变。</p><p>分配给故障设备的 Pod 将继续分配给该设备。
+通常情况下，依赖于设备的代码将开始失败，如果 Pod 的 <code>restartPolicy</code> 不是
+<code>Always</code>，则 Pod 可能会进入 Failed 阶段，否则会进入崩溃循环。</p><p>在 Kubernetes v1.31 之前，要知道 Pod 是否与故障设备关联，
+可以使用 <a href=#monitoring-device-plugin-resources>PodResources API</a>。</p><div class="feature-state-notice feature-beta" title="特性门控： ResourceHealthStatus"><span class=feature-state-name>特性状态：</span>
+<span class=feature-state-details><span class=feature-state-stage>Beta</span> since Kubernetes v1.36; （默认启用）</span></div><div class=feature-beta></div><p>当 <code>ResourceHealthStatus</code> 特性门控被启用（自 v1.36 起为 Beta 版并默认启用）时，
+<code>allocatedResourcesStatus</code> 字段将添加到每个容器状态中，位于每个 Pod 的 <code>.status</code> 内。
+<code>allocatedResourcesStatus</code> 字段报告分配给容器的每个设备的健康信息。
+每个资源健康状况条目都可以包含一个可选的“message”字段，其中包含有关健康状况的更多易于理解的上下文信息，
+如错误详情或故障原因。</p><p>对于发生故障的 Pod，或者你怀疑存在故障的情况，你可以使用此状态来了解
+Pod 行为是否可能与设备故障有关。例如，如果加速器报告过热事件，
+则 <code>allocatedResourcesStatus</code> 字段能够报告此情况。</p><h2 id=device-plugin-deployment>设备插件部署 <a class=td-heading-self-link href=#device-plugin-deployment aria-label="Heading self-link"></a></h2><p>你可以将你的设备插件作为节点操作系统的软件包来部署、作为 DaemonSet 来部署或者手动部署。</p><p>规范目录 <code>/var/lib/kubelet/device-plugins</code>（在 kubelet 中硬编码）是需要特权访问的，
+所以设备插件必须要在被授权的安全的上下文中运行。
+如果你将设备插件部署为 DaemonSet，<code>/var/lib/kubelet/device-plugins</code> 目录必须要在插件的
+<a href=/docs/reference/generated/kubernetes-api/v1.37/#podspec-v1-core>PodSpec</a>
+中声明作为 <a class=glossary-tooltip title='包含可被 Pod 中容器访问的数据的目录。' data-bs-toggle=tooltip data-bs-placement=top href=/zh-cn/docs/concepts/storage/volumes/ target=_blank aria-label=卷（Volume）>卷（Volume）</a> 被挂载到插件中。</p><p>如果你选择 DaemonSet 方法，你可以通过 Kubernetes 进行以下操作：
+将设备插件的 Pod 放置在节点上，在出现故障后重新启动守护进程 Pod，来进行自动升级。</p><h2 id=api-compatibility>API 兼容性 <a class=td-heading-self-link href=#api-compatibility aria-label="Heading self-link"></a></h2><p>之前版本控制方案要求设备插件的 API 版本与 kubelet 的版本完全匹配。
+自从此特性在 v1.12 中进阶为 Beta 后，这不再是硬性要求。
+API 是版本化的，并且自此特性进阶 Beta 后一直表现稳定。
+因此，kubelet 升级应该是无缝的，但在稳定之前 API 仍然可能会有变更，还不能保证升级不会中断。</p><div class="alert alert-info" role=note><h4 class=alert-heading>说明：</h4><p>尽管 Kubernetes 的设备管理器（Device Manager）组件是正式发布的特性，
+但<strong>设备插件 API</strong> 还不稳定。有关设备插件 API 和版本兼容性的信息，
+请参阅<a href=/zh-cn/docs/reference/node/device-plugin-api-versions/>设备插件 API 版本</a>。</p></div><p>作为一个项目，Kubernetes 建议设备插件开发者：</p><ul><li>注意未来版本中设备插件 API 的变更。</li><li>支持多个版本的设备插件 API，以实现向后/向前兼容性。</li></ul><p>若在需要升级到具有较新设备插件 API 版本的某个 Kubernetes 版本的节点上运行这些设备插件，
+请在升级这些节点之前先升级设备插件以支持这两个版本。
+采用该方法将确保升级期间设备分配的连续运行。</p><h2 id=monitoring-device-plugin-resources>监控设备插件资源 <a class=td-heading-self-link href=#monitoring-device-plugin-resources aria-label="Heading self-link"></a></h2><div class="feature-state-notice feature-stable"><span class=feature-state-name>特性状态：</span>
+<span class=feature-state-details><span class=feature-state-stage>GA</span> since Kubernetes v1.28</span></div><p>为了监控设备插件提供的资源，监控代理程序需要能够发现节点上正在使用的设备，
+并获取元数据来描述哪个指标与容器相关联。
+设备监控代理暴露给 <a href=https://prometheus.io/>Prometheus</a> 的指标应该遵循
+<a href=https://github.com/kubernetes/community/blob/main/contributors/devel/sig-instrumentation/metric-instrumentation.md>Kubernetes Instrumentation Guidelines（英文）</a>，
+使用 <code>pod</code>、<code>namespace</code> 和 <code>container</code> 标签来标识容器。</p><p>kubelet 提供了 gRPC 服务来使得正在使用中的设备被发现，并且还为这些设备提供了元数据：</p><pre tabindex=0><code class=language-gRPC data-lang=gRPC>// PodResourcesLister 是一个由 kubelet 提供的服务，用来提供供节点上
+// Pod 和容器使用的节点资源的信息
+service PodResourcesLister {
+    rpc List(ListPodResourcesRequest) returns (ListPodResourcesResponse) {}
+    rpc GetAllocatableResources(AllocatableResourcesRequest) returns (AllocatableResourcesResponse) {}
+    rpc Get(GetPodResourcesRequest) returns (GetPodResourcesResponse) {}
+}
+</code></pre><h3 id=grpc-endpoint-list><code>List</code> gRPC 端点<a class=td-heading-self-link href=#grpc-endpoint-list aria-label="Heading self-link"></a></h3><p>这一 <code>List</code> 端点提供运行中 Pod 的资源信息，包括类似独占式分配的
+CPU ID、设备插件所报告的设备 ID 以及这些设备分配所处的 NUMA 节点 ID。
+此外，对于基于 NUMA 的机器，它还会包含为容器保留的内存和大页的信息。</p><p>从 Kubernetes v1.27 开始，<code>List</code> 端点可以通过 <code>DynamicResourceAllocation</code> API 提供在
+<code>ResourceClaims</code> 中分配的当前运行 Pod 的资源信息。
+从 Kubernetes v1.34 开始，此特性默认启用。</p><pre tabindex=0><code class=language-gRPC data-lang=gRPC>// ListPodResourcesResponse 是 List 函数的响应
+message ListPodResourcesResponse {
+    repeated PodResources pod_resources = 1;
+}
+
+// PodResources 包含关于分配给 Pod 的节点资源的信息
+message PodResources {
+    string name = 1;
+    string namespace = 2;
+    repeated ContainerResources containers = 3;
+}
+
+// ContainerResources 包含分配给容器的资源的信息
+message ContainerResources {
+    string name = 1;
+    repeated ContainerDevices devices = 2;
+    repeated int64 cpu_ids = 3;
+    repeated ContainerMemory memory = 4;
+    repeated DynamicResource dynamic_resources = 5;
+}
+
+// ContainerMemory 包含分配给容器的内存和大页信息
+message ContainerMemory {
+    string memory_type = 1;
+    uint64 size = 2;
+    TopologyInfo topology = 3;
+}
+
+// Topology 描述资源的硬件拓扑结构
+message TopologyInfo {
+        repeated NUMANode nodes = 1;
+}
+
+// NUMA 代表的是 NUMA 节点
+message NUMANode {
+        int64 ID = 1;
+}
+
+// ContainerDevices 包含分配给容器的设备信息
+message ContainerDevices {
+    string resource_name = 1;
+    repeated string device_ids = 2;
+    TopologyInfo topology = 3;
+}
+
+// DynamicResource 包含通过 Dynamic Resource Allocation 分配到容器的设备信息
+message DynamicResource {
+    string class_name = 1;
+    string claim_name = 2;
+    string claim_namespace = 3;
+    repeated ClaimResource claim_resources = 4;
+}
+
+// ClaimResource 包含每个插件的资源信息
+message ClaimResource {
+    repeated CDIDevice cdi_devices = 1 [(gogoproto.customname) = &#34;CDIDevices&#34;];
+}
+
+// CDIDevice 指定 CDI 设备信息
+message CDIDevice {
+    // 完全合格的 CDI 设备名称
+    // 例如：vendor.com/gpu=gpudevice1
+    // 参阅 CDI 规范中的更多细节：
+    // https://github.com/container-orchestrated-devices/container-device-interface/blob/main/SPEC.md
+    string name = 1;
+}
+</code></pre><div class="alert alert-info" role=note><h4 class=alert-heading>说明：</h4><p><code>List</code> 端点中的 <code>ContainerResources</code> 中的 cpu_ids 对应于分配给某个容器的专属 CPU。
+如果要统计共享池中的 CPU，<code>List</code> 端点需要与 <code>GetAllocatableResources</code> 端点一起使用，如下所述：</p><ol><li>调用 <code>GetAllocatableResources</code> 获取所有可用的 CPU。</li><li>在系统中所有的 <code>ContainerResources</code> 上调用 <code>GetCpuIds</code>。</li><li>用 <code>GetAllocatableResources</code> 获取的 CPU 数减去 <code>GetCpuIds</code> 获取的 CPU 数。</li></ol></div><h3 id=grpc-endpoint-getallocatableresources><code>GetAllocatableResources</code> gRPC 端点<a class=td-heading-self-link href=#grpc-endpoint-getallocatableresources aria-label="Heading self-link"></a></h3><div class="feature-state-notice feature-stable"><span class=feature-state-name>特性状态：</span>
+<span class=feature-state-details><span class=feature-state-stage>GA</span> since Kubernetes v1.28</span></div><p>端点 <code>GetAllocatableResources</code> 提供工作节点上原始可用的资源信息。
+此端点所提供的信息比导出给 API 服务器的信息更丰富。</p><div class="alert alert-info" role=note><h4 class=alert-heading>说明：</h4><p><code>GetAllocatableResources</code> 应该仅被用于评估一个节点上的<a href=/zh-cn/docs/tasks/administer-cluster/reserve-compute-resources/#node-allocatable>可分配的</a>资源。
+如果目标是评估空闲/未分配的资源，此调用应该与 <code>List()</code> 端点一起使用。
+除非暴露给 kubelet 的底层资源发生变化，否则 <code>GetAllocatableResources</code> 得到的结果将保持不变。
+这种情况很少发生，但当发生时（例如：热插拔，设备健康状况改变），客户端应该调用 <code>GetAllocatableResources</code> 端点。</p><p>然而，调用 <code>GetAllocatableResources</code> 端点在 CPU、内存被更新的情况下是不够的，
+kubelet 需要重新启动以获取正确的资源容量和可分配的资源。</p></div><pre tabindex=0><code class=language-gRPC data-lang=gRPC>// AllocatableResourcesResponses 包含 kubelet 所了解到的所有设备的信息
+message AllocatableResourcesResponse {
+    repeated ContainerDevices devices = 1;
+    repeated int64 cpu_ids = 2;
+    repeated ContainerMemory memory = 3;
+}
+</code></pre><p><code>ContainerDevices</code> 会向外提供各个设备所隶属的 NUMA 单元这类拓扑信息。
+NUMA 单元通过一个整数 ID 来标识，其取值与设备插件所报告的一致。
+<a href=/zh-cn/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/>设备插件注册到 kubelet 时</a>
+会报告这类信息。</p><p>gRPC 服务通过 kubelet 根目录（通常为 <code>/var/lib/kubelet/pod-resources/kubelet.sock</code>）
+下的 Unix 套接字 <code>pod-resources/kubelet.sock</code> 提供。
+设备插件资源的监控代理程序可以部署为守护进程或者 DaemonSet。
+位于 kubelet 根目录（通常为 <code>/var/lib/kubelet/pod-resources</code>）下的标准
+<code>pod-resources</code> 目录需要特权访问权限。
+所以监控代理程序必须要在获得授权的安全的上下文中运行。
+如果设备监控代理以 DaemonSet 形式运行，必须要在插件的
+<a href=/docs/reference/generated/kubernetes-api/v1.37/#podspec-v1-core>PodSpec</a>
+中声明将 <code>pod-resources</code>
+目录以<a class=glossary-tooltip title='包含可被 Pod 中容器访问的数据的目录。' data-bs-toggle=tooltip data-bs-placement=top href=/zh-cn/docs/concepts/storage/volumes/ target=_blank aria-label=卷>卷</a>的形式被挂载到设备监控代理中。</p><div class="alert alert-info" role=note><h4 class=alert-heading>说明：</h4><p>在从 DaemonSet 或以容器形式部署在主机上的任何其他应用中访问
+<code>pod-resources/kubelet.sock</code> 时，
+如果将套接字作为卷挂载，最好的做法是挂载目录 <code>pod-resources</code>
+而不是 socket 文件本身。
+这样可以确保在 kubelet 重新启动后，容器将能够重新连接到此套接字。</p><p>在典型的 Linux 节点上，这意味着挂载 <code>/var/lib/kubelet/pod-resources/</code>，
+而不是 <code>/var/lib/kubelet/pod-resources/kubelet.sock</code>。</p><p>容器挂载是通过引用套接字或目录的 inode 进行管理的，具体取决于挂载的内容。
+当 kubelet 重新启动时，套接字会被删除并创建一个新的套接字，而目录则保持不变。
+因此，针对原始套接字的 inode 将变得无法使用，而到目录的 inode 将继续正常工作。</p></div><h3 id=grpc-endpoint-get><code>Get</code> gRPC 端点 <a class=td-heading-self-link href=#grpc-endpoint-get aria-label="Heading self-link"></a></h3><div class="feature-state-notice feature-beta"><span class=feature-state-name>特性状态：</span>
+<span class=feature-state-details><span class=feature-state-stage>Beta</span> since Kubernetes v1.34</span></div><p><code>Get</code> 端点提供了当前运行 Pod 的资源信息。它会暴露与 <code>List</code> 端点中所述类似的信息。
+<code>Get</code> 端点需要当前运行 Pod 的 <code>PodName</code> 和 <code>PodNamespace</code>。</p><pre tabindex=0><code class=language-gRPC data-lang=gRPC>// GetPodResourcesRequest 包含 Pod 相关信息
+message GetPodResourcesRequest {
+    string pod_name = 1;
+    string pod_namespace = 2;
+}
+</code></pre><p><code>Get</code> 端点可以提供与动态资源分配 API 所分配的动态资源相关的 Pod 信息。
+从 Kubernetes v1.34 开始，此特性已默认启用。</p><h2 id=device-plugin-integration-with-the-topology-manager>设备插件与拓扑管理器的集成 <a class=td-heading-self-link href=#device-plugin-integration-with-the-topology-manager aria-label="Heading self-link"></a></h2><div class="feature-state-notice feature-stable"><span class=feature-state-name>特性状态：</span>
+<span class=feature-state-details><span class=feature-state-stage>GA</span> since Kubernetes v1.27</span></div><p>拓扑管理器是 kubelet 的一个组件，它允许以拓扑对齐方式来调度资源。
+为了做到这一点，设备插件 API 进行了扩展来包括一个 <code>TopologyInfo</code> 结构体。</p><pre tabindex=0><code class=language-gRPC data-lang=gRPC>message TopologyInfo {
+    repeated NUMANode nodes = 1;
+}
+
+message NUMANode {
+    int64 ID = 1;
+}
+</code></pre><p>设备插件希望拓扑管理器可以将填充的 TopologyInfo 结构体作为设备注册的一部分以及设备 ID
+和设备的运行状况发送回去。然后设备管理器将使用此信息来咨询拓扑管理器并做出资源分配决策。</p><p><code>TopologyInfo</code> 支持将 <code>nodes</code> 字段设置为 <code>nil</code> 或一个 NUMA 节点的列表。
+这样就可以使设备插件通告跨越多个 NUMA 节点的设备。</p><p>将 <code>TopologyInfo</code> 设置为 <code>nil</code> 或为给定设备提供一个空的
+NUMA 节点列表表示设备插件没有该设备的 NUMA 亲和偏好。</p><p>下面是一个由设备插件为设备填充 <code>TopologyInfo</code> 结构体的示例：</p><pre tabindex=0><code>pluginapi.Device{ID: &#34;25102017&#34;, Health: pluginapi.Healthy, Topology:&amp;pluginapi.TopologyInfo{Nodes: []*pluginapi.NUMANode{&amp;pluginapi.NUMANode{ID: 0,},}}}
+</code></pre><h2 id=examples>设备插件示例<a class=td-heading-self-link href=#examples aria-label="Heading self-link"></a></h2><div class="alert alert-secondary callout third-party-content" role=note><strong>说明：</strong>&#8200;本部分链接到提供 Kubernetes 所需功能的第三方项目。Kubernetes 项目作者不负责这些项目。此页面遵循<a href=https://github.com/cncf/foundation/blob/main/policies-guidance/website-guidelines.md target=_blank>CNCF 网站指南</a>，按字母顺序列出项目。要将项目添加到此列表中，请在提交更改之前阅读<a href=/zh-cn/docs/contribute/style/content-guide/#third-party-content>内容指南</a>。</div><p>下面是一些设备插件实现的示例：</p><ul><li><a href=https://github.com/project-akri/akri>Akri</a>，它可以让你轻松公开异构叶子设备（例如 IP 摄像机和 USB 设备）。</li><li><a href=https://github.com/ROCm/k8s-device-plugin>AMD GPU 设备插件</a></li><li>适用于通用 Linux 设备和 USB 设备的<a href=https://github.com/squat/generic-device-plugin>通用设备插件</a></li><li>用于异构 AI 计算虚拟化中间件（例如 NVIDIA、Cambricon、Hygon、Iluvatar、MThreads、Ascend、Metax 设备）的
+<a href=https://github.com/Project-HAMi/HAMi>HAMi</a></li><li><a href=https://github.com/intel/intel-device-plugins-for-kubernetes>Intel 设备插件</a>支持
+Intel GPU、FPGA、QAT、VPU、SGX、DSA、DLB 和 IAA 设备</li><li><a href=https://github.com/kubevirt/kubernetes-device-plugins>KubeVirt 设备插件</a>用于硬件辅助的虚拟化</li><li><a href=https://github.com/NVIDIA/k8s-device-plugin>NVIDIA GPU 设备插件</a>NVIDIA 的官方设备插件，
+用于公布 NVIDIA GPU 和监控 GPU 健康状态。</li><li><a href=https://github.com/GoogleCloudPlatform/container-engine-accelerators/tree/master/cmd/nvidia_gpu>为 Container-Optimized OS 所提供的 NVIDIA GPU 设备插件</a></li><li><a href=https://github.com/hustcat/k8s-rdma-device-plugin>RDMA 设备插件</a></li><li><a href=https://github.com/collabora/k8s-socketcan>SocketCAN 设备插件</a></li><li><a href=https://github.com/vikaschoudhary16/sfc-device-plugin>Solarflare 设备插件</a></li><li><a href=https://github.com/intel/sriov-network-device-plugin>SR-IOV 网络设备插件</a></li><li><a href=https://github.com/Xilinx/FPGA_as_a_Service/tree/master/k8s-device-plugin>Xilinx FPGA 设备插件</a></li></ul><h2 id=接下来>接下来<a class=td-heading-self-link href=#%e6%8e%a5%e4%b8%8b%e6%9d%a5 aria-label="Heading self-link"></a></h2><ul><li>查看<a href=/zh-cn/docs/tasks/manage-gpus/scheduling-gpus/>调度 GPU 资源</a>来学习使用设备插件</li><li>查看在节点上如何<a href=/zh-cn/docs/tasks/administer-cluster/extended-resource-node/>公布扩展资源</a></li><li>学习<a href=/zh-cn/docs/tasks/administer-cluster/topology-manager/>拓扑管理器</a></li><li>阅读如何在 Kubernetes 中使用 <a href=/zh-cn/blog/2019/04/24/hardware-accelerated-ssl/tls-termination-in-ingress-controllers-using-kubernetes-device-plugins-and-runtimeclass/>TLS Ingress 的硬件加速</a></li><li>阅读更多关于<a href=/zh-cn/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#extended-resource>使用 DRA 分配扩展资源</a></li></ul></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col col-sm-3 text-xs-center order-1"><ul class="list-inline mb-0 footer-icons"><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=YouTube><a class=text-white target=_blank rel=noopener href=https://youtube.com/kubernetescommunity aria-label=YouTube><i class="fa-brands fa-youtube"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=论坛><a class=text-white target=_blank rel=noopener href=https://discuss.kubernetes.io aria-label=论坛><i class="fa-solid fa-envelope"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title="Server Fault"><a class=text-white target=_blank rel=noopener href=https://serverfault.com/questions/tagged/kubernetes aria-label="Server Fault"><i class="fa-brands fa-stack-overflow"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=LinkedIn><a class=text-white target=_blank rel=noopener href=https://www.linkedin.com/company/kubernetes/ aria-label=LinkedIn><i class="fa-brands fa-linkedin"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Bluesky><a class=text-white target=_blank rel=noopener href=https://bsky.app/profile/kubernetes.io aria-label=Bluesky><i class="fa-brands fa-bluesky"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title="X（前身为 Twitter）"><a class=text-white target=_blank rel=noopener href=https://x.com/kubernetesio aria-label="X（前身为 Twitter）"><i class="fa-brands fa-x-twitter"></i></a></li></ul></div><div class="col-5 col-sm-6 text-center order-2 footer-main"><p><span class=copyright-notice>&copy; 2026 The Kubernetes 作者 | 文档发布基于 <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a> 授权许可</span></p><p><span class=copyright-notice>&copy; 2026 Linux 基金会&reg;。保留所有权利。Linux 基金会已注册并使用商标。如需了解 Linux 基金会的商标列表，请访问<a href=https://www.linuxfoundation.org/trademark-usage class=light-text>商标使用页面</a></span></p><p><span class=certification-notice>ICP 许可： <a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></span></p></div><div class="col col-sm-3 text-end text-xs-center order-3"><ul class="list-inline mb-0 footer-icons"><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=贡献者网站><a class=text-white target=_blank rel=noopener href=https://k8s.dev/ aria-label=贡献者网站><i class="fa-solid fa-laptop-code"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/kubernetes/kubernetes aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Slack><a class=text-white target=_blank rel=noopener href=https://slack.k8s.io aria-label=Slack><i class="fa-brands fa-slack"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=事件日历><a class=text-white target=_blank rel=noopener href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io" aria-label=事件日历><i class="fa-solid fa-calendar-days"></i></a></li></ul></div></div></div></footer></div><script src=/js/main.js></script><script src=/js/tabpane-persist.js></script><script src=/js/theme-image-swap.js></script><script defer src=/js/detect-js.js></script></body></html>

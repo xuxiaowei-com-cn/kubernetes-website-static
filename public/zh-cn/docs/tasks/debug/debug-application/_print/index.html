@@ -1,0 +1,915 @@
+<!doctype html><html itemscope itemtype=http://schema.org/WebPage dir=ltr lang=zh-cn class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/zh-cn/docs/tasks/debug/debug-application/><meta name=robots content="noindex, nofollow"><link rel="shortcut icon" type=image/png href=/images/kubernetes.png><link rel=icon type=image/png sizes=64x64 href=/icons/favicon-64.png><link rel=icon type=image/png sizes=32x32 href=/icons/favicon-32.png><link rel=icon type=image/png sizes=16x16 href=/icons/favicon-16.png><link rel=apple-touch-icon-256x256 href=/icons/apple-touch-icon-256x256.png><link rel=apple-touch-icon-196x196 href=/icons/apple-touch-icon-196x196.png><link rel=apple-touch-icon-192x192 href=/icons/apple-touch-icon-192x192.png><link rel=apple-touch-icon-180x180 href=/icons/apple-touch-icon-180x180.png><link rel=apple-touch-icon-167x167 href=/icons/apple-touch-icon-167x167.png><link rel=apple-touch-icon-160x160 href=/icons/apple-touch-icon-160x160.png><link rel=apple-touch-icon-152x152 href=/icons/apple-touch-icon-152x152.png><link rel=apple-touch-icon-120x120 href=/icons/apple-touch-icon-120x120.png><link rel=apple-touch-icon-76x76 href=/icons/apple-touch-icon-76x76.png><link rel=icon type=image/png href=/icons/icon-128x128.png sizes=128x128><meta name=theme-color content="#326de6"><title>应用故障排除 | Kubernetes</title>
+<meta name=description content="调试常见的容器应用问题."><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/zh-cn/docs/tasks/debug/debug-application/"><meta property="og:site_name" content="Kubernetes"><meta property="og:title" content="应用故障排除"><meta property="og:description" content="调试常见的容器应用问题."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="website"><meta itemprop=name content="应用故障排除"><meta itemprop=description content="调试常见的容器应用问题."><meta itemprop=dateModified content="2026-09-25T21:27:26+08:00"><meta itemprop=wordCount content="8"><meta name=twitter:card content="summary"><meta name=twitter:title content="应用故障排除"><meta name=twitter:description content="调试常见的容器应用问题."><link href=/scss/main.css rel=stylesheet><script src=/js/jquery-3.7.1.min.js integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin=anonymous></script><meta property="og:image" content="/images/kubernetes-open-graph.png"><link rel=manifest href=/manifest.webmanifest><link rel=alternate hreflang=en href=https://kubernetes.xuxiaowei.com.cn/docs/tasks/debug/debug-application/><link rel=alternate hreflang=ja href=https://kubernetes.xuxiaowei.com.cn/ja/docs/tasks/debug/debug-application/><link rel=alternate hreflang=ko href=https://kubernetes.xuxiaowei.com.cn/ko/docs/tasks/debug/debug-application/><link rel=alternate hreflang=pt-br href=https://kubernetes.xuxiaowei.com.cn/pt-br/docs/tasks/debug/debug-application/><link rel=alternate hreflang=es href=https://kubernetes.xuxiaowei.com.cn/es/docs/tasks/debug/debug-application/><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png","potentialAction":{"@type":"SearchAction","target":"https://kubernetes.xuxiaowei.com.cn/search/?q={search_term_string}","query-input":"required name=search_term_string"}}</script><meta name=theme-color content="#326ce5"><script defer src=/js/banner-dismiss.js></script><script src=/js/legacy-script.js></script><script type=text/javascript>(function(e,t,n,s,o,i,a){e[n]=e[n]||function(){(e[n].q=e[n].q||[]).push(arguments)},i=t.createElement(s),i.async=1,i.src="https://www.clarity.ms/tag/"+o,a=t.getElementsByTagName(s)[0],a.parentNode.insertBefore(i,a)})(window,document,"clarity","script","yn9u1cds4q")</script></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand flex-md-column flex-xl-row td-navbar" data-bs-theme=dark data-auto-burger=primary><a class=navbar-brand href=/zh-cn/><span class="navbar-brand__logo navbar-logo"><svg role="img" viewBox="-6.09 -6.09 446.94 115.94"><defs><style>.cls-1{fill:#fff}.cls-2{fill:#326ce5}</style></defs><g id="its-pronounced"><g id="kyoob-cuttle"><path id="kkkkkkk" d="M139.583 53.815c.823-.926 1.646-1.852 2.572-2.778q1.29-1.436 2.572-2.88c.823-1.03 1.646-1.956 2.367-2.78s1.44-1.645 1.954-2.262h9.98c-1.955 2.263-3.91 4.527-5.864 6.584q-2.778 3.087-6.173 6.482a41.554 41.554.0 013.498 3.704c1.234 1.44 2.366 2.88 3.498 4.32a43.93 43.93.0 013.086 4.528c.926 1.543 1.75 2.88 2.367 4.115h-9.67c-.619-1.03-1.339-2.058-2.059-3.19a37.46 37.46.0 00-2.47-3.6 29.584 29.584.0 00-2.777-3.498 17.678 17.678.0 00-2.778-2.778v12.963h-8.436v-42.49l8.436-1.338v24.898" class="cls-1"/><path id="uuuuuuu" d="M188.761 71.819a40.037 40.037.0 01-5.555 1.132 39.77 39.77.0 01-7.1.514 16.577 16.577.0 01-6.378-1.028 9.45 9.45.0 01-5.967-7.202 24.194 24.194.0 01-.618-5.556V43.115h8.437V58.65c0 2.675.31 4.63 1.03 5.865s2.056 1.852 4.011 1.852a13.117 13.117.0 001.955-.103c.72-.103 1.235-.103 1.852-.206V43.115h8.436l-.103 28.704" class="cls-1"/><path id="bbbbbbb" d="M215.82 57.724c0-5.452-1.955-8.127-5.968-8.127a10.99 10.99.0 00-2.572.308 7.775 7.775.0 00-2.057.823v15.33c.411.103.926.103 1.543.206.617.0 1.337.103 2.058.103A6.37 6.37.0 00214.071 64a10.55 10.55.0 001.75-6.276m8.538.206a18.63 18.63.0 01-1.029 6.482 13.242 13.242.0 01-2.983 4.938 15.823 15.823.0 01-4.836 3.19 18.829 18.829.0 01-6.585 1.028c-1.028.0-2.057-.103-3.189-.205s-2.16-.206-3.292-.31c-1.029-.102-2.058-.308-3.087-.514a13.002 13.002.0 01-2.572-.72V30.254l8.437-1.337v14.815a14.37 14.37.0 012.983-.926 17.028 17.028.0 013.293-.308 13.036 13.036.0 015.555 1.13 11.142 11.142.0 014.116 3.088 12.408 12.408.0 012.47 4.938 29.216 29.216.0 01.72 6.276" class="cls-1"/><path id="eeeeeee0" d="M229.401 58.239a17.557 17.557.0 011.234-6.893 15.744 15.744.0 013.19-4.94 11.991 11.991.0 014.526-2.982 13.75 13.75.0 015.35-1.03 13.168 13.168.0 019.98 3.91c2.47 2.572 3.703 6.38 3.703 11.317a9.413 9.413.0 01-.102 1.647c0 .514-.103 1.028-.103 1.543h-19.138a5.64 5.64.0 002.47 4.115 9.79 9.79.0 005.761 1.543 21.806 21.806.0 004.527-.411 18.455 18.455.0 003.704-1.03l1.131 6.894c-.41.206-1.028.412-1.85.72a10.37 10.37.0 01-2.574.515 23.221 23.221.0 01-2.983.41c-1.029.104-2.16.207-3.19.207a18.09 18.09.0 01-6.996-1.234 15.148 15.148.0 01-4.938-3.19 14.85 14.85.0 01-2.88-4.938 24.165 24.165.0 01-.824-6.173m19.857-3.292a6.652 6.652.0 00-.412-2.058 6.254 6.254.0 00-.926-1.852 4.915 4.915.0 00-4.115-1.852 6.216 6.216.0 00-2.47.514 4.092 4.092.0 00-1.645 1.235 5.395 5.395.0 00-1.03 1.852 15.044 15.044.0 00-.514 2.058h11.112" class="cls-1"/><path id="rrrrrrr" d="M281.768 50.523a15.46 15.46.0 00-2.675-.515 17.027 17.027.0 00-3.292-.31 18.138 18.138.0 00-1.955.207 16.165 16.165.0 00-1.646.309V72.95h-8.437V44.658a43.765 43.765.0 015.35-1.44 28.942 28.942.0 016.893-.72 10.015 10.015.0 011.646.102 14.058 14.058.0 011.955.206c.618.103 1.235.206 1.955.309.617.103 1.235.309 1.646.41l-1.44 6.998" class="cls-1"/><path id="nnnnnnn" d="M287.735 44.144a49.746 49.746.0 0112.655-1.646 15.693 15.693.0 016.276 1.028 8.813 8.813.0 014.012 2.778 12.018 12.018.0 012.058 4.32 22.95 22.95.0 01.617 5.557v16.77h-8.437V57.21c0-2.675-.308-4.63-1.028-5.762s-2.058-1.646-4.013-1.646a13.116 13.116.0 00-1.955.103 10.193 10.193.0 00-1.85.206v22.943h-8.335v-28.91" class="cls-1"/><path id="eeeeeee1" d="M319.63 58.239a17.556 17.556.0 011.233-6.893 15.745 15.745.0 013.19-4.94 11.99 11.99.0 014.527-2.982 13.75 13.75.0 015.35-1.03 13.168 13.168.0 019.98 3.91c2.468 2.572 3.703 6.38 3.703 11.317a9.412 9.412.0 01-.103 1.647c0 .514-.103 1.028-.103 1.543h-19.136a5.64 5.64.0 002.47 4.115 9.789 9.789.0 005.76 1.543 21.805 21.805.0 004.528-.411 18.455 18.455.0 003.703-1.03l1.132 6.894c-.41.206-1.029.412-1.852.72a10.37 10.37.0 01-2.572.515 23.226 23.226.0 01-2.984.41c-1.028.104-2.16.207-3.189.207a18.09 18.09.0 01-6.996-1.234 15.148 15.148.0 01-4.938-3.19 14.85 14.85.0 01-2.88-4.938 24.16 24.16.0 01-.824-6.173m19.856-3.292a6.653 6.653.0 00-.41-2.058 6.255 6.255.0 00-.927-1.852 4.915 4.915.0 00-4.116-1.852 6.216 6.216.0 00-2.469.514 4.092 4.092.0 00-1.646 1.235 5.396 5.396.0 00-1.029 1.852 15.037 15.037.0 00-.514 2.058h11.111" class="cls-1"/><path id="ttttttt" d="M353.89 35.707l8.435-1.337v8.745h10.083v6.995h-10.083v10.494a8.273 8.273.0 00.926 4.218c.618 1.03 1.955 1.544 3.807 1.544a25.227 25.227.0 002.778-.206 16.728 16.728.0 002.675-.72l1.234 6.584a16.386 16.386.0 01-3.395 1.029 19.779 19.779.0 01-4.63.41 15.723 15.723.0 01-5.76-.924 9.522 9.522.0 01-3.602-2.573 10.208 10.208.0 01-1.955-4.115 26.665 26.665.0 01-.514-5.247V35.707" class="cls-1"/><path id="eeeeeee2" d="M376.73 58.239a17.556 17.556.0 011.234-6.893 15.744 15.744.0 013.19-4.94 11.99 11.99.0 014.526-2.982 13.75 13.75.0 015.35-1.03 13.168 13.168.0 019.98 3.91c2.47 2.572 3.703 6.38 3.703 11.317a9.413 9.413.0 01-.103 1.647c0 .514-.103 1.028-.103 1.543h-19.136a5.64 5.64.0 002.47 4.115 9.789 9.789.0 005.76 1.543 21.805 21.805.0 004.528-.411 18.455 18.455.0 003.703-1.03l1.132 6.894c-.41.206-1.029.412-1.852.72a10.371 10.371.0 01-2.572.515 23.226 23.226.0 01-2.983.41c-1.03.104-2.16.207-3.19.207a18.09 18.09.0 01-6.996-1.234 15.147 15.147.0 01-4.938-3.19 14.85 14.85.0 01-2.88-4.938 20.343 20.343.0 01-.824-6.173m19.754-3.292a6.652 6.652.0 00-.412-2.058 6.254 6.254.0 00-.926-1.852 4.915 4.915.0 00-4.115-1.852 6.216 6.216.0 00-2.47.514 4.092 4.092.0 00-1.646 1.235 5.395 5.395.0 00-1.028 1.852 15.037 15.037.0 00-.515 2.058h11.112" class="cls-1"/><path id="sssssss" d="M419.631 66.778a8.454 8.454.0 003.293-.411 1.802 1.802.0 00.925-1.75c0-.72-.41-1.234-1.234-1.748a19.516 19.516.0 00-3.807-1.75c-1.337-.514-2.572-1.028-3.6-1.543a10.286 10.286.0 01-2.676-1.852 8.046 8.046.0 01-1.749-2.675 9.968 9.968.0 01-.617-3.703 7.828 7.828.0 013.086-6.585c2.058-1.646 4.94-2.47 8.54-2.47a29.267 29.267.0 015.247.515 19.02 19.02.0 013.91 1.03l-1.44 6.584a122.23 122.23.0 00-3.19-.926 14.394 14.394.0 00-3.807-.412c-2.675.0-3.91.72-3.91 2.16a3.004 3.004.0 00.206.927 1.728 1.728.0 00.72.823c.31.206.823.514 1.338.823.617.308 1.337.514 2.263.926a33.94 33.94.0 014.63 2.057 7.682 7.682.0 012.778 2.16 5.374 5.374.0 011.44 2.573 10.677 10.677.0 01.412 3.292 7.669 7.669.0 01-3.293 6.688c-2.16 1.543-5.247 2.263-9.362 2.263a23.783 23.783.0 01-6.584-.72 18.78 18.78.0 01-3.6-1.132l1.44-6.893a31.442 31.442.0 004.423 1.337 18.932 18.932.0 004.218.412" class="cls-1"/></g></g><path d="M4.233 60.98h4.881v3.877h-4.88z" class="cls-1"/><path d="M62.304 58.789a1.65 1.65.0 00-.393-.03 1.694 1.694.0 00-.655.17 1.712 1.712.0 00-.829 2.218l-.012.017 3.92 9.47a20.008 20.008.0 008.087-10.16l-10.1-1.705zm-15.717 1.34a1.71 1.71.0 00-1.64-1.33 1.68 1.68.0 00-.337.03l-.017-.02-10.013 1.7a20.084 20.084.0 008.062 10.087l3.88-9.376-.03-.037a1.693 1.693.0 00.095-1.053zm8.386 3.678a1.709 1.709.0 00-3.014.004h-.008l-4.924 8.904a20.057 20.057.0 0010.946.563q1.01-.23 1.973-.551l-4.936-8.92zm15.588-20.682-7.576 6.78.004.022a1.712 1.712.0 00.671 2.939l.01.04 9.813 2.828a20.352 20.352.0 00-2.922-12.61zm-14.075.759a1.712 1.712.0 002.718 1.305l.03.013 8.29-5.878A20.155 20.155.0 0055.901 33.72l.576 10.16zm-8.779 1.343a1.71 1.71.0 002.714-1.31l.042-.02.576-10.176a20.533 20.533.0 00-2.069.356 19.979 19.979.0 00-9.623 5.244l8.344 5.915zm-4.448 7.689a1.71 1.71.0 00.672-2.94l.008-.04-7.618-6.814a19.973 19.973.0 00-2.835 12.645l9.765-2.818zm7.4 2.993 2.81 1.35 2.801-1.347.696-3.025-1.939-2.425h-3.12l-1.946 2.42z" class="cls-2"/><path d="M99.925 61.869l-8.008-34.783a6.252 6.252.0 00-3.352-4.17L56.151 7.44a6.246 6.246.0 00-5.38.0L18.364 22.924a6.25 6.25.0 00-3.353 4.17L7.016 61.876a6.12 6.12.0 00-.002 2.67 6.206 6.206.0 00.226.79 6.022 6.022.0 00.617 1.253c.11.168.226.33.352.489l22.432 27.89c.098.12.206.232.313.345a6.17 6.17.0 001.183.98 6.4 6.4.0 001.773.77 6.112 6.112.0 001.576.218h.35l35.623-.008a5.976 5.976.0 00.648-.038 6.19 6.19.0 00.914-.174 6.372 6.372.0 00.635-.203q.244-.09.48-.2a6.407 6.407.0 00.68-.377 6.115 6.115.0 001.488-1.317l.684-.85 21.74-27.045a6.06 6.06.0 00.97-1.74 6.283 6.283.0 00.23-.792 6.105 6.105.0 00-.003-2.67zm-33.62 13.528a6.67 6.67.0 00.322.783 1.523 1.523.0 00-.15 1.144 18.097 18.097.0 001.72 3.08 16.123 16.123.0 011.04 1.546c.078.145.18.369.254.522a1.949 1.949.0 11-3.507 1.658c-.074-.152-.177-.354-.24-.497a16.21 16.21.0 01-.563-1.778 18.067 18.067.0 00-1.33-3.262 1.533 1.533.0 00-.99-.601c-.063-.107-.293-.528-.416-.746A25.104 25.104.0 0144.543 77.2l-.439.796a1.576 1.576.0 00-.836.407 13.567 13.567.0 00-1.502 3.485 16.04 16.04.0 01-.56 1.778c-.062.142-.166.342-.24.493v.004l-.003.004a1.948 1.948.0 11-3.502-1.662c.073-.154.171-.377.248-.522a16.168 16.168.0 011.04-1.55 18.95 18.95.0 001.756-3.156 1.925 1.925.0 00-.173-1.097l.353-.846A25.244 25.244.0 0129.498 61.367l-.845.144a2.151 2.151.0 00-1.116-.393 18.167 18.167.0 00-3.38.995 16.355 16.355.0 01-1.742.667c-.14.038-.342.077-.502.112-.013.004-.024.01-.037.013l-.03.003a1.947 1.947.0 11-.86-3.78l.027-.007.017-.005c.162-.038.37-.092.518-.12a16.212 16.212.0 011.861-.15 18.105 18.105.0 003.477-.571 2.682 2.682.0 00.834-.841l.812-.237a25.102 25.102.0 013.96-17.5l-.623-.554a2.155 2.155.0 00-.39-1.12 18.094 18.094.0 00-2.885-2.027 16.202 16.202.0 01-1.608-.94c-.118-.088-.274-.22-.402-.324l-.029-.02a2.056 2.056.0 01-.477-2.86 1.869 1.869.0 011.546-.684 2.312 2.312.0 011.352.51c.132.104.313.242.43.343a16.205 16.205.0 011.278 1.356A18.103 18.103.0 0033.3 35.74a1.532 1.532.0 001.152.112c.111.082.486.35.7.497a24.953 24.953.0 0112.675-7.241 25.302 25.302.0 013.507-.54l.046-.82a2.115 2.115.0 00.63-1.003 18.142 18.142.0 00-.216-3.518 16.306 16.306.0 01-.265-1.845c-.005-.141.003-.336.005-.497.0-.018-.005-.036-.005-.054a1.95 1.95.0 113.88-.002c0 .17.01.396.004.552a16.14 16.14.0 01-.266 1.844 18.169 18.169.0 00-.22 3.519 1.537 1.537.0 00.634.97c.007.14.03.608.047.866a25.422 25.422.0 0116.102 7.78l.738-.527a2.156 2.156.0 001.177-.128 18.17 18.17.0 002.615-2.366 16.095 16.095.0 011.281-1.356c.12-.102.3-.24.43-.343a1.95 1.95.0 112.417 3.033c-.13.105-.302.252-.427.345a16.133 16.133.0 01-1.612.94 18.153 18.153.0 00-2.885 2.027 1.534 1.534.0 00-.364 1.099c-.108.099-.487.435-.688.617a25.205 25.205.0 014.041 17.458l.783.228a2.181 2.181.0 00.837.842 18.14 18.14.0 003.478.572 16.384 16.384.0 011.86.149c.163.03.4.095.565.133a1.947 1.947.0 11-.863 3.78l-.028-.004c-.013-.003-.025-.01-.038-.013-.16-.035-.36-.07-.5-.107a16.154 16.154.0 01-1.74-.672 18.146 18.146.0 00-3.385-.995 1.534 1.534.0 00-1.086.403q-.413-.08-.829-.145A25.243 25.243.0 0166.305 75.397z" class="cls-2"/><path d="M104.153 62.76l-8.736-37.947a6.82 6.82.0 00-3.658-4.55L56.397 3.38a6.814 6.814.0 00-5.87.0L15.168 20.273a6.82 6.82.0 00-3.659 4.548L2.79 62.77a6.742 6.742.0 00.916 5.14 6.526 6.526.0 00.385.535l24.474 30.43a6.885 6.885.0 005.285 2.522l39.247-.01a6.888 6.888.0 005.286-2.518l24.465-30.433a6.766 6.766.0 001.306-5.675zm-4.227 1.778a6.285 6.285.0 01-.229.792 6.06 6.06.0 01-.97 1.74l-21.74 27.044-.683.85a6.115 6.115.0 01-1.489 1.318 6.41 6.41.0 01-.678.378q-.236.109-.48.198a6.373 6.373.0 01-.636.204 6.191 6.191.0 01-.914.174 5.973 5.973.0 01-.648.038l-35.624.008h-.349a6.113 6.113.0 01-1.576-.217 6.4 6.4.0 01-1.772-.771 6.17 6.17.0 01-1.184-.98c-.107-.113-.215-.224-.313-.345L8.21 67.079q-.188-.236-.352-.49a6.022 6.022.0 01-.617-1.253 6.207 6.207.0 01-.226-.79 6.12 6.12.0 01.002-2.67l7.995-34.783a6.25 6.25.0 013.353-4.17L50.772 7.442a6.246 6.246.0 015.38.0l32.413 15.476a6.252 6.252.0 013.352 4.17l8.008 34.783a6.105 6.105.0 01.001 2.669z" class="cls-1"/><path d="M85.955 59.083c-.166-.038-.402-.103-.564-.133a16.382 16.382.0 00-1.86-.15 18.14 18.14.0 01-3.479-.571 2.18 2.18.0 01-.837-.842l-.783-.228a25.205 25.205.0 00-4.04-17.458c.2-.182.58-.518.687-.617a1.534 1.534.0 01.364-1.1 18.154 18.154.0 012.885-2.026 16.127 16.127.0 001.612-.94c.125-.093.296-.24.427-.345a1.95 1.95.0 10-2.416-3.033c-.132.104-.312.24-.43.343a16.09 16.09.0 00-1.282 1.356 18.17 18.17.0 01-2.615 2.366 2.156 2.156.0 01-1.177.128l-.738.527a25.422 25.422.0 00-16.102-7.78c-.018-.258-.04-.725-.047-.866a1.537 1.537.0 01-.633-.97 18.172 18.172.0 01.22-3.52 16.137 16.137.0 00.264-1.843c.006-.156-.003-.383-.003-.552a1.95 1.95.0 10-3.88.002c0 .018.004.036.005.054-.002.16-.01.356-.005.497a16.308 16.308.0 00.265 1.845 18.143 18.143.0 01.216 3.518 2.115 2.115.0 01-.63 1.003l-.046.82a25.302 25.302.0 00-3.507.54 24.953 24.953.0 00-12.674 7.24q-.354-.243-.7-.496a1.532 1.532.0 01-1.153-.112 18.1 18.1.0 01-2.615-2.363 16.206 16.206.0 00-1.277-1.356c-.118-.101-.299-.24-.43-.344a2.312 2.312.0 00-1.353-.51 1.869 1.869.0 00-1.546.684 2.056 2.056.0 00.477 2.86l.03.02c.127.105.283.238.401.324a16.202 16.202.0 001.608.94 18.094 18.094.0 012.885 2.029 2.155 2.155.0 01.39 1.119l.621.555a25.102 25.102.0 00-3.958 17.5l-.812.236a2.682 2.682.0 01-.834.84 18.106 18.106.0 01-3.477.573 16.212 16.212.0 00-1.86.15c-.15.027-.357.08-.519.12l-.017.004-.028.008a1.947 1.947.0 10.862 3.78l.03-.004c.012-.003.023-.01.036-.012.16-.036.361-.075.502-.113a16.358 16.358.0 001.74-.667 18.167 18.167.0 013.382-.995 2.151 2.151.0 011.115.394l.846-.145a25.244 25.244.0 0011.187 13.967l-.353.846a1.925 1.925.0 01.173 1.097 18.949 18.949.0 01-1.756 3.155 16.173 16.173.0 00-1.04 1.55c-.077.146-.175.37-.249.523a1.948 1.948.0 103.503 1.662l.003-.004v-.004c.074-.152.178-.351.24-.493a16.04 16.04.0 00.56-1.778 13.567 13.567.0 011.502-3.485 1.576 1.576.0 01.836-.408l.44-.795a25.104 25.104.0 0017.901.045c.123.22.353.64.414.746a1.533 1.533.0 01.99.602 18.067 18.067.0 011.332 3.262 16.219 16.219.0 00.563 1.778c.063.143.166.345.24.497a1.949 1.949.0 103.507-1.658c-.074-.153-.176-.377-.253-.522a16.121 16.121.0 00-1.04-1.546 18.095 18.095.0 01-1.72-3.08 1.523 1.523.0 01.15-1.144 6.671 6.671.0 01-.324-.783A25.243 25.243.0 0077.486 61.33c.251.04.688.116.83.145a1.534 1.534.0 011.085-.403 18.144 18.144.0 013.383.995 16.149 16.149.0 001.741.672c.14.037.34.072.501.107.013.004.025.01.038.013l.028.004a1.947 1.947.0 10.863-3.78zM67.523 39.325l-8.29 5.877-.029-.013a1.711 1.711.0 01-2.718-1.305l-.009-.004-.576-10.16a20.155 20.155.0 0111.622 5.605zM51.906 50.46h3.12l1.94 2.425-.696 3.025-2.802 1.348-2.81-1.351-.697-3.026zM48.97 34.075a20.535 20.535.0 012.07-.356l-.577 10.175-.042.02a1.71 1.71.0 01-2.714 1.31l-.016.01-8.344-5.916a19.98 19.98.0 019.623-5.243zm-12.649 9.047 7.618 6.813-.008.042a1.71 1.71.0 01-.672 2.939l-.008.033-9.765 2.818a19.973 19.973.0 012.835-12.645zm10.2 18.1-3.88 9.375a20.084 20.084.0 01-8.06-10.088l10.012-1.7.017.022a1.68 1.68.0 01.336-.03 1.71 1.71.0 011.546 2.383zm11.452 12.057a20.057 20.057.0 01-10.946-.563l4.924-8.904h.008a1.712 1.712.0 013.014-.003h.037l4.936 8.919q-.96.32-1.973.55zm6.362-2.644-3.92-9.471.012-.017a1.712 1.712.0 01.83-2.217 1.694 1.694.0 01.654-.17 1.65 1.65.0 01.393.029l.017-.021 10.101 1.707a20.008 20.008.0 01-8.087 10.16zm9.148-14.901-9.814-2.827-.009-.041a1.712 1.712.0 01-.67-2.94l-.005-.02 7.576-6.78a20.352 20.352.0 012.922 12.608z" class="cls-1"/></svg></span><span class=navbar-brand__name>Kubernetes</span></a><div class="td-navbar-nav-scroll d-none d-md-block ms-xl-auto" id=main_navbar><ul class="navbar-nav mt-lg-0"><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/zh-cn/docs/home/><span>文档</span></a></li><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/zh-cn/blog/><span>博客</span></a></li><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/zh-cn/training/><span>培训</span></a></li><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/zh-cn/partners/><span>合作伙伴</span></a></li><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/zh-cn/community/><span>社区</span></a></li><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/zh-cn/careers/><span>职业</span></a></li><li class="nav-item dropdown me-4 d-none d-lg-block"><div class=dropdown><a class="nav-link dropdown-toggle" href=# role=button data-bs-toggle=dropdown aria-haspopup=true aria-expanded=false>版本列表</a><ul class=dropdown-menu><li><a class=dropdown-item href=/zh-cn/releases>发布信息</a></li><li><a class=dropdown-item href=https://xuxiaowei.io/t/1320>Kubernetes 文档说明</a></li><li><a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn>v1.38</a></li><li><a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn>v1.37</a></li><li><a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn>v1.36</a></li><li><a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn>v1.35</a></li><li><a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn>v1.34</a></li><li><a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn>v1.33</a></li><li><a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn>v1.32</a></li><li><a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn>v1.31</a></li><li><a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn>v1.30</a></li><li><a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn>v1.29</a></li><li><a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn>v1.28</a></li><li><a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn>v1.27</a></li><li><a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn>v1.26</a></li><li><a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn>v1.25</a></li><li><a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn>v1.24</a></li><li><a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn>v1.23</a></li><li><a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn>v1.22</a></li><li><a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn>v1.21</a></li><li><a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn>v1.20</a></li></ul></div></li><li class="nav-item dropdown me-xl-4 d-none d-lg-block"><div class=dropdown><a class="nav-link dropdown-toggle" href=# role=button data-bs-toggle=dropdown aria-haspopup=true aria-expanded=false>中文 (Chinese)</a><ul class="dropdown-menu dropdown-menu-end"><li><a class=dropdown-item href=/docs/tasks/debug/debug-application/>English</a></li><li><a class=dropdown-item href=/ja/docs/tasks/debug/debug-application/>日本語 (Japanese)</a></li><li><a class=dropdown-item href=/ko/docs/tasks/debug/debug-application/>한국어 (Korean)</a></li><li><a class=dropdown-item href=/pt-br/docs/tasks/debug/debug-application/>Português (Portuguese)</a></li><li><a class=dropdown-item href=/es/docs/tasks/debug/debug-application/>Español (Spanish)</a></li><li><span class="dropdown-item text-muted" title="This page is not available in বাংলা (Bengali)">বাংলা (Bengali)
+<a href=/bn/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Français (French)">Français (French)
+<a href=/fr/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Deutsch (German)">Deutsch (German)
+<a href=/de/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in हिन्दी (Hindi)">हिन्दी (Hindi)
+<a href=/hi/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Bahasa Indonesia (Indonesian)">Bahasa Indonesia (Indonesian)
+<a href=/id/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Italiano (Italian)">Italiano (Italian)
+<a href=/it/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in فارسی (Persian)">فارسی (Persian)
+<a href=/fa/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Polski (Polish)">Polski (Polish)
+<a href=/pl/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Русский (Russian)">Русский (Russian)
+<a href=/ru/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Українська (Ukrainian)">Українська (Ukrainian)
+<a href=/uk/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Tiếng Việt (Vietnamese)">Tiếng Việt (Vietnamese)
+<a href=/vi/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in العربية (Arabic)">العربية (Arabic)
+<a href=/ar/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li></ul></div></li><li class="td-light-dark-menu nav-item dropdown"><svg class="d-none"><symbol id="check2" viewBox="0 0 16 16"><path d="M13.854 3.646a.5.5.0 010 .708l-7 7a.5.5.0 01-.708.0l-3.5-3.5a.5.5.0 11.708-.708L6.5 10.293l6.646-6.647a.5.5.0 01.708.0z"/></symbol><symbol id="circle-half" viewBox="0 0 16 16"><path d="M8 15A7 7 0 108 1v14zm0 1A8 8 0 118 0a8 8 0 010 16z"/></symbol><symbol id="moon-stars-fill" viewBox="0 0 16 16"><path d="M6 .278a.768.768.0 01.08.858 7.208 7.208.0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527.0 1.04-.055 1.533-.16a.787.787.0 01.81.316.733.733.0 01-.031.893A8.349 8.349.0 018.344 16C3.734 16 0 12.286.0 7.71.0 4.266 2.114 1.312 5.124.06A.752.752.0 016 .278z"/><path d="M10.794 3.148a.217.217.0 01.412.0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217.0 010 .412l-1.162.387A1.734 1.734.0 0011.593 7.69l-.387 1.162a.217.217.0 01-.412.0l-.387-1.162A1.734 1.734.0 009.31 6.593l-1.162-.387a.217.217.0 010-.412l1.162-.387a1.734 1.734.0 001.097-1.097l.387-1.162zM13.863.099a.145.145.0 01.274.0l.258.774c.115.346.386.617.732.732l.774.258a.145.145.0 010 .274l-.774.258a1.156 1.156.0 00-.732.732l-.258.774a.145.145.0 01-.274.0l-.258-.774a1.156 1.156.0 00-.732-.732l-.774-.258a.145.145.0 010-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/></symbol><symbol id="sun-fill" viewBox="0 0 16 16"><path d="M8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 0zm0 13a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 13zm8-5a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2a.5.5.0 01.5.5zM3 8a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2A.5.5.0 013 8zm10.657-5.657a.5.5.0 010 .707l-1.414 1.415a.5.5.0 11-.707-.708l1.414-1.414a.5.5.0 01.707.0zm-9.193 9.193a.5.5.0 010 .707L3.05 13.657a.5.5.0 01-.707-.707l1.414-1.414a.5.5.0 01.707.0zm9.193 2.121a.5.5.0 01-.707.0l-1.414-1.414a.5.5.0 01.707-.707l1.414 1.414a.5.5.0 010 .707zM4.464 4.465a.5.5.0 01-.707.0L2.343 3.05a.5.5.0 11.707-.707l1.414 1.414a.5.5.0 010 .708z"/></symbol></svg>
+<button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center" id=bd-theme type=button aria-expanded=false data-bs-toggle=dropdown data-bs-display=static aria-label="Toggle theme (auto)"><svg class="bi my-1 theme-icon-active"><use href="#circle-half"/></svg></button><ul class="dropdown-menu dropdown-menu-end" aria-labelledby=bd-theme-text><li><button type=button class="dropdown-item d-flex align-items-center" data-bs-theme-value=light aria-pressed=false>
+<svg class="bi me-2 opacity-50"><use href="#sun-fill"/></svg>
+Light<svg class="bi ms-auto d-none"><use href="#check2"/></svg></button></li><li><button type=button class="dropdown-item d-flex align-items-center" data-bs-theme-value=dark aria-pressed=false>
+<svg class="bi me-2 opacity-50"><use href="#moon-stars-fill"/></svg>
+Dark<svg class="bi ms-auto d-none"><use href="#check2"/></svg></button></li><li><button type=button class="dropdown-item d-flex align-items-center active" data-bs-theme-value=auto aria-pressed=true>
+<svg class="bi me-2 opacity-50"><use href="#circle-half"/></svg>
+Auto<svg class="bi ms-auto d-none"><use href="#check2"/></svg></button></li></ul></li></ul></div><div class="navbar-nav d-none k8s-1500-block"><div class=td-search><div class=td-search__icon></div><input type=search class="td-search__input form-control dark-theme-focus td-search-input" placeholder=搜索 aria-label=搜索 autocomplete=off data-search-page=/zh-cn/search/></div></div><button id=hamburger class="btn fas fa-bars" onclick=kub.toggleMenu() data-auto-burger-exclude></button></nav></header><div class="container-fluid td-outer"><div class=td-main><div class="row flex-xl-nowrap"><main class="col-12 col-md-9 col-xl-8 ps-md-5" role=main><div class=td-content><div class="pageinfo pageinfo-primary d-print-none"><p>这是本节的多页打印视图。
+<a href=# onclick="return print(),!1">点击此处打印</a>.</p><p><a href=/zh-cn/docs/tasks/debug/debug-application/>返回本页常规视图</a>.</p></div><h1 class=title>应用故障排除</h1><div class=lead>调试常见的容器应用问题.</div><ul><li>1: <a href=#pg-abb72792fa997869a6d241ca28ea225e>调试 Pod</a></li><li>2: <a href=#pg-68c4fd0542b7d39f8d36435ef83bd57b>调试 Service</a></li><li>3: <a href=#pg-089001d4003f033e21602adcb11cd277>调试 StatefulSet</a></li><li>4: <a href=#pg-655b47c523b6f1b52d25e520625abccb>确定 Pod 失败的原因</a></li><li>5: <a href=#pg-43445f3208669d4078e87dbdbeed8473>调试 Init 容器</a></li><li>6: <a href=#pg-132acc7efbd72bd677945eda3b6c6d38>调试运行中的 Pod</a></li><li>7: <a href=#pg-09530217eead8a801ead3ef165c2f591>获取正在运行容器的 Shell</a></li></ul><div class=content><p>该文档包含一组用于解决容器化应用程序问题的资源。
+它涵盖了诸如 Kubernetes 资源（如 Pod、Service 或 StatefulSets）的常见问题、
+关于理解容器终止消息的建议以及调试正在运行的容器的方法。</p></div></div><div class=td-content style=page-break-before:always><h1 id=pg-abb72792fa997869a6d241ca28ea225e>1 - 调试 Pod</h1><p>本指南帮助用户调试那些部署到 Kubernetes 上后没有正常运行的应用。
+本指南 <strong>并非</strong> 指导用户如何调试集群。
+如果想调试集群的话，请参阅<a href=/zh-cn/docs/tasks/debug/debug-cluster>这里</a>。</p><h2 id=diagnosing-the-problem>诊断问题 <a class=td-heading-self-link href=#diagnosing-the-problem aria-label="Heading self-link"></a></h2><p>故障排查的第一步是先给问题分类。问题是什么？是关于 Pod、Replication Controller 还是 Service？</p><ul><li><a href=#debugging-pods>调试 Pod</a></li><li><a href=#debugging-replication-controllers>调试 Replication Controller</a></li><li><a href=#debugging-services>调试 Service</a></li></ul><h3 id=debugging-pods>调试 Pod <a class=td-heading-self-link href=#debugging-pods aria-label="Heading self-link"></a></h3><p>调试 Pod 的第一步是查看 Pod 信息。用如下命令查看 Pod 的当前状态和最近的事件：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl describe pods <span class=si>${</span><span class=nv>POD_NAME</span><span class=si>}</span>
+</span></span></code></pre></div><p>查看一下 Pod 中的容器所处的状态。这些容器的状态都是 <code>Running</code> 吗？最近有没有重启过？</p><p>后面的调试都是要依靠 Pod 的状态的。</p><h4 id=my-pod-stays-pending>Pod 停滞在 Pending 状态 <a class=td-heading-self-link href=#my-pod-stays-pending aria-label="Heading self-link"></a></h4><p>如果一个 Pod 停滞在 <code>Pending</code> 状态，表示 Pod 没有被调度到节点上。
+通常这是因为某种类型的资源不足导致无法调度。
+查看上面的 <code>kubectl describe ...</code> 命令的输出，其中应该显示了为什么没被调度的原因。
+常见原因如下：</p><ul><li><p><strong>资源不足</strong>：
+你可能耗尽了集群上所有的 CPU 或内存。此时，你需要删除 Pod、调整资源请求或者为集群添加节点。
+更多信息请参阅<a href=/zh-cn/docs/concepts/configuration/manage-resources-containers/>计算资源文档</a></p></li><li><p><strong>使用了 <code>hostPort</code></strong>：
+如果绑定 Pod 到 <code>hostPort</code>，那么能够运行该 Pod 的节点就有限了。
+多数情况下，<code>hostPort</code> 是非必要的，而应该采用 Service 对象来暴露 Pod。
+如果确实需要使用 <code>hostPort</code>，那么集群中节点的个数就是所能创建的 Pod
+的数量上限。</p></li></ul><h4 id=my-pod-stays-waiting>Pod 停滞在 Waiting 状态 <a class=td-heading-self-link href=#my-pod-stays-waiting aria-label="Heading self-link"></a></h4><p>如果 Pod 停滞在 <code>Waiting</code> 状态，则表示 Pod 已经被调度到某工作节点，但是无法在该节点上运行。
+同样，<code>kubectl describe ...</code> 命令的输出可能很有用。
+<code>Waiting</code> 状态的最常见原因是拉取镜像失败。要检查的有三个方面：</p><ul><li>确保镜像名字拼写正确。</li><li>确保镜像已被推送到镜像仓库。</li><li>尝试手动是否能拉取镜像。例如，如果你在你的 PC 上使用 Docker，请运行 <code>docker pull &lt;镜像></code>。</li></ul><h4 id=my-pod-stays-terminating>Pod 停滞在 terminating 状态 <a class=td-heading-self-link href=#my-pod-stays-terminating aria-label="Heading self-link"></a></h4><p>如果 Pod 停滞在 <code>Terminating</code> 状态，表示已发出删除 Pod 的请求，
+但控制平面无法删除该 Pod 对象。</p><p>如果 Pod 拥有 <a href=/zh-cn/docs/concepts/overview/working-with-objects/finalizers/>Finalizer</a>
+并且集群中安装了<a href=/zh-cn/docs/reference/access-authn-authz/extensible-admission-controllers/>准入 Webhook</a>，
+可能会导致控制平面无法移除 Finalizer，从而导致 Pod 出现此问题。</p><p>要确认这种情况，请检查你的集群中是否有 ValidatingWebhookConfiguration 或
+MutatingWebhookConfiguration 处理 <code>pods</code> 资源的 <code>UPDATE</code> 操作。</p><p>如果 Webhook 是由第三方提供的：</p><ul><li>确保你使用的是最新版。</li><li>禁用处理 <code>UPDATE</code> 操作的 Webhook。</li><li>向相关供应商报告问题。</li></ul><p>如果你是 Webhook 的作者：</p><ul><li>对于变更性质的 Webhook，请确保在处理 <code>UPDATE</code> 操作时不要更改不可变字段。
+例如，一般不允许更改 <code>containers</code>。</li><li>对于验证性质的 Webhook，请确保你的验证策略仅被应用于新的更改之上。换句话说，
+你应该允许存在违规的现有 Pod 通过验证。这样可以确保在安装验证性质的 Webhook
+之前创建的 Pod 可以继续运行。</li></ul><h4 id=my-pod-is-crashing-or-otherwise-unhealthy>Pod 处于 Crashing 或别的不健康状态 <a class=td-heading-self-link href=#my-pod-is-crashing-or-otherwise-unhealthy aria-label="Heading self-link"></a></h4><p>一旦 Pod 被调度，
+就可以采用<a href=/zh-cn/docs/tasks/debug/debug-application/debug-running-pod/>调试运行中的 Pod</a>
+中的方法来进一步调试。</p><h4 id=pod-处于-running-态但是没有正常工作>Pod 处于 Running 态但是没有正常工作<a class=td-heading-self-link href=#pod-%e5%a4%84%e4%ba%8e-running-%e6%80%81%e4%bd%86%e6%98%af%e6%b2%a1%e6%9c%89%e6%ad%a3%e5%b8%b8%e5%b7%a5%e4%bd%9c aria-label="Heading self-link"></a></h4><p>如果 Pod 行为不符合预期，很可能 Pod 描述（例如你本地机器上的 <code>mypod.yaml</code>）中有问题，
+并且该错误在创建 Pod 时被忽略掉，没有报错。
+通常，Pod 的定义中节区嵌套关系错误、字段名字拼错的情况都会引起对应内容被忽略掉。
+例如，如果你误将 <code>command</code> 写成 <code>commnd</code>，Pod 虽然可以创建，
+但它不会执行你期望它执行的命令行。</p><p>可以做的第一件事是删除你的 Pod，并尝试带有 <code>--validate</code> 选项重新创建。
+例如，运行 <code>kubectl apply --validate -f mypod.yaml</code>。
+如果 <code>command</code> 被误拼成 <code>commnd</code>，你将会看到下面的错误信息：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>I0805 10:43:25.129850   <span class=m>46757</span> schema.go:126<span class=o>]</span> unknown field: commnd
+</span></span><span class=line><span class=cl>I0805 10:43:25.129973   <span class=m>46757</span> schema.go:129<span class=o>]</span> this may be a <span class=nb>false</span> alarm, see https://github.com/kubernetes/kubernetes/issues/6842
+</span></span><span class=line><span class=cl>pods/mypod
+</span></span></code></pre></div><p>接下来就要检查的是 API 服务器上的 Pod 与你所期望创建的是否匹配
+（例如，你原本使用本机上的一个 YAML 文件来创建 Pod）。
+例如，运行 <code>kubectl get pods/mypod -o yaml > mypod-on-apiserver.yaml</code>，
+之后手动比较 <code>mypod.yaml</code> 与从 API 服务器取回的 Pod 描述。
+从 API 服务器处获得的 YAML 通常包含一些创建 Pod 所用的 YAML 中不存在的行，这是正常的。
+不过，如果如果源文件中有些行在 API 服务器版本中不存在，则意味着
+Pod 规约是有问题的。</p><h3 id=debugging-replication-controllers>调试副本控制器 <a class=td-heading-self-link href=#debugging-replication-controllers aria-label="Heading self-link"></a></h3><p>副本控制器相对比较简单直接。它们要么能创建 Pod，要么不能。
+如果不能创建 Pod，请参阅<a href=#debugging-pods>上述说明</a>调试 Pod。</p><p>你也可以使用 <code>kubectl describe rc ${CONTROLLER_NAME}</code> 命令来检视副本控制器相关的事件。</p><h3 id=debugging-services>调试 Service <a class=td-heading-self-link href=#debugging-services aria-label="Heading self-link"></a></h3><p>服务支持在多个 Pod 间负载均衡。
+有一些常见的问题可以造成服务无法正常工作。
+以下说明将有助于调试服务的问题。</p><p>首先，验证服务是否有端点。对于每一个 Service 对象，API 服务器为其提供对应的一个或多个
+<code>EndpointSlice</code> 资源。</p><p>通过如下命令可以查看 <code>EndpointSlice</code> 资源：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get endpointslices -l kubernetes.io/service-name<span class=o>=</span><span class=si>${</span><span class=nv>SERVICE_NAME</span><span class=si>}</span>
+</span></span></code></pre></div><p>确保 EndpointSlices 中的端点与你期望成为服务成员的 Pod 数量相匹配。
+例如，如果你的 Service 用来运行 3 个副本的 nginx 容器，你应该会在 Service 的 EndpointSlices
+中看到 3 个不同的 IP 地址。</p><h4 id=my-service-is-missing-endpoints>服务缺少 Endpoints <a class=td-heading-self-link href=#my-service-is-missing-endpoints aria-label="Heading self-link"></a></h4><p>如果没有 Endpoints，请尝试使用 Service 所使用的标签列出 Pod。
+假定你的服务包含如下标签选择算符：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nn>...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>selector</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>nginx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>     </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>frontend</span><span class=w>
+</span></span></span></code></pre></div><p>你可以使用如下命令列出与选择算符相匹配的 Pod，并验证这些 Pod 是否归属于创建的服务：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get pods --selector<span class=o>=</span><span class=nv>name</span><span class=o>=</span>nginx,type<span class=o>=</span>frontend
+</span></span></code></pre></div><p>验证 Pod 的 <code>containerPort</code> 与服务的 <code>targetPort</code> 是否匹配。</p><h4 id=network-traffic-is-not-forwarded>网络流量未被转发 <a class=td-heading-self-link href=#network-traffic-is-not-forwarded aria-label="Heading self-link"></a></h4><p>请参阅<a href=/zh-cn/docs/tasks/debug/debug-application/debug-service/>调试 Service</a> 了解更多信息。</p><h2 id=接下来>接下来<a class=td-heading-self-link href=#%e6%8e%a5%e4%b8%8b%e6%9d%a5 aria-label="Heading self-link"></a></h2><p>如果上述方法都不能解决你的问题，
+请按照<a href=/zh-cn/docs/tasks/debug/debug-application/debug-service/>调试 Service 文档</a>中的介绍，
+确保你的 <code>Service</code> 处于 Running 状态，有 <code>Endpoints</code> 被创建，<code>Pod</code> 真的在提供服务；
+DNS 服务已配置并正常工作，iptables 规则也已安装并且 <code>kube-proxy</code> 也没有异常行为。</p><p>你也可以访问<a href=/zh-cn/docs/tasks/debug/>故障排查文档</a>来获取更多信息。</p></div><div class=td-content style=page-break-before:always><h1 id=pg-68c4fd0542b7d39f8d36435ef83bd57b>2 - 调试 Service</h1><p>对于新安装的 Kubernetes，经常出现的问题是 Service 无法正常运行。你已经通过
+Deployment（或其他工作负载控制器）运行了 Pod，并创建 Service ，
+但是当你尝试访问它时，没有任何响应。此文档有望对你有所帮助并找出问题所在。</p><h2 id=在-pod-中运行命令>在 Pod 中运行命令<a class=td-heading-self-link href=#%e5%9c%a8-pod-%e4%b8%ad%e8%bf%90%e8%a1%8c%e5%91%bd%e4%bb%a4 aria-label="Heading self-link"></a></h2><p>对于这里的许多步骤，你可能希望知道运行在集群中的 Pod 看起来是什么样的。
+最简单的方法是运行一个交互式的 busybox Pod：</p><pre tabindex=0><code class=language-none data-lang=none>kubectl run -it --rm --restart=Never busybox --image=registry.k8s.io/busybox:1.27.2 sh
+</code></pre><div class="alert alert-info" role=note><h4 class=alert-heading>说明：</h4>如果没有看到命令提示符，请按回车。</div><p>如果你已经有了你想使用的正在运行的 Pod，则可以运行以下命令去进入：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl <span class=nb>exec</span> &lt;POD-NAME&gt; -c &lt;CONTAINER-NAME&gt; -- &lt;COMMAND&gt;
+</span></span></code></pre></div><h2 id=setup>设置 <a class=td-heading-self-link href=#setup aria-label="Heading self-link"></a></h2><p>为了完成本次实践的任务，我们先运行几个 Pod。
+由于你可能正在调试自己的 Service，所以，你可以使用自己的信息进行替换，
+或者你也可以跟着教程并开始下面的步骤来获得第二个数据点。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl create deployment hostnames --image<span class=o>=</span>registry.k8s.io/serve_hostname
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>deployment.apps/hostnames created
+</code></pre><p><code>kubectl</code> 命令将打印创建或变更的资源的类型和名称，它们可以在后续命令中使用。
+让我们将这个 deployment 的副本数扩至 3。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl scale deployment hostnames --replicas<span class=o>=</span><span class=m>3</span>
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>deployment.apps/hostnames scaled
+</code></pre><p>请注意这与你使用以下 YAML 方式启动 Deployment 类似：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>apps/v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Deployment</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>labels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>app</span><span class=p>:</span><span class=w> </span><span class=l>hostnames</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>hostnames</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>selector</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>matchLabels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>app</span><span class=p>:</span><span class=w> </span><span class=l>hostnames</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>replicas</span><span class=p>:</span><span class=w> </span><span class=m>3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>template</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>labels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>app</span><span class=p>:</span><span class=w> </span><span class=l>hostnames</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>containers</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>hostnames</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>registry.k8s.io/serve_hostname</span><span class=w>
+</span></span></span></code></pre></div><p>"app" 标签是 <code>kubectl create deployment</code> 根据 Deployment 名称自动设置的。</p><p>确认你的 Pod 是运行状态:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get pods -l <span class=nv>app</span><span class=o>=</span>hostnames
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>NAME                        READY     STATUS    RESTARTS   AGE
+hostnames-632524106-bbpiw   1/1       Running   0          2m
+hostnames-632524106-ly40y   1/1       Running   0          2m
+hostnames-632524106-tlaok   1/1       Running   0          2m
+</code></pre><p>你还可以确认你的 Pod 是否正在提供服务。你可以获取 Pod IP 地址列表并直接对其进行测试。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get pods -l <span class=nv>app</span><span class=o>=</span>hostnames <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -o go-template<span class=o>=</span><span class=s1>&#39;{{range .items}}{{.status.podIP}}{{&#34;\n&#34;}}{{end}}&#39;</span>
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>10.244.0.5
+10.244.0.6
+10.244.0.7
+</code></pre><p>用于本教程的示例容器通过 HTTP 在端口 9376 上提供其自己的主机名，
+但是如果要调试自己的应用程序，则需要使用你的 Pod 正在侦听的端口号。</p><p>在 Pod 内运行：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=k>for</span> ep in 10.244.0.5:9376 10.244.0.6:9376 10.244.0.7:9376<span class=p>;</span> <span class=k>do</span>
+</span></span><span class=line><span class=cl>    wget -qO- <span class=nv>$ep</span>
+</span></span><span class=line><span class=cl><span class=k>done</span>
+</span></span></code></pre></div><p>输出类似这样：</p><pre tabindex=0><code>hostnames-632524106-bbpiw
+hostnames-632524106-ly40y
+hostnames-632524106-tlaok
+</code></pre><p>如果此时你没有收到期望的响应，则你的 Pod 状态可能不健康，或者可能没有在你认为正确的端口上进行监听。
+你可能会发现 <code>kubectl logs</code> 命令对于查看正在发生的事情很有用，
+或者你可能需要通过<code>kubectl exec</code> 直接进入 Pod 中并从那里进行调试。</p><p>假设到目前为止一切都已按计划进行，那么你可以开始调查为何你的 Service 无法正常工作。</p><h2 id=does-the-service-exist>Service 是否存在？ <a class=td-heading-self-link href=#does-the-service-exist aria-label="Heading self-link"></a></h2><p>细心的读者会注意到我们实际上尚未创建 Service —— 这是有意而为之。
+这一步有时会被遗忘，这是首先要检查的步骤。</p><p>那么，如果我尝试访问不存在的 Service 会怎样？
+假设你有另一个 Pod 通过名称匹配到 Service，你将得到类似结果：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>wget -O- hostnames
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>Resolving hostnames (hostnames)... failed: Name or service not known.
+wget: unable to resolve host address &#39;hostnames&#39;
+</code></pre><p>首先要检查的是该 Service 是否真实存在：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get svc hostnames
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>No resources found.
+Error from server (NotFound): services &#34;hostnames&#34; not found
+</code></pre><p>让我们创建 Service。 和以前一样，在这次实践中 —— 你可以在此处使用自己的 Service 的内容。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl expose deployment hostnames --port<span class=o>=</span><span class=m>80</span> --target-port<span class=o>=</span><span class=m>9376</span>
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>service/hostnames exposed
+</code></pre><p>重新运行查询命令：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get svc hostnames
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>NAME        TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+hostnames   ClusterIP   10.0.1.175   &lt;none&gt;        80/TCP    5s
+</code></pre><p>现在你知道了 Service 确实存在。</p><p>同前，此步骤效果与通过 YAML 方式启动 Service 一样：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Service</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>labels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>app</span><span class=p>:</span><span class=w> </span><span class=l>hostnames</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>hostnames</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>selector</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>app</span><span class=p>:</span><span class=w> </span><span class=l>hostnames</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>ports</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>default</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>protocol</span><span class=p>:</span><span class=w> </span><span class=l>TCP</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>port</span><span class=p>:</span><span class=w> </span><span class=m>80</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>targetPort</span><span class=p>:</span><span class=w> </span><span class=m>9376</span><span class=w>
+</span></span></span></code></pre></div><p>为了突出配置范围的完整性，你在此处创建的 Service 使用的端口号与 Pods 不同。
+对于许多真实的 Service，这些值可以是相同的。</p><h2 id=是否存在影响目标-pod-的网络策略入站规则>是否存在影响目标 Pod 的网络策略入站规则？<a class=td-heading-self-link href=#%e6%98%af%e5%90%a6%e5%ad%98%e5%9c%a8%e5%bd%b1%e5%93%8d%e7%9b%ae%e6%a0%87-pod-%e7%9a%84%e7%bd%91%e7%bb%9c%e7%ad%96%e7%95%a5%e5%85%a5%e7%ab%99%e8%a7%84%e5%88%99 aria-label="Heading self-link"></a></h2><p>如果你部署了任何可能影响到 <code>hostnames-*</code> Pod 的传入流量的网络策略入站规则，
+则需要对其进行检查。</p><p>详细信息，请参阅<a href=/zh-cn/docs/concepts/services-networking/network-policies/>网络策略</a>。</p><h2 id=does-the-service-work-by-dns-name>Service 是否可通过 DNS 名字访问？ <a class=td-heading-self-link href=#does-the-service-work-by-dns-name aria-label="Heading self-link"></a></h2><p>通常客户端通过 DNS 名称来匹配到 Service。</p><p>从相同命名空间下的 Pod 中运行以下命令：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>nslookup hostnames
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>Address 1: 10.0.0.10 kube-dns.kube-system.svc.cluster.local
+
+Name:      hostnames
+Address 1: 10.0.1.175 hostnames.default.svc.cluster.local
+</code></pre><p>如果失败，那么你的 Pod 和 Service 可能位于不同的命名空间中，
+请尝试使用限定命名空间的名称（同样在 Pod 内运行）：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>nslookup hostnames.default
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>Address 1: 10.0.0.10 kube-dns.kube-system.svc.cluster.local
+
+Name:      hostnames.default
+Address 1: 10.0.1.175 hostnames.default.svc.cluster.local
+</code></pre><p>如果成功，那么需要调整你的应用，使用跨命名空间的名称去访问它，
+或者在相同的命名空间中运行应用和 Service。如果仍然失败，请尝试一个完全限定的名称：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>nslookup hostnames.default.svc.cluster.local
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>Address 1: 10.0.0.10 kube-dns.kube-system.svc.cluster.local
+
+Name:      hostnames.default.svc.cluster.local
+Address 1: 10.0.1.175 hostnames.default.svc.cluster.local
+</code></pre><p>注意这里的后缀："default.svc.cluster.local"。"default" 是我们正在操作的命名空间。
+"svc" 表示这是一个 Service。"cluster.local" 是你的集群域，在你自己的集群中可能会有所不同。</p><p>你也可以在集群中的节点上尝试此操作：</p><div class="alert alert-info" role=note><h4 class=alert-heading>说明：</h4><p>10.0.0.10 是集群的 DNS 服务 IP，你的可能有所不同。</p></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>nslookup hostnames.default.svc.cluster.local 10.0.0.10
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>Server:         10.0.0.10
+Address:        10.0.0.10#53
+
+Name:   hostnames.default.svc.cluster.local
+Address: 10.0.1.175
+</code></pre><p>如果你能够使用完全限定的名称查找，但不能使用相对名称，则需要检查你 Pod 中的
+<code>/etc/resolv.conf</code> 文件是否正确。在 Pod 中运行以下命令：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>cat /etc/resolv.conf
+</span></span></code></pre></div><p>你应该可以看到类似这样的输出：</p><pre tabindex=0><code>nameserver 10.0.0.10
+search default.svc.cluster.local svc.cluster.local cluster.local example.com
+options ndots:5
+</code></pre><p><code>nameserver</code> 行必须指示你的集群的 DNS Service，
+它是通过 <code>--cluster-dns</code> 标志传递到 kubelet 的。</p><p><code>search</code> 行必须包含一个适当的后缀，以便查找 Service 名称。
+在本例中，它查找本地命名空间（<code>default.svc.cluster.local</code>）中的服务和所有命名空间
+（<code>svc.cluster.local</code>）中的服务，最后在集群（<code>cluster.local</code>）中查找服务的名称。
+根据你自己的安装情况，可能会有额外的记录（最多 6 条）。
+集群后缀是通过 <code>--cluster-domain</code> 标志传递给 <code>kubelet</code> 的。
+本文中，我们假定后缀是 “cluster.local”。
+你的集群配置可能不同，这种情况下，你应该在上面的所有命令中更改它。</p><p><code>options</code> 行必须设置足够高的 <code>ndots</code>，以便 DNS 客户端库考虑搜索路径。
+在默认情况下，Kubernetes 将这个值设置为 5，这个值足够高，足以覆盖它生成的所有 DNS 名称。</p><h3 id=does-any-service-exist-in-dns>是否存在 Service 能通过 DNS 名称访问？<a class=td-heading-self-link href=#does-any-service-exist-in-dns aria-label="Heading self-link"></a></h3><p>如果上面的方式仍然失败，DNS 查找不到你需要的 Service ，你可以后退一步，
+看看还有什么其它东西没有正常工作。
+Kubernetes 主 Service 应该一直是工作的。在 Pod 中运行如下命令：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>nslookup kubernetes.default
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>Server:    10.0.0.10
+Address 1: 10.0.0.10 kube-dns.kube-system.svc.cluster.local
+
+Name:      kubernetes.default
+Address 1: 10.0.0.1 kubernetes.default.svc.cluster.local
+</code></pre><p>如果失败，你可能需要转到本文的 <a href=#is-the-kube-proxy-working>kube-proxy</a> 节，
+或者甚至回到文档的顶部重新开始，但不是调试你自己的 Service ，而是调试 DNS Service。</p><h2 id=does-the-service-work-by-ip>Service 能够通过 IP 访问么？ <a class=td-heading-self-link href=#does-the-service-work-by-ip aria-label="Heading self-link"></a></h2><p>假设你已经确认 DNS 工作正常，那么接下来要测试的是你的 Service 能否通过它的 IP 正常访问。
+从集群中的一个 Pod，尝试访问 Service 的 IP（从上面的 <code>kubectl get</code> 命令获取）。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=k>for</span> i in <span class=k>$(</span>seq <span class=m>1</span> 3<span class=k>)</span><span class=p>;</span> <span class=k>do</span> 
+</span></span><span class=line><span class=cl>    wget -qO- 10.0.1.175:80
+</span></span><span class=line><span class=cl><span class=k>done</span>
+</span></span></code></pre></div><p>输出应该类似这样：</p><pre tabindex=0><code>hostnames-632524106-bbpiw
+hostnames-632524106-ly40y
+hostnames-632524106-tlaok
+</code></pre><p>如果 Service 状态是正常的，你应该得到正确的响应。
+如果没有，有很多可能出错的地方，请继续阅读。</p><h2 id=is-the-service-defined-correctly>Service 的配置是否正确？ <a class=td-heading-self-link href=#is-the-service-defined-correctly aria-label="Heading self-link"></a></h2><p>这听起来可能很愚蠢，但你应该两次甚至三次检查你的 Service 配置是否正确，并且与你的 Pod 匹配。
+查看你的 Service 配置并验证它：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get service hostnames -o json
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;kind&#34;</span><span class=p>:</span> <span class=s2>&#34;Service&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;apiVersion&#34;</span><span class=p>:</span> <span class=s2>&#34;v1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;metadata&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;hostnames&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;namespace&#34;</span><span class=p>:</span> <span class=s2>&#34;default&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;uid&#34;</span><span class=p>:</span> <span class=s2>&#34;428c8b6c-24bc-11e5-936d-42010af0a9bc&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;resourceVersion&#34;</span><span class=p>:</span> <span class=s2>&#34;347189&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;creationTimestamp&#34;</span><span class=p>:</span> <span class=s2>&#34;2015-07-07T15:24:29Z&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;labels&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;app&#34;</span><span class=p>:</span> <span class=s2>&#34;hostnames&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;spec&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;ports&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;default&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&#34;protocol&#34;</span><span class=p>:</span> <span class=s2>&#34;TCP&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&#34;port&#34;</span><span class=p>:</span> <span class=mi>80</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&#34;targetPort&#34;</span><span class=p>:</span> <span class=mi>9376</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&#34;nodePort&#34;</span><span class=p>:</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>],</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;selector&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;app&#34;</span><span class=p>:</span> <span class=s2>&#34;hostnames&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;clusterIP&#34;</span><span class=p>:</span> <span class=s2>&#34;10.0.1.175&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;ClusterIP&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;sessionAffinity&#34;</span><span class=p>:</span> <span class=s2>&#34;None&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;status&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;loadBalancer&#34;</span><span class=p>:</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></div><ul><li>你想要访问的 Service 端口是否在 <code>spec.ports[]</code> 中列出？</li><li><code>targetPort</code> 对你的 Pod 来说正确吗（许多 Pod 使用与 Service 不同的端口）？</li><li>如果你想使用数值型端口，那么它的类型是一个数值（9376）还是字符串 “9376”？</li><li>如果你想使用名称型端口，那么你的 Pod 是否暴露了一个同名端口？</li><li>端口的 <code>protocol</code> 和 Pod 的是否对应？</li></ul><h2 id=does-the-service-have-any-endpoints>Service 有 EndpointSlices 吗？ <a class=td-heading-self-link href=#does-the-service-have-any-endpoints aria-label="Heading self-link"></a></h2><p>如果你已经走到了这一步，你已经确认你的 Service 被正确定义，并能通过 DNS 解析。
+现在，让我们检查一下，你运行的 Pod 确实是被 Service 选中的。</p><p>早些时候，我们已经看到 Pod 是运行状态。我们可以再检查一下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get pods -l <span class=nv>app</span><span class=o>=</span>hostnames
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>NAME                        READY     STATUS    RESTARTS   AGE
+hostnames-632524106-bbpiw   1/1       Running   0          1h
+hostnames-632524106-ly40y   1/1       Running   0          1h
+hostnames-632524106-tlaok   1/1       Running   0          1h
+</code></pre><p><code>-l app=hostnames</code> 参数是在 Service 上配置的标签选择器。</p><p>“AGE” 列表明这些 Pod 已经启动一个小时了，这意味着它们运行良好，而未崩溃。</p><p>"RESTARTS" 列表明 Pod 没有经常崩溃或重启。经常性崩溃可能导致间歇性连接问题。
+如果重启次数过大，通过<a href=/zh-cn/docs/tasks/debug/debug-application/debug-pods>调试 Pod</a>
+了解相关技术。</p><p>在 Kubernetes 系统中有一个控制回路，它评估每个 Service 的选择算符，并将结果保存到
+EndpointSlice 对象中。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get endpointslices -l kubernetes.io/service-name<span class=o>=</span>hostnames
+</span></span></code></pre></div><pre tabindex=0><code>NAME              ADDRESSTYPE   PORTS   ENDPOINTS
+hostnames-ytpni   IPv4          9376    10.244.0.5,10.244.0.6,10.244.0.7
+</code></pre><p>这证实 EndpointSlice 控制器已经为你的 Service 找到了正确的 Pods。
+如果 <code>ENDPOINTS</code> 列的值为 <code>&lt;none></code>，则应检查 Service 的 <code>spec.selector</code> 字段，
+以及你实际想选择的 Pod 的 <code>metadata.labels</code> 的值。
+常见的错误是输入错误或其他错误，例如 Service 想选择 <code>app=hostnames</code>，但是
+Deployment 指定的是 <code>run=hostnames</code>。在 1.18之前的版本中 <code>kubectl run</code>
+也可以被用来创建 Deployment。</p><h2 id=are-the-pods-working>Pod 工作正常吗？ <a class=td-heading-self-link href=#are-the-pods-working aria-label="Heading self-link"></a></h2><p>至此，你知道你的 Service 已存在，并且已匹配到你的Pod。在本实验的开始，你已经检查了 Pod 本身。
+让我们再次检查 Pod 是否确实在工作 - 你可以绕过 Service 机制并直接转到 Pod，
+如上面的 Endpoints 所示。</p><div class="alert alert-info" role=note><h4 class=alert-heading>说明：</h4><p>这些命令使用的是 Pod 端口（9376），而不是 Service 端口（80）。</p></div><p>在 Pod 中运行：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=k>for</span> ep in 10.244.0.5:9376 10.244.0.6:9376 10.244.0.7:9376<span class=p>;</span> <span class=k>do</span>
+</span></span><span class=line><span class=cl>    wget -qO- <span class=nv>$ep</span>
+</span></span><span class=line><span class=cl><span class=k>done</span>
+</span></span></code></pre></div><p>输出应该类似这样：</p><pre tabindex=0><code>hostnames-632524106-bbpiw
+hostnames-632524106-ly40y
+hostnames-632524106-tlaok
+</code></pre><p>你希望 Endpoint 列表中的每个 Pod 都返回自己的主机名。
+如果情况并非如此（或你自己的 Pod 的正确行为是什么），你应调查发生了什么事情。</p><h2 id=is-the-kube-proxy-working>kube-proxy 正常工作吗？ <a class=td-heading-self-link href=#is-the-kube-proxy-working aria-label="Heading self-link"></a></h2><p>如果你到达这里，则说明你的 Service 正在运行，拥有 EndpointSlices，Pod 真正在提供服务。
+此时，整个 Service 代理机制是可疑的。让我们一步一步地确认它没问题。</p><p>Service 的默认实现（在大多数集群上应用的）是 kube-proxy。
+这是一个在每个节点上运行的程序，负责配置用于提供 Service 抽象的机制之一。
+如果你的集群不使用 kube-proxy，则以下各节将不适用，你将必须检查你正在使用的 Service 的实现方式。</p><h3 id=kube-proxy-正常运行吗-is-kube-proxy-working>kube-proxy 正常运行吗？ {#is-kube-proxy working}<a class=td-heading-self-link href=#kube-proxy-%e6%ad%a3%e5%b8%b8%e8%bf%90%e8%a1%8c%e5%90%97-is-kube-proxy-working aria-label="Heading self-link"></a></h3><p>确认 <code>kube-proxy</code> 正在节点上运行。在节点上直接运行，你将会得到类似以下的输出：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>ps auxw <span class=p>|</span> grep kube-proxy
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>root  4194  0.4  0.1 101864 17696 ?    Sl Jul04  25:43 /usr/local/bin/kube-proxy --master=https://kubernetes-master --kubeconfig=/var/lib/kube-proxy/kubeconfig --v=2
+</code></pre><p>下一步，确认它并没有出现明显的失败，比如连接主节点失败。要做到这一点，你必须查看日志。
+访问日志的方式取决于你节点的操作系统。
+在某些操作系统上日志是一个文件，如 /var/log/messages kube-proxy.log，
+而其他操作系统使用 <code>journalctl</code> 访问日志。你应该看到输出类似于：</p><pre tabindex=0><code class=language-none data-lang=none>I1027 22:14:53.995134    5063 server.go:200] Running in resource-only container &#34;/kube-proxy&#34;
+I1027 22:14:53.998163    5063 server.go:247] Using iptables Proxier.
+I1027 22:14:54.038140    5063 proxier.go:352] Setting endpoints for &#34;kube-system/kube-dns:dns-tcp&#34; to [10.244.1.3:53]
+I1027 22:14:54.038164    5063 proxier.go:352] Setting endpoints for &#34;kube-system/kube-dns:dns&#34; to [10.244.1.3:53]
+I1027 22:14:54.038209    5063 proxier.go:352] Setting endpoints for &#34;default/kubernetes:https&#34; to [10.240.0.2:443]
+I1027 22:14:54.038238    5063 proxier.go:429] Not syncing iptables until Services and Endpoints have been received from master
+I1027 22:14:54.040048    5063 proxier.go:294] Adding new service &#34;default/kubernetes:https&#34; at 10.0.0.1:443/TCP
+I1027 22:14:54.040154    5063 proxier.go:294] Adding new service &#34;kube-system/kube-dns:dns&#34; at 10.0.0.10:53/UDP
+I1027 22:14:54.040223    5063 proxier.go:294] Adding new service &#34;kube-system/kube-dns:dns-tcp&#34; at 10.0.0.10:53/TCP
+</code></pre><p>如果你看到有关无法连接主节点的错误消息，则应再次检查节点配置和安装步骤。</p><p>Kube-proxy 可以以若干模式之一运行。在上述日志中，<code>Using iptables Proxier</code>
+行表示 kube-proxy 在 "iptables" 模式下运行。
+最常见的另一种模式是 "ipvs"。</p><h4 id=iptables-mode>Iptables 模式 <a class=td-heading-self-link href=#iptables-mode aria-label="Heading self-link"></a></h4><p>在 "iptables" 模式中, 你应该可以在节点上看到如下输出:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>iptables-save <span class=p>|</span> grep hostnames
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>-A KUBE-SEP-57KPRZ3JQVENLNBR -s 10.244.3.6/32 -m comment --comment &#34;default/hostnames:&#34; -j MARK --set-xmark 0x00004000/0x00004000
+-A KUBE-SEP-57KPRZ3JQVENLNBR -p tcp -m comment --comment &#34;default/hostnames:&#34; -m tcp -j DNAT --to-destination 10.244.3.6:9376
+-A KUBE-SEP-WNBA2IHDGP2BOBGZ -s 10.244.1.7/32 -m comment --comment &#34;default/hostnames:&#34; -j MARK --set-xmark 0x00004000/0x00004000
+-A KUBE-SEP-WNBA2IHDGP2BOBGZ -p tcp -m comment --comment &#34;default/hostnames:&#34; -m tcp -j DNAT --to-destination 10.244.1.7:9376
+-A KUBE-SEP-X3P2623AGDH6CDF3 -s 10.244.2.3/32 -m comment --comment &#34;default/hostnames:&#34; -j MARK --set-xmark 0x00004000/0x00004000
+-A KUBE-SEP-X3P2623AGDH6CDF3 -p tcp -m comment --comment &#34;default/hostnames:&#34; -m tcp -j DNAT --to-destination 10.244.2.3:9376
+-A KUBE-SERVICES -d 10.0.1.175/32 -p tcp -m comment --comment &#34;default/hostnames: cluster IP&#34; -m tcp --dport 80 -j KUBE-SVC-NWV5X2332I4OT4T3
+-A KUBE-SVC-NWV5X2332I4OT4T3 -m comment --comment &#34;default/hostnames:&#34; -m statistic --mode random --probability 0.33332999982 -j KUBE-SEP-WNBA2IHDGP2BOBGZ
+-A KUBE-SVC-NWV5X2332I4OT4T3 -m comment --comment &#34;default/hostnames:&#34; -m statistic --mode random --probability 0.50000000000 -j KUBE-SEP-X3P2623AGDH6CDF3
+-A KUBE-SVC-NWV5X2332I4OT4T3 -m comment --comment &#34;default/hostnames:&#34; -j KUBE-SEP-57KPRZ3JQVENLNBR
+</code></pre><p>对于每个 Service 的每个端口，应有 1 条 <code>KUBE-SERVICES</code> 规则、一个 <code>KUBE-SVC-&lt;hash></code> 链。
+对于每个 Pod 末端，在那个 <code>KUBE-SVC-&lt;hash></code> 链中应该有一些规则与之对应，还应该
+有一个 <code>KUBE-SEP-&lt;hash></code> 链与之对应，其中包含为数不多的几条规则。
+实际的规则数量可能会根据你实际的配置（包括 NodePort 和 LoadBalancer 服务）有所不同。</p><h4 id=ipvs-mode>IPVS 模式 <a class=td-heading-self-link href=#ipvs-mode aria-label="Heading self-link"></a></h4><p>在 "ipvs" 模式中, 你应该在节点下看到如下输出：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>ipvsadm -ln
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>Prot LocalAddress:Port Scheduler Flags
+  -&gt; RemoteAddress:Port           Forward Weight ActiveConn InActConn
+...
+TCP  10.0.1.175:80 rr
+  -&gt; 10.244.0.5:9376               Masq    1      0          0
+  -&gt; 10.244.0.6:9376               Masq    1      0          0
+  -&gt; 10.244.0.7:9376               Masq    1      0          0
+...
+</code></pre><p>对于每个 Service 的每个端口，还有 NodePort，External IP 和 LoadBalancer 类型服务
+的 IP，kube-proxy 将创建一个虚拟服务器。
+对于每个 Pod 末端，它将创建相应的真实服务器。
+在此示例中，服务主机名（<code>10.0.1.175:80</code>）拥有 3 个末端（<code>10.244.0.5:9376</code>、
+<code>10.244.0.6:9376</code> 和 <code>10.244.0.7:9376</code>）。</p><h3 id=is-kube-proxy-proxying>kube-proxy 是否在执行代理操作? <a class=td-heading-self-link href=#is-kube-proxy-proxying aria-label="Heading self-link"></a></h3><p>假设你确实遇到上述情况之一，请重试从节点上通过 IP 访问你的 Service ：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>curl 10.0.1.175:80
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>hostnames-632524106-bbpiw
+</code></pre><p>如果这步操作仍然失败，请查看 <code>kube-proxy</code> 日志中的特定行，如：</p><pre tabindex=0><code class=language-none data-lang=none>Setting endpoints for default/hostnames:default to [10.244.0.5:9376 10.244.0.6:9376 10.244.0.7:9376]
+</code></pre><p>如果你没有看到这些，请尝试将 <code>-v</code> 标志设置为 4 并重新启动 <code>kube-proxy</code>，然后再查看日志。</p><h3 id=a-pod-fails-to-reach-itself-via-the-service-ip>边缘案例: Pod 无法通过 Service IP 连接到它本身 <a class=td-heading-self-link href=#a-pod-fails-to-reach-itself-via-the-service-ip aria-label="Heading self-link"></a></h3><p>这听起来似乎不太可能，但是确实可能发生，并且应该可以工作。</p><p>如果网络没有为“发夹模式（Hairpin）”流量生成正确配置，
+通常当 <code>kube-proxy</code> 以 <code>iptables</code> 模式运行，并且 Pod 与桥接网络连接时，就会发生这种情况。
+<code>kubelet</code> 提供了 <code>hairpin-mode</code>
+<a href=/zh-cn/docs/reference/command-line-tools-reference/kubelet/>标志</a>。
+如果 Service 的末端尝试访问自己的 Service VIP，则该端点可以把流量负载均衡回来到它们自身。
+<code>hairpin-mode</code> 标志必须被设置为 <code>hairpin-veth</code> 或者 <code>promiscuous-bridge</code>。</p><p>诊断此类问题的常见步骤如下：</p><ul><li><p>确认 <code>hairpin-mode</code> 被设置为 <code>hairpin-veth</code> 或 <code>promiscuous-bridge</code>。
+你应该可以看到下面这样。本例中 <code>hairpin-mode</code> 被设置为 <code>promiscuous-bridge</code>。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>ps auxw <span class=p>|</span> grep kubelet
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>root      3392  1.1  0.8 186804 65208 ?        Sl   00:51  11:11 /usr/local/bin/kubelet --enable-debugging-handlers=true --config=/etc/kubernetes/manifests --allow-privileged=True --v=4 --cluster-dns=10.0.0.10 --cluster-domain=cluster.local --configure-cbr0=true --cgroup-root=/ --system-cgroups=/system --hairpin-mode=promiscuous-bridge --runtime-cgroups=/docker-daemon --kubelet-cgroups=/kubelet --babysit-daemons=true --max-pods=110 --serialize-image-pulls=false --outofdisk-transition-frequency=0
+</code></pre></li></ul><ul><li><p>确认有效的 <code>hairpin-mode</code>。要做到这一点，你必须查看 kubelet 日志。
+访问日志取决于节点的操作系统。在一些操作系统上，它是一个文件，如 /var/log/kubelet.log，
+而其他操作系统则使用 <code>journalctl</code> 访问日志。请注意，由于兼容性，
+有效的 <code>hairpin-mode</code> 可能不匹配 <code>--hairpin-mode</code> 标志。在 kubelet.log
+中检查是否有带有关键字 <code>hairpin</code> 的日志行。应该有日志行指示有效的
+<code>hairpin-mode</code>，就像下面这样。</p><pre tabindex=0><code class=language-none data-lang=none>I0629 00:51:43.648698    3252 kubelet.go:380] Hairpin mode set to &#34;promiscuous-bridge&#34;
+</code></pre></li></ul><ul><li><p>如果有效的发夹模式是 <code>hairpin-veth</code>, 要保证 <code>Kubelet</code> 有操作节点上 <code>/sys</code> 的权限。
+如果一切正常，你将会看到如下输出:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=k>for</span> intf in /sys/devices/virtual/net/cbr0/brif/*<span class=p>;</span> <span class=k>do</span> cat <span class=nv>$intf</span>/hairpin_mode<span class=p>;</span> <span class=k>done</span>
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>1
+1
+1
+1
+</code></pre></li></ul><ul><li><p>如果有效的发卡模式是 <code>promiscuous-bridge</code>, 要保证 <code>Kubelet</code> 有操作节点上
+Linux 网桥的权限。如果 <code>cbr0</code> 桥正在被使用且被正确设置，你将会看到如下输出:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>ifconfig cbr0 <span class=p>|</span>grep PROMISC
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>UP BROADCAST RUNNING PROMISC MULTICAST  MTU:1460  Metric:1
+</code></pre></li></ul><ul><li>如果以上步骤都不能解决问题，请寻求帮助。</li></ul><h2 id=seek-help>寻求帮助 <a class=td-heading-self-link href=#seek-help aria-label="Heading self-link"></a></h2><p>如果你走到这一步，那么就真的是奇怪的事情发生了。你的 Service 正在运行，有 EndpointSlices 存在，
+你的 Pods 也确实在提供服务。你的 DNS 正常，<code>iptables</code> 规则已经安装，<code>kube-proxy</code> 看起来也正常。
+然而 Service 还是没有正常工作。这种情况下，请告诉我们，以便我们可以帮助调查！</p><p>通过 <a href=https://slack.k8s.io/>Slack</a> 或者 <a href=https://discuss.kubernetes.io>Forum</a> 或者
+<a href=https://github.com/kubernetes/kubernetes>GitHub</a> 联系我们。</p><h2 id=接下来>接下来<a class=td-heading-self-link href=#%e6%8e%a5%e4%b8%8b%e6%9d%a5 aria-label="Heading self-link"></a></h2><p>访问<a href=/zh-cn/docs/tasks/debug/>故障排查概述文档</a>获取更多信息。</p></div><div class=td-content style=page-break-before:always><h1 id=pg-089001d4003f033e21602adcb11cd277>3 - 调试 StatefulSet</h1><p>此任务展示如何调试 StatefulSet。</p><h2 id=准备开始>准备开始<a class=td-heading-self-link href=#%e5%87%86%e5%a4%87%e5%bc%80%e5%a7%8b aria-label="Heading self-link"></a></h2><ul><li>你需要有一个 Kubernetes 集群，已配置好的 kubectl 命令行工具与你的集群进行通信。</li><li>你应该有一个运行中的 StatefulSet，以便用于调试。</li></ul><h2 id=debugging-a-statefulset>调试 StatefulSet <a class=td-heading-self-link href=#debugging-a-statefulset aria-label="Heading self-link"></a></h2><p>StatefulSet 在创建 Pod 时为其设置了 <code>app.kubernetes.io/name=MyApp</code> 标签，列出仅属于某 StatefulSet
+的所有 Pod 时，可以使用以下命令：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get pods -l app.kubernetes.io/name<span class=o>=</span>MyApp
+</span></span></code></pre></div><p>如果你发现列出的任何 Pod 长时间处于 <code>Unknown</code> 或 <code>Terminating</code> 状态，请参阅
+<a href=/zh-cn/docs/tasks/run-application/delete-stateful-set/>删除 StatefulSet Pod</a>
+了解如何处理它们的说明。
+你可以参考<a href=/zh-cn/docs/tasks/debug/debug-application/debug-pods/>调试 Pod</a>
+来调试 StatefulSet 中的各个 Pod。</p><h2 id=接下来>接下来<a class=td-heading-self-link href=#%e6%8e%a5%e4%b8%8b%e6%9d%a5 aria-label="Heading self-link"></a></h2><p>进一步了解如何<a href=/zh-cn/docs/tasks/debug/debug-application/debug-init-containers/>调试 Init 容器</a>。</p></div><div class=td-content style=page-break-before:always><h1 id=pg-655b47c523b6f1b52d25e520625abccb>4 - 确定 Pod 失败的原因</h1><p>本文介绍如何编写和读取容器的终止消息。</p><p>终止消息为容器提供了一种方法，可以将有关致命事件的信息写入某个位置，
+在该位置可以通过仪表板和监控软件等工具轻松检索和显示致命事件。
+在大多数情况下，你放入终止消息中的信息也应该写入
+<a href=/zh-cn/docs/concepts/cluster-administration/logging/>常规 Kubernetes 日志</a>。</p><h2 id=准备开始>准备开始<a class=td-heading-self-link href=#%e5%87%86%e5%a4%87%e5%bc%80%e5%a7%8b aria-label="Heading self-link"></a></h2><p>你必须拥有一个 Kubernetes 的集群，且必须配置 kubectl 命令行工具让其与你的集群通信。
+建议运行本教程的集群至少有两个节点，且这两个节点不能作为控制平面主机。
+如果你还没有集群，你可以通过 <a href=https://minikube.sigs.k8s.io/docs/tutorials/multi_node/>Minikube</a>
+构建一个你自己的集群，或者你可以使用下面的 Kubernetes 练习环境之一：</p><ul><li><a href="https://labs.iximiuz.com/playgrounds?category=kubernetes&filter=all">iximiuz Labs</a></li><li><a href=https://killercoda.com/playgrounds/scenario/kubernetes>Killercoda</a></li><li><a href=https://kodekloud.com/public-playgrounds>KodeKloud</a></li></ul><h2 id=writing-and-reading-a-termination-message>读写终止消息 <a class=td-heading-self-link href=#writing-and-reading-a-termination-message aria-label="Heading self-link"></a></h2><p>在本练习中，你将创建运行一个容器的 Pod。
+配置文件指定在容器启动时要运行的命令。</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/main/content/zh-cn/examples/debug/termination.yaml download=debug/termination.yaml><code>debug/termination.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("debug-termination-yaml")' title="复制 debug/termination.yaml 到剪贴板"></img></div><div class=includecode id=debug-termination-yaml><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Pod</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>termination-demo</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>containers</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>termination-demo-container</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>debian</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>command</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;/bin/sh&#34;</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>args</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;-c&#34;</span><span class=p>,</span><span class=w> </span><span class=s2>&#34;sleep 10 &amp;&amp; echo Sleep expired &gt; /dev/termination-log&#34;</span><span class=p>]</span><span class=w>
+</span></span></span></code></pre></div></div></div><ol><li><p>基于 YAML 配置文件创建 Pod：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl apply -f https://k8s.io/examples/debug/termination.yaml   
+</span></span></code></pre></div><p>YAML 文件中，在 <code>command</code> 和 <code>args</code> 字段，你可以看到容器休眠 10 秒然后将 "Sleep expired"
+写入 <code>/dev/termination-log</code> 文件。
+容器写完 "Sleep expired" 消息后就终止了。</p></li></ol><ol start=2><li><p>显示 Pod 的信息：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get pod termination-demo
+</span></span></code></pre></div><p>重复前面的命令直到 Pod 不再运行。</p></li></ol><ol start=3><li><p>显示 Pod 的详细信息：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get pod termination-demo --output<span class=o>=</span>yaml
+</span></span></code></pre></div><p>输出结果包含 "Sleep expired" 消息：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Pod</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nn>...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>lastState</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>terminated</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>containerID</span><span class=p>:</span><span class=w> </span><span class=l>...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>exitCode</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>finishedAt</span><span class=p>:</span><span class=w> </span><span class=l>...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>message</span><span class=p>:</span><span class=w> </span><span class=p>|</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          Sleep expired</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=l>...</span><span class=w>
+</span></span></span></code></pre></div></li></ol><ol start=4><li><p>使用 Go 模板过滤输出结果，使其只含有终止消息：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get pod termination-demo -o go-template<span class=o>=</span><span class=s2>&#34;{{range .status.containerStatuses}}{{.lastState.terminated.message}}{{end}}&#34;</span>
+</span></span></code></pre></div><p>如果你正在运行多容器 Pod，则可以使用 Go 模板来包含容器的名称。这样，你可以发现哪些容器出现故障：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get pod multi-container-pod -o go-template<span class=o>=</span><span class=s1>&#39;{{range .status.containerStatuses}}{{printf &#34;%s:\n%s\n\n&#34; .name .lastState.terminated.message}}{{end}}&#39;</span>
+</span></span></code></pre></div></li></ol><h2 id=customizing-the-termination-message>定制终止消息 <a class=td-heading-self-link href=#customizing-the-termination-message aria-label="Heading self-link"></a></h2><p>Kubernetes 从容器的 <code>terminationMessagePath</code> 字段中指定的终止消息文件中检索终止消息，
+默认值为 <code>/dev/termination-log</code>。
+通过定制这个字段，你可以告诉 Kubernetes 使用不同的文件。
+Kubernetes 使用指定文件中的内容在成功和失败时填充容器的状态消息。</p><p>终止消息旨在简要说明最终状态，例如断言失败消息。
+kubelet 会截断长度超过 4096 字节的消息。</p><p>所有容器的总消息长度限制为 12KiB，将会在每个容器之间平均分配。
+例如，如果有 12 个容器（<code>initContainers</code> 或 <code>containers</code>），
+每个容器都有 1024 字节的可用终止消息空间。</p><p>默认的终止消息路径是 <code>/dev/termination-log</code>。
+Pod 启动后不能设置终止消息路径。</p><p>在下例中，容器将终止消息写入 <code>/tmp/my-log</code> 给 Kubernetes 来检索：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Pod</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>msg-path-demo</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>containers</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>msg-path-demo-container</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>debian</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>terminationMessagePath</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;/tmp/my-log&#34;</span><span class=w>
+</span></span></span></code></pre></div><p>此外，用户可以设置容器的 <code>terminationMessagePolicy</code> 字段，以便进一步自定义。
+此字段默认为 "<code>File</code>"，这意味着仅从终止消息文件中检索终止消息。
+通过将 <code>terminationMessagePolicy</code> 设置为 "<code>FallbackToLogsOnError</code>"，你就可以告诉 Kubernetes，在容器因错误退出时，如果终止消息文件为空，则使用容器日志输出的最后一块作为终止消息。
+日志输出限制为 2048 字节或 80 行，以较小者为准。</p><h2 id=接下来>接下来<a class=td-heading-self-link href=#%e6%8e%a5%e4%b8%8b%e6%9d%a5 aria-label="Heading self-link"></a></h2><ul><li>参考 <a href=/docs/reference/generated/kubernetes-api/v1.37/#container-v1-core>Container</a>
+资源的 <code>terminationMessagePath</code> 字段。</li><li>参考<a href=/zh-cn/docs/concepts/containers/images/>镜像</a>中的 <a href=/zh-cn/docs/concepts/containers/images/#imagepullbackoff>ImagePullBackOff</a>。</li><li>了解<a href=/zh-cn/docs/concepts/cluster-administration/logging/>检索日志</a>。</li><li>了解 <a href=https://pkg.go.dev/text/template>Go 模板</a>。</li><li>了解 <a href=/zh-cn/docs/tasks/debug/debug-application/debug-init-containers/#understanding-pod-status>Pod 状态</a>和
+<a href=/zh-cn/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase>Pod 阶段</a>。</li><li>了解<a href=/zh-cn/docs/concepts/workloads/pods/pod-lifecycle/#container-states>容器状态</a>。</li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-43445f3208669d4078e87dbdbeed8473>5 - 调试 Init 容器</h1><p>此页显示如何核查与 Init 容器执行相关的问题。
+下面的示例命令行将 Pod 称为 <code>&lt;pod-name></code>，而 Init 容器称为 <code>&lt;init-container-1></code> 和
+<code>&lt;init-container-2></code>。</p><h2 id=准备开始>准备开始<a class=td-heading-self-link href=#%e5%87%86%e5%a4%87%e5%bc%80%e5%a7%8b aria-label="Heading self-link"></a></h2><p><p>你必须拥有一个 Kubernetes 的集群，且必须配置 kubectl 命令行工具让其与你的集群通信。
+建议运行本教程的集群至少有两个节点，且这两个节点不能作为控制平面主机。
+如果你还没有集群，你可以通过 <a href=https://minikube.sigs.k8s.io/docs/tutorials/multi_node/>Minikube</a>
+构建一个你自己的集群，或者你可以使用下面的 Kubernetes 练习环境之一：</p><ul><li><a href="https://labs.iximiuz.com/playgrounds?category=kubernetes&filter=all">iximiuz Labs</a></li><li><a href=https://killercoda.com/playgrounds/scenario/kubernetes>Killercoda</a></li><li><a href=https://kodekloud.com/public-playgrounds>KodeKloud</a></li></ul><p>要获知版本信息，请输入 <code>kubectl version</code>.</p></p><ul><li>你应该熟悉 <a href=/zh-cn/docs/concepts/workloads/pods/init-containers/>Init 容器</a>的基础知识。</li><li>你应该已经<a href=/zh-cn/docs/tasks/configure-pod-container/configure-pod-initialization/#create-a-pod-that-has-an-init-container>配置好一个 Init 容器</a>。</li></ul><h2 id=检查-init-容器的状态>检查 Init 容器的状态<a class=td-heading-self-link href=#%e6%a3%80%e6%9f%a5-init-%e5%ae%b9%e5%99%a8%e7%9a%84%e7%8a%b6%e6%80%81 aria-label="Heading self-link"></a></h2><p>显示你的 Pod 的状态：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get pod &lt;pod-name&gt;
+</span></span></code></pre></div><p>例如，状态 <code>Init:1/2</code> 表明两个 Init 容器中的一个已经成功完成：</p><pre tabindex=0><code>NAME         READY     STATUS     RESTARTS   AGE
+&lt;pod-name&gt;   0/1       Init:1/2   0          7s
+</code></pre><p>更多状态值及其含义请参考<a href=#understanding-pod-status>理解 Pod 的状态</a>。</p><h2 id=getting-details-about-init-containers>获取 Init 容器详情 <a class=td-heading-self-link href=#getting-details-about-init-containers aria-label="Heading self-link"></a></h2><p>查看 Init 容器运行的更多详情：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl describe pod &lt;pod-name&gt;
+</span></span></code></pre></div><p>例如，对于包含两个 Init 容器的 Pod 可能显示如下信息：</p><pre tabindex=0><code>Init Containers:
+  &lt;init-container-1&gt;:
+    Container ID:    ...
+    ...
+    State:           Terminated
+      Reason:        Completed
+      Exit Code:     0
+      Started:       ...
+      Finished:      ...
+    Ready:           True
+    Restart Count:   0
+    ...
+  &lt;init-container-2&gt;:
+    Container ID:    ...
+    ...
+    State:           Waiting
+      Reason:        CrashLoopBackOff
+    Last State:      Terminated
+      Reason:        Error
+      Exit Code:     1
+      Started:       ...
+      Finished:      ...
+    Ready:           False
+    Restart Count:   3
+    ...
+</code></pre><p>你还可以通过编程方式读取 Pod Spec 上的 <code>status.initContainerStatuses</code> 字段，了解 Init 容器的状态：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get pod &lt;pod-name&gt; --template <span class=s1>&#39;{{.status.initContainerStatuses}}&#39;</span>
+</span></span></code></pre></div><p>此命令将返回与上述相同的信息，并使用 <a href=https://pkg.go.dev/text/template>Go 模板</a>对结果进行格式化。</p><h2 id=accessing-logs-from-init-containers>通过 Init 容器访问日志 <a class=td-heading-self-link href=#accessing-logs-from-init-containers aria-label="Heading self-link"></a></h2><p>与 Pod 名称一起传递 Init 容器名称，以访问容器的日志。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl logs &lt;pod-name&gt; -c &lt;init-container-2&gt;
+</span></span></code></pre></div><p>运行 Shell 脚本的 Init 容器在执行 Shell 脚本时输出命令本身。
+例如，你可以在 Bash 中通过在脚本的开头运行 <code>set -x</code> 来实现。</p><h2 id=understanding-pod-status>理解 Pod 的状态 <a class=td-heading-self-link href=#understanding-pod-status aria-label="Heading self-link"></a></h2><p>以 <code>Init:</code> 开头的 Pod 状态汇总了 Init 容器执行的状态。
+下表介绍调试 Init 容器时可能看到的一些状态值示例。</p><table><thead><tr><th>状态</th><th>含义</th></tr></thead><tbody><tr><td><code>Init:N/M</code></td><td>Pod 包含 <code>M</code> 个 Init 容器，其中 <code>N</code> 个已经运行完成。</td></tr><tr><td><code>Init:Error</code></td><td>Init 容器已执行失败。</td></tr><tr><td><code>Init:CrashLoopBackOff</code></td><td>Init 容器执行总是失败。</td></tr><tr><td><code>Pending</code></td><td>Pod 还没有开始执行 Init 容器。</td></tr><tr><td><code>PodInitializing</code> or <code>Running</code></td><td>Pod 已经完成执行 Init 容器。</td></tr></tbody></table></div><div class=td-content style=page-break-before:always><h1 id=pg-132acc7efbd72bd677945eda3b6c6d38>6 - 调试运行中的 Pod</h1><p>本页解释如何在节点上调试运行中（或崩溃）的 Pod。</p><h2 id=准备开始>准备开始<a class=td-heading-self-link href=#%e5%87%86%e5%a4%87%e5%bc%80%e5%a7%8b aria-label="Heading self-link"></a></h2><ul><li><p>你的 <a class=glossary-tooltip title='Pod 表示你的集群上一组正在运行的容器。' data-bs-toggle=tooltip data-bs-placement=top href=/zh-cn/docs/concepts/workloads/pods/ target=_blank aria-label=Pod>Pod</a> 应该已经被调度并正在运行中，
+如果你的 Pod 还没有运行，请参阅<a href=/zh-cn/docs/tasks/debug/debug-application/>调试 Pod</a>。</p></li><li><p>对于一些高级调试步骤，你应该知道 Pod 具体运行在哪个节点上，并具有在该节点上运行命令的 shell 访问权限。
+你不需要任何访问权限就可以使用 <code>kubectl</code> 去运行一些标准调试步骤。</p></li></ul><h2 id=使用-kubectl-describe-pod-命令获取-pod-详情>使用 <code>kubectl describe pod</code> 命令获取 Pod 详情<a class=td-heading-self-link href=#%e4%bd%bf%e7%94%a8-kubectl-describe-pod-%e5%91%bd%e4%bb%a4%e8%8e%b7%e5%8f%96-pod-%e8%af%a6%e6%83%85 aria-label="Heading self-link"></a></h2><p>与之前的例子类似，我们使用一个 Deployment 来创建两个 Pod。</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/main/content/zh-cn/examples/application/nginx-with-request.yaml download=application/nginx-with-request.yaml><code>application/nginx-with-request.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("application-nginx-with-request-yaml")' title="复制 application/nginx-with-request.yaml 到剪贴板"></img></div><div class=includecode id=application-nginx-with-request-yaml><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>apps/v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Deployment</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>nginx-deployment</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>selector</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>matchLabels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>app</span><span class=p>:</span><span class=w> </span><span class=l>nginx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>replicas</span><span class=p>:</span><span class=w> </span><span class=m>2</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>template</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>labels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>app</span><span class=p>:</span><span class=w> </span><span class=l>nginx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>containers</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>nginx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>nginx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>resources</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>limits</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>memory</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;128Mi&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>cpu</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;500m&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>ports</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=nt>containerPort</span><span class=p>:</span><span class=w> </span><span class=m>80</span><span class=w>
+</span></span></span></code></pre></div></div></div><p>使用如下命令创建 Deployment：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl apply -f https://k8s.io/examples/application/nginx-with-request.yaml
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>deployment.apps/nginx-deployment created
+</span></span></span></code></pre></div><p>使用如下命令查看 Pod 状态：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get pods
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>NAME                                READY   STATUS    RESTARTS   AGE
+</span></span></span><span class=line><span class=cl><span class=go>nginx-deployment-67d4bdd6f5-cx2nz   1/1     Running   0          13s
+</span></span></span><span class=line><span class=cl><span class=go>nginx-deployment-67d4bdd6f5-w6kd7   1/1     Running   0          13s
+</span></span></span></code></pre></div><p>我们可以使用 <code>kubectl describe pod</code> 命令来查询每个 Pod 的更多信息，比如：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl describe pod nginx-deployment-67d4bdd6f5-w6kd7
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>Name:         nginx-deployment-67d4bdd6f5-w6kd7
+Namespace:    default
+Priority:     0
+Node:         kube-worker-1/192.168.0.113
+Start Time:   Thu, 17 Feb 2022 16:51:01 -0500
+Labels:       app=nginx
+              pod-template-hash=67d4bdd6f5
+Annotations:  &lt;none&gt;
+Status:       Running
+IP:           10.88.0.3
+IPs:
+  IP:           10.88.0.3
+  IP:           2001:db8::1
+Controlled By:  ReplicaSet/nginx-deployment-67d4bdd6f5
+Containers:
+  nginx:
+    Container ID:   containerd://5403af59a2b46ee5a23fb0ae4b1e077f7ca5c5fb7af16e1ab21c00e0e616462a
+    Image:          nginx
+    Image ID:       docker.io/library/nginx@sha256:2834dc507516af02784808c5f48b7cbe38b8ed5d0f4837f16e78d00deb7e7767
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Thu, 17 Feb 2022 16:51:05 -0500
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:     500m
+      memory:  128Mi
+    Requests:
+      cpu:        500m
+      memory:     128Mi
+    Environment:  &lt;none&gt;
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-bgsgp (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             True 
+  ContainersReady   True 
+  PodScheduled      True 
+Volumes:
+  kube-api-access-bgsgp:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       &lt;nil&gt;
+    DownwardAPI:             true
+QoS Class:                   Guaranteed
+Node-Selectors:              &lt;none&gt;
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  34s   default-scheduler  Successfully assigned default/nginx-deployment-67d4bdd6f5-w6kd7 to kube-worker-1
+  Normal  Pulling    31s   kubelet            Pulling image &#34;nginx&#34;
+  Normal  Pulled     30s   kubelet            Successfully pulled image &#34;nginx&#34; in 1.146417389s
+  Normal  Created    30s   kubelet            Created container nginx
+  Normal  Started    30s   kubelet            Started container nginx
+</code></pre><p>在这里，你可以看到有关容器和 Pod 的配置信息（标签、资源需求等），
+以及有关容器和 Pod 的状态信息（状态、就绪、重启计数、事件等）。</p><p>容器状态是 <code>Waiting</code>、<code>Running</code> 和 <code>Terminated</code> 之一。
+根据状态的不同，还有对应的额外的信息 —— 在这里你可以看到，
+对于处于运行状态的容器，系统会告诉你容器的启动时间。</p><p><code>Ready</code> 指示是否通过了最后一个就绪态探测。
+（在本例中，容器没有配置就绪态探测；如果没有配置就绪态探测，则假定容器已经就绪。）</p><p><code>Restart Count</code> 告诉你容器已重启的次数；
+这些信息对于定位配置了 <code>"Always"</code> 重启策略的容器持续崩溃问题非常有用。</p><p>目前，唯一与 Pod 有关的状态是 <code>Ready</code> 状况，该状况表明 Pod 能够为请求提供服务，
+并且应该添加到相应 Service 的负载均衡池中。</p><p>最后，你还可以看到与 Pod 相关的近期事件。
+“From” 标明记录事件的组件，“Reason” 和 “Message” 告诉你发生了什么。</p><h2 id=例子-调试-pending-状态的-pod>例子：调试 Pending 状态的 Pod<a class=td-heading-self-link href=#%e4%be%8b%e5%ad%90-%e8%b0%83%e8%af%95-pending-%e7%8a%b6%e6%80%81%e7%9a%84-pod aria-label="Heading self-link"></a></h2><p>可以使用事件来调试的一个常见的场景是，你创建 Pod 无法被调度到任何节点。
+比如，Pod 请求的资源比较多，没有任何一个节点能够满足，或者它指定了一个标签，没有节点可匹配。
+假定我们创建之前的 Deployment 时指定副本数是 5（不再是 2），并且请求 600 毫核（不再是 500），
+对于一个 4 个节点的集群，若每个节点只有 1 个 CPU，这时至少有一个 Pod 不能被调度。
+（需要注意的是，其他集群插件 Pod，比如 fluentd、skydns 等等会在每个节点上运行，
+如果我们需求 1000 毫核，将不会有 Pod 会被调度。）</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get pods
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>NAME                                READY     STATUS    RESTARTS   AGE
+nginx-deployment-1006230814-6winp   1/1       Running   0          7m
+nginx-deployment-1006230814-fmgu3   1/1       Running   0          7m
+nginx-deployment-1370807587-6ekbw   1/1       Running   0          1m
+nginx-deployment-1370807587-fg172   0/1       Pending   0          1m
+nginx-deployment-1370807587-fz9sd   0/1       Pending   0          1m
+</code></pre><p>为了查找 Pod <code>nginx-deployment-1370807587-fz9sd</code> 没有运行的原因，我们可以使用
+<code>kubectl describe pod</code> 命令查看处于挂起状态的容器组及其事件：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl describe pod nginx-deployment-1370807587-fz9sd
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>  Name:		nginx-deployment-1370807587-fz9sd
+  Namespace:	default
+  Node:		/
+  Labels:		app=nginx,pod-template-hash=1370807587
+  Status:		Pending
+  IP:
+  Controllers:	ReplicaSet/nginx-deployment-1370807587
+  Containers:
+    nginx:
+      Image:	nginx
+      Port:	80/TCP
+      QoS Tier:
+        memory:	Guaranteed
+        cpu:	Guaranteed
+      Limits:
+        cpu:	1
+        memory:	128Mi
+      Requests:
+        cpu:	1
+        memory:	128Mi
+      Environment Variables:
+  Volumes:
+    default-token-4bcbi:
+      Type:	Secret (a volume populated by a Secret)
+      SecretName:	default-token-4bcbi
+  Events:
+    FirstSeen	LastSeen	Count	From			        SubobjectPath	Type		Reason			    Message
+    ---------	--------	-----	----			        -------------	--------	------			    -------
+    1m		    48s		    7	    {default-scheduler }			        Warning		FailedScheduling	pod (nginx-deployment-1370807587-fz9sd) failed to fit in any node
+  fit failure on node (kubernetes-node-6ta5): Node didn&#39;t have enough resource: CPU, requested: 1000, used: 1420, capacity: 2000
+  fit failure on node (kubernetes-node-wul5): Node didn&#39;t have enough resource: CPU, requested: 1000, used: 1100, capacity: 2000
+</code></pre><p>这里你可以看到由调度器记录的事件，它表明了 Pod 不能被调度的原因是 <code>FailedScheduling</code>（也可能是其他值）。
+其 <code>message</code> 部分表明没有任何节点拥有足够多的资源。</p><p>要纠正这种情况，可以使用 <code>kubectl scale</code> 更新 Deployment，以指定 4 个或更少的副本。
+（或者你可以让 Pod 继续保持这个状态，这是无害的。）</p><p>你在 <code>kubectl describe pod</code> 结尾处看到的事件都保存在 etcd 中，
+并提供关于集群中正在发生的事情的高级信息。如果需要列出所有事件，可使用命令：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get events
+</span></span></code></pre></div><p>但是，需要注意的是，事件是区分名字空间的。
+如果你对某些名字空间域的对象（比如 <code>my-namespace</code> 名字下的 Pod）的事件感兴趣,
+你需要显式地在命令行中指定名字空间：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get events --namespace<span class=o>=</span>my-namespace
+</span></span></code></pre></div><p>查看所有名字空间的事件，可使用 <code>--all-namespaces</code> 参数。</p><p>除了 <code>kubectl describe pod</code> 以外，另一种获取 Pod 额外信息（除了 <code>kubectl get pod</code>）的方法
+是给 <code>kubectl get pod</code> 增加 <code>-o yaml</code> 输出格式参数。
+该命令将以 YAML 格式为你提供比 <code>kubectl describe pod</code> 更多的信息 —— 实际上是系统拥有的关于 Pod 的所有信息。
+在这里，你将看到注解（没有标签限制的键值元数据，由 Kubernetes 系统组件在内部使用）、
+重启策略、端口和卷等。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get pod nginx-deployment-1006230814-6winp -o yaml
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Pod</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>creationTimestamp</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;2022-02-17T21:51:01Z&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>generateName</span><span class=p>:</span><span class=w> </span><span class=l>nginx-deployment-67d4bdd6f5-</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>labels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>app</span><span class=p>:</span><span class=w> </span><span class=l>nginx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>pod-template-hash</span><span class=p>:</span><span class=w> </span><span class=l>67d4bdd6f5</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>nginx-deployment-67d4bdd6f5-w6kd7</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>namespace</span><span class=p>:</span><span class=w> </span><span class=l>default</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>ownerReferences</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>apps/v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>blockOwnerDeletion</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>controller</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ReplicaSet</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>nginx-deployment-67d4bdd6f5</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>uid</span><span class=p>:</span><span class=w> </span><span class=l>7d41dfd4-84c0-4be4-88ab-cedbe626ad82</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>resourceVersion</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;1364&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>uid</span><span class=p>:</span><span class=w> </span><span class=l>a6501da1-0447-4262-98eb-c03d4002222e</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>containers</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>nginx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>imagePullPolicy</span><span class=p>:</span><span class=w> </span><span class=l>Always</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>nginx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>ports</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>containerPort</span><span class=p>:</span><span class=w> </span><span class=m>80</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>protocol</span><span class=p>:</span><span class=w> </span><span class=l>TCP</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>resources</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>limits</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>cpu</span><span class=p>:</span><span class=w> </span><span class=l>500m</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>memory</span><span class=p>:</span><span class=w> </span><span class=l>128Mi</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>requests</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>cpu</span><span class=p>:</span><span class=w> </span><span class=l>500m</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>memory</span><span class=p>:</span><span class=w> </span><span class=l>128Mi</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>terminationMessagePath</span><span class=p>:</span><span class=w> </span><span class=l>/dev/termination-log</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>terminationMessagePolicy</span><span class=p>:</span><span class=w> </span><span class=l>File</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>volumeMounts</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>mountPath</span><span class=p>:</span><span class=w> </span><span class=l>/var/run/secrets/kubernetes.io/serviceaccount</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>kube-api-access-bgsgp</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>readOnly</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>dnsPolicy</span><span class=p>:</span><span class=w> </span><span class=l>ClusterFirst</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>enableServiceLinks</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>nodeName</span><span class=p>:</span><span class=w> </span><span class=l>kube-worker-1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>preemptionPolicy</span><span class=p>:</span><span class=w> </span><span class=l>PreemptLowerPriority</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>priority</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>restartPolicy</span><span class=p>:</span><span class=w> </span><span class=l>Always</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>schedulerName</span><span class=p>:</span><span class=w> </span><span class=l>default-scheduler</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>securityContext</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>serviceAccount</span><span class=p>:</span><span class=w> </span><span class=l>default</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>serviceAccountName</span><span class=p>:</span><span class=w> </span><span class=l>default</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>terminationGracePeriodSeconds</span><span class=p>:</span><span class=w> </span><span class=m>30</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>tolerations</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>effect</span><span class=p>:</span><span class=w> </span><span class=l>NoExecute</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>key</span><span class=p>:</span><span class=w> </span><span class=l>node.kubernetes.io/not-ready</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>operator</span><span class=p>:</span><span class=w> </span><span class=l>Exists</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>tolerationSeconds</span><span class=p>:</span><span class=w> </span><span class=m>300</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>effect</span><span class=p>:</span><span class=w> </span><span class=l>NoExecute</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>key</span><span class=p>:</span><span class=w> </span><span class=l>node.kubernetes.io/unreachable</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>operator</span><span class=p>:</span><span class=w> </span><span class=l>Exists</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>tolerationSeconds</span><span class=p>:</span><span class=w> </span><span class=m>300</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>volumes</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>kube-api-access-bgsgp</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>projected</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>defaultMode</span><span class=p>:</span><span class=w> </span><span class=m>420</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>sources</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>serviceAccountToken</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>expirationSeconds</span><span class=p>:</span><span class=w> </span><span class=m>3607</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>path</span><span class=p>:</span><span class=w> </span><span class=l>token</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>configMap</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>items</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>key</span><span class=p>:</span><span class=w> </span><span class=l>ca.crt</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>path</span><span class=p>:</span><span class=w> </span><span class=l>ca.crt</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>kube-root-ca.crt</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>downwardAPI</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>items</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>fieldRef</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>fieldPath</span><span class=p>:</span><span class=w> </span><span class=l>metadata.namespace</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>path</span><span class=p>:</span><span class=w> </span><span class=l>namespace</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>status</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>conditions</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>lastProbeTime</span><span class=p>:</span><span class=w> </span><span class=kc>null</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>lastTransitionTime</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;2022-02-17T21:51:01Z&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>status</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;True&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>Initialized</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>lastProbeTime</span><span class=p>:</span><span class=w> </span><span class=kc>null</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>lastTransitionTime</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;2022-02-17T21:51:06Z&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>status</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;True&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>Ready</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>lastProbeTime</span><span class=p>:</span><span class=w> </span><span class=kc>null</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>lastTransitionTime</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;2022-02-17T21:51:06Z&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>status</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;True&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>ContainersReady</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>lastProbeTime</span><span class=p>:</span><span class=w> </span><span class=kc>null</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>lastTransitionTime</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;2022-02-17T21:51:01Z&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>status</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;True&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>PodScheduled</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>containerStatuses</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>containerID</span><span class=p>:</span><span class=w> </span><span class=l>containerd://5403af59a2b46ee5a23fb0ae4b1e077f7ca5c5fb7af16e1ab21c00e0e616462a</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>docker.io/library/nginx:latest</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>imageID</span><span class=p>:</span><span class=w> </span><span class=l>docker.io/library/nginx@sha256:2834dc507516af02784808c5f48b7cbe38b8ed5d0f4837f16e78d00deb7e7767</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>lastState</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>nginx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>ready</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>restartCount</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>started</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>state</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>running</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>startedAt</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;2022-02-17T21:51:05Z&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>hostIP</span><span class=p>:</span><span class=w> </span><span class=m>192.168.0.113</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>phase</span><span class=p>:</span><span class=w> </span><span class=l>Running</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>podIP</span><span class=p>:</span><span class=w> </span><span class=m>10.88.0.3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>podIPs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>ip</span><span class=p>:</span><span class=w> </span><span class=m>10.88.0.3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>ip</span><span class=p>:</span><span class=w> </span><span class=m>2001</span><span class=p>:</span><span class=l>db8::1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>qosClass</span><span class=p>:</span><span class=w> </span><span class=l>Guaranteed</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>startTime</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;2022-02-17T21:51:01Z&#34;</span><span class=w>
+</span></span></span></code></pre></div><h2 id=examine-pod-logs>检查 Pod 的日志<a class=td-heading-self-link href=#examine-pod-logs aria-label="Heading self-link"></a></h2><p>首先，查看受到影响的容器的日志：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl logs <span class=si>${</span><span class=nv>POD_NAME</span><span class=si>}</span> -c <span class=si>${</span><span class=nv>CONTAINER_NAME</span><span class=si>}</span>
+</span></span></code></pre></div><p>如果你的容器之前崩溃过，你可以通过下面命令访问之前容器的崩溃日志：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl logs <span class=si>${</span><span class=nv>POD_NAME</span><span class=si>}</span> -c <span class=si>${</span><span class=nv>CONTAINER_NAME</span><span class=si>}</span> --previous
+</span></span></code></pre></div><h2 id=container-exec>使用容器 exec 进行调试<a class=td-heading-self-link href=#container-exec aria-label="Heading self-link"></a></h2><p>如果<a class=glossary-tooltip title=镜像（Image）是保存的容器实例，它打包了应用运行所需的一组软件。 data-bs-toggle=tooltip data-bs-placement=top href='/zh-cn/docs/reference/glossary/?all=true#term-image' target=_blank aria-label=容器镜像>容器镜像</a>包含调试程序，
+比如从 Linux 和 Windows 操作系统基础镜像构建的镜像，你可以使用 <code>kubectl exec</code>
+命令在特定的容器中运行一些命令：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl <span class=nb>exec</span> <span class=si>${</span><span class=nv>POD_NAME</span><span class=si>}</span> -c <span class=si>${</span><span class=nv>CONTAINER_NAME</span><span class=si>}</span> -- <span class=si>${</span><span class=nv>CMD</span><span class=si>}</span> <span class=si>${</span><span class=nv>ARG1</span><span class=si>}</span> <span class=si>${</span><span class=nv>ARG2</span><span class=si>}</span> ... <span class=si>${</span><span class=nv>ARGN</span><span class=si>}</span>
+</span></span></code></pre></div><div class="alert alert-info" role=note><h4 class=alert-heading>说明：</h4><p><code>-c ${CONTAINER_NAME}</code> 是可选择的。如果 Pod 中仅包含一个容器，就可以忽略它。</p></div><p>例如，要查看正在运行的 cassandra Pod 中的日志，可以运行：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl <span class=nb>exec</span> cassandra -- cat /var/log/cassandra/system.log
+</span></span></code></pre></div><p>你可以在 <code>kubectl exec</code> 命令后面加上 <code>-i</code> 和 <code>-t</code> 来运行一个连接到你的终端的 Shell，比如：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl <span class=nb>exec</span> -it cassandra -- sh
+</span></span></code></pre></div><p>若要了解更多内容，可查看<a href=/zh-cn/docs/tasks/debug/debug-application/get-shell-running-container/>获取正在运行容器的 Shell</a>。</p><h2 id=ephemeral-container>使用临时调试容器来进行调试<a class=td-heading-self-link href=#ephemeral-container aria-label="Heading self-link"></a></h2><div class="feature-state-notice feature-stable"><span class=feature-state-name>特性状态：</span>
+<span class=feature-state-details><span class=feature-state-stage>GA</span> since Kubernetes v1.25</span></div><p>当由于容器崩溃或容器镜像不包含调试程序（例如<a href=https://github.com/GoogleContainerTools/distroless>无发行版镜像</a>等）
+而导致 <code>kubectl exec</code> 无法运行时，<a class=glossary-tooltip title='你可以在 Pod 中临时运行的一种容器类型' data-bs-toggle=tooltip data-bs-placement=top href=/zh-cn/docs/concepts/workloads/pods/ephemeral-containers/ target=_blank aria-label=临时容器>临时容器</a>对于排除交互式故障很有用。</p><h3 id=ephemeral-container-example>使用临时容器来调试的例子<a class=td-heading-self-link href=#ephemeral-container-example aria-label="Heading self-link"></a></h3><p>你可以使用 <code>kubectl debug</code> 命令来给正在运行中的 Pod 增加一个临时容器。
+首先，像示例一样创建一个 Pod：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl run ephemeral-demo --image<span class=o>=</span>registry.k8s.io/pause:3.1 --restart<span class=o>=</span>Never
+</span></span></code></pre></div><p>本节示例中使用 <code>pause</code> 容器镜像，因为它不包含调试程序，但是这个方法适用于所有容器镜像。</p><p>如果你尝试使用 <code>kubectl exec</code> 来创建一个 shell，你将会看到一个错误，
+因为这个容器镜像中没有 shell。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl <span class=nb>exec</span> -it ephemeral-demo -- sh
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>OCI runtime exec failed: exec failed: container_linux.go:346: starting container process caused &#34;exec: \&#34;sh\&#34;: executable file not found in $PATH&#34;: unknown
+</span></span></span></code></pre></div><p>你可以改为使用 <code>kubectl debug</code> 添加调试容器。
+如果你指定 <code>-i</code> 或者 <code>--interactive</code> 参数，<code>kubectl</code> 将自动挂接到临时容器的控制台。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl debug -it ephemeral-demo --image<span class=o>=</span>busybox:1.28 --target<span class=o>=</span>ephemeral-demo
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>Defaulting debug container name to debugger-8xzrl.
+</span></span></span><span class=line><span class=cl><span class=go>If you don&#39;t see a command prompt, try pressing enter.
+</span></span></span><span class=line><span class=cl><span class=go>/ #
+</span></span></span></code></pre></div><p>此命令添加一个新的 busybox 容器并将其挂接到该容器。<code>--target</code> 参数指定另一个容器的进程命名空间。
+这个指定进程命名空间的操作是必需的，因为 <code>kubectl run</code> 不能在它创建的 Pod
+中启用<a href=/zh-cn/docs/tasks/configure-pod-container/share-process-namespace/>共享进程命名空间</a>。</p><div class="alert alert-info" role=note><h4 class=alert-heading>说明：</h4><p><a class=glossary-tooltip title=容器运行时是负责运行容器的软件。 data-bs-toggle=tooltip data-bs-placement=top href=/zh-cn/docs/setup/production-environment/container-runtimes target=_blank aria-label=容器运行时>容器运行时</a>必须支持 <code>--target</code> 参数。
+如果不支持，则临时容器可能不会启动，或者可能使用隔离的进程命名空间启动，
+导致 <code>ps</code> 不显示其他容器内的进程。</p></div><p>你可以使用 <code>kubectl describe</code> 查看新创建的临时容器的状态：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl describe pod ephemeral-demo
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>...
+</span></span></span><span class=line><span class=cl><span class=go>Ephemeral Containers:
+</span></span></span><span class=line><span class=cl><span class=go>  debugger-8xzrl:
+</span></span></span><span class=line><span class=cl><span class=go>    Container ID:   docker://b888f9adfd15bd5739fefaa39e1df4dd3c617b9902082b1cfdc29c4028ffb2eb
+</span></span></span><span class=line><span class=cl><span class=go>    Image:          busybox
+</span></span></span><span class=line><span class=cl><span class=go>    Image ID:       docker-pullable://busybox@sha256:1828edd60c5efd34b2bf5dd3282ec0cc04d47b2ff9caa0b6d4f07a21d1c08084
+</span></span></span><span class=line><span class=cl><span class=go>    Port:           &lt;none&gt;
+</span></span></span><span class=line><span class=cl><span class=go>    Host Port:      &lt;none&gt;
+</span></span></span><span class=line><span class=cl><span class=go>    State:          Running
+</span></span></span><span class=line><span class=cl><span class=go>      Started:      Wed, 12 Feb 2020 14:25:42 +0100
+</span></span></span><span class=line><span class=cl><span class=go>    Ready:          False
+</span></span></span><span class=line><span class=cl><span class=go>    Restart Count:  0
+</span></span></span><span class=line><span class=cl><span class=go>    Environment:    &lt;none&gt;
+</span></span></span><span class=line><span class=cl><span class=go>    Mounts:         &lt;none&gt;
+</span></span></span><span class=line><span class=cl><span class=go>...
+</span></span></span></code></pre></div><p>使用 <code>kubectl delete</code> 来移除已经结束掉的 Pod：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl delete pod ephemeral-demo
+</span></span></code></pre></div><h2 id=debugging-using-a-copy-of-the-pod>通过 Pod 副本调试<a class=td-heading-self-link href=#debugging-using-a-copy-of-the-pod aria-label="Heading self-link"></a></h2><p>有些时候 Pod 的配置参数使得在某些情况下很难执行故障排查。
+例如，在容器镜像中不包含 shell 或者你的应用程序在启动时崩溃的情况下，
+就不能通过运行 <code>kubectl exec</code> 来排查容器故障。
+在这些情况下，你可以使用 <code>kubectl debug</code> 来创建 Pod 的副本，通过更改配置帮助调试。</p><h3 id=在添加新的容器时创建-pod-副本>在添加新的容器时创建 Pod 副本<a class=td-heading-self-link href=#%e5%9c%a8%e6%b7%bb%e5%8a%a0%e6%96%b0%e7%9a%84%e5%ae%b9%e5%99%a8%e6%97%b6%e5%88%9b%e5%bb%ba-pod-%e5%89%af%e6%9c%ac aria-label="Heading self-link"></a></h3><p>当应用程序正在运行但其表现不符合预期时，你会希望在 Pod 中添加额外的调试工具，
+这时添加新容器是很有用的。</p><p>例如，应用的容器镜像是建立在 <code>busybox</code> 的基础上，但是你需要 <code>busybox</code>
+中并不包含的调试工具。你可以使用 <code>kubectl run</code> 模拟这个场景：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl run myapp --image<span class=o>=</span>busybox:1.28 --restart<span class=o>=</span>Never -- sleep 1d
+</span></span></code></pre></div><p>通过运行以下命令，建立 <code>myapp</code> 的一个名为 <code>myapp-debug</code> 的副本，
+新增了一个用于调试的 Ubuntu 容器：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl debug myapp -it --image<span class=o>=</span>ubuntu --share-processes --copy-to<span class=o>=</span>myapp-debug
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>Defaulting debug container name to debugger-w7xmf.
+</span></span></span><span class=line><span class=cl><span class=go>If you don&#39;t see a command prompt, try pressing enter.
+</span></span></span><span class=line><span class=cl><span class=go>root@myapp-debug:/#
+</span></span></span></code></pre></div><div class="alert alert-info" role=note><h4 class=alert-heading>说明：</h4><ul><li>如果你没有使用 <code>--container</code> 标志指定新的容器名，<code>kubectl debug</code> 会自动生成的。</li><li>默认情况下，<code>-i</code> 标志使 <code>kubectl debug</code> 附加到新容器上。
+你可以通过指定 <code>--attach=false</code> 来防止这种情况。
+如果你的会话断开连接，你可以使用 <code>kubectl attach</code> 重新连接。</li><li><code>--share-processes</code> 允许在此 Pod 中的其他容器中查看该容器的进程。
+参阅<a href=/zh-cn/docs/tasks/configure-pod-container/share-process-namespace/>在 Pod 中的容器之间共享进程命名空间</a>获取更多信息。</li></ul></div><p>不要忘了清理调试 Pod：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl delete pod myapp myapp-debug
+</span></span></code></pre></div><h3 id=在改变-pod-命令时创建-pod-副本>在改变 Pod 命令时创建 Pod 副本<a class=td-heading-self-link href=#%e5%9c%a8%e6%94%b9%e5%8f%98-pod-%e5%91%bd%e4%bb%a4%e6%97%b6%e5%88%9b%e5%bb%ba-pod-%e5%89%af%e6%9c%ac aria-label="Heading self-link"></a></h3><p>有时更改容器的命令很有用，例如添加调试标志或因为应用崩溃。</p><p>为了模拟应用崩溃的场景，使用 <code>kubectl run</code> 命令创建一个立即退出的容器：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl run --image<span class=o>=</span>busybox:1.28 myapp -- <span class=nb>false</span>
+</span></span></code></pre></div><p>使用 <code>kubectl describe pod myapp</code> 命令，你可以看到容器崩溃了：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>Containers:
+</span></span></span><span class=line><span class=cl><span class=go>  myapp:
+</span></span></span><span class=line><span class=cl><span class=go>    Image:         busybox
+</span></span></span><span class=line><span class=cl><span class=go>    ...
+</span></span></span><span class=line><span class=cl><span class=go>    Args:
+</span></span></span><span class=line><span class=cl><span class=go>      false
+</span></span></span><span class=line><span class=cl><span class=go>    State:          Waiting
+</span></span></span><span class=line><span class=cl><span class=go>      Reason:       CrashLoopBackOff
+</span></span></span><span class=line><span class=cl><span class=go>    Last State:     Terminated
+</span></span></span><span class=line><span class=cl><span class=go>      Reason:       Error
+</span></span></span><span class=line><span class=cl><span class=go>      Exit Code:    1
+</span></span></span></code></pre></div><p>你可以使用 <code>kubectl debug</code> 命令创建该 Pod 的一个副本，
+在该副本中命令改变为交互式 shell：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl debug myapp -it --copy-to<span class=o>=</span>myapp-debug --container<span class=o>=</span>myapp -- sh
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>If you don&#39;t see a command prompt, try pressing enter.
+</span></span></span><span class=line><span class=cl><span class=go>/ #
+</span></span></span></code></pre></div><p>现在你有了一个可以执行类似检查文件系统路径或者手动运行容器命令的交互式 shell。</p><div class="alert alert-info" role=note><h4 class=alert-heading>说明：</h4><ul><li>要更改指定容器的命令，你必须用 <code>--container</code> 命令指定容器的名字，
+否则 <code>kubectl debug</code> 将建立一个新的容器运行你指定的命令。</li><li>默认情况下，标志 <code>-i</code> 使 <code>kubectl debug</code> 附加到容器。
+你可通过指定 <code>--attach=false</code> 来防止这种情况。
+如果你的断开连接，可以使用 <code>kubectl attach</code> 重新连接。</li></ul></div><p>不要忘了清理调试 Pod：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl delete pod myapp myapp-debug
+</span></span></code></pre></div><h3 id=在更改容器镜像时拷贝-pod>在更改容器镜像时拷贝 Pod<a class=td-heading-self-link href=#%e5%9c%a8%e6%9b%b4%e6%94%b9%e5%ae%b9%e5%99%a8%e9%95%9c%e5%83%8f%e6%97%b6%e6%8b%b7%e8%b4%9d-pod aria-label="Heading self-link"></a></h3><p>在某些情况下，你可能想要改动一个行为异常的 Pod，即从其正常的生产容器镜像更改为包含调试构建程序或其他实用程序的镜像。</p><p>下面的例子，用 <code>kubectl run</code> 创建一个 Pod：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl run myapp --image<span class=o>=</span>busybox:1.28 --restart<span class=o>=</span>Never -- sleep 1d
+</span></span></code></pre></div><p>现在可以使用 <code>kubectl debug</code> 创建一个拷贝并将其容器镜像更改为 <code>ubuntu</code>：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl debug myapp --copy-to<span class=o>=</span>myapp-debug --set-image<span class=o>=</span>*<span class=o>=</span>ubuntu
+</span></span></code></pre></div><p><code>--set-image</code> 与 <code>container_name=image</code> 使用相同的 <code>kubectl set image</code> 语法。
+<code>*=ubuntu</code> 表示把所有容器的镜像改为 <code>ubuntu</code>。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl delete pod myapp myapp-debug
+</span></span></code></pre></div><h2 id=node-shell-session>在节点上通过 shell 来进行调试<a class=td-heading-self-link href=#node-shell-session aria-label="Heading self-link"></a></h2><p>如果这些方法都不起作用，你可以找到运行 Pod 的节点，然后创建一个 Pod 运行在该节点上。
+你可以通过 <code>kubectl debug</code> 在节点上创建一个交互式 Shell：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl debug node/mynode -it --image<span class=o>=</span>ubuntu
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>Creating debugging pod node-debugger-mynode-pdx84 with container debugger on node mynode.
+</span></span></span><span class=line><span class=cl><span class=go>If you don&#39;t see a command prompt, try pressing enter.
+</span></span></span><span class=line><span class=cl><span class=go>root@ek8s:/#
+</span></span></span></code></pre></div><p>当在节点上创建调试会话，注意以下要点：</p><ul><li><code>kubectl debug</code> 基于节点的名字自动生成新的 Pod 的名字。</li><li>节点的根文件系统会被挂载在 <code>/host</code>。</li><li>新的调试容器运行在主机 IPC 名字空间、主机网络名字空间以及主机 PID 名字空间内，
+Pod 没有特权，因此读取某些进程信息可能会失败，并且 <code>chroot /host</code> 也可能会失败。</li><li>如果你需要一个特权 Pod，需要手动创建或使用 <code>--profile=sysadmin</code> 标志。</li></ul><p>当你完成节点调试时，不要忘记清理调试 Pod：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl delete pod node-debugger-mynode-pdx84
+</span></span></code></pre></div><h3 id=捕获和分析-node-pod-流量>捕获和分析 Node/Pod 流量<a class=td-heading-self-link href=#%e6%8d%95%e8%8e%b7%e5%92%8c%e5%88%86%e6%9e%90-node-pod-%e6%b5%81%e9%87%8f aria-label="Heading self-link"></a></h3><p>在调试网络问题时，捕获和分析来自 Node/Pod
+的网络流量可以提供有关连接问题、DNS 解析失败或异常网络行为的宝贵信息。</p><p>你可以使用带有 <code>--profile=sysadmin</code> 标志的 <code>kubectl debug</code>
+命令在节点上运行网络捕获工具。</p><p>首先，在运行 Pod 的节点上创建一个调试会话：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl debug --profile<span class=o>=</span>sysadmin node/<span class=si>${</span><span class=nv>NODE_NAME</span><span class=si>}</span> -it --image<span class=o>=</span>ubuntu:latest
+</span></span></code></pre></div><p>进入调试容器后，安装 tcpdump 并捕获节点网络接口上的流量：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>apt-get update <span class=o>&amp;&amp;</span> apt-get install -y tcpdump
+</span></span><span class=line><span class=cl>tcpdump -i any -n
+</span></span></code></pre></div><div class="alert alert-info" role=note><h4 class=alert-heading>说明：</h4><p>调试完毕后，别忘了清理调试 Pod：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl delete pod node-debugger-mynode-pdx84
+</span></span></code></pre></div></div><p>你还可以捕获来自特定 Pod 的流量：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl debug --profile<span class=o>=</span>sysadmin pod/<span class=si>${</span><span class=nv>POD_NAME</span><span class=si>}</span> -n <span class=si>${</span><span class=nv>NAMESPACE</span><span class=si>}</span> -it --image<span class=o>=</span>ubuntu:latest
+</span></span></code></pre></div><p>&lt;!
+And then perform the same <code>tcpdump</code> command inside the debug container to capture traffic from the Pod's network namespace.
+-->
+然后，在调试容器内执行相同的 <code>tcpdump</code> 命令，以捕获 Pod 网络命名空间中的流量。</p><h2 id=debugging-profiles>指定应用配置来调试 Pod 或节点 <a class=td-heading-self-link href=#debugging-profiles aria-label="Heading self-link"></a></h2><p>使用 <code>kubectl debug</code> 通过调试 Pod 来调试节点、通过临时容器来调试 Pod 或者调试复制的 Pod 时，
+你可以为其应用配置。通过应用配置，可以设置特定的属性（如
+<a href=/zh-cn/docs/tasks/configure-pod-container/security-context/>securityContext</a>），
+以适应各种场景。有两种配置：静态配置和自定义配置。</p><h3 id=static-profile>应用静态配置 <a class=td-heading-self-link href=#static-profile aria-label="Heading self-link"></a></h3><p>静态配置是预定义的属性集，你可以使用 <code>--profile</code> 标志来应用这些属性。
+可用的配置如下：</p><table><thead><tr><th>配置</th><th>描述</th></tr></thead><tbody><tr><td>legacy</td><td>一组与 1.22 行为向后兼容的属性</td></tr><tr><td>general</td><td>一组对大多数调试过程而言均合理的通用属性</td></tr><tr><td>baseline</td><td>一组与 <a href=/zh-cn/docs/concepts/security/pod-security-standards/#baseline>PodSecurityStandard Baseline 策略</a>兼容的属性</td></tr><tr><td>restricted</td><td>一组与 <a href=/zh-cn/docs/concepts/security/pod-security-standards/#restricted>PodSecurityStandard Restricted 策略</a>兼容的属性</td></tr><tr><td>netadmin</td><td>一组包含网络管理员特权的属性</td></tr><tr><td>sysadmin</td><td>一组包含系统管理员（root）特权的属性</td></tr></tbody></table><div class="alert alert-info" role=note><h4 class=alert-heading>说明：</h4><p>如果你不指定 <code>--profile</code>，<code>legacy</code> 配置被默认使用，但此配置计划在不久的将来弃用。
+因此建议使用 <code>general</code> 等其他配置。</p></div><p>假设你要创建一个 Pod 并进行调试。
+先创建一个名为 <code>myapp</code> 的 Pod 作为示例：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl run myapp --image<span class=o>=</span>busybox:1.28 --restart<span class=o>=</span>Never -- sleep 1d
+</span></span></code></pre></div><p>然后，使用临时容器调试 Pod。
+如果临时容器需要具有特权，你可以使用 <code>sysadmin</code> 配置：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl debug -it myapp --image<span class=o>=</span>busybox:1.28 --target<span class=o>=</span>myapp --profile<span class=o>=</span>sysadmin
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>Targeting container &#34;myapp&#34;. If you don&#39;t see processes from this container it may be because the container runtime doesn&#39;t support this feature.
+</span></span></span><span class=line><span class=cl><span class=go>Defaulting debug container name to debugger-6kg4x.
+</span></span></span><span class=line><span class=cl><span class=go>If you don&#39;t see a command prompt, try pressing enter.
+</span></span></span><span class=line><span class=cl><span class=go>/ #
+</span></span></span></code></pre></div><p>通过在容器内运行以下命令检查临时容器进程的权能：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>/ <span class=c1># grep Cap /proc/$$/status</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>...
+</span></span></span><span class=line><span class=cl><span class=go>CapPrm:	000001ffffffffff
+</span></span></span><span class=line><span class=cl><span class=go>CapEff:	000001ffffffffff
+</span></span></span><span class=line><span class=cl><span class=go>...
+</span></span></span></code></pre></div><p>这意味着通过应用 <code>sysadmin</code> 配置，容器进程被授予了作为特权容器的全部权能。
+更多细节参见<a href=/zh-cn/docs/tasks/configure-pod-container/security-context/#set-capabilities-for-a-container>权能</a>。</p><p>你还可以检查临时容器是否被创建为特权容器：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get pod myapp -o <span class=nv>jsonpath</span><span class=o>=</span><span class=s1>&#39;{.spec.ephemeralContainers[0].securityContext}&#39;</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span><span class=nt>&#34;privileged&#34;</span><span class=p>:</span><span class=kc>true</span><span class=p>}</span>
+</span></span></code></pre></div><p>你在完成上述操作后，可运行以下命令清理 Pod：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl delete pod myapp
+</span></span></code></pre></div><h3 id=custom-profile>应用自定义配置 <a class=td-heading-self-link href=#custom-profile aria-label="Heading self-link"></a></h3><div class="feature-state-notice feature-stable"><span class=feature-state-name>特性状态：</span>
+<span class=feature-state-details><span class=feature-state-stage>GA</span> since Kubernetes v1.32</span></div><p>你可以以 YAML 或 JSON 格式定义部分容器规约作为自定义配置，
+并使用 <code>--custom</code> 标志来应用自定义配置。</p><div class="alert alert-info" role=note><h4 class=alert-heading>说明：</h4><p>自定义配置仅支持修改容器规约，但不允许修改容器规约中的
+<code>name</code>、<code>image</code>、<code>command</code>、<code>lifecycle</code> 和 <code>volumeDevices</code> 字段。
+自定义配置不支持修改 Pod 规约。</p></div><p>创建一个名为 myapp 的 Pod 作为示例：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl run myapp --image<span class=o>=</span>busybox:1.28 --restart<span class=o>=</span>Never -- sleep 1d
+</span></span></code></pre></div><p>以 YAML 或 JSON 格式创建自定义配置。
+以下创建一个名为 <code>custom-profile.yaml</code> 的 YAML 格式文件：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>env</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>ENV_VAR_1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>value</span><span class=p>:</span><span class=w> </span><span class=l>value_1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>ENV_VAR_2</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>value</span><span class=p>:</span><span class=w> </span><span class=l>value_2</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>securityContext</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>capabilities</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>add</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=l>NET_ADMIN</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=l>SYS_TIME</span><span class=w>
+</span></span></span></code></pre></div><p>运行以下命令，使用带自定义配置的临时容器来调试 Pod：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl debug -it myapp --image<span class=o>=</span>busybox:1.28 --target<span class=o>=</span>myapp --profile<span class=o>=</span>general --custom<span class=o>=</span>custom-profile.yaml
+</span></span></code></pre></div><p>你可以检查临时容器和应用的自定义配置是否已被添加到目标 Pod：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get pod myapp -o <span class=nv>jsonpath</span><span class=o>=</span><span class=s1>&#39;{.spec.ephemeralContainers[0].env}&#39;</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>[{</span><span class=nt>&#34;name&#34;</span><span class=p>:</span><span class=s2>&#34;ENV_VAR_1&#34;</span><span class=p>,</span><span class=nt>&#34;value&#34;</span><span class=p>:</span><span class=s2>&#34;value_1&#34;</span><span class=p>},{</span><span class=nt>&#34;name&#34;</span><span class=p>:</span><span class=s2>&#34;ENV_VAR_2&#34;</span><span class=p>,</span><span class=nt>&#34;value&#34;</span><span class=p>:</span><span class=s2>&#34;value_2&#34;</span><span class=p>}]</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get pod myapp -o <span class=nv>jsonpath</span><span class=o>=</span><span class=s1>&#39;{.spec.ephemeralContainers[0].securityContext}&#39;</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span><span class=nt>&#34;capabilities&#34;</span><span class=p>:{</span><span class=nt>&#34;add&#34;</span><span class=p>:[</span><span class=s2>&#34;NET_ADMIN&#34;</span><span class=p>,</span><span class=s2>&#34;SYS_TIME&#34;</span><span class=p>]}}</span>
+</span></span></code></pre></div><p>你在完成上述任务后，可以执行以下命令清理 Pod：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl delete pod myapp
+</span></span></code></pre></div></div><div class=td-content style=page-break-before:always><h1 id=pg-09530217eead8a801ead3ef165c2f591>7 - 获取正在运行容器的 Shell</h1><p>本文介绍怎样使用 <code>kubectl exec</code> 命令获取正在运行容器的 Shell。</p><h2 id=准备开始>准备开始<a class=td-heading-self-link href=#%e5%87%86%e5%a4%87%e5%bc%80%e5%a7%8b aria-label="Heading self-link"></a></h2><p>你必须拥有一个 Kubernetes 的集群，且必须配置 kubectl 命令行工具让其与你的集群通信。
+建议运行本教程的集群至少有两个节点，且这两个节点不能作为控制平面主机。
+如果你还没有集群，你可以通过 <a href=https://minikube.sigs.k8s.io/docs/tutorials/multi_node/>Minikube</a>
+构建一个你自己的集群，或者你可以使用下面的 Kubernetes 练习环境之一：</p><ul><li><a href="https://labs.iximiuz.com/playgrounds?category=kubernetes&filter=all">iximiuz Labs</a></li><li><a href=https://killercoda.com/playgrounds/scenario/kubernetes>Killercoda</a></li><li><a href=https://kodekloud.com/public-playgrounds>KodeKloud</a></li></ul><h2 id=获取容器的-shell>获取容器的 Shell<a class=td-heading-self-link href=#%e8%8e%b7%e5%8f%96%e5%ae%b9%e5%99%a8%e7%9a%84-shell aria-label="Heading self-link"></a></h2><p>在本练习中，你将创建包含一个容器的 Pod。容器运行 nginx 镜像。下面是 Pod 的配置文件：</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/main/content/zh-cn/examples/application/shell-demo.yaml download=application/shell-demo.yaml><code>application/shell-demo.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("application-shell-demo-yaml")' title="复制 application/shell-demo.yaml 到剪贴板"></img></div><div class=includecode id=application-shell-demo-yaml><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Pod</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>shell-demo</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>volumes</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>shared-data</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>emptyDir</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>containers</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>nginx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>nginx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>volumeMounts</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>shared-data</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>mountPath</span><span class=p>:</span><span class=w> </span><span class=l>/usr/share/nginx/html</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>hostNetwork</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>dnsPolicy</span><span class=p>:</span><span class=w> </span><span class=l>Default</span><span class=w>
+</span></span></span></code></pre></div></div></div><p>创建 Pod：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl apply -f https://k8s.io/examples/application/shell-demo.yaml
+</span></span></code></pre></div><p>检查容器是否运行正常：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl get pod shell-demo
+</span></span></code></pre></div><p>获取正在运行容器的 Shell：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl <span class=nb>exec</span> --stdin --tty shell-demo -- /bin/bash
+</span></span></code></pre></div><div class="alert alert-info" role=note><h4 class=alert-heading>说明：</h4><p>双破折号 "--" 用于将要传递给命令的参数与 kubectl 的参数分开。</p></div><p>在 shell 中，打印根目录：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 在容器内运行如下命令</span>
+</span></span><span class=line><span class=cl>ls /
+</span></span></code></pre></div><p>在 shell 中，实验其他命令。下面是一些示例：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 你可以在容器中运行这些示例命令</span>
+</span></span><span class=line><span class=cl>ls /
+</span></span><span class=line><span class=cl>cat /proc/mounts
+</span></span><span class=line><span class=cl>cat /proc/1/maps
+</span></span><span class=line><span class=cl>apt-get update
+</span></span><span class=line><span class=cl>apt-get install -y tcpdump
+</span></span><span class=line><span class=cl>tcpdump
+</span></span><span class=line><span class=cl>apt-get install -y lsof
+</span></span><span class=line><span class=cl>lsof
+</span></span><span class=line><span class=cl>apt-get install -y procps
+</span></span><span class=line><span class=cl>ps aux
+</span></span><span class=line><span class=cl>ps aux <span class=p>|</span> grep nginx
+</span></span></code></pre></div><h2 id=编写-nginx-的根页面>编写 nginx 的根页面<a class=td-heading-self-link href=#%e7%bc%96%e5%86%99-nginx-%e7%9a%84%e6%a0%b9%e9%a1%b5%e9%9d%a2 aria-label="Heading self-link"></a></h2><p>再看一下 Pod 的配置文件。该 Pod 有个 <code>emptyDir</code> 卷，容器将该卷挂载到了 <code>/usr/share/nginx/html</code>。</p><p>在 shell 中，在 <code>/usr/share/nginx/html</code> 目录创建一个 <code>index.html</code> 文件：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 在容器内运行如下命令</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s1>&#39;Hello shell demo&#39;</span> &gt; /usr/share/nginx/html/index.html
+</span></span></code></pre></div><p>在 shell 中，向 nginx 服务器发送 GET 请求：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 在容器内运行如下命令</span>
+</span></span><span class=line><span class=cl>apt-get update
+</span></span><span class=line><span class=cl>apt-get install curl
+</span></span><span class=line><span class=cl>curl http://localhost/
+</span></span></code></pre></div><p>输出结果显示了你在 <code>index.html</code> 中写入的文本。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>Hello shell demo
+</span></span></code></pre></div><p>当用完 shell 后，输入 <code>exit</code> 退出。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=nb>exit</span> <span class=c1># 快速退出容器内的 Shell</span>
+</span></span></code></pre></div><h2 id=在容器中运行单个命令>在容器中运行单个命令<a class=td-heading-self-link href=#%e5%9c%a8%e5%ae%b9%e5%99%a8%e4%b8%ad%e8%bf%90%e8%a1%8c%e5%8d%95%e4%b8%aa%e5%91%bd%e4%bb%a4 aria-label="Heading self-link"></a></h2><p>在普通的命令窗口（而不是 shell）中，打印环境运行容器中的变量：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl <span class=nb>exec</span> shell-demo -- env
+</span></span></code></pre></div><p>实验运行其他命令。下面是一些示例：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl <span class=nb>exec</span> shell-demo -- ps aux
+</span></span><span class=line><span class=cl>kubectl <span class=nb>exec</span> shell-demo -- ls /
+</span></span><span class=line><span class=cl>kubectl <span class=nb>exec</span> shell-demo -- cat /proc/1/mounts
+</span></span></code></pre></div><h2 id=当-pod-包含多个容器时打开-shell>当 Pod 包含多个容器时打开 shell<a class=td-heading-self-link href=#%e5%bd%93-pod-%e5%8c%85%e5%90%ab%e5%a4%9a%e4%b8%aa%e5%ae%b9%e5%99%a8%e6%97%b6%e6%89%93%e5%bc%80-shell aria-label="Heading self-link"></a></h2><p>如果 Pod 有多个容器，<code>--container</code> 或者 <code>-c</code> 可以在 <code>kubectl exec</code> 命令中指定容器。
+例如，你有个名为 my-pod 的 Pod，该 Pod 有两个容器分别为 <strong>main-app</strong> 和 <strong>healper-app</strong>。
+下面的命令将会打开一个 shell 访问 <strong>main-app</strong> 容器。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubectl <span class=nb>exec</span> -i -t my-pod --container main-app -- /bin/bash
+</span></span></code></pre></div><div class="alert alert-info" role=note><h4 class=alert-heading>说明：</h4><p>短的命令参数 <code>-i</code> 和 <code>-t</code> 与长的命令参数 <code>--stdin</code> 和 <code>--tty</code> 作用相同。</p></div><h2 id=接下来>接下来<a class=td-heading-self-link href=#%e6%8e%a5%e4%b8%8b%e6%9d%a5 aria-label="Heading self-link"></a></h2><ul><li>阅读 <a href=/docs/reference/generated/kubectl/kubectl-commands/#exec>kubectl exec</a>。</li></ul></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col col-sm-3 text-xs-center order-1"><ul class="list-inline mb-0 footer-icons"><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=YouTube><a class=text-white target=_blank rel=noopener href=https://youtube.com/kubernetescommunity aria-label=YouTube><i class="fa-brands fa-youtube"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=论坛><a class=text-white target=_blank rel=noopener href=https://discuss.kubernetes.io aria-label=论坛><i class="fa-solid fa-envelope"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title="Server Fault"><a class=text-white target=_blank rel=noopener href=https://serverfault.com/questions/tagged/kubernetes aria-label="Server Fault"><i class="fa-brands fa-stack-overflow"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=LinkedIn><a class=text-white target=_blank rel=noopener href=https://www.linkedin.com/company/kubernetes/ aria-label=LinkedIn><i class="fa-brands fa-linkedin"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Bluesky><a class=text-white target=_blank rel=noopener href=https://bsky.app/profile/kubernetes.io aria-label=Bluesky><i class="fa-brands fa-bluesky"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title="X（前身为 Twitter）"><a class=text-white target=_blank rel=noopener href=https://x.com/kubernetesio aria-label="X（前身为 Twitter）"><i class="fa-brands fa-x-twitter"></i></a></li></ul></div><div class="col-5 col-sm-6 text-center order-2 footer-main"><p><span class=copyright-notice>&copy; 2026 The Kubernetes 作者 | 文档发布基于 <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a> 授权许可</span></p><p><span class=copyright-notice>&copy; 2026 Linux 基金会&reg;。保留所有权利。Linux 基金会已注册并使用商标。如需了解 Linux 基金会的商标列表，请访问<a href=https://www.linuxfoundation.org/trademark-usage class=light-text>商标使用页面</a></span></p><p><span class=certification-notice>ICP 许可： <a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></span></p></div><div class="col col-sm-3 text-end text-xs-center order-3"><ul class="list-inline mb-0 footer-icons"><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=贡献者网站><a class=text-white target=_blank rel=noopener href=https://k8s.dev/ aria-label=贡献者网站><i class="fa-solid fa-laptop-code"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/kubernetes/kubernetes aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Slack><a class=text-white target=_blank rel=noopener href=https://slack.k8s.io aria-label=Slack><i class="fa-brands fa-slack"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=事件日历><a class=text-white target=_blank rel=noopener href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io" aria-label=事件日历><i class="fa-solid fa-calendar-days"></i></a></li></ul></div></div></div></footer></div><script src=/js/main.js></script><script src=/js/tabpane-persist.js></script><script src=/js/theme-image-swap.js></script><script defer src=/js/detect-js.js></script></body></html>
