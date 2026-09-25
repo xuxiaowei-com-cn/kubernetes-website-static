@@ -1,0 +1,245 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kubernetes Blog</title><link>https://kubernetes.xuxiaowei.com.cn/bn/</link><description>The Kubernetes blog is used by the project to communicate new features, community reports, and any news that might be relevant to the Kubernetes community.</description><generator>Hugo -- gohugo.io</generator><language>bn</language><image><url>https://raw.githubusercontent.com/kubernetes/kubernetes/master/logo/logo.png</url><title>The Kubernetes project logo</title><link>https://kubernetes.xuxiaowei.com.cn/bn/</link></image><atom:link href="https://kubernetes.xuxiaowei.com.cn/bn/feed.xml" rel="self" type="application/rss+xml"/><item><title>গেটওয়ে API v1.1: সার্ভিস মেশ, GRPCRoute, এবং আরো অনেক কিছু</title><link>https://kubernetes.xuxiaowei.com.cn/bn/blog/2024/05/09/gateway-api-v1-1/</link><pubDate>Thu, 09 May 2024 09:00:00 -0800</pubDate><guid>https://kubernetes.xuxiaowei.com.cn/bn/blog/2024/05/09/gateway-api-v1-1/</guid><description>
+&lt;p>&lt;img src="https://kubernetes.xuxiaowei.com.cn/bn/blog/2024/05/09/gateway-api-v1-1/gateway-api-logo.svg" alt="গেটওয়ে API লোগো">&lt;/p>
+&lt;p>গত অক্টোবরে গেটওয়ে API-এর
+GA রিলিজের পর, কুবারনেটিস SIG নেটওয়ার্ক &lt;a href="https://gateway-api.sigs.k8s.io/">গেটওয়ে API&lt;/a>-এর v1.1
+রিলিজ ঘোষণা করতে পেরে আনন্দিত। এই রিলিজে, বেশ কিছু ফিচার
+&lt;em>Standard Channel&lt;/em> (GA)-তে গ্র্যাজুয়েট হচ্ছে, বিশেষত সার্ভিস মেশ এবং GRPCRoute-এর জন্য
+সাপোর্ট সহ। আমরা কিছু নতুন এক্সপেরিমেন্টাল ফিচারও প্রবর্তন করছি, যার মধ্যে
+সেশনের স্থিরতা এবং ক্লায়েন্ট সার্টিফিকেট ভেরিফিকেশন।&lt;/p>
+&lt;h2 id="নত-ন-ক">নতুন কি&lt;a class="td-heading-self-link" href="#%e0%a6%a8%e0%a6%a4-%e0%a6%a8-%e0%a6%95" aria-label="Heading self-link">&lt;/a>&lt;/h2>&lt;h3 id="স-ট-য-ন-ড-র-ড-থ-ক-গ-র-য-জ-য-ট">স্ট্যান্ডার্ড থেকে গ্র্যাজুয়েট&lt;a class="td-heading-self-link" href="#%e0%a6%b8-%e0%a6%9f-%e0%a6%af-%e0%a6%a8-%e0%a6%a1-%e0%a6%b0-%e0%a6%a1-%e0%a6%a5-%e0%a6%95-%e0%a6%97-%e0%a6%b0-%e0%a6%af-%e0%a6%9c-%e0%a6%af-%e0%a6%9f" aria-label="Heading self-link">&lt;/a>&lt;/h3>&lt;p>এই রিলিজে চারটি অধীর আগ্রহে প্রতীক্ষিত ফিচার স্ট্যান্ডার্ডে গ্র্যাজুয়েট অন্তর্ভুক্ত রয়েছে।
+এর মানে এগুলো আর পরীক্ষামূলক ধারণা নয়; স্ট্যান্ডার্ড রিলিজ
+চ্যানেলে অন্তর্ভুক্তি API সারফেসের উপর হাই লেভেলের আস্থা নির্দেশ করে এবং
+ব্যাকওয়ার্ড কম্প্যাটিবিলিটির গ্যারান্টি প্রদান করে। অবশ্যই, অন্য যেকোন
+কুবারনেটিস API-এর মতো, স্ট্যান্ডার্ড চ্যানেল ফিচারগুলি সময়ের সাথে সাথে
+ব্যাকওয়ার্ড-কম্প্যাটিবিলিটির সংযোজনের সাথে বিকশিত হতে পারে এবং আমরা অবশ্যই ভবিষ্যতে
+এই নতুন ফিচারগুলিতে আরও রিফাইনমেন্ট এবং উন্নতি আশা করি।
+এই সবগুলি কীভাবে কাজ করে সে সম্পর্কে আরও তথ্যের জন্য,
+&lt;a href="https://gateway-api.sigs.k8s.io/concepts/versioning/">গেটওয়ে API ভার্শনিং পলিসি&lt;/a> দেখুন।&lt;/p>
+&lt;h4 id="স-র-ভ-স-ম-শ-স-প-র-ট">&lt;a href="https://gateway-api.sigs.k8s.io/mesh/">সার্ভিস মেশ সাপোর্ট&lt;/a>&lt;a class="td-heading-self-link" href="#%e0%a6%b8-%e0%a6%b0-%e0%a6%ad-%e0%a6%b8-%e0%a6%ae-%e0%a6%b6-%e0%a6%b8-%e0%a6%aa-%e0%a6%b0-%e0%a6%9f" aria-label="Heading self-link">&lt;/a>&lt;/h4>&lt;p>সার্ভিস মেশ সাপোর্ট গেটওয়ে APIতে সার্ভিস মেশ ব্যবহারকারীদের ইনগ্রেস ট্র্যাফিক এবং মেশ ট্র্যাফিক
+পরিচালনা করতে, একই পলিসি এবং রাউটিং ইন্টারফেসগুলি পুনরায় ব্যবহার করতে একই API
+ব্যবহার করতে দেয়। গেটওয়ে API v1.1-এ, রুটগুলিতে (যেমন HTTPRoute) এখন 'parentRef' হিসাবে
+একটি সার্ভিস থাকতে পারে, নির্দিষ্ট সার্ভিসগুলিতে ট্র্যাফিক কীভাবে আচরণ করে তা নিয়ন্ত্রণ করতে।
+আরও তথ্যের জন্য,
+[গেটওয়ে API সার্ভিস মেশ ডকুমেন্টেশন] (&lt;a href="https://gateway-api.sigs.k8s.io/mesh/">https://gateway-api.sigs.k8s.io/mesh/&lt;/a>)
+পড়ুন বা
+[গেটওয়ে API বাস্তবায়নের তালিকা] (&lt;a href="https://gateway-api.sigs.k8s.io/implementations/#service-mesh-implementation-status">https://gateway-api.sigs.k8s.io/implementations/#service-mesh-implementation-status&lt;/a>) দেখুন।&lt;/p>
+&lt;p>উদাহরণস্বরূপ, কেউ একটি HTTPRoute দিয়ে একটি অ্যাপ্লিকেশনের কল গ্রাফের গভীরে
+একটি ওয়ার্কলোডের একটি canary স্থাপনার কাজ করতে পারে:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">gateway.networking.k8s.io/v1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">HTTPRoute&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">color-canary&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">namespace&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">faces&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">spec&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">parentRefs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">color&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Service&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">group&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">rules&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">backendRefs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">color&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">weight&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">50&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">color2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">weight&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">50&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>এটি মূল &lt;code>color&lt;/code> সার্ভিস এবং &lt;code>color2&lt;/code> সার্ভিসটির মধ্যে &lt;code>faces&lt;/code> নেমস্পেস এর
+&lt;code>color&lt;/code> সার্ভিসটিতে প্রেরিত ট্র্যাফিককে 50/50 বিভক্ত করবে, একটি পোর্টেবল
+কনফিগারেশন ব্যবহার করে যা এক মেশ থেকে অন্য মেশে সরানো সহজ।&lt;/p>
+&lt;h4 id="grpcroute">&lt;a href="https://gateway-api.sigs.k8s.io/guides/grpc-routing/">GRPCRoute&lt;/a>&lt;a class="td-heading-self-link" href="#grpcroute" aria-label="Heading self-link">&lt;/a>&lt;/h4>&lt;p>আপনি যদি ইতিমধ্যে GRPCRoute এর পরীক্ষামূলক ভার্সনটি ব্যবহার করে থাকেন তবে আমরা
+GRPCRoute স্ট্যান্ডার্ড চ্যানেল ভার্সনে আপগ্রেড করা বন্ধ রাখার পরামর্শ দিচ্ছি যতক্ষণ না আপনি যে কন্ট্রোলারগুলি
+ব্যবহার করছেন তা GRPCRoute v1 সমর্থন করার জন্য আপডেট করা হয়। ততক্ষণ পর্যন্ত,
+GRPCRoute-এর v1.1-এ পরীক্ষামূলক চ্যানেল ভার্সনে আপগ্রেড করা নিরাপদ
+যা v1alpha2 এবং v1 API ভার্সন উভয়ই অন্তর্ভুক্ত করে।&lt;/p>
+&lt;h4 id="parentreference-port">&lt;a href="https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io%2fv1.ParentReference">ParentReference Port&lt;/a>&lt;a class="td-heading-self-link" href="#parentreference-port" aria-label="Heading self-link">&lt;/a>&lt;/h4>&lt;p>&lt;code>port&lt;/code> ফিল্ডটি ParentReference এ যুক্ত করা হয়েছিল, আপনাকে গেটওয়ে লিসেনার,
+সার্ভিস বা অন্যান্য প্যারেন্ট রিসোর্সগুলিতে রিসোর্সগুলি সংযুক্ত করার অনুমতি দেয়
+(বাস্তবায়নের উপর নির্ভর করে)। একটি পোর্টের সাথে বাইন্ডিং আপনাকে
+একবারে একাধিক লিসেনার্সের সাথে অ্যাটাচ করতে দেয়।&lt;/p>
+&lt;p>উদাহরণস্বরূপ, আপনি লিসেনারের &lt;code>name&lt;/code> ফিল্ডের পরিবর্তে লিসেনার &lt;code>port&lt;/code> দ্বারা নির্দিষ্ট হিসাবে
+গেটওয়ের এক বা একাধিক নির্দিষ্ট লিসেনারের সাথে একটি HTTPRoute সংযুক্ত করতে পারেন।&lt;/p>
+&lt;p>আরও তথ্যের জন্য, দেখুন
+&lt;a href="https://gateway-api.sigs.k8s.io/api-types/httproute/#attaching-to-gateways">গেটওয়েতে সংযুক্ত করা হচ্ছে&lt;/a>.&lt;/p>
+&lt;h4 id="কনফর-ম-ন-স-প-র-ফ-ইল-এব-র-প-র-ট">&lt;a href="https://gateway-api.sigs.k8s.io/concepts/conformance/#conformance-profiles">কনফর্মেন্স প্রোফাইল এবং রিপোর্ট&lt;/a>&lt;a class="td-heading-self-link" href="#%e0%a6%95%e0%a6%a8%e0%a6%ab%e0%a6%b0-%e0%a6%ae-%e0%a6%a8-%e0%a6%b8-%e0%a6%aa-%e0%a6%b0-%e0%a6%ab-%e0%a6%87%e0%a6%b2-%e0%a6%8f%e0%a6%ac-%e0%a6%b0-%e0%a6%aa-%e0%a6%b0-%e0%a6%9f" aria-label="Heading self-link">&lt;/a>&lt;/h4>&lt;p>কনফর্মেন্স রিপোর্ট API &lt;code>mode&lt;/code> ফিল্ড (ইমপ্লিমেন্টেশনের কাজের মোড নির্দিষ্ট করার
+উদ্দেশ্যে) এবং &lt;code>gatewayAPIChannel&lt;/code> (স্ট্যান্ডার্ড বা এক্সপেরিমেন্টাল)
+দিয়ে প্রসারিত করা হয়েছে। &lt;code>gatewayAPIVersion&lt;/code> এবং &lt;code>gatewayAPIChannel&lt;/code>
+এখন টেস্টিং ফলাফলের সংক্ষিপ্ত বিবরণ সহ স্যুট মেশিনারি দ্বারা
+স্বয়ংক্রিয়ভাবে পূরণ করা হয়। প্রতিবেদনগুলি আরও স্ট্রাকচারড উপায়ে পুনর্গঠিত হয়েছে এবং
+ইমপ্লিমেন্টেশনগুলিতে এখন টেস্টগুলি কীভাবে চালানো হবে সে সম্পর্কে তথ্য যুক্ত করতে পারে এবং
+রিপ্রোডাকশন পদক্ষেপগুলি সরবরাহ করতে পারে।&lt;/p>
+&lt;h3 id="এক-সপ-র-ম-ন-ট-ল-চ-য-ন-ল-নত-ন-স-য-জন">এক্সপেরিমেন্টাল চ্যানেলে নতুন সংযোজন&lt;a class="td-heading-self-link" href="#%e0%a6%8f%e0%a6%95-%e0%a6%b8%e0%a6%aa-%e0%a6%b0-%e0%a6%ae-%e0%a6%a8-%e0%a6%9f-%e0%a6%b2-%e0%a6%9a-%e0%a6%af-%e0%a6%a8-%e0%a6%b2-%e0%a6%a8%e0%a6%a4-%e0%a6%a8-%e0%a6%b8-%e0%a6%af-%e0%a6%9c%e0%a6%a8" aria-label="Heading self-link">&lt;/a>&lt;/h3>&lt;h4 id="গ-টওয-ক-ল-য-ন-ট-স-র-ট-ফ-ক-ট-ভ-র-ফ-ক-শন">&lt;a href="https://gateway-api.sigs.k8s.io/geps/gep-91/">গেটওয়ে ক্লায়েন্ট সার্টিফিকেট ভেরিফিকেশন&lt;/a>&lt;a class="td-heading-self-link" href="#%e0%a6%97-%e0%a6%9f%e0%a6%93%e0%a6%af-%e0%a6%95-%e0%a6%b2-%e0%a6%af-%e0%a6%a8-%e0%a6%9f-%e0%a6%b8-%e0%a6%b0-%e0%a6%9f-%e0%a6%ab-%e0%a6%95-%e0%a6%9f-%e0%a6%ad-%e0%a6%b0-%e0%a6%ab-%e0%a6%95-%e0%a6%b6%e0%a6%a8" aria-label="Heading self-link">&lt;/a>&lt;/h4>&lt;p>গেটওয়েগুলি এখন &lt;code>tls&lt;/code> এর মধ্যে একটি নতুন &lt;code>frontendValidation&lt;/code> ফিল্ড প্রবর্তন করে প্রতিটি
+গেটওয়ে লিস্টেনারের জন্য ক্লায়েন্ট সার্টিফিকেট ভেরিফিকেশন কনফিগার করতে পারে।
+এই ফিল্ডটি CA সার্টিফিকেটগুলির একটি তালিকা কনফিগার করা সমর্থন করে যা ক্লায়েন্ট দ্বারা উপস্থাপিত
+সার্টিফিকেটগুলি যাচাই করার জন্য ট্রাস্ট অ্যাঙ্কর হিসাবে ব্যবহার করা যেতে পারে।&lt;/p>
+&lt;p>নিম্নলিখিত উদাহরণটি দেখায় যে কীভাবে &lt;code>foo-example-com-ca-cert&lt;/code>
+ConfigMap-এ সঞ্চিত CACertificate-টি &lt;code>foo-https&lt;/code> গেটওয়ে লিস্টেনারের সাথে সংযুক্ত ক্লায়েন্টদের
+দ্বারা উপস্থাপিত সার্টিফিকেটগুলি যাচাই করতে ব্যবহার করা যেতে পারে।&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">gateway.networking.k8s.io/v1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Gateway&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">client-validation-basic&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">spec&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">gatewayClassName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">acme-lb&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">listeners&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">foo-https&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">protocol&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">HTTPS&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">443&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">hostname&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">foo.example.com&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">tls&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">certificateRefs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Secret&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">group&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">foo-example-com-cert&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">frontendValidation&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">caCertificateRefs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ConfigMap&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">group&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">foo-example-com-ca-cert&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="স-শন-প-র-স-স-ট-ন-স-এব-backendlbpolicy-session-persistence-and-backendlbpolicy">&lt;a href="https://gateway-api.sigs.k8s.io/geps/gep-1619/">সেশন পার্সিস্টেন্স এবং BackendLBPolicy (Session Persistence and BackendLBPolicy)&lt;/a>&lt;a class="td-heading-self-link" href="#%e0%a6%b8-%e0%a6%b6%e0%a6%a8-%e0%a6%aa-%e0%a6%b0-%e0%a6%b8-%e0%a6%b8-%e0%a6%9f-%e0%a6%a8-%e0%a6%b8-%e0%a6%8f%e0%a6%ac-backendlbpolicy-session-persistence-and-backendlbpolicy" aria-label="Heading self-link">&lt;/a>&lt;/h4>&lt;p>সার্ভিস-লেভেলের কনফিগারেশনের জন্য একটি নতুন পলিসি
+(&lt;a href="https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1alpha2.BackendLBPolicy">BackendLBPolicy&lt;/a>)
+এবং রুট-লেভেলের কনফিগারেশনের জন্য HTTPRoute এবং GRPCRoute এর মধ্যে ফিল্ড হিসাবে গেটওয়ে API-তে
+&lt;a href="https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io%2fv1.SessionPersistence">সেশন পার্সিস্টেন্স&lt;/a>
+ইন্ট্রোডিউসড করা হচ্ছে। BackendLBPolicy এবং রুট-লেভেলের
+API-গুলি সেশন টাইমআউট, সেশনের নাম, সেশনের ধরণ এবং কুকি লাইফটাইম টাইপ সহ
+একই সেশন পার্সিস্টেন্স কনফিগারেশন সরবরাহ করে।&lt;/p>
+&lt;p>নীচে &lt;code>BackendLBPolicy&lt;/code> এর একটি উদাহরণ কনফিগারেশন রয়েছে যা &lt;code>foo&lt;/code> সার্ভিসের জন্য কুকি-বেসড
+সেশন পার্সিস্টেন্স এনাবল করে। এটি সেশনের নামটি &lt;code>foo-session&lt;/code> এ সেট করে,
+অ্যাবসুলুট এবং আইডিএল টাইমআউটসগুলি ডিফাইন করে এবং কুকিটিকে সেশন
+কুকি হিসাবে কনফিগার করে:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">gateway.networking.k8s.io/v1alpha2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">BackendLBPolicy&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">lb-policy&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">namespace&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">foo-ns&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">spec&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">targetRefs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">group&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">core&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">service&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">foo&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">sessionPersistence&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">sessionName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">foo-session&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">absoluteTimeout&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">1h&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">idleTimeout&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">30m&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Cookie&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">cookieConfig&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">lifetimeType&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Session&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ব-ক-সব">বাকি সব&lt;a class="td-heading-self-link" href="#%e0%a6%ac-%e0%a6%95-%e0%a6%b8%e0%a6%ac" aria-label="Heading self-link">&lt;/a>&lt;/h3>&lt;h4 id="tls-ট-র-ম-ন-লজ-ক-ল-য-র-ফ-ক-শন">&lt;a href="https://gateway-api.sigs.k8s.io/geps/gep-2907/">TLS টার্মিনোলজি ক্ল্যারিফিকেশন&lt;/a>&lt;a class="td-heading-self-link" href="#tls-%e0%a6%9f-%e0%a6%b0-%e0%a6%ae-%e0%a6%a8-%e0%a6%b2%e0%a6%9c-%e0%a6%95-%e0%a6%b2-%e0%a6%af-%e0%a6%b0-%e0%a6%ab-%e0%a6%95-%e0%a6%b6%e0%a6%a8" aria-label="Heading self-link">&lt;/a>&lt;/h4>&lt;p>API জুড়ে আমাদের TLS টার্মিনোলজিকে আরও সামঞ্জস্যপূর্ণ করার বিস্তৃত লক্ষ্যের
+অংশ হিসাবে, আমরা BackendTLSPolicy-তে কিছু ব্রেকিং পরিবর্তন ইন্ট্রোডিউসড করেছি।
+এর ফলে একটি নতুন API ভার্সন (v1alpha3) তৈরি হয়েছে এবং ভার্সন আপগ্রেড সঠিকভাবে পরিচালনা
+করার জন্য এই নীতির যে কোনও এক্সিস্টিং ইমপ্লিমেন্টেশনের প্রয়োজন হবে, যেমন
+ডেটা ব্যাক আপ করে এবং এই নতুন ভার্সনটি ইনস্টল করার আগে v1alpha2
+ভার্সনটি আনইনস্টল করতে হবে।&lt;/p>
+&lt;p>v1alpha2 BackendTLSPolicy ফিল্ড-ত্রর যে কোনও রেফারেন্স v1alpha3 এ আপডেট করতে হবে।
+ফিল্ডগুলিতে নির্দিষ্ট পরিবর্তনগুলির মধ্যে রয়েছে:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>targetRef&lt;/code> BackendTLSPolicy-কে একাধিক লক্ষ্যবস্তুর সাথে সংযুক্ত করার অনুমতি দেওয়ার
+জন্য &lt;code>targetRefs&lt;/code> হয়ে যায়&lt;/li>
+&lt;li>&lt;code>tls&lt;/code> হয়ে যায় &lt;code>validation&lt;/code>&lt;/li>
+&lt;li>&lt;code>tls.caCertRefs&lt;/code> হয়ে যায় &lt;code>validation.caCertificateRefs&lt;/code>&lt;/li>
+&lt;li>&lt;code>tls.wellKnownCACerts&lt;/code> হয়ে যায় &lt;code>validation.wellKnownCACertificates&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>এই রিলিজে অন্তর্ভুক্ত পরিবর্তনগুলির সম্পূর্ণ তালিকার জন্য, দয়া করে
+&lt;a href="https://github.com/kubernetes-sigs/gateway-api/releases/tag/v1.1.0">v1.1.0 রিলিজ নোটগুলি&lt;/a> দেখুন।&lt;/p>
+&lt;h2 id="গ-টওয-api-ব-য-কগ-র-উন-ড">গেটওয়ে API ব্যাকগ্রাউন্ড&lt;a class="td-heading-self-link" href="#%e0%a6%97-%e0%a6%9f%e0%a6%93%e0%a6%af-api-%e0%a6%ac-%e0%a6%af-%e0%a6%95%e0%a6%97-%e0%a6%b0-%e0%a6%89%e0%a6%a8-%e0%a6%a1" aria-label="Heading self-link">&lt;/a>&lt;/h2>&lt;p>গেটওয়ে API-এর ধারণাটি প্রাথমিকভাবে 2019 KubeCon San Diego-তে
+Ingress API-এর পরবর্তী প্রজন্ম হিসাবে &lt;a href="https://youtu.be/Ne9UJL6irXY?si=wgtC9w8PMB5ZHil2">প্রপোজড&lt;/a>
+করা হয়েছিল। তার পর থেকে,
+&lt;a href="https://www.youtube.com/watch?v=V3Vu_FWb4l4">কুবারনেটিস ইতিহাসের সবচেয়ে সহযোগী API&lt;/a>
+হয়ে ওঠার জন্য একটি অবিশ্বাস্য কমিউনিটি গঠিত হয়েছে।
+এখন পর্যন্ত 200 জনেরও বেশি লোক এই API-তে অবদান রেখেছে এবং এই সংখ্যাটি বাড়ছে।&lt;/p>
+&lt;p>রক্ষণাবেক্ষণকারীরা গেটওয়ে API তে অবদান রেখেছেন রিপোসিটোরি তে কমিট,
+ডিসকাশন, আইডিয়া বা সাধারণ সহায়তার আকারে এমন প্রত্যেককে ধন্যবাদ জানাতে চান।
+আমরা সত্যিকার অর্থেই এই নিবেদিত ও সক্রিয় কমিউনিটির সাপোর্ট ছাড়া এতদূর
+আসতে পারতাম না।&lt;/p>
+&lt;h2 id="চ-ষ-ট-কর-দ-খ-ন">চেষ্টা করে দেখুন&lt;a class="td-heading-self-link" href="#%e0%a6%9a-%e0%a6%b7-%e0%a6%9f-%e0%a6%95%e0%a6%b0-%e0%a6%a6-%e0%a6%96-%e0%a6%a8" aria-label="Heading self-link">&lt;/a>&lt;/h2>&lt;p>অন্যান্য কুবারনেটিস API-গুলির বিপরীতে, গেটওয়ে API-এর সর্বশেষ ভার্সন পেতে আপনাকে
+কুবারনেটিসের সর্বশেষ ভার্সনে আপগ্রেড করতে হবে না। যতক্ষণ না আপনি কুবারনেটিস 1.26
+বা তার পরের টা চালাচ্ছেন, আপনি গেটওয়ে API-এর এই ভার্সনটি দিয়ে উঠতে এবং
+চালাতে সক্ষম হবেন।&lt;/p>
+&lt;p>API ব্যবহার করতে, আমাদের &lt;a href="https://gateway-api.sigs.k8s.io/guides/">শুরু করার গাইড&lt;/a> অনুসরণ করুন।&lt;/p>
+&lt;h2 id="য-ক-ত-হ-ন">যুক্ত হোন&lt;a class="td-heading-self-link" href="#%e0%a6%af-%e0%a6%95-%e0%a6%a4-%e0%a6%b9-%e0%a6%a8" aria-label="Heading self-link">&lt;/a>&lt;/h2>&lt;p>ইনগ্রেস এবং সার্ভিস মেশ উভয়ের জন্য কুবারনেটিস রাউটিং API-গুলির ভবিষ্যতকে সংজ্ঞায়িত করতে
+এবং সহায়তা করার প্রচুর সুযোগ রয়েছে।&lt;/p>
+&lt;ul>
+&lt;li>কোন ইউজ-কেস সম্বোধন করা যেতে পারে তা দেখতে &lt;a href="https://gateway-api.sigs.k8s.io/guides">ব্যবহারকারী গাইডগুলি&lt;/a> দেখুন।&lt;/li>
+&lt;li>&lt;a href="https://gateway-api.sigs.k8s.io/implementations/">বিদ্যমান গেটওয়ে কন্ট্রোলারগুলির&lt;/a> মধ্যে একটি ব্যবহার করে দেখুন।&lt;/li>
+&lt;li>অথবা &lt;a href="https://gateway-api.sigs.k8s.io/contributing/">কমিউনিটিতে আমাদের সাথে যোগ দিন&lt;/a>
+এবং একসাথে গেটওয়ে API-এর ভবিষ্যত গড়ে তুলতে আমাদের সহায়তা করুন!&lt;/li>
+&lt;/ul>
+&lt;h2 id="র-ল-ট-ড-ক-ব-রন-ট-স-ব-লগ-আর-ট-ক-লস">রিলেটেড কুবারনেটিস ব্লগ আর্টিকেলস&lt;a class="td-heading-self-link" href="#%e0%a6%b0-%e0%a6%b2-%e0%a6%9f-%e0%a6%a1-%e0%a6%95-%e0%a6%ac-%e0%a6%b0%e0%a6%a8-%e0%a6%9f-%e0%a6%b8-%e0%a6%ac-%e0%a6%b2%e0%a6%97-%e0%a6%86%e0%a6%b0-%e0%a6%9f-%e0%a6%95-%e0%a6%b2%e0%a6%b8" aria-label="Heading self-link">&lt;/a>&lt;/h2>&lt;ul>
+&lt;li>&lt;a href="https://kubernetes.xuxiaowei.com.cn/blog/2023/11/28/gateway-api-ga/">গেটওয়ে API v1.0 এ নতুন এক্সপেরিমেন্টাল ফিচারস&lt;/a>
+11/2023&lt;/li>
+&lt;li>&lt;a href="https://kubernetes.xuxiaowei.com.cn/blog/2023/10/31/gateway-api-ga/">গেটওয়ে API v1.0: GA রিলিজ&lt;/a>
+10/2023&lt;/li>
+&lt;li>&lt;a href="https://kubernetes.xuxiaowei.com.cn/blog/2023/10/25/introducing-ingress2gateway/">ingress2gateway ইন্ট্রোডিউসিং করা; গেটওয়ে API-তে আপগ্রেড সিম্পলিফাই করা হচ্ছে&lt;/a>
+10/2023&lt;/li>
+&lt;li>&lt;a href="https://kubernetes.xuxiaowei.com.cn/blog/2023/08/29/gateway-api-v0-8/">গেটওয়ে API v0.8.0: ইন্ট্রোডিউসিং সার্ভিস মেশ সাপোর্ট&lt;/a>
+08/2023&lt;/li>
+&lt;/ul></description></item><item><title>কুবারনেটিস 1.29: পারসিস্টেন্টভলিউম গ্র্যাজুয়েটদের জন্য একক পড অ্যাক্সেস মোড</title><link>https://kubernetes.xuxiaowei.com.cn/bn/blog/2023/12/18/read-write-once-pod-access-mode-ga/</link><pubDate>Mon, 18 Dec 2023 00:00:00 +0000</pubDate><guid>https://kubernetes.xuxiaowei.com.cn/bn/blog/2023/12/18/read-write-once-pod-access-mode-ga/</guid><description>
+&lt;p>Kubernetes v1.29 প্রকাশের সাথে, ReadWriteOncePod ভলিউম অ্যাক্সেস মোড
+সবার জন্য গ্র্যাজুয়েট হয়েছে: এটি কুবারনেটিস এর স্থিতিশীল API এর অংশ।
+এই ব্লগ পোস্টে, আমি এই অ্যাক্সেস মোড এবং এটি কী করে তা আরও ঘনিষ্ঠভাবে দেখব।&lt;/p>
+&lt;h2 id="readwriteoncepod-ক">&lt;code>ReadWriteOncePod&lt;/code> কি?&lt;a class="td-heading-self-link" href="#readwriteoncepod-%e0%a6%95" aria-label="Heading self-link">&lt;/a>&lt;/h2>&lt;p>&lt;code>ReadWriteOncePod&lt;/code> হলো
+&lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/concepts/storage/persistent-volumes/#persistent-volumes">পারসিস্টেন্টভলিউম(PersistentVolumes (PVs))&lt;/a> এবং
+&lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims">পারসিস্টেন্টভলিউমক্লেমস(PersistentVolumeClaims (PVCs))&lt;/a>
+এর জন্য একটি অ্যাক্সেস মোড যা কুবারনেটিস v1.22-এ চালু করা হয়েছে। এই অ্যাক্সেস মোড
+আপনাকে ক্লাস্টারে একটি একক পডে ভলিউম অ্যাক্সেস সীমাবদ্ধ করতে সক্ষম করে, এটি নিশ্চিত
+করে যে একটি সময়ে শুধুমাত্র একটি পড ভলিউমে লিখতে পারে। এটি স্টেটফুল ওয়ার্কলোডগুলির
+জন্য বিশেষভাবে উপযোগী হতে পারে যার জন্য স্টোরেজে একক-লেখকের অ্যাক্সেস প্রয়োজন।&lt;/p>
+&lt;p>অ্যাক্সেস মোড এবং &lt;code>ReadWriteOncePod&lt;/code> কীভাবে কাজ করে সে সম্পর্কে আরও প্রসঙ্গের জন্য পড়ুন
+&lt;a href="https://kubernetes.xuxiaowei.com.cn/blog/2021/09/13/read-write-once-pod-access-mode-alpha/#what-are-access-modes-and-why-are-they-important">অ্যাক্সেস মোডগুলি কী এবং কেন সেগুলি গুরুত্বপূর্ণ?&lt;/a>
+2021 থেকে পারসিস্টেন্টভলিউম নিবন্ধের জন্য একক পড অ্যাক্সেস মোড প্রবর্তন করা হয়েছে ।&lt;/p>
+&lt;h2 id="ক-ভ-ব-আম-readwriteoncepod-ব-যবহ-র-শ-র-করত-প-র">কিভাবে আমি &lt;code>ReadWriteOncePod&lt;/code> ব্যবহার শুরু করতে পারি?&lt;a class="td-heading-self-link" href="#%e0%a6%95-%e0%a6%ad-%e0%a6%ac-%e0%a6%86%e0%a6%ae-readwriteoncepod-%e0%a6%ac-%e0%a6%af%e0%a6%ac%e0%a6%b9-%e0%a6%b0-%e0%a6%b6-%e0%a6%b0-%e0%a6%95%e0%a6%b0%e0%a6%a4-%e0%a6%aa-%e0%a6%b0" aria-label="Heading self-link">&lt;/a>&lt;/h2>&lt;p>ReadWriteOncePod ভলিউম অ্যাক্সেস মোড ডিফল্টরূপে কুবারনেটিস ভার্সন v1.27
+এবং তার পরে উপলব্ধ। কুবারনেটিস v1.29 এবং পরবর্তীতে, কুবারনেটিস API
+সর্বদা এই অ্যাক্সেস মোডকে স্বীকৃতি দেয়।&lt;/p>
+&lt;p>মনে রাখবেন যে &lt;code>ReadWriteOncePod&lt;/code>
+&lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/concepts/storage/persistent-volumes/#access-modes">শুধুমাত্র CSI ভলিউমগুলির জন্য সাপোর্টেড&lt;/a>,
+এবং এই বৈশিষ্ট্যটি ব্যবহার করার আগে, আপনাকে নিম্নলিখিত
+&lt;a href="https://kubernetes-csi.github.io/docs/sidecar-containers.html">CSI সাইডকারগুলিকে&lt;/a>
+এই ভার্সনগুলিতে বা তার বেশি আপডেট করতে হবে:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/kubernetes-csi/external-provisioner/releases/tag/v3.0.0">csi-provisioner:v3.0.0+&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/kubernetes-csi/external-attacher/releases/tag/v3.3.0">csi-attacher:v3.3.0+&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/kubernetes-csi/external-resizer/releases/tag/v1.3.0">csi-resizer:v1.3.0+&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>&lt;code>ReadWriteOncePod&lt;/code> ব্যবহার শুরু করতে, আপনাকে &lt;code>ReadWriteOncePod&lt;/code>
+অ্যাক্সেস মোড সহ একটি PVC তৈরি করতে হবে:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">PersistentVolumeClaim&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">v1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">single-writer-only&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">spec&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">accessModes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">ReadWriteOncePod&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c"># Allows only a single pod to access single-writer-only.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">resources&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">requests&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">storage&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">1Gi&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>যদি আপনার স্টোরেজ প্লাগইন
+&lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/concepts/storage/dynamic-provisioning/">ডায়নামিক প্রভিশনিং সাপোর্টে করে&lt;/a>,
+তাহলে &lt;code>ReadWriteOncePod&lt;/code> অ্যাক্সেস মোড প্রয়োগ করে নতুন
+পারসিস্টেন্টভলিউম তৈরি করা হবে।&lt;/p>
+&lt;p>&lt;code>ReadWriteOncePod&lt;/code> ব্যবহার করার জন্য বিদ্যমান ভলিউম স্থানান্তরিত করার বিশদ বিবরণের জন্য
+&lt;a href="https://kubernetes.xuxiaowei.com.cn/blog/2021/09/13/read-write-once-pod-access-mode-alpha/#migrating-existing-persistentvolumes">বিদ্যমান পারসিস্টেন্টভলিউম স্থানান্তর করা&lt;/a> পড়ুন ।&lt;/p>
+&lt;h2 id="আম-ক-ভ-ব-আরও-শ-খত-প-র">আমি কীভাবে আরও শিখতে পারি?&lt;a class="td-heading-self-link" href="#%e0%a6%86%e0%a6%ae-%e0%a6%95-%e0%a6%ad-%e0%a6%ac-%e0%a6%86%e0%a6%b0%e0%a6%93-%e0%a6%b6-%e0%a6%96%e0%a6%a4-%e0%a6%aa-%e0%a6%b0" aria-label="Heading self-link">&lt;/a>&lt;/h2>&lt;p>&lt;code>ReadWriteOncePod&lt;/code> অ্যাক্সেস মোড এবং CSI স্পেক পরিবর্তনের প্রেরণা সম্পর্কে
+আরও বিশদ বিবরণের জন্য অনুগ্রহ করে ব্লগ পোস্টগুলি
+&lt;a href="https://kubernetes.xuxiaowei.com.cn/blog/2021/09/13/read-write-once-pod-access-mode-alpha">alpha&lt;/a>,
+&lt;a href="https://kubernetes.xuxiaowei.com.cn/blog/2023/04/20/read-write-once-pod-access-mode-beta">beta&lt;/a>, এবং
+&lt;a href="https://github.com/kubernetes/enhancements/blob/master/keps/sig-storage/2485-read-write-once-pod-pv-access-mode/README.md">KEP-2485&lt;/a> দেখুন৷&lt;/p>
+&lt;h2 id="আম-ক-ভ-ব-জড-ত-হত-প-র">আমি কিভাবে জড়িত হতে পারি?&lt;a class="td-heading-self-link" href="#%e0%a6%86%e0%a6%ae-%e0%a6%95-%e0%a6%ad-%e0%a6%ac-%e0%a6%9c%e0%a6%a1-%e0%a6%a4-%e0%a6%b9%e0%a6%a4-%e0%a6%aa-%e0%a6%b0" aria-label="Heading self-link">&lt;/a>&lt;/h2>&lt;p>&lt;a href="https://kubernetes.slack.com/messages/csi">কুবারনেটিস #csi স্ল্যাক চ্যানেল&lt;/a> এবং
+যে কোনো স্ট্যান্ডার্ড
+&lt;a href="https://github.com/kubernetes/community/blob/master/sig-storage/README.md#contact">SIG স্টোরেজ কমিউনিকেশন চ্যানেল&lt;/a>
+হলো SIG স্টোরেজ এবং CSI টিমের কাছে পৌঁছানোর দুর্দান্ত পদ্ধতি।&lt;/p>
+&lt;p>নিম্নলিখিত ব্যক্তিদের বিশেষ ধন্যবাদ যাদের চিন্তাশীল পর্যালোচনা এবং প্রতিক্রিয়া এই বৈশিষ্ট্যটি গঠনে সহায়তা করেছে:&lt;/p>
+&lt;ul>
+&lt;li>Abdullah Gharaibeh (ahg-g)&lt;/li>
+&lt;li>Aldo Culquicondor (alculquicondor)&lt;/li>
+&lt;li>Antonio Ojea (aojea)&lt;/li>
+&lt;li>David Eads (deads2k)&lt;/li>
+&lt;li>Jan Šafránek (jsafrane)&lt;/li>
+&lt;li>Joe Betz (jpbetz)&lt;/li>
+&lt;li>Kante Yin (kerthcet)&lt;/li>
+&lt;li>Michelle Au (msau42)&lt;/li>
+&lt;li>Tim Bannister (sftim)&lt;/li>
+&lt;li>Xing Yang (xing-yang)&lt;/li>
+&lt;/ul>
+&lt;p>আপনি যদি CSI বা কুবারনেটিস স্টোরেজ সিস্টেমের যেকোন অংশের ডিজাইন
+এবং বিকাশের সাথে জড়িত হতে আগ্রহী হন, তাহলে
+&lt;a href="https://github.com/kubernetes/community/tree/master/sig-storage">কুবারনেটিস স্টোরেজ স্পেশাল ইন্টারেস্ট গ্রুপে&lt;/a> (Special Interest Group(SIG)) যোগ দিন।
+আমরা দ্রুত বৃদ্ধি করছি এবং সবসময় নতুন অবদানকারীদের স্বাগত জানাই।&lt;/p></description></item></channel></rss>

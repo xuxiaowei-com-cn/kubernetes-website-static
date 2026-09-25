@@ -1,0 +1,1073 @@
+<!doctype html><html itemscope itemtype=http://schema.org/WebPage dir=ltr lang=ko class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/ko/docs/setup/production-environment/><meta name=robots content="noindex, nofollow"><link rel="shortcut icon" type=image/png href=/images/kubernetes.png><link rel=icon type=image/png sizes=64x64 href=/icons/favicon-64.png><link rel=icon type=image/png sizes=32x32 href=/icons/favicon-32.png><link rel=icon type=image/png sizes=16x16 href=/icons/favicon-16.png><link rel=apple-touch-icon-256x256 href=/icons/apple-touch-icon-256x256.png><link rel=apple-touch-icon-196x196 href=/icons/apple-touch-icon-196x196.png><link rel=apple-touch-icon-192x192 href=/icons/apple-touch-icon-192x192.png><link rel=apple-touch-icon-180x180 href=/icons/apple-touch-icon-180x180.png><link rel=apple-touch-icon-167x167 href=/icons/apple-touch-icon-167x167.png><link rel=apple-touch-icon-160x160 href=/icons/apple-touch-icon-160x160.png><link rel=apple-touch-icon-152x152 href=/icons/apple-touch-icon-152x152.png><link rel=apple-touch-icon-120x120 href=/icons/apple-touch-icon-120x120.png><link rel=apple-touch-icon-76x76 href=/icons/apple-touch-icon-76x76.png><link rel=icon type=image/png href=/icons/icon-128x128.png sizes=128x128><meta name=theme-color content="#326de6"><title>프로덕션 환경 | Kubernetes</title>
+<meta name=description content="프로덕션 수준의 쿠버네티스 클러스터 생성"><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/ko/docs/setup/production-environment/"><meta property="og:site_name" content="Kubernetes"><meta property="og:title" content="프로덕션 환경"><meta property="og:description" content="프로덕션 수준의 쿠버네티스 클러스터 생성"><meta property="og:locale" content="ko"><meta property="og:type" content="website"><meta itemprop=name content="프로덕션 환경"><meta itemprop=description content="프로덕션 수준의 쿠버네티스 클러스터 생성"><meta itemprop=dateModified content="2026-09-25T21:02:31+08:00"><meta itemprop=wordCount content="1776"><meta name=twitter:card content="summary"><meta name=twitter:title content="프로덕션 환경"><meta name=twitter:description content="프로덕션 수준의 쿠버네티스 클러스터 생성"><link href=/scss/main.css rel=stylesheet><script src=/js/jquery-3.7.1.min.js integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin=anonymous></script><meta property="og:image" content="/images/kubernetes-open-graph.png"><link rel=manifest href=/manifest.webmanifest><link rel=alternate hreflang=en href=https://kubernetes.xuxiaowei.com.cn/docs/setup/production-environment/><link rel=alternate hreflang=bn href=https://kubernetes.xuxiaowei.com.cn/bn/docs/setup/production-environment/><link rel=alternate hreflang=zh-cn href=https://kubernetes.xuxiaowei.com.cn/zh-cn/docs/setup/production-environment/><link rel=alternate hreflang=fr href=https://kubernetes.xuxiaowei.com.cn/fr/docs/setup/production-environment/><link rel=alternate hreflang=hi href=https://kubernetes.xuxiaowei.com.cn/hi/docs/setup/production-environment/><link rel=alternate hreflang=id href=https://kubernetes.xuxiaowei.com.cn/id/docs/setup/production-environment/><link rel=alternate hreflang=ja href=https://kubernetes.xuxiaowei.com.cn/ja/docs/setup/production-environment/><link rel=alternate hreflang=uk href=https://kubernetes.xuxiaowei.com.cn/uk/docs/setup/production-environment/><link rel=alternate hreflang=vi href=https://kubernetes.xuxiaowei.com.cn/vi/docs/setup/production-environment/><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png"}</script><meta name=theme-color content="#326ce5"><script defer src=/js/banner-dismiss.js></script><script src=/js/legacy-script.js></script><script type=text/javascript>(function(e,t,n,s,o,i,a){e[n]=e[n]||function(){(e[n].q=e[n].q||[]).push(arguments)},i=t.createElement(s),i.async=1,i.src="https://www.clarity.ms/tag/"+o,a=t.getElementsByTagName(s)[0],a.parentNode.insertBefore(i,a)})(window,document,"clarity","script","ym5ysff3i4")</script></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand flex-md-column flex-xl-row td-navbar" data-bs-theme=dark data-auto-burger=primary><a class=navbar-brand href=/ko/><span class="navbar-brand__logo navbar-logo"><svg role="img" viewBox="-6.09 -6.09 446.94 115.94"><defs><style>.cls-1{fill:#fff}.cls-2{fill:#326ce5}</style></defs><g id="its-pronounced"><g id="kyoob-cuttle"><path id="kkkkkkk" d="M139.583 53.815c.823-.926 1.646-1.852 2.572-2.778q1.29-1.436 2.572-2.88c.823-1.03 1.646-1.956 2.367-2.78s1.44-1.645 1.954-2.262h9.98c-1.955 2.263-3.91 4.527-5.864 6.584q-2.778 3.087-6.173 6.482a41.554 41.554.0 013.498 3.704c1.234 1.44 2.366 2.88 3.498 4.32a43.93 43.93.0 013.086 4.528c.926 1.543 1.75 2.88 2.367 4.115h-9.67c-.619-1.03-1.339-2.058-2.059-3.19a37.46 37.46.0 00-2.47-3.6 29.584 29.584.0 00-2.777-3.498 17.678 17.678.0 00-2.778-2.778v12.963h-8.436v-42.49l8.436-1.338v24.898" class="cls-1"/><path id="uuuuuuu" d="M188.761 71.819a40.037 40.037.0 01-5.555 1.132 39.77 39.77.0 01-7.1.514 16.577 16.577.0 01-6.378-1.028 9.45 9.45.0 01-5.967-7.202 24.194 24.194.0 01-.618-5.556V43.115h8.437V58.65c0 2.675.31 4.63 1.03 5.865s2.056 1.852 4.011 1.852a13.117 13.117.0 001.955-.103c.72-.103 1.235-.103 1.852-.206V43.115h8.436l-.103 28.704" class="cls-1"/><path id="bbbbbbb" d="M215.82 57.724c0-5.452-1.955-8.127-5.968-8.127a10.99 10.99.0 00-2.572.308 7.775 7.775.0 00-2.057.823v15.33c.411.103.926.103 1.543.206.617.0 1.337.103 2.058.103A6.37 6.37.0 00214.071 64a10.55 10.55.0 001.75-6.276m8.538.206a18.63 18.63.0 01-1.029 6.482 13.242 13.242.0 01-2.983 4.938 15.823 15.823.0 01-4.836 3.19 18.829 18.829.0 01-6.585 1.028c-1.028.0-2.057-.103-3.189-.205s-2.16-.206-3.292-.31c-1.029-.102-2.058-.308-3.087-.514a13.002 13.002.0 01-2.572-.72V30.254l8.437-1.337v14.815a14.37 14.37.0 012.983-.926 17.028 17.028.0 013.293-.308 13.036 13.036.0 015.555 1.13 11.142 11.142.0 014.116 3.088 12.408 12.408.0 012.47 4.938 29.216 29.216.0 01.72 6.276" class="cls-1"/><path id="eeeeeee0" d="M229.401 58.239a17.557 17.557.0 011.234-6.893 15.744 15.744.0 013.19-4.94 11.991 11.991.0 014.526-2.982 13.75 13.75.0 015.35-1.03 13.168 13.168.0 019.98 3.91c2.47 2.572 3.703 6.38 3.703 11.317a9.413 9.413.0 01-.102 1.647c0 .514-.103 1.028-.103 1.543h-19.138a5.64 5.64.0 002.47 4.115 9.79 9.79.0 005.761 1.543 21.806 21.806.0 004.527-.411 18.455 18.455.0 003.704-1.03l1.131 6.894c-.41.206-1.028.412-1.85.72a10.37 10.37.0 01-2.574.515 23.221 23.221.0 01-2.983.41c-1.029.104-2.16.207-3.19.207a18.09 18.09.0 01-6.996-1.234 15.148 15.148.0 01-4.938-3.19 14.85 14.85.0 01-2.88-4.938 24.165 24.165.0 01-.824-6.173m19.857-3.292a6.652 6.652.0 00-.412-2.058 6.254 6.254.0 00-.926-1.852 4.915 4.915.0 00-4.115-1.852 6.216 6.216.0 00-2.47.514 4.092 4.092.0 00-1.645 1.235 5.395 5.395.0 00-1.03 1.852 15.044 15.044.0 00-.514 2.058h11.112" class="cls-1"/><path id="rrrrrrr" d="M281.768 50.523a15.46 15.46.0 00-2.675-.515 17.027 17.027.0 00-3.292-.31 18.138 18.138.0 00-1.955.207 16.165 16.165.0 00-1.646.309V72.95h-8.437V44.658a43.765 43.765.0 015.35-1.44 28.942 28.942.0 016.893-.72 10.015 10.015.0 011.646.102 14.058 14.058.0 011.955.206c.618.103 1.235.206 1.955.309.617.103 1.235.309 1.646.41l-1.44 6.998" class="cls-1"/><path id="nnnnnnn" d="M287.735 44.144a49.746 49.746.0 0112.655-1.646 15.693 15.693.0 016.276 1.028 8.813 8.813.0 014.012 2.778 12.018 12.018.0 012.058 4.32 22.95 22.95.0 01.617 5.557v16.77h-8.437V57.21c0-2.675-.308-4.63-1.028-5.762s-2.058-1.646-4.013-1.646a13.116 13.116.0 00-1.955.103 10.193 10.193.0 00-1.85.206v22.943h-8.335v-28.91" class="cls-1"/><path id="eeeeeee1" d="M319.63 58.239a17.556 17.556.0 011.233-6.893 15.745 15.745.0 013.19-4.94 11.99 11.99.0 014.527-2.982 13.75 13.75.0 015.35-1.03 13.168 13.168.0 019.98 3.91c2.468 2.572 3.703 6.38 3.703 11.317a9.412 9.412.0 01-.103 1.647c0 .514-.103 1.028-.103 1.543h-19.136a5.64 5.64.0 002.47 4.115 9.789 9.789.0 005.76 1.543 21.805 21.805.0 004.528-.411 18.455 18.455.0 003.703-1.03l1.132 6.894c-.41.206-1.029.412-1.852.72a10.37 10.37.0 01-2.572.515 23.226 23.226.0 01-2.984.41c-1.028.104-2.16.207-3.189.207a18.09 18.09.0 01-6.996-1.234 15.148 15.148.0 01-4.938-3.19 14.85 14.85.0 01-2.88-4.938 24.16 24.16.0 01-.824-6.173m19.856-3.292a6.653 6.653.0 00-.41-2.058 6.255 6.255.0 00-.927-1.852 4.915 4.915.0 00-4.116-1.852 6.216 6.216.0 00-2.469.514 4.092 4.092.0 00-1.646 1.235 5.396 5.396.0 00-1.029 1.852 15.037 15.037.0 00-.514 2.058h11.111" class="cls-1"/><path id="ttttttt" d="M353.89 35.707l8.435-1.337v8.745h10.083v6.995h-10.083v10.494a8.273 8.273.0 00.926 4.218c.618 1.03 1.955 1.544 3.807 1.544a25.227 25.227.0 002.778-.206 16.728 16.728.0 002.675-.72l1.234 6.584a16.386 16.386.0 01-3.395 1.029 19.779 19.779.0 01-4.63.41 15.723 15.723.0 01-5.76-.924 9.522 9.522.0 01-3.602-2.573 10.208 10.208.0 01-1.955-4.115 26.665 26.665.0 01-.514-5.247V35.707" class="cls-1"/><path id="eeeeeee2" d="M376.73 58.239a17.556 17.556.0 011.234-6.893 15.744 15.744.0 013.19-4.94 11.99 11.99.0 014.526-2.982 13.75 13.75.0 015.35-1.03 13.168 13.168.0 019.98 3.91c2.47 2.572 3.703 6.38 3.703 11.317a9.413 9.413.0 01-.103 1.647c0 .514-.103 1.028-.103 1.543h-19.136a5.64 5.64.0 002.47 4.115 9.789 9.789.0 005.76 1.543 21.805 21.805.0 004.528-.411 18.455 18.455.0 003.703-1.03l1.132 6.894c-.41.206-1.029.412-1.852.72a10.371 10.371.0 01-2.572.515 23.226 23.226.0 01-2.983.41c-1.03.104-2.16.207-3.19.207a18.09 18.09.0 01-6.996-1.234 15.147 15.147.0 01-4.938-3.19 14.85 14.85.0 01-2.88-4.938 20.343 20.343.0 01-.824-6.173m19.754-3.292a6.652 6.652.0 00-.412-2.058 6.254 6.254.0 00-.926-1.852 4.915 4.915.0 00-4.115-1.852 6.216 6.216.0 00-2.47.514 4.092 4.092.0 00-1.646 1.235 5.395 5.395.0 00-1.028 1.852 15.037 15.037.0 00-.515 2.058h11.112" class="cls-1"/><path id="sssssss" d="M419.631 66.778a8.454 8.454.0 003.293-.411 1.802 1.802.0 00.925-1.75c0-.72-.41-1.234-1.234-1.748a19.516 19.516.0 00-3.807-1.75c-1.337-.514-2.572-1.028-3.6-1.543a10.286 10.286.0 01-2.676-1.852 8.046 8.046.0 01-1.749-2.675 9.968 9.968.0 01-.617-3.703 7.828 7.828.0 013.086-6.585c2.058-1.646 4.94-2.47 8.54-2.47a29.267 29.267.0 015.247.515 19.02 19.02.0 013.91 1.03l-1.44 6.584a122.23 122.23.0 00-3.19-.926 14.394 14.394.0 00-3.807-.412c-2.675.0-3.91.72-3.91 2.16a3.004 3.004.0 00.206.927 1.728 1.728.0 00.72.823c.31.206.823.514 1.338.823.617.308 1.337.514 2.263.926a33.94 33.94.0 014.63 2.057 7.682 7.682.0 012.778 2.16 5.374 5.374.0 011.44 2.573 10.677 10.677.0 01.412 3.292 7.669 7.669.0 01-3.293 6.688c-2.16 1.543-5.247 2.263-9.362 2.263a23.783 23.783.0 01-6.584-.72 18.78 18.78.0 01-3.6-1.132l1.44-6.893a31.442 31.442.0 004.423 1.337 18.932 18.932.0 004.218.412" class="cls-1"/></g></g><path d="M4.233 60.98h4.881v3.877h-4.88z" class="cls-1"/><path d="M62.304 58.789a1.65 1.65.0 00-.393-.03 1.694 1.694.0 00-.655.17 1.712 1.712.0 00-.829 2.218l-.012.017 3.92 9.47a20.008 20.008.0 008.087-10.16l-10.1-1.705zm-15.717 1.34a1.71 1.71.0 00-1.64-1.33 1.68 1.68.0 00-.337.03l-.017-.02-10.013 1.7a20.084 20.084.0 008.062 10.087l3.88-9.376-.03-.037a1.693 1.693.0 00.095-1.053zm8.386 3.678a1.709 1.709.0 00-3.014.004h-.008l-4.924 8.904a20.057 20.057.0 0010.946.563q1.01-.23 1.973-.551l-4.936-8.92zm15.588-20.682-7.576 6.78.004.022a1.712 1.712.0 00.671 2.939l.01.04 9.813 2.828a20.352 20.352.0 00-2.922-12.61zm-14.075.759a1.712 1.712.0 002.718 1.305l.03.013 8.29-5.878A20.155 20.155.0 0055.901 33.72l.576 10.16zm-8.779 1.343a1.71 1.71.0 002.714-1.31l.042-.02.576-10.176a20.533 20.533.0 00-2.069.356 19.979 19.979.0 00-9.623 5.244l8.344 5.915zm-4.448 7.689a1.71 1.71.0 00.672-2.94l.008-.04-7.618-6.814a19.973 19.973.0 00-2.835 12.645l9.765-2.818zm7.4 2.993 2.81 1.35 2.801-1.347.696-3.025-1.939-2.425h-3.12l-1.946 2.42z" class="cls-2"/><path d="M99.925 61.869l-8.008-34.783a6.252 6.252.0 00-3.352-4.17L56.151 7.44a6.246 6.246.0 00-5.38.0L18.364 22.924a6.25 6.25.0 00-3.353 4.17L7.016 61.876a6.12 6.12.0 00-.002 2.67 6.206 6.206.0 00.226.79 6.022 6.022.0 00.617 1.253c.11.168.226.33.352.489l22.432 27.89c.098.12.206.232.313.345a6.17 6.17.0 001.183.98 6.4 6.4.0 001.773.77 6.112 6.112.0 001.576.218h.35l35.623-.008a5.976 5.976.0 00.648-.038 6.19 6.19.0 00.914-.174 6.372 6.372.0 00.635-.203q.244-.09.48-.2a6.407 6.407.0 00.68-.377 6.115 6.115.0 001.488-1.317l.684-.85 21.74-27.045a6.06 6.06.0 00.97-1.74 6.283 6.283.0 00.23-.792 6.105 6.105.0 00-.003-2.67zm-33.62 13.528a6.67 6.67.0 00.322.783 1.523 1.523.0 00-.15 1.144 18.097 18.097.0 001.72 3.08 16.123 16.123.0 011.04 1.546c.078.145.18.369.254.522a1.949 1.949.0 11-3.507 1.658c-.074-.152-.177-.354-.24-.497a16.21 16.21.0 01-.563-1.778 18.067 18.067.0 00-1.33-3.262 1.533 1.533.0 00-.99-.601c-.063-.107-.293-.528-.416-.746A25.104 25.104.0 0144.543 77.2l-.439.796a1.576 1.576.0 00-.836.407 13.567 13.567.0 00-1.502 3.485 16.04 16.04.0 01-.56 1.778c-.062.142-.166.342-.24.493v.004l-.003.004a1.948 1.948.0 11-3.502-1.662c.073-.154.171-.377.248-.522a16.168 16.168.0 011.04-1.55 18.95 18.95.0 001.756-3.156 1.925 1.925.0 00-.173-1.097l.353-.846A25.244 25.244.0 0129.498 61.367l-.845.144a2.151 2.151.0 00-1.116-.393 18.167 18.167.0 00-3.38.995 16.355 16.355.0 01-1.742.667c-.14.038-.342.077-.502.112-.013.004-.024.01-.037.013l-.03.003a1.947 1.947.0 11-.86-3.78l.027-.007.017-.005c.162-.038.37-.092.518-.12a16.212 16.212.0 011.861-.15 18.105 18.105.0 003.477-.571 2.682 2.682.0 00.834-.841l.812-.237a25.102 25.102.0 013.96-17.5l-.623-.554a2.155 2.155.0 00-.39-1.12 18.094 18.094.0 00-2.885-2.027 16.202 16.202.0 01-1.608-.94c-.118-.088-.274-.22-.402-.324l-.029-.02a2.056 2.056.0 01-.477-2.86 1.869 1.869.0 011.546-.684 2.312 2.312.0 011.352.51c.132.104.313.242.43.343a16.205 16.205.0 011.278 1.356A18.103 18.103.0 0033.3 35.74a1.532 1.532.0 001.152.112c.111.082.486.35.7.497a24.953 24.953.0 0112.675-7.241 25.302 25.302.0 013.507-.54l.046-.82a2.115 2.115.0 00.63-1.003 18.142 18.142.0 00-.216-3.518 16.306 16.306.0 01-.265-1.845c-.005-.141.003-.336.005-.497.0-.018-.005-.036-.005-.054a1.95 1.95.0 113.88-.002c0 .17.01.396.004.552a16.14 16.14.0 01-.266 1.844 18.169 18.169.0 00-.22 3.519 1.537 1.537.0 00.634.97c.007.14.03.608.047.866a25.422 25.422.0 0116.102 7.78l.738-.527a2.156 2.156.0 001.177-.128 18.17 18.17.0 002.615-2.366 16.095 16.095.0 011.281-1.356c.12-.102.3-.24.43-.343a1.95 1.95.0 112.417 3.033c-.13.105-.302.252-.427.345a16.133 16.133.0 01-1.612.94 18.153 18.153.0 00-2.885 2.027 1.534 1.534.0 00-.364 1.099c-.108.099-.487.435-.688.617a25.205 25.205.0 014.041 17.458l.783.228a2.181 2.181.0 00.837.842 18.14 18.14.0 003.478.572 16.384 16.384.0 011.86.149c.163.03.4.095.565.133a1.947 1.947.0 11-.863 3.78l-.028-.004c-.013-.003-.025-.01-.038-.013-.16-.035-.36-.07-.5-.107a16.154 16.154.0 01-1.74-.672 18.146 18.146.0 00-3.385-.995 1.534 1.534.0 00-1.086.403q-.413-.08-.829-.145A25.243 25.243.0 0166.305 75.397z" class="cls-2"/><path d="M104.153 62.76l-8.736-37.947a6.82 6.82.0 00-3.658-4.55L56.397 3.38a6.814 6.814.0 00-5.87.0L15.168 20.273a6.82 6.82.0 00-3.659 4.548L2.79 62.77a6.742 6.742.0 00.916 5.14 6.526 6.526.0 00.385.535l24.474 30.43a6.885 6.885.0 005.285 2.522l39.247-.01a6.888 6.888.0 005.286-2.518l24.465-30.433a6.766 6.766.0 001.306-5.675zm-4.227 1.778a6.285 6.285.0 01-.229.792 6.06 6.06.0 01-.97 1.74l-21.74 27.044-.683.85a6.115 6.115.0 01-1.489 1.318 6.41 6.41.0 01-.678.378q-.236.109-.48.198a6.373 6.373.0 01-.636.204 6.191 6.191.0 01-.914.174 5.973 5.973.0 01-.648.038l-35.624.008h-.349a6.113 6.113.0 01-1.576-.217 6.4 6.4.0 01-1.772-.771 6.17 6.17.0 01-1.184-.98c-.107-.113-.215-.224-.313-.345L8.21 67.079q-.188-.236-.352-.49a6.022 6.022.0 01-.617-1.253 6.207 6.207.0 01-.226-.79 6.12 6.12.0 01.002-2.67l7.995-34.783a6.25 6.25.0 013.353-4.17L50.772 7.442a6.246 6.246.0 015.38.0l32.413 15.476a6.252 6.252.0 013.352 4.17l8.008 34.783a6.105 6.105.0 01.001 2.669z" class="cls-1"/><path d="M85.955 59.083c-.166-.038-.402-.103-.564-.133a16.382 16.382.0 00-1.86-.15 18.14 18.14.0 01-3.479-.571 2.18 2.18.0 01-.837-.842l-.783-.228a25.205 25.205.0 00-4.04-17.458c.2-.182.58-.518.687-.617a1.534 1.534.0 01.364-1.1 18.154 18.154.0 012.885-2.026 16.127 16.127.0 001.612-.94c.125-.093.296-.24.427-.345a1.95 1.95.0 10-2.416-3.033c-.132.104-.312.24-.43.343a16.09 16.09.0 00-1.282 1.356 18.17 18.17.0 01-2.615 2.366 2.156 2.156.0 01-1.177.128l-.738.527a25.422 25.422.0 00-16.102-7.78c-.018-.258-.04-.725-.047-.866a1.537 1.537.0 01-.633-.97 18.172 18.172.0 01.22-3.52 16.137 16.137.0 00.264-1.843c.006-.156-.003-.383-.003-.552a1.95 1.95.0 10-3.88.002c0 .018.004.036.005.054-.002.16-.01.356-.005.497a16.308 16.308.0 00.265 1.845 18.143 18.143.0 01.216 3.518 2.115 2.115.0 01-.63 1.003l-.046.82a25.302 25.302.0 00-3.507.54 24.953 24.953.0 00-12.674 7.24q-.354-.243-.7-.496a1.532 1.532.0 01-1.153-.112 18.1 18.1.0 01-2.615-2.363 16.206 16.206.0 00-1.277-1.356c-.118-.101-.299-.24-.43-.344a2.312 2.312.0 00-1.353-.51 1.869 1.869.0 00-1.546.684 2.056 2.056.0 00.477 2.86l.03.02c.127.105.283.238.401.324a16.202 16.202.0 001.608.94 18.094 18.094.0 012.885 2.029 2.155 2.155.0 01.39 1.119l.621.555a25.102 25.102.0 00-3.958 17.5l-.812.236a2.682 2.682.0 01-.834.84 18.106 18.106.0 01-3.477.573 16.212 16.212.0 00-1.86.15c-.15.027-.357.08-.519.12l-.017.004-.028.008a1.947 1.947.0 10.862 3.78l.03-.004c.012-.003.023-.01.036-.012.16-.036.361-.075.502-.113a16.358 16.358.0 001.74-.667 18.167 18.167.0 013.382-.995 2.151 2.151.0 011.115.394l.846-.145a25.244 25.244.0 0011.187 13.967l-.353.846a1.925 1.925.0 01.173 1.097 18.949 18.949.0 01-1.756 3.155 16.173 16.173.0 00-1.04 1.55c-.077.146-.175.37-.249.523a1.948 1.948.0 103.503 1.662l.003-.004v-.004c.074-.152.178-.351.24-.493a16.04 16.04.0 00.56-1.778 13.567 13.567.0 011.502-3.485 1.576 1.576.0 01.836-.408l.44-.795a25.104 25.104.0 0017.901.045c.123.22.353.64.414.746a1.533 1.533.0 01.99.602 18.067 18.067.0 011.332 3.262 16.219 16.219.0 00.563 1.778c.063.143.166.345.24.497a1.949 1.949.0 103.507-1.658c-.074-.153-.176-.377-.253-.522a16.121 16.121.0 00-1.04-1.546 18.095 18.095.0 01-1.72-3.08 1.523 1.523.0 01.15-1.144 6.671 6.671.0 01-.324-.783A25.243 25.243.0 0077.486 61.33c.251.04.688.116.83.145a1.534 1.534.0 011.085-.403 18.144 18.144.0 013.383.995 16.149 16.149.0 001.741.672c.14.037.34.072.501.107.013.004.025.01.038.013l.028.004a1.947 1.947.0 10.863-3.78zM67.523 39.325l-8.29 5.877-.029-.013a1.711 1.711.0 01-2.718-1.305l-.009-.004-.576-10.16a20.155 20.155.0 0111.622 5.605zM51.906 50.46h3.12l1.94 2.425-.696 3.025-2.802 1.348-2.81-1.351-.697-3.026zM48.97 34.075a20.535 20.535.0 012.07-.356l-.577 10.175-.042.02a1.71 1.71.0 01-2.714 1.31l-.016.01-8.344-5.916a19.98 19.98.0 019.623-5.243zm-12.649 9.047 7.618 6.813-.008.042a1.71 1.71.0 01-.672 2.939l-.008.033-9.765 2.818a19.973 19.973.0 012.835-12.645zm10.2 18.1-3.88 9.375a20.084 20.084.0 01-8.06-10.088l10.012-1.7.017.022a1.68 1.68.0 01.336-.03 1.71 1.71.0 011.546 2.383zm11.452 12.057a20.057 20.057.0 01-10.946-.563l4.924-8.904h.008a1.712 1.712.0 013.014-.003h.037l4.936 8.919q-.96.32-1.973.55zm6.362-2.644-3.92-9.471.012-.017a1.712 1.712.0 01.83-2.217 1.694 1.694.0 01.654-.17 1.65 1.65.0 01.393.029l.017-.021 10.101 1.707a20.008 20.008.0 01-8.087 10.16zm9.148-14.901-9.814-2.827-.009-.041a1.712 1.712.0 01-.67-2.94l-.005-.02 7.576-6.78a20.352 20.352.0 012.922 12.608z" class="cls-1"/></svg></span><span class=navbar-brand__name>Kubernetes</span></a><div class="td-navbar-nav-scroll d-none d-md-block ms-xl-auto" id=main_navbar><ul class="navbar-nav mt-lg-0"><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/ko/docs/home/><span>문서</span></a></li><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/ko/training/><span>교육</span></a></li><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/ko/blog/><span>블로그</span></a></li><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/ko/partners/><span>파트너</span></a></li><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/ko/community/><span>커뮤니티</span></a></li><li class="nav-item dropdown me-4 d-none d-lg-block"><div class=dropdown><a class="nav-link dropdown-toggle" href=# role=button data-bs-toggle=dropdown aria-haspopup=true aria-expanded=false>버전</a><ul class=dropdown-menu><li><a class=dropdown-item href=/ko/releases>릴리스 정보</a></li><li><a class=dropdown-item href=https://xuxiaowei.io/t/1320>Kubernetes 文档说明</a></li><li><a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn>v1.38</a></li><li><a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn>v1.37</a></li><li><a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn>v1.36</a></li><li><a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn>v1.35</a></li><li><a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn>v1.34</a></li><li><a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn>v1.33</a></li><li><a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn>v1.32</a></li><li><a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn>v1.31</a></li><li><a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn>v1.30</a></li><li><a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn>v1.29</a></li><li><a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn>v1.28</a></li><li><a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn>v1.27</a></li><li><a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn>v1.26</a></li><li><a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn>v1.25</a></li><li><a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn>v1.24</a></li><li><a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn>v1.23</a></li><li><a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn>v1.22</a></li><li><a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn>v1.21</a></li><li><a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn>v1.20</a></li></ul></div></li><li class="nav-item dropdown me-xl-4 d-none d-lg-block"><div class=dropdown><a class="nav-link dropdown-toggle" href=# role=button data-bs-toggle=dropdown aria-haspopup=true aria-expanded=false>한국어 (Korean)</a><ul class="dropdown-menu dropdown-menu-end"><li><a class=dropdown-item href=/docs/setup/production-environment/>English</a></li><li><a class=dropdown-item href=/bn/docs/setup/production-environment/>বাংলা (Bengali)</a></li><li><a class=dropdown-item href=/zh-cn/docs/setup/production-environment/>中文 (Chinese)</a></li><li><a class=dropdown-item href=/fr/docs/setup/production-environment/>Français (French)</a></li><li><a class=dropdown-item href=/hi/docs/setup/production-environment/>हिन्दी (Hindi)</a></li><li><a class=dropdown-item href=/id/docs/setup/production-environment/>Bahasa Indonesia (Indonesian)</a></li><li><a class=dropdown-item href=/ja/docs/setup/production-environment/>日本語 (Japanese)</a></li><li><a class=dropdown-item href=/uk/docs/setup/production-environment/>Українська (Ukrainian)</a></li><li><a class=dropdown-item href=/vi/docs/setup/production-environment/>Tiếng Việt (Vietnamese)</a></li><li><span class="dropdown-item text-muted" title="This page is not available in Deutsch (German)">Deutsch (German)
+<a href=/de/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Italiano (Italian)">Italiano (Italian)
+<a href=/it/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in فارسی (Persian)">فارسی (Persian)
+<a href=/fa/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Polski (Polish)">Polski (Polish)
+<a href=/pl/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Português (Portuguese)">Português (Portuguese)
+<a href=/pt-br/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Русский (Russian)">Русский (Russian)
+<a href=/ru/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Español (Spanish)">Español (Spanish)
+<a href=/es/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li></ul></div></li><li class="td-light-dark-menu nav-item dropdown"><svg class="d-none"><symbol id="check2" viewBox="0 0 16 16"><path d="M13.854 3.646a.5.5.0 010 .708l-7 7a.5.5.0 01-.708.0l-3.5-3.5a.5.5.0 11.708-.708L6.5 10.293l6.646-6.647a.5.5.0 01.708.0z"/></symbol><symbol id="circle-half" viewBox="0 0 16 16"><path d="M8 15A7 7 0 108 1v14zm0 1A8 8 0 118 0a8 8 0 010 16z"/></symbol><symbol id="moon-stars-fill" viewBox="0 0 16 16"><path d="M6 .278a.768.768.0 01.08.858 7.208 7.208.0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527.0 1.04-.055 1.533-.16a.787.787.0 01.81.316.733.733.0 01-.031.893A8.349 8.349.0 018.344 16C3.734 16 0 12.286.0 7.71.0 4.266 2.114 1.312 5.124.06A.752.752.0 016 .278z"/><path d="M10.794 3.148a.217.217.0 01.412.0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217.0 010 .412l-1.162.387A1.734 1.734.0 0011.593 7.69l-.387 1.162a.217.217.0 01-.412.0l-.387-1.162A1.734 1.734.0 009.31 6.593l-1.162-.387a.217.217.0 010-.412l1.162-.387a1.734 1.734.0 001.097-1.097l.387-1.162zM13.863.099a.145.145.0 01.274.0l.258.774c.115.346.386.617.732.732l.774.258a.145.145.0 010 .274l-.774.258a1.156 1.156.0 00-.732.732l-.258.774a.145.145.0 01-.274.0l-.258-.774a1.156 1.156.0 00-.732-.732l-.774-.258a.145.145.0 010-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/></symbol><symbol id="sun-fill" viewBox="0 0 16 16"><path d="M8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 0zm0 13a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 13zm8-5a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2a.5.5.0 01.5.5zM3 8a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2A.5.5.0 013 8zm10.657-5.657a.5.5.0 010 .707l-1.414 1.415a.5.5.0 11-.707-.708l1.414-1.414a.5.5.0 01.707.0zm-9.193 9.193a.5.5.0 010 .707L3.05 13.657a.5.5.0 01-.707-.707l1.414-1.414a.5.5.0 01.707.0zm9.193 2.121a.5.5.0 01-.707.0l-1.414-1.414a.5.5.0 01.707-.707l1.414 1.414a.5.5.0 010 .707zM4.464 4.465a.5.5.0 01-.707.0L2.343 3.05a.5.5.0 11.707-.707l1.414 1.414a.5.5.0 010 .708z"/></symbol></svg>
+<button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center" id=bd-theme type=button aria-expanded=false data-bs-toggle=dropdown data-bs-display=static aria-label="Toggle theme (auto)"><svg class="bi my-1 theme-icon-active"><use href="#circle-half"/></svg></button><ul class="dropdown-menu dropdown-menu-end" aria-labelledby=bd-theme-text><li><button type=button class="dropdown-item d-flex align-items-center" data-bs-theme-value=light aria-pressed=false>
+<svg class="bi me-2 opacity-50"><use href="#sun-fill"/></svg>
+Light<svg class="bi ms-auto d-none"><use href="#check2"/></svg></button></li><li><button type=button class="dropdown-item d-flex align-items-center" data-bs-theme-value=dark aria-pressed=false>
+<svg class="bi me-2 opacity-50"><use href="#moon-stars-fill"/></svg>
+Dark<svg class="bi ms-auto d-none"><use href="#check2"/></svg></button></li><li><button type=button class="dropdown-item d-flex align-items-center active" data-bs-theme-value=auto aria-pressed=true>
+<svg class="bi me-2 opacity-50"><use href="#circle-half"/></svg>
+Auto<svg class="bi ms-auto d-none"><use href="#check2"/></svg></button></li></ul></li></ul></div><div class="navbar-nav d-none k8s-1500-block"><div class=td-search><div class=td-search__icon></div><input type=search class="td-search__input form-control dark-theme-focus td-search-input" placeholder=검색하기 aria-label=검색하기 autocomplete=off data-search-page=/search></div></div><button id=hamburger class="btn fas fa-bars" onclick=kub.toggleMenu() data-auto-burger-exclude></button></nav></header><div class="container-fluid td-outer"><div class=td-main><div class="row flex-xl-nowrap"><main class="col-12 col-md-9 col-xl-8 ps-md-5" role=main><div class=td-content><div class="pageinfo pageinfo-primary d-print-none"><p>이 섹션의 다중 페이지 출력 화면임.
+<a href=# onclick="return print(),!1">여기를 클릭하여 프린트</a>.</p><p><a href=/ko/docs/setup/production-environment/>이 페이지의 일반 화면으로 돌아가기</a>.</p></div><h1 class=title>프로덕션 환경</h1><div class=lead>프로덕션 수준의 쿠버네티스 클러스터 생성</div><ul><li>1: <a href=#pg-a77d3feb6e6d9978f32fa14622642e9a>컨테이너 런타임</a></li><li>2: <a href=#pg-00e1646f68aeb89f9722cf6f6cfcad94>배포 도구로 쿠버네티스 설치하기</a></li><ul><li>2.1: <a href=#pg-a16f59f325a17cdeed324d5c889f7f73>kubeadm으로 클러스터 구성하기</a></li><ul><li>2.1.1: <a href=#pg-29e59491dd6118b23072dfe9ebb93323>kubeadm 설치하기</a></li><li>2.1.2: <a href=#pg-c3689df4b0c61a998e79d91a865aa244>kubeadm 문제 해결</a></li><li>2.1.3: <a href=#pg-134ed1f6142a98e6ac681a1ba4920e53>kubeadm으로 클러스터 생성하기</a></li><li>2.1.4: <a href=#pg-4c656c5eda3e1c06ad1aedebdc04a211>kubeadm API로 컴포넌트 사용자 정의하기</a></li><li>2.1.5: <a href=#pg-015edbc7cc688d31b1d1edce7c186135>고가용성 토폴로지 선택</a></li></ul></ul><li>3: <a href=#pg-d2f55eefe7222b7c637875af9c3ec199>턴키 클라우드 솔루션</a></li></ul><div class=content><p>프로덕션 수준의 쿠버네티스 클러스터에는 계획과 준비가 필요하다.
+쿠버네티스 클러스터에 중요한 워크로드를 실행하려면 클러스터를 탄력적이도록 구성해야 한다.
+이 페이지에서는 프로덕션용 클러스터를 설정하거나 기존 클러스터를 프로덕션용으로 업그레이드하기 위해
+수행할 수 있는 단계를 설명한다.
+이미 프로덕션 구성 내용에 익숙하여 단지 링크를 찾고 있다면,
+<a href=#%EB%8B%A4%EC%9D%8C-%EB%82%B4%EC%9A%A9>다음 내용</a>을 참고한다.</p><h2 id=프로덕션-고려-사항>프로덕션 고려 사항<a class=td-heading-self-link href=#%ed%94%84%eb%a1%9c%eb%8d%95%ec%85%98-%ea%b3%a0%eb%a0%a4-%ec%82%ac%ed%95%ad aria-label="Heading self-link"></a></h2><p>일반적으로 프로덕션 쿠버네티스 클러스터 환경에는
+개인 학습용, 개발용 또는 테스트 환경용 클러스터보다 더 많은 요구 사항이 있다.
+프로덕션 환경에는 많은 사용자의 보안 액세스, 일관된 가용성 및
+변화하는 요구를 충족하기 위한 리소스가 필요할 수 있다.</p><p>프로덕션 쿠버네티스 환경이 상주할 위치(온 프레미스 또는 클라우드)와
+직접 처리하거나 다른 사람에게 맡길 관리의 양을 결정할 때,
+쿠버네티스 클러스터에 대한 요구 사항이
+다음 이슈에 의해 어떻게 영향을 받는지 고려해야 한다.</p><ul><li><p><em>가용성</em>: 단일 머신 쿠버네티스 <a href=/ko/docs/setup/#%ED%95%99%EC%8A%B5-%ED%99%98%EA%B2%BD>학습 환경</a>은 SPOF(Single Point of Failure, 단일 장애 지점) 이슈를 갖고 있다.
+고가용성 클러스터를 만드는 것에는 다음과 같은 고려 사항이 있다.</p><ul><li>컨트롤 플레인과 워크 노드를 분리</li><li>컨트롤 플레인 구성요소를 여러 노드에 복제</li><li>클러스터의 <a class=glossary-tooltip title='쿠버네티스 API를 제공하는 컨트롤 플레인 컴포넌트.' data-bs-toggle=tooltip data-bs-placement=top href=/ko/docs/concepts/overview/components/#kube-apiserver target=_blank aria-label='API 서버'>API 서버</a>로 가는 트래픽을 로드밸런싱</li><li>워커 노드를 충분히 운영하거나, 워크로드 변경에 따라 빠르게 제공할 수 있도록 보장</li></ul></li><li><p><em>스케일링</em>: 프로덕션 쿠버네티스 환경에 들어오는 요청의 양의
+일정할 것으로 예상된다면, 필요한 만큼의 용량(capacity)을 증설하고
+마무리할 수도 있다. 하지만, 요청의 양이 시간에 따라 점점 증가하거나
+계절, 이벤트 등에 의해 극적으로 변동할 것으로 예상된다면,
+컨트롤 플레인과 워커 노드로의 요청 증가로 인한 압박을 해소하기 위해 스케일 업 하거나
+잉여 자원을 줄이기 위해 스케일 다운 하는 것에 대해 고려해야 한다.</p></li><li><p><em>보안 및 접근 관리</em>: 학습을 위한 쿠버네티스 클러스터에는
+완전한 관리 권한을 가질 수 있다. 하지만 중요한 워크로드를 실행하며
+두 명 이상의 사용자가 있는 공유 클러스터에는 누가, 그리고 무엇이 클러스터 자원에
+접근할 수 있는지에 대해서 보다 정교한 접근 방식이 필요하다.
+역할 기반 접근 제어(<a href=/docs/reference/access-authn-authz/rbac/>RBAC</a>) 및
+기타 보안 메커니즘을 사용하여, 사용자와 워크로드가 필요한 자원에
+액세스할 수 있게 하면서도 워크로드와 클러스터를 안전하게 유지할 수 있다.
+<a href=/ko/docs/concepts/policy/>정책</a>과
+<a href=/ko/docs/concepts/configuration/manage-resources-containers/>컨테이너 리소스</a>를
+관리하여, 사용자 및 워크로드가 접근할 수 있는 자원에 대한 제한을 설정할 수 있다.</p></li></ul><p>쿠버네티스 프로덕션 환경을 직접 구축하기 전에, 이 작업의 일부 또는 전체를
+<a href=/ko/docs/setup/production-environment/turnkey-solutions/>턴키 클라우드 솔루션</a>
+제공 업체 또는 기타 <a href=/ko/partners/>쿠버네티스 파트너</a>에게
+넘기는 것을 고려할 수 있다.
+다음과 같은 옵션이 있다.</p><ul><li><em>서버리스</em>: 클러스터를 전혀 관리하지 않고
+타사 장비에서 워크로드를 실행하기만 하면 된다.
+CPU 사용량, 메모리 및 디스크 요청과 같은 항목에 대한 요금이 부과된다.</li><li><em>관리형 컨트롤 플레인</em>: 쿠버네티스 서비스 공급자가
+클러스터 컨트롤 플레인의 확장 및 가용성을 관리하고 패치 및 업그레이드를 처리하도록 한다.</li><li><em>관리형 워커 노드</em>: 필요에 맞는 노드 풀을 정의하면,
+쿠버네티스 서비스 공급자는 해당 노드의 가용성 및
+필요 시 업그레이드 제공을 보장한다.</li><li><em>통합</em>: 쿠버네티스를 스토리지, 컨테이너 레지스트리,
+인증 방법 및 개발 도구와 같이
+사용자가 필요로 하는 여러 서비스를 통합 제공하는 업체도 있다.</li></ul><p>프로덕션 쿠버네티스 클러스터를 직접 구축하든 파트너와 협력하든,
+요구 사항이 <em>컨트롤 플레인</em>, <em>워커 노드</em>,
+<em>사용자 접근</em>, <em>워크로드 자원</em>과 관련되기 때문에,
+다음 섹션들을 검토하는 것이 바람직하다.</p><h2 id=프로덕션-클러스터-구성>프로덕션 클러스터 구성<a class=td-heading-self-link href=#%ed%94%84%eb%a1%9c%eb%8d%95%ec%85%98-%ed%81%b4%eb%9f%ac%ec%8a%a4%ed%84%b0-%ea%b5%ac%ec%84%b1 aria-label="Heading self-link"></a></h2><p>프로덕션 수준 쿠버네티스 클러스터에서,
+컨트롤 플레인은 다양한 방식으로 여러 컴퓨터에 분산될 수 있는 서비스들을 통해
+클러스터를 관리한다.
+반면, 각 워커 노드는 쿠버네티스 파드를 실행하도록 구성된 단일 엔티티를 나타낸다.</p><h3 id=프로덕션-컨트롤-플레인>프로덕션 컨트롤 플레인<a class=td-heading-self-link href=#%ed%94%84%eb%a1%9c%eb%8d%95%ec%85%98-%ec%bb%a8%ed%8a%b8%eb%a1%a4-%ed%94%8c%eb%a0%88%ec%9d%b8 aria-label="Heading self-link"></a></h3><p>가장 간단한 쿠버네티스 클러스터는 모든 컨트롤 플레인 및 워커 노드 서비스가
+하나의 머신에 실행되는 클러스터이다.
+<a href=/ko/docs/concepts/overview/components/>쿠버네티스 컴포넌트</a>
+그림에 명시된 대로, 워커 노드를 추가하여 해당 환경을 확장할 수 있다.
+클러스터를 단기간만 사용하거나,
+심각한 문제가 발생한 경우 폐기하는 것이 가능하다면, 이 방식을 선택할 수 있다.</p><p>그러나 더 영구적이고 가용성이 높은 클러스터가 필요한 경우
+컨트롤 플레인 확장을 고려해야 한다.
+설계 상, 단일 시스템에서 실행되는 단일 시스템 컨트롤 플레인 서비스는
+가용성이 높지 않다.
+클러스터를 계속 유지하면서 문제가 발생한 경우 복구할 수 있는지 여부가 중요한 경우,
+다음 사항들을 고려한다.</p><ul><li><em>배포 도구 선택</em>: kubeadm, kops, kubespray와 같은 도구를 이용해
+컨트롤 플레인을 배포할 수 있다.
+<a href=/ko/docs/setup/production-environment/tools/>배포 도구로 쿠버네티스 설치하기</a>에서
+여러 배포 도구를 이용한 프로덕션 수준 배포에 대한 팁을 확인한다.
+배포 시, 다양한
+<a href=/ko/docs/setup/production-environment/container-runtimes/>컨테이너 런타임</a>을 사용할 수 있다.</li><li><em>인증서 관리</em>: 컨트롤 플레인 서비스 간의 보안 통신은 인증서를 사용하여 구현된다.
+인증서는 배포 중에 자동으로 생성되거나, 또는 자체 인증 기관을 사용하여 생성할 수 있다.
+<a href=/ko/docs/setup/best-practices/certificates/>PKI 인증서 및 요구 조건</a>에서
+상세 사항을 확인한다.</li><li><em>apiserver를 위한 로드밸런서 구성</em>: 여러 노드에서 실행되는 apiserver 서비스 인스턴스에
+외부 API 호출을 분산할 수 있도록 로드밸런서를 구성한다.
+<a href=/ko/docs/tasks/access-application-cluster/create-external-load-balancer/>외부 로드밸런서 생성하기</a>에서
+상세 사항을 확인한다.</li><li><em>etcd 서비스 분리 및 백업</em>: etcd 서비스는
+다른 컨트롤 플레인 서비스와 동일한 시스템에서 실행되거나,
+또는 추가 보안 및 가용성을 위해 별도의 시스템에서 실행될 수 있다.
+etcd는 클러스터 구성 데이터를 저장하므로
+필요한 경우 해당 데이터베이스를 복구할 수 있도록 etcd 데이터베이스를 정기적으로 백업해야 한다.
+<a href=https://etcd.io/docs/v3.5/faq/>etcd FAQ</a>에서 etcd 구성 및 사용 상세를 확인한다.
+<a href=/docs/tasks/administer-cluster/configure-upgrade-etcd/>쿠버네티스를 위한 etcd 클러스터 운영하기</a>와
+<a href=/docs/setup/production-environment/tools/kubeadm/setup-ha-etcd-with-kubeadm/>kubeadm을 이용하여 고가용성 etcd 생성하기</a>에서
+상세 사항을 확인한다.</li><li><em>다중 컨트롤 플레인 시스템 구성</em>: 고가용성을 위해,
+컨트롤 플레인은 단일 머신으로 제한되지 않아야 한다.
+컨트롤 플레인 서비스가 init 서비스(예: systemd)에 의해 실행되는 경우,
+각 서비스는 최소 3대의 머신에서 실행되어야 한다.
+그러나, 컨트롤 플레인 서비스를 쿠버네티스 상의 파드 형태로 실행하면
+각 서비스 복제본 요청이 보장된다.
+스케줄러는 내결함성이 있어야 하고, 고가용성은 필요하지 않다.
+일부 배포 도구는 쿠버네티스 서비스의 리더 선출을 수행하기 위해
+<a href=https://raft.github.io/>Raft</a> 합의 알고리즘을 설정한다.
+리더를 맡은 서비스가 사라지면 다른 서비스가 스스로 리더가 되어 인계를 받는다.</li><li><em>다중 영역(zone)으로 확장</em>: 클러스터를 항상 사용 가능한 상태로 유지하는 것이 중요하다면
+여러 데이터 센터(클라우드 환경에서는 '영역'이라고 함)에서 실행되는
+클러스터를 만드는 것이 좋다.
+영역의 그룹을 지역(region)이라고 한다.
+동일한 지역의 여러 영역에 클러스터를 분산하면
+하나의 영역을 사용할 수 없게 된 경우에도 클러스터가 계속 작동할 가능성을 높일 수 있다.
+<a href=/ko/docs/setup/best-practices/multiple-zones/>여러 영역에서 실행</a>에서 상세 사항을 확인한다.</li><li><em>구동 중인 기능 관리</em>: 클러스터를 계속 유지하려면,
+상태 및 보안을 유지하기 위해 수행해야 하는 작업이 있다.
+예를 들어 kubeadm으로 클러스터를 생성한 경우,
+<a href=/ko/docs/tasks/administer-cluster/kubeadm/kubeadm-certs/>인증서 관리</a>와
+<a href=/ko/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/>kubeadm 클러스터 업그레이드하기</a>에 대해 도움이 되는 가이드가 있다.
+<a href=/ko/docs/tasks/administer-cluster/>클러스터 운영하기</a>에서
+더 많은 쿠버네티스 관리 작업을 볼 수 있다.</li></ul><p>컨트롤 플레인 서비스를 실행할 때 사용 가능한 옵션에 대해 보려면,
+<a href=/docs/reference/command-line-tools-reference/kube-apiserver/>kube-apiserver</a>,
+<a href=/docs/reference/command-line-tools-reference/kube-controller-manager/>kube-controller-manager</a>,
+<a href=/docs/reference/command-line-tools-reference/kube-scheduler/>kube-scheduler</a>를 참조한다.
+고가용성 컨트롤 플레인 예제는
+<a href=/ko/docs/setup/production-environment/tools/kubeadm/ha-topology/>고가용성 토폴로지를 위한 옵션</a>,
+<a href=/docs/setup/production-environment/tools/kubeadm/high-availability/>kubeadm을 이용하여 고가용성 클러스터 생성하기</a>,
+<a href=/docs/tasks/administer-cluster/configure-upgrade-etcd/>쿠버네티스를 위한 etcd 클러스터 운영하기</a>를 참조한다.
+etcd 백업 계획을 세우려면
+<a href=/docs/tasks/administer-cluster/configure-upgrade-etcd/#backing-up-an-etcd-cluster>etcd 클러스터 백업하기</a>를 참고한다.</p><h3 id=프로덕션-워커-노드>프로덕션 워커 노드<a class=td-heading-self-link href=#%ed%94%84%eb%a1%9c%eb%8d%95%ec%85%98-%ec%9b%8c%ec%bb%a4-%eb%85%b8%eb%93%9c aria-label="Heading self-link"></a></h3><p>프로덕션 수준 워크로드는 복원력이 있어야 하고,
+이들이 의존하는 모든 것들(예: CoreDNS)도 복원력이 있어야 한다.
+컨트롤 플레인을 자체적으로 관리하든
+클라우드 공급자가 대신 수행하도록 하든 상관없이,
+워커 노드(간단히 <em>노드</em>라고도 함)를 어떤 방법으로 관리할지 고려해야 한다.</p><ul><li><em>노드 구성하기</em>: 노드는 물리적 또는 가상 머신일 수 있다.
+직접 노드를 만들고 관리하려면 지원되는 운영 체제를 설치한 다음
+적절한 <a href=/ko/docs/concepts/overview/components/#%EB%85%B8%EB%93%9C-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8>노드 서비스</a>를 추가하고 실행한다.
+다음을 고려해야 한다.<ul><li>워크로드의 요구 사항 (노드가 적절한 메모리, CPU, 디스크 속도, 저장 용량을 갖도록 구성)</li><li>일반적인 컴퓨터 시스템이면 되는지, 아니면 GPU, 윈도우 노드, 또는 VM 격리를 필요로 하는 워크로드가 있는지</li></ul></li><li><em>노드 검증하기</em>: <a href=/ko/docs/setup/best-practices/node-conformance/>노드 구성 검증하기</a>에서
+노드가 쿠버네티스 클러스터에 조인(join)에 필요한 요구 사항을
+만족하는지 확인하는 방법을 알아본다.</li><li><em>클러스터에 노드 추가하기</em>: 클러스터를 자체적으로 관리하는 경우,
+머신을 준비하고, 클러스터의 apiserver에 이를 수동으로 추가하거나
+또는 머신이 스스로 등록하도록 하여 노드를 추가할 수 있다.
+이러한 방식으로 노드를 추가하는 방법을 보려면 <a href=/ko/docs/concepts/architecture/nodes/>노드</a> 섹션을 확인한다.</li><li><em>노드 스케일링</em>: 클러스터가 최종적으로 필요로 하게 될 용량만큼
+확장하는 것에 대한 계획이 있어야 한다.
+실행해야 하는 파드 및 컨테이너 수에 따라 필요한 노드 수를 판별하려면
+<a href=/ko/docs/setup/best-practices/cluster-large/>대형 클러스터에 대한 고려 사항</a>을 확인한다.
+만약 노드를 직접 관리한다면, 직접 물리적 장비를 구입하고 설치해야 할 수도 있음을 의미한다.</li><li><em>노드 자동 스케일링</em>: 대부분의 클라우드 공급자는
+비정상 노드를 교체하거나 수요에 따라 노드 수를 늘리거나 줄일 수 있도록
+<a href=https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler#readme>클러스터 오토스케일러</a>를 지원한다.
+<a href=https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md>자주 묻는 질문</a>에서
+오토스케일러가 어떻게 동작하는지,
+<a href=https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler#deployment>배치</a> 섹션에서
+각 클라우드 공급자별로 어떻게 구현했는지를 확인한다.
+온프레미스의 경우, 필요에 따라 새 노드를 가동하도록
+스크립트를 구성할 수 있는 가상화 플랫폼이 있다.</li><li><em>노드 헬스 체크 구성</em>: 중요한 워크로드의 경우,
+해당 노드에서 실행 중인 노드와 파드의 상태가 정상인지 확인하고 싶을 것이다.
+<a href=/ko/docs/tasks/debug/debug-cluster/monitor-node-health/>Node Problem Detector</a>
+데몬을 사용하면 노드가 정상인지 확인할 수 있다.</li></ul><h2 id=프로덕션-사용자-관리>프로덕션 사용자 관리<a class=td-heading-self-link href=#%ed%94%84%eb%a1%9c%eb%8d%95%ec%85%98-%ec%82%ac%ec%9a%a9%ec%9e%90-%ea%b4%80%eb%a6%ac aria-label="Heading self-link"></a></h2><p>프로덕션에서는, 클러스터를 한 명 또는 여러 명이 사용하던 모델에서
+수십에서 수백 명이 사용하는 모델로 바꿔야 하는 경우가 발생할 수 있다.
+학습 환경 또는 플랫폼 프로토타입에서는 모든 작업에 대한 단일 관리 계정으로도
+충분할 수 있다. 프로덕션에서는 여러 네임스페이스에 대한, 액세스 수준이
+각각 다른 더 많은 계정이 필요하다.</p><p>프로덕션 수준의 클러스터를 사용한다는 것은
+다른 사용자의 액세스를 선택적으로 허용할 방법을 결정하는 것을 의미한다.
+특히 클러스터에 액세스를 시도하는 사용자의 신원을 확인(인증, authentication)하고
+요청한 작업을 수행할 권한이 있는지 결정(인가, authorization)하기 위한
+다음과 같은 전략을 선택해야 한다.</p><ul><li><em>인증</em>: apiserver는 클라이언트 인증서, 전달자 토큰, 인증 프록시 또는
+HTTP 기본 인증을 사용하여 사용자를 인증할 수 있다.
+사용자는 인증 방법을 선택하여 사용할 수 있다.
+apiserver는 또한 플러그인을 사용하여
+LDAP 또는 Kerberos와 같은 조직의 기존 인증 방법을 활용할 수 있다.
+쿠버네티스 사용자를 인증하는 다양한 방법에 대한 설명은
+<a href=/docs/reference/access-authn-authz/authentication/>인증</a>을 참조한다.</li><li><em>인가</em>: 일반 사용자 인가를 위해,
+RBAC 와 ABAC 중 하나를 선택하여 사용할 수 있다. <a href=/ko/docs/reference/access-authn-authz/authorization/>인가 개요</a>에서
+사용자 계정과 서비스 어카운트 인가를 위한 여러 가지 모드를
+확인할 수 있다.<ul><li><em>역할 기반 접근 제어</em> (<a href=/docs/reference/access-authn-authz/rbac/>RBAC</a>): 인증된 사용자에게
+특정 권한 집합을 허용하여 클러스터에 대한 액세스를 할당할 수 있다.
+특정 네임스페이스(Role) 또는 전체 클러스터(ClusterRole)에 권한을 할당할 수 있다.
+그 뒤에 RoleBindings 및 ClusterRoleBindings를 사용하여 해당 권한을
+특정 사용자에게 연결할 수 있다.</li><li><em>속성 기반 접근 제어</em> (<a href=/docs/reference/access-authn-authz/abac/>ABAC</a>): 클러스터의
+리소스 속성을 기반으로 정책을 생성하고 이러한 속성을 기반으로 액세스를 허용하거나 거부할 수 있다.
+정책 파일의 각 줄은 버전 관리 속성(apiVersion 및 종류),
+그리고 '대상(사용자 또는 그룹)', '리소스 속성',
+'비 리소스 속성(<code>/version</code> 또는 <code>/apis</code>)' 및 '읽기 전용'과 일치하는 사양 속성 맵을 식별한다.
+자세한 내용은 <a href=/docs/reference/access-authn-authz/abac/#examples>예시</a>를 참조한다.</li></ul></li></ul><p>프로덕션 쿠버네티스 클러스터에 인증과 인가를 설정할 때, 다음의 사항을 고려해야 한다.</p><ul><li><em>인가 모드 설정</em>: 쿠버네티스 API 서버
+(<a href=/docs/reference/command-line-tools-reference/kube-apiserver/>kube-apiserver</a>)를 실행할 때,
+<em><code>--authorization-mode</code></em> 플래그를 사용하여 인증 모드를 설정해야 한다.
+예를 들어, <em><code>kube-adminserver.yaml</code></em> 파일(*<code>/etc/kubernetes/manifests</code>*에 있는) 안의 플래그를 <code>Node,RBAC</code>으로 설정할 수 있다.
+이렇게 하여 인증된 요청이 Node 인가와 RBAC 인가를 사용할 수 있게 된다.</li><li><em>사용자 인증서와 롤 바인딩 생성(RBAC을 사용하는 경우)</em>: RBAC 인증을 사용하는 경우,
+사용자는 클러스터 CA가 서명한 CSR(CertificateSigningRequest)을 만들 수 있다.
+그 뒤에 각 사용자에게 역할 및 ClusterRoles를 바인딩할 수 있다.
+자세한 내용은
+<a href=/docs/reference/access-authn-authz/certificate-signing-requests/>인증서 서명 요청</a>을 참조한다.</li><li><em>속성을 포함하는 정책 생성(ABAC을 사용하는 경우)</em>: ABAC 인증을 사용하는 경우,
+속성의 집합으로 정책을 생성하여, 인증된 사용자 또는 그룹이
+특정 리소스(예: 파드), 네임스페이스, 또는 apiGroup에 접근할 수 있도록 한다.
+<a href=/docs/reference/access-authn-authz/abac/#examples>예시</a>에서
+더 많은 정보를 확인한다.</li><li><em>어드미션 컨트롤러 도입 고려</em>:
+<a href=/docs/reference/access-authn-authz/authentication/#webhook-token-authentication>웹훅 토큰 인증</a>은
+API 서버를 통해 들어오는 요청의 인가에 사용할 수 있는 추가적인 방법이다.
+웹훅 및 다른 인가 형식을 사용하려면 API 서버에
+<a href=/docs/reference/access-authn-authz/admission-controllers/>어드미션 컨트롤러</a>를
+추가해야 한다.</li></ul><h2 id=워크로드에-자원-제한-걸기>워크로드에 자원 제한 걸기<a class=td-heading-self-link href=#%ec%9b%8c%ed%81%ac%eb%a1%9c%eb%93%9c%ec%97%90-%ec%9e%90%ec%9b%90-%ec%a0%9c%ed%95%9c-%ea%b1%b8%ea%b8%b0 aria-label="Heading self-link"></a></h2><p>프로덕션 워크로드의 요구 사항이
+쿠버네티스 컨트롤 플레인 안팎의 압박을 초래할 수 있다.
+워크로드의 요구 사항을 충족하도록 클러스터를 구성할 때 다음 항목을 고려한다.</p><ul><li><em>네임스페이스 제한 설정</em>: 메모리, CPU와 같은 자원의 네임스페이스 별 쿼터를 설정한다.
+<a href=/ko/docs/tasks/administer-cluster/manage-resources/>메모리, CPU 와 API 리소스 관리</a>에서
+상세 사항을 확인한다.
+<a href=/blog/2020/08/14/introducing-hierarchical-namespaces/>계층적 네임스페이스</a>를 설정하여
+제한을 상속할 수도 있다.</li><li><em>DNS 요청에 대한 대비</em>: 워크로드가 대규모로 확장될 것으로 예상된다면,
+DNS 서비스도 확장할 준비가 되어 있어야 한다.
+<a href=/ko/docs/tasks/administer-cluster/dns-horizontal-autoscaling/>클러스터의 DNS 서비스 오토스케일링</a>을 확인한다.</li><li><em>추가적인 서비스 어카운트 생성</em>: 사용자 계정은 <em>클러스터</em>에서 사용자가 무엇을 할 수 있는지 결정하는 반면에,
+서비스 어카운트는 특정 네임스페이스 내의 파드 접근 권한을 결정한다.
+기본적으로, 파드는 자신의 네임스페이스의 기본 서비스 어카운트을 이용한다.
+<a href=/ko/docs/reference/access-authn-authz/service-accounts-admin/>서비스 어카운트 관리하기</a>에서
+새로운 서비스 어카운트을 생성하는 방법을 확인한다. 예를 들어, 다음의 작업을 할 수 있다.<ul><li>파드가 특정 컨테이너 레지스트리에서 이미지를 가져 오는 데 사용할 수 있는 시크릿을 추가한다.
+<a href=/docs/tasks/configure-pod-container/configure-service-account/>파드를 위한 서비스 어카운트 구성하기</a>에서
+예시를 확인한다.</li><li>서비스 어카운트에 RBAC 권한을 할당한다.
+<a href=/docs/reference/access-authn-authz/rbac/#service-account-permissions>서비스어카운트 권한</a>에서
+상세 사항을 확인한다.</li></ul></li></ul><h2 id=다음-내용>다음 내용<a class=td-heading-self-link href=#%eb%8b%a4%ec%9d%8c-%eb%82%b4%ec%9a%a9 aria-label="Heading self-link"></a></h2><ul><li>프로덕션 쿠버네티스를 직접 구축할지,
+아니면 <a href=/ko/docs/setup/production-environment/turnkey-solutions/>턴키 클라우드 솔루션</a> 또는
+<a href=/ko/partners/>쿠버네티스 파트너</a>가 제공하는 서비스를 이용할지 결정한다.</li><li>클러스터를 직접 구축한다면,
+<a href=/ko/docs/setup/best-practices/certificates/>인증서</a>를 어떻게 관리할지,
+<a href=/docs/setup/production-environment/tools/kubeadm/setup-ha-etcd-with-kubeadm/>etcd</a>와
+<a href=/ko/docs/setup/production-environment/tools/kubeadm/ha-topology/>API 서버</a>
+등의 기능에 대한 고가용성을
+어떻게 보장할지를 계획한다.</li><li>배포 도구로 <a href=/ko/docs/setup/production-environment/tools/kubeadm/>kubeadm</a>,
+<a href=/ko/docs/setup/production-environment/tools/kops/>kops</a>,
+<a href=/ko/docs/setup/production-environment/tools/kubespray/>Kubespray</a> 중
+하나를 선택한다.</li><li><a href=/docs/reference/access-authn-authz/authentication/>인증</a> 및
+<a href=/ko/docs/reference/access-authn-authz/authorization/>인가</a> 방식을 선택하여
+사용자 관리 방법을 구성한다.</li><li><a href=/ko/docs/tasks/administer-cluster/manage-resources/>자원 제한</a>,
+<a href=/ko/docs/tasks/administer-cluster/dns-horizontal-autoscaling/>DNS 오토스케일링</a>,
+<a href=/ko/docs/reference/access-authn-authz/service-accounts-admin/>서비스 어카운트</a>를 설정하여
+애플리케이션 워크로드의 실행에 대비한다.</li></ul></div></div><div class=td-content style=page-break-before:always><h1 id=pg-a77d3feb6e6d9978f32fa14622642e9a>1 - 컨테이너 런타임</h1><div class="alert alert-secondary callout note" role=note><strong>참고:</strong> Dockershim은 쿠버네티스 릴리스 1.24부터 쿠버네티스 프로젝트에서 제거되었다. 더 자세한 내용은 <a href=/dockershim>Dockershim 제거 FAQ</a>를 참고한다.</div><p>파드가 노드에서 실행될 수 있도록 클러스터의 각 노드에
+<a class=glossary-tooltip title='컨테이너 런타임은 컨테이너 실행을 담당하는 소프트웨어이다.' data-bs-toggle=tooltip data-bs-placement=top href=/ko/docs/setup/production-environment/container-runtimes/ target=_blank aria-label='컨테이너 런타임'>컨테이너 런타임</a>을
+설치해야 한다. 이 페이지에서는 관련된 항목을 설명하고
+노드 설정 관련 작업을 설명한다.</p><p>쿠버네티스 1.36에서는
+<a class=glossary-tooltip title='Kubelet과 컨테이너 런타임을 통합시키기 위한 API' data-bs-toggle=tooltip data-bs-placement=top href=/ko/docs/concepts/overview/components/#%ec%bb%a8%ed%85%8c%ec%9d%b4%eb%84%88-%eb%9f%b0%ed%83%80%ec%9e%84 target=_blank aria-label='컨테이너 런타임 인터페이스'>컨테이너 런타임 인터페이스</a>(CRI) 요구사항을 만족하는
+런타임을 사용해야 한다.</p><p>더 자세한 정보는 <a href=#cri-versions>CRI 버전 지원</a>을 참조한다.</p><p>이 페이지는 쿠버네티스에서
+여러 공통 컨테이너 런타임을 사용하는 방법에 대한 개요를 제공한다.</p><ul><li><a href=#containerd>containerd</a></li><li><a href=#cri-o>CRI-O</a></li><li><a href=#docker>도커 엔진</a></li><li><a href=#mcr>미란티스 컨테이너 런타임</a></li></ul><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4><p>쿠버네티스 v1.24 이전 릴리스는
+<em>도커심</em> 이라는 구성 요소를 사용하여 도커 엔진과의 직접 통합을 지원했다.
+이 특별한 직접 통합은
+더 이상 쿠버네티스에 포함되지 않는다(이 제거는
+v1.20 릴리스의 일부로 <a href=/blog/2020/12/08/kubernetes-1-20-release-announcement/#dockershim-deprecation>공지</a>되었다).
+이 제거가 어떻게 영향을 미치는지 알아보려면
+<a href=/docs/tasks/administer-cluster/migrating-from-dockershim/check-if-dockershim-removal-affects-you/>도커심 제거가 영향을 미치는지 확인하기</a> 문서를 확인한다.
+도커심을 사용하던 환경에서 이전(migrating)하는 방법을 보려면,
+<a href=/ko/docs/tasks/administer-cluster/migrating-from-dockershim/>도커심에서 이전하기</a>를 확인한다.</p><p>v1.36 이외의 쿠버네티스 버전을 사용하고 있다면,
+해당 버전의 문서를 참고한다.</p></div><h2 id=필수-요소들-설치-및-구성하기>필수 요소들 설치 및 구성하기<a class=td-heading-self-link href=#%ed%95%84%ec%88%98-%ec%9a%94%ec%86%8c%eb%93%a4-%ec%84%a4%ec%b9%98-%eb%b0%8f-%ea%b5%ac%ec%84%b1%ed%95%98%ea%b8%b0 aria-label="Heading self-link"></a></h2><h3 id=네트워크-구성>네트워크 구성<a class=td-heading-self-link href=#%eb%84%a4%ed%8a%b8%ec%9b%8c%ed%81%ac-%ea%b5%ac%ec%84%b1 aria-label="Heading self-link"></a></h3><p>기본적으로 리눅스 커널은 인터페이스 간에 IPv4 패킷이
+라우팅되는 것을 허용하지 않는다. 대부분의 쿠버네티스 클러스터 네트워킹 구현은
+(필요한 경우) 이 설정을 변경하지만, 일부 구현은 관리자가 직접
+설정해 주기를 기대할 수 있다. (일부 구현은 다른 sysctl 파라미터 설정이나
+커널 모듈 로드 등을 기대할 수도 있으므로, 사용 중인 네트워크
+구현의 문서를 확인한다.)</p><h3 id=prerequisite-ipv4-forwarding-optional>IPv4 패킷 포워딩 활성화하기<a class=td-heading-self-link href=#prerequisite-ipv4-forwarding-optional aria-label="Heading self-link"></a></h3><p>IPv4 패킷 포워딩을 수동으로 활성화하려면 다음을 실행한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 설정에 필요한 sysctl 파라미터이며, 재부팅 후에도 유지된다.</span>
+</span></span><span class=line><span class=cl>cat <span class=s>&lt;&lt;EOF | sudo tee /etc/sysctl.d/k8s.conf
+</span></span></span><span class=line><span class=cl><span class=s>net.ipv4.ip_forward = 1
+</span></span></span><span class=line><span class=cl><span class=s>EOF</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 재부팅 없이 sysctl 파라미터 적용</span>
+</span></span><span class=line><span class=cl>sudo sysctl --system
+</span></span></code></pre></div><p>다음 명령으로 <code>net.ipv4.ip_forward</code>가 1로 설정되었는지 확인한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sysctl net.ipv4.ip_forward
+</span></span></code></pre></div><h2 id=cgroup-드라이버>cgroup 드라이버<a class=td-heading-self-link href=#cgroup-%eb%93%9c%eb%9d%bc%ec%9d%b4%eb%b2%84 aria-label="Heading self-link"></a></h2><p>리눅스에서, <a class=glossary-tooltip title='선택적으로 리소스를 격리, 관리, 제한하는 리눅스 프로세스의 그룹.' data-bs-toggle=tooltip data-bs-placement=top href='/ko/docs/reference/glossary/?all=true#term-cgroup' target=_blank aria-label='control group'>control group</a>은
+프로세스에 할당된 리소스를 제한하는데 사용된다.</p><p><a class=glossary-tooltip title='클러스터의 각 노드에서 실행되는 에이전트. Kubelet은 파드에서 컨테이너가 확실하게 동작하도록 관리한다.' data-bs-toggle=tooltip data-bs-placement=top href=/ko/docs/reference/generated/kubelet target=_blank aria-label=kubelet>kubelet</a>과
+그에 연계된 컨테이너 런타임 모두 컨트롤 그룹(control group)들과 상호작용 해야 하는데, 이는
+<a href=/ko/docs/concepts/configuration/manage-resources-containers/>파드 및 컨테이너 자원 관리</a>가 수정될 수 있도록 하고
+cpu 혹은 메모리와 같은 자원의 요청(request)과 상한(limit)을 설정하기 위함이다. 컨트롤
+그룹과 상호작용하기 위해서는, kubelet과 컨테이너 런타임이 <em>cgroup 드라이버</em>를 사용해야 한다.
+매우 중요한 점은, kubelet과 컨테이너 런타임이 같은 cgroup 드라이버를
+사용해야 하며 구성도 동일해야 한다는 것이다.</p><p>두 가지의 cgroup 드라이버가 이용 가능하다.</p><ul><li><a href=#cgroupfs-cgroup-driver><code>cgroupfs</code></a></li><li><a href=#systemd-cgroup-driver><code>systemd</code></a></li></ul><h3 id=cgroupfs-cgroup-driver>cgroupfs 드라이버<a class=td-heading-self-link href=#cgroupfs-cgroup-driver aria-label="Heading self-link"></a></h3><p><code>cgroupfs</code> 드라이버는 kubelet의 기본 cgroup 드라이버이다. <code>cgroupfs</code>
+드라이버가 사용될 때, kubelet과 컨테이너 런타임은 직접적으로
+cgroup 파일시스템과 상호작용하여 cgroup들을 설정한다.</p><p><code>cgroupfs</code> 드라이버가 권장되지 <strong>않는</strong> 때가 있는데,
+<a href=https://www.freedesktop.org/wiki/Software/systemd/>systemd</a>가
+init 시스템인 경우이다. 이것은 systemd가 시스템에 단 하나의 cgroup 관리자만 있을 것으로 기대하기 때문이다.
+또한, <a href=/ko/docs/concepts/architecture/cgroups/>cgroup v2</a>를 사용할 경우에도 <code>cgroupfs</code> 대신
+<code>systemd</code> cgroup 드라이버를 사용한다.</p><h3 id=systemd-cgroup-driver>systemd cgroup 드라이버<a class=td-heading-self-link href=#systemd-cgroup-driver aria-label="Heading self-link"></a></h3><p>리눅스 배포판의 init 시스템이 <a href=https://www.freedesktop.org/wiki/Software/systemd/>systemd</a>인
+경우, init 프로세스는 root control group(<code>cgroup</code>)을
+생성 및 사용하는 cgroup 관리자로 작동한다.</p><p>systemd는 cgroup과 긴밀하게 통합되어 있으며 매 systemd 단위로 cgroup을
+할당한다. 결과적으로, <code>systemd</code>를 init 시스템으로 사용하고 <code>cgroupfs</code>
+드라이버를 사용하면, 그 시스템은 두 개의 다른 cgroup 관리자를 갖게 된다.</p><p>두 개의 cgroup 관리자는 시스템 상 사용 가능한 자원과 사용 중인 자원들에 대하여 두 가지 관점을 가져 혼동을
+초래한다. 예를 들어, kubelet과 컨테이너 런타임은 <code>cgroupfs</code>를 사용하고
+나머지 프로세스는 <code>systemd</code>를 사용하도록 노드를 구성한 경우, 노드가
+자원 압박으로 인해 불안정해질 수 있다.</p><p>이러한 불안정성을 줄이는 방법은, <code>systemd</code>가 init 시스템으로 선택되었을 때에는 <code>systemd</code>를
+kubelet과 컨테이너 런타임의 cgroup 드라이버로 사용하는 것이다.</p><p><code>systemd</code>를 cgroup 드라이버로 사용하려면,
+<a href=/ko/docs/tasks/administer-cluster/kubelet-config-file/><code>KubeletConfiguration</code></a>의
+<code>cgroupDriver</code> 옵션을 <code>systemd</code>로 설정한다. 예를 들면 다음과 같다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>kubelet.config.k8s.io/v1beta1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>KubeletConfiguration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nn>...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>cgroupDriver</span><span class=p>:</span><span class=w> </span><span class=l>systemd</span><span class=w>
+</span></span></span></code></pre></div><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>v1.22 이후부터는 kubeadm으로 클러스터를 생성할 때 사용자가 <code>KubeletConfiguration</code> 하위의
+<code>cgroupDriver</code> 필드를 설정하지 않으면, kubeadm이 기본값으로 <code>systemd</code>를 사용한다.</div><p><code>systemd</code>를 kubelet의 cgroup 드라이버로 구성했다면, 반드시
+컨테이너 런타임의 cgroup 드라이버 또한 <code>systemd</code>로 설정해야 한다. 자세한 설명은
+컨테이너 런타임에 대한 문서를 참조한다. 예를 들면 다음과 같다.</p><ul><li><a href=#containerd-systemd>containerd</a></li><li><a href=#cri-o>CRI-O</a></li></ul><p>쿠버네티스 1.36에서 <code>KubeletCgroupDriverFromCRI</code>
+<a href=/ko/docs/reference/command-line-tools-reference/feature-gates/>기능 게이트</a>가 활성화되어 있고,
+<code>RuntimeConfig</code> CRI RPC를 지원하는 컨테이너 런타임이 구동 중이라면, kubelet은 런타임으로부터
+적절한 cgroup 드라이버를 자동으로 감지하고, kubelet 설정 안의
+<code>cgroupDriver</code> 값을 무시한다.</p><p>하지만 오래된 컨테이너 런타임 버전(특히 containerd 1.y 이하)은
+<code>RuntimeConfig</code> CRI RPC를 지원하지 않으며,
+이 질의(query)에 올바르게 응답하지 못할 수 있다. 이 경우 kubelet은
+자체 <code>--cgroup-driver</code> 플래그 값을 사용하도록 되돌아간다.</p><p>쿠버네티스 1.37에서는 이 폴백 동작이 제거되므로,
+오래된 containerd 버전은 최신 kubelet에서 동작하지 않게 된다.</p><div class="alert alert-caution" role=note><h4 class=alert-heading>주의:</h4><p>클러스터에 결합되어 있는 노드의 cgroup 관리자를 변경하는 것은 신중하게 수행해야 한다.
+하나의 cgroup 드라이버의 의미를 사용하여 kubelet이 파드를 생성해왔다면,
+컨테이너 런타임을 다른 cgroup 드라이버로 변경하는 것은 존재하는 기존 파드에 대해 파드 샌드박스 재생성을 시도할 때, 에러가 발생할 수 있다.
+kubelet을 재시작하는 것은 에러를 해결할 수 없을 것이다.</p><p>자동화가 가능하다면, 업데이트된 구성을 사용하여 노드를 다른 노드로
+교체하거나, 자동화를 사용하여 다시 설치한다.</p></div><h3 id=kubeadm으로-생성한-클러스터의-드라이버를-systemd로-변경하기>kubeadm으로 생성한 클러스터의 드라이버를 <code>systemd</code>로 변경하기<a class=td-heading-self-link href=#kubeadm%ec%9c%bc%eb%a1%9c-%ec%83%9d%ec%84%b1%ed%95%9c-%ed%81%b4%eb%9f%ac%ec%8a%a4%ed%84%b0%ec%9d%98-%eb%93%9c%eb%9d%bc%ec%9d%b4%eb%b2%84%eb%a5%bc-systemd%eb%a1%9c-%eb%b3%80%ea%b2%bd%ed%95%98%ea%b8%b0 aria-label="Heading self-link"></a></h3><p>기존에 kubeadm으로 생성한 클러스터의 cgroup 드라이버를 <code>systemd</code>로 변경하려면,
+<a href=/docs/tasks/administer-cluster/kubeadm/configure-cgroup-driver/>cgroup 드라이버 설정하기</a>를 참고한다.</p><h2 id=cri-versions>CRI 버전 지원<a class=td-heading-self-link href=#cri-versions aria-label="Heading self-link"></a></h2><p>컨테이너 런타임은 컨테이너 런타임 인터페이스 v1을 지원해야 한다.</p><p>쿠버네티스는 <a href=/blog/2022/11/18/upcoming-changes-in-kubernetes-1-26/#cri-api-removal>v1.26부터</a>
+CRI API의 v1 <em>만 지원한다.</em> 컨테이너 런타임이 v1 API를 지원하지 않으면,
+kubelet은 노드로 등록되지 않는다.</p><h2 id=컨테이너-런타임>컨테이너 런타임<a class=td-heading-self-link href=#%ec%bb%a8%ed%85%8c%ec%9d%b4%eb%84%88-%eb%9f%b0%ed%83%80%ec%9e%84 aria-label="Heading self-link"></a></h2><div class="alert alert-secondary callout third-party-content" role=note><strong>참고:</strong>&#8200;이 섹션은 쿠버네티스에 필요한 기능을 제공하는 써드파티 프로젝트와 관련이 있다. 쿠버네티스 프로젝트 작성자는 써드파티 프로젝트에 책임이 없다. 이 페이지는 <a href=https://github.com/cncf/foundation/blob/master/website-guidelines.md target=_blank>CNCF 웹사이트 가이드라인</a>에 따라 프로젝트를 알파벳 순으로 나열한다. 이 목록에 프로젝트를 추가하려면 변경사항을 제출하기 전에 <a href=/contribute/style/content-guide/#third-party-content>콘텐츠 가이드</a>를 읽어본다.</div><h3 id=containerd>containerd<a class=td-heading-self-link href=#containerd aria-label="Heading self-link"></a></h3><p>이 섹션에는 containerd를 CRI 런타임으로 사용하는 데 필요한 단계를 간략하게 설명한다.</p><p>시스템에 containerd를 설치하려면,
+<a href=https://github.com/containerd/containerd/blob/main/docs/getting-started.md>containerd 시작하기</a>의 지침에 따라 유효한
+환경 설정 파일 <code>config.toml</code>을 생성한 뒤 이 단계로 돌아온다.</p><ul class="nav nav-tabs" id=tabs-finding-your-config-toml-file role=tablist><li class=nav-item><button class="nav-link active" id=tabs-finding-your-config-toml-file-0-tab data-bs-toggle=tab data-bs-target=#tabs-finding-your-config-toml-file-0 role=tab aria-controls=tabs-finding-your-config-toml-file-0 aria-selected=true>
+Linux</button><li class=nav-item><button class=nav-link id=tabs-finding-your-config-toml-file-1-tab data-bs-toggle=tab data-bs-target=#tabs-finding-your-config-toml-file-1 role=tab aria-controls=tabs-finding-your-config-toml-file-1 aria-selected=false>
+Windows</button></ul><div class=tab-content id=tabs-finding-your-config-toml-file-content><div class="tab-body tab-pane fadeshow active" id=tabs-finding-your-config-toml-file-0 role=tabpanel aria-labelledby=tabs-finding-your-config-toml-file-0-tab tabindex=finding-your-config-toml-file><p><code>/etc/containerd/config.toml</code> 경로에서 파일을 찾을 수 있음.</p></div><div class="tab-body tab-pane fade" id=tabs-finding-your-config-toml-file-1 role=tabpanel aria-labelledby=tabs-finding-your-config-toml-file-1-tab tabindex=finding-your-config-toml-file>`C:\Program Files\containerd\config.toml` 경로에서 파일을 찾을 수 있음.</div></div><p>리눅스에서, containerd를 위한 기본 CRI 소켓은 <code>/run/containerd/containerd.sock</code>이다.
+윈도우에서, 기본 CRI 엔드포인트는 <code>npipe://./pipe/containerd-containerd</code>이다.</p><h4 id=containerd-systemd><code>systemd</code> cgroup 드라이버 환경 설정하기<a class=td-heading-self-link href=#containerd-systemd aria-label="Heading self-link"></a></h4><p><code>runc</code>와 함께 <code>/etc/containerd/config.toml</code>에서 <code>systemd</code> cgroup 드라이버를 사용하려면,
+사용 중인 containerd 버전에 따라 다음과 같이 설정한다.</p><p>Containerd 1.x 버전:</p><pre tabindex=0><code>[plugins.&#34;io.containerd.grpc.v1.cri&#34;.containerd.runtimes.runc]
+  ...
+  [plugins.&#34;io.containerd.grpc.v1.cri&#34;.containerd.runtimes.runc.options]
+    SystemdCgroup = true
+</code></pre><p>Containerd 2.x 버전:</p><pre tabindex=0><code>[plugins.&#39;io.containerd.cri.v1.runtime&#39;.containerd.runtimes.runc]
+  ...
+  [plugins.&#39;io.containerd.cri.v1.runtime&#39;.containerd.runtimes.runc.options]
+    SystemdCgroup = true
+</code></pre><p><a href=/ko/docs/concepts/architecture/cgroups/>cgroup v2</a>을 사용할 경우 <code>systemd</code> cgroup 드라이버가 권장된다.</p><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4><p>만약 containerd를 패키지(RPM, <code>.deb</code> 등)를 통해 설치하였다면,
+CRI integration 플러그인이 기본적으로 비활성화되어 있을 수 있다.</p><p>쿠버네티스에서 containerd를 사용하려면 CRI 지원이 활성화되어 있어야 한다.
+<code>/etc/containerd/config.toml</code> 안의 <code>disabled_plugins</code> 목록에 <code>cri</code>가 포함되지 않도록 주의한다.
+해당 파일을 변경했다면 <code>containerd</code>도 다시 시작한다.</p><p>초기 클러스터 설치 후 또는 CNI 설치 후 컨테이너 크래시 루프(crash loops)가 발생한다면,
+패키지와 함께 제공된 containerd 설정에 호환되지 않는 설정 파라미터가 포함되어 있을 수 있다.
+<a href=https://github.com/containerd/containerd/blob/main/docs/getting-started.md#advanced-topics>getting-started.md</a>에
+설명된 것처럼 <code>containerd config default > /etc/containerd/config.toml</code>로
+containerd 설정을 초기화한 뒤,
+위에서 설명한 설정 파라미터를 다시 적용하는 것을 고려한다.</p></div><p>이 변경 사항을 적용하려면, containerd를 재시작한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>sudo systemctl restart containerd
+</span></span></code></pre></div><p>kubeadm을 사용하는 경우,
+<a href=/docs/tasks/administer-cluster/kubeadm/configure-cgroup-driver/#configuring-the-kubelet-cgroup-driver>kubelet용 cgroup driver</a>를 수동으로 구성한다.</p><p>쿠버네티스 v1.28에서는 cgroup 드라이버 자동 감지를 알파 기능으로
+활성화할 수 있다. 자세한 내용은 <a href=#systemd-cgroup-driver>systemd cgroup 드라이버</a>를
+참조한다.</p><h4 id=override-pause-image-containerd>샌드박스(pause) 이미지 덮어쓰기<a class=td-heading-self-link href=#override-pause-image-containerd aria-label="Heading self-link"></a></h4><p><a href=https://github.com/containerd/containerd/blob/main/docs/cri/config.md>containerd 설정</a>에서
+아래와 같이 샌드박스 이미지를 덮어쓸 수 있다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-toml data-lang=toml><span class=line><span class=cl><span class=p>[</span><span class=nx>plugins</span><span class=p>.</span><span class=s2>&#34;io.containerd.grpc.v1.cri&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>  <span class=nx>sandbox_image</span> <span class=p>=</span> <span class=s2>&#34;registry.k8s.io/pause:3.10&#34;</span>
+</span></span></code></pre></div><p>설정 파일을 변경한 경우 역시 <code>systemctl restart containerd</code>를 통해 <code>containerd</code>를 재시작해야 할 수 있다.</p><h3 id=cri-o>CRI-O<a class=td-heading-self-link href=#cri-o aria-label="Heading self-link"></a></h3><p>이 섹션은 CRI-O를 컨테이너 런타임으로 설치하는 필수적인 단계를 담고 있다.</p><p>CRI-O를 설치하려면, <a href=https://github.com/cri-o/packaging/blob/main/README.md#usage>CRI-O 설치 방법</a>을 따른다.</p><h4 id=cgroup-드라이버-1>cgroup 드라이버<a class=td-heading-self-link href=#cgroup-%eb%93%9c%eb%9d%bc%ec%9d%b4%eb%b2%84-1 aria-label="Heading self-link"></a></h4><p>CRI-O는 기본적으로 systemd cgroup 드라이버를 사용하며, 이는 대부분의 경우에 잘 동작할 것이다.
+<code>cgroupfs</code> cgroup 드라이버로 전환하려면, <code>/etc/crio/crio.conf</code> 를 수정하거나
+<code>/etc/crio/crio.conf.d/02-cgroup-manager.conf</code> 에 드롭-인(drop-in) 구성을 배치한다.
+예를 들면 다음과 같다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-toml data-lang=toml><span class=line><span class=cl><span class=p>[</span><span class=nx>crio</span><span class=p>.</span><span class=nx>runtime</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=nx>conmon_cgroup</span> <span class=p>=</span> <span class=s2>&#34;pod&#34;</span>
+</span></span><span class=line><span class=cl><span class=nx>cgroup_manager</span> <span class=p>=</span> <span class=s2>&#34;cgroupfs&#34;</span>
+</span></span></code></pre></div><p>또한 <code>cgroupfs</code> 와 함께 CRI-O를 사용할 때 <code>pod</code> 값으로 설정해야 하는
+변경된 <code>conmon_cgroup</code> 에 유의해야 한다. 일반적으로 kubelet(일반적으로 kubeadm을 통해 수행됨)과
+CRI-O의 cgroup 드라이버 구성을 동기화 상태로
+유지해야 한다.</p><p>쿠버네티스 v1.28에서는 cgroup 드라이버 자동 감지를 알파 기능으로
+활성화할 수 있다. 자세한 내용은 <a href=#systemd-cgroup-driver>systemd cgroup 드라이버</a>를
+참조한다.</p><p>CRI-O의 경우, CRI 소켓은 기본적으로 <code>/var/run/crio/crio.sock</code>이다.</p><h4 id=override-pause-image-cri-o>샌드박스(pause) 이미지 덮어쓰기<a class=td-heading-self-link href=#override-pause-image-cri-o aria-label="Heading self-link"></a></h4><p><a href=https://github.com/cri-o/cri-o/blob/main/docs/crio.conf.5.md>CRI-O 설정</a>에서
+아래와 같이 샌드박스 이미지를 덮어쓸 수 있다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-toml data-lang=toml><span class=line><span class=cl><span class=p>[</span><span class=nx>crio</span><span class=p>.</span><span class=nx>image</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=nx>pause_image</span><span class=p>=</span><span class=s2>&#34;registry.k8s.io/pause:3.10&#34;</span>
+</span></span></code></pre></div><p>이 옵션은 <code>systemctl reload crio</code> 혹은 <code>crio</code> 프로세스에 <code>SIGHUP</code>을 보내 변경사항을 적용하기 위한
+live configuration reload 기능을 지원한다.</p><h3 id=docker>도커 엔진<a class=td-heading-self-link href=#docker aria-label="Heading self-link"></a></h3><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>아래의 지침은
+당신이 도커 엔진과 쿠버네티스를 통합하는 데
+<a href=https://mirantis.github.io/cri-dockerd/><code>cri-dockerd</code></a> 어댑터를 사용하고 있다고 가정한다.</div><ol><li><p>각 노드에서, <a href=https://docs.docker.com/engine/install/#server>도커 엔진 설치하기</a>에 따라
+리눅스 배포판에 맞게 도커를 설치한다.</p></li><li><p><a href=https://mirantis.github.io/cri-dockerd/usage/install><code>cri-dockerd</code></a> 문서의 지침에 따라 설치를 진행한다.</p></li></ol><p><code>cri-dockerd</code>의 경우, CRI 소켓은 기본적으로 <code>/run/cri-dockerd.sock</code>이다.</p><h3 id=mcr>미란티스 컨테이너 런타임<a class=td-heading-self-link href=#mcr aria-label="Heading self-link"></a></h3><p><a href=https://docs.mirantis.com/mcr/25.0/overview.html>미란티스 컨테이너 런타임</a>(MCR)은 상용 컨테이너 런타임이며
+이전에는 도커 엔터프라이즈 에디션으로 알려져 있었다.</p><p>오픈소스 <a href=https://mirantis.github.io/cri-dockerd/><code>cri-dockerd</code></a> 컴포넌트를 이용하여 쿠버네티스에서 미란티스 컨테이너 런타임을 사용할 수 있으며,
+이 컴포넌트는 MCR에 포함되어 있다.</p><p>미란티스 컨테이너 런타임을 설치하는 방법에 대해 더 알아보려면,
+<a href=https://docs.mirantis.com/mcr/25.0/install.html>MCR 배포 가이드</a>를 참고한다.</p><p>CRI 소켓의 경로를 찾으려면
+<code>cri-docker.socket</code>라는 이름의 systemd 유닛을 확인한다.</p><h4 id=override-pause-image-cri-dockerd-mcr>샌드박스(pause) 이미지 덮어쓰기<a class=td-heading-self-link href=#override-pause-image-cri-dockerd-mcr aria-label="Heading self-link"></a></h4><p><code>cri-dockerd</code> 어댑터는,
+파드 인프라 컨테이너("pause image")를 위해 어떤 컨테이너 이미지를 사용할지 명시하는 커맨드라인 인자를 받는다.
+해당 커맨드라인 인자는 <code>--pod-infra-container-image</code>이다.</p><h2 id=다음-내용>다음 내용<a class=td-heading-self-link href=#%eb%8b%a4%ec%9d%8c-%eb%82%b4%ec%9a%a9 aria-label="Heading self-link"></a></h2><p>컨테이너 런타임과 더불어, 클러스터에는
+<a href=/ko/docs/concepts/cluster-administration/networking/#쿠버네티스-네트워크-모델의-구현-방법>네트워크 플러그인</a>의 구동도 필요하다.</p></div><div class=td-content style=page-break-before:always><h1 id=pg-00e1646f68aeb89f9722cf6f6cfcad94>2 - 배포 도구로 쿠버네티스 설치하기</h1><p>자체 프로덕션 쿠버네티스 클러스터를 설정하는 데는 다양한 방법과 도구가 있다.
+예를 들면 다음과 같다.</p><ul><li><p><a href=/ko/docs/setup/production-environment/tools/kubeadm/>kubeadm</a></p></li><li><p><a href=https://cluster-api.sigs.k8s.io/>클러스터 API</a>: 여러 쿠버네티스 클러스터의 프로비저닝,
+업그레이드 및 운영을 단순화하는 선언적 API와 도구를 제공하는 데 중점을 둔
+쿠버네티스 하위 프로젝트이다.</p></li><li><p><a href=https://kops.sigs.k8s.io/>kops</a>: 자동화된 클러스터 프로비저닝 도구이다.
+튜토리얼, 모범 사례, 구성 옵션 및 커뮤니티
+참여에 대한 정보는
+<a href=https://kops.sigs.k8s.io/><code>kOps</code> 웹사이트</a>에서 자세히 확인할 수 있다.</p></li><li><p><a href=https://kubespray.io/>kubespray</a>:
+일반적인 OS/쿠버네티스 클러스터 구성 관리 작업을 위한 <a href=https://docs.ansible.com/>Ansible</a>
+플레이북, <a href=https://github.com/kubernetes-sigs/kubespray/blob/master/docs/ansible/inventory.md>인벤토리</a>,
+프로비저닝 도구 및 도메인 지식의
+조합이다. <a href=https://kubernetes.slack.com/messages/kubespray/>#kubespray</a>
+슬랙 채널에서 커뮤니티에 참여할 수 있다.</p></li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-a16f59f325a17cdeed324d5c889f7f73>2.1 - kubeadm으로 클러스터 구성하기</h1></div><div class=td-content><h1 id=pg-29e59491dd6118b23072dfe9ebb93323>2.1.1 - kubeadm 설치하기</h1><p><img src=/images/kubeadm-stacked-color.png align=right width=150px></img>
+이 페이지에서는 <code>kubeadm</code> 툴박스 설치 방법을 보여준다.
+이 설치 프로세스를 수행한 후 kubeadm으로 클러스터를 만드는 방법에 대한 자세한 내용은
+<a href=/ko/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/>kubeadm으로 클러스터 생성하기</a> 페이지를 참고한다.</p><div class=version-list><p>This installation guide is for Kubernetes v1.36. If you want to use a different Kubernetes version, please refer to the following pages instead:</p><ul><li><a href=https://xuxiaowei.io/t/1320/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>kubeadm 설치하기 (Kubernetes Kubernetes 文档说明)</a></li><li><a href=https://kubernetes-v1-38.xuxiaowei.com.cn/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>kubeadm 설치하기 (Kubernetes v1.38)</a></li><li><a href=https://kubernetes-v1-37.xuxiaowei.com.cn/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>kubeadm 설치하기 (Kubernetes v1.37)</a></li><li><a href=https://kubernetes-v1-35.xuxiaowei.com.cn/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>kubeadm 설치하기 (Kubernetes v1.35)</a></li><li><a href=https://kubernetes-v1-34.xuxiaowei.com.cn/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>kubeadm 설치하기 (Kubernetes v1.34)</a></li><li><a href=https://kubernetes-v1-33.xuxiaowei.com.cn/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>kubeadm 설치하기 (Kubernetes v1.33)</a></li><li><a href=https://kubernetes-v1-32.xuxiaowei.com.cn/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>kubeadm 설치하기 (Kubernetes v1.32)</a></li><li><a href=https://kubernetes-v1-31.xuxiaowei.com.cn/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>kubeadm 설치하기 (Kubernetes v1.31)</a></li><li><a href=https://kubernetes-v1-30.xuxiaowei.com.cn/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>kubeadm 설치하기 (Kubernetes v1.30)</a></li><li><a href=https://kubernetes-v1-29.xuxiaowei.com.cn/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>kubeadm 설치하기 (Kubernetes v1.29)</a></li><li><a href=https://kubernetes-v1-28.xuxiaowei.com.cn/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>kubeadm 설치하기 (Kubernetes v1.28)</a></li><li><a href=https://kubernetes-v1-27.xuxiaowei.com.cn/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>kubeadm 설치하기 (Kubernetes v1.27)</a></li><li><a href=https://kubernetes-v1-26.xuxiaowei.com.cn/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>kubeadm 설치하기 (Kubernetes v1.26)</a></li><li><a href=https://kubernetes-v1-25.xuxiaowei.com.cn/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>kubeadm 설치하기 (Kubernetes v1.25)</a></li><li><a href=https://kubernetes-v1-24.xuxiaowei.com.cn/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>kubeadm 설치하기 (Kubernetes v1.24)</a></li><li><a href=https://kubernetes-v1-23.xuxiaowei.com.cn/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>kubeadm 설치하기 (Kubernetes v1.23)</a></li><li><a href=https://kubernetes-v1-22.xuxiaowei.com.cn/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>kubeadm 설치하기 (Kubernetes v1.22)</a></li><li><a href=https://kubernetes-v1-21.xuxiaowei.com.cn/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>kubeadm 설치하기 (Kubernetes v1.21)</a></li><li><a href=https://kubernetes-v1-20.xuxiaowei.com.cn/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>kubeadm 설치하기 (Kubernetes v1.20)</a></li></ul></div><h2 id=시작하기-전에>시작하기 전에<a class=td-heading-self-link href=#%ec%8b%9c%ec%9e%91%ed%95%98%ea%b8%b0-%ec%a0%84%ec%97%90 aria-label="Heading self-link"></a></h2><ul><li>호환되는 리눅스 호스트. 쿠버네티스 프로젝트는 데비안 및 레드햇 기반 리눅스 배포판과
+패키지 매니저가 없는 배포판에 대한 일반적인 지침을 제공한다.</li><li>머신당 2GB 이상의 RAM (이보다 적으면 앱을 위한 공간이 거의 남지 않는다).</li><li>컨트롤 플레인 머신에는 2개 이상의 CPU.</li><li>클러스터의 모든 머신 간 완전한 네트워크 연결 (공용 또는 사설 네트워크 무관).</li><li>모든 노드에 대해 고유한 호스트네임, MAC 주소, 그리고 product_uuid. 자세한 내용은 <a href=#verify-mac-address>여기</a>를 참고한다.</li><li>머신에 특정 포트들이 열려있어야 한다. 자세한 내용은 <a href=#check-required-ports>여기</a>를 참고한다.</li></ul><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4><code>kubeadm</code> 설치는 동적 링킹을 사용하는 바이너리를 통해 수행되며 대상 시스템이 <code>glibc</code>를 제공한다고 가정한다.
+이는 많은 리눅스 배포판(데비안, 우분투, 페도라, CentOS 등 포함)에서 합리적인 가정이지만
+알파인 리눅스(Alpine Linux)와 같이 기본적으로 <code>glibc</code>를
+포함하지 않는 커스텀 및 경량 배포판에서는 항상 그런 것은 아니다.
+배포판이 <code>glibc</code>를 포함하거나 예상되는 심볼을 제공하는
+<a href=https://wiki.alpinelinux.org/wiki/Running_glibc_programs>호환성 레이어</a>를 포함할 것으로 예상된다.</div><h2 id=os-버전-확인>OS 버전 확인<a class=td-heading-self-link href=#os-%eb%b2%84%ec%a0%84-%ed%99%95%ec%9d%b8 aria-label="Heading self-link"></a></h2><div class="alert alert-secondary callout third-party-content" role=note><strong>참고:</strong>&#8200;이 섹션은 쿠버네티스에 필요한 기능을 제공하는 써드파티 프로젝트와 관련이 있다. 쿠버네티스 프로젝트 작성자는 써드파티 프로젝트에 책임이 없다. 이 페이지는 <a href=https://github.com/cncf/foundation/blob/master/website-guidelines.md target=_blank>CNCF 웹사이트 가이드라인</a>에 따라 프로젝트를 알파벳 순으로 나열한다. 이 목록에 프로젝트를 추가하려면 변경사항을 제출하기 전에 <a href=/contribute/style/content-guide/#third-party-content>콘텐츠 가이드</a>를 읽어본다.</div><ul class="nav nav-tabs" id=tabs-operating-system-version-check role=tablist><li class=nav-item><button class="nav-link active" id=tabs-operating-system-version-check-0-tab data-bs-toggle=tab data-bs-target=#tabs-operating-system-version-check-0 role=tab aria-controls=tabs-operating-system-version-check-0 aria-selected=true>
+Linux</button><li class=nav-item><button class=nav-link id=tabs-operating-system-version-check-1-tab data-bs-toggle=tab data-bs-target=#tabs-operating-system-version-check-1 role=tab aria-controls=tabs-operating-system-version-check-1 aria-selected=false>
+Windows</button></ul><div class=tab-content id=tabs-operating-system-version-check-content><div class="tab-body tab-pane fadeshow active" id=tabs-operating-system-version-check-0 role=tabpanel aria-labelledby=tabs-operating-system-version-check-0-tab tabindex=operating-system-version-check><ul><li>kubeadm 프로젝트는 LTS 커널을 지원한다. <a href=https://www.kernel.org/category/releases.html>LTS 커널 목록</a>을 참고한다.</li><li><code>uname -r</code> 명령을 사용하여 커널 버전을 확인할 수 있다</li></ul><p>자세한 정보는 <a href=/ko/docs/reference/node/kernel-version-requirements/>리눅스 커널 요구사항</a>을 참고한다.</p></div><div class="tab-body tab-pane fade" id=tabs-operating-system-version-check-1 role=tabpanel aria-labelledby=tabs-operating-system-version-check-1-tab tabindex=operating-system-version-check><ul><li>kubeadm 프로젝트는 최신 커널 버전을 지원한다. 최신 커널 목록은 <a href=https://learn.microsoft.com/ko-kr/windows/release-health/windows-server-release-info>윈도우 서버 릴리스 정보</a>를 참고한다.</li><li><code>systeminfo</code> 명령을 사용하여 커널 버전(OS 버전이라고도 함)을 확인할 수 있다</li></ul><p>자세한 정보는 <a href=https://kubernetes.io/ko/docs/concepts/windows/intro/>윈도우 OS 버전 호환성</a>을 참고한다.</p></div></div><p>kubeadm으로 생성된 쿠버네티스 클러스터는 커널 기능을 사용하는 소프트웨어에 의존한다.
+이 소프트웨어에는 <a class=glossary-tooltip title='컨테이너 런타임은 컨테이너 실행을 담당하는 소프트웨어이다.' data-bs-toggle=tooltip data-bs-placement=top href=/ko/docs/setup/production-environment/container-runtimes/ target=_blank aria-label='컨테이너 런타임'>컨테이너 런타임</a>,
+<a class=glossary-tooltip title='클러스터의 각 노드에서 실행되는 에이전트. Kubelet은 파드에서 컨테이너가 확실하게 동작하도록 관리한다.' data-bs-toggle=tooltip data-bs-placement=top href=/ko/docs/reference/generated/kubelet target=_blank aria-label=kubelet>kubelet</a>,
+그리고 <a class=glossary-tooltip title='컨테이너 네트워크 인터페이스(CNI) 플러그인은 appc/CNI 스팩을 따르는 네트워크 플러그인의 일종이다.' data-bs-toggle=tooltip data-bs-placement=top href=/ko/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/ target=_blank aria-label='컨테이너 네트워크 인터페이스'>컨테이너 네트워크 인터페이스</a> 플러그인이 포함되지만 이에 국한되지 않는다.</p><p>지원되지 않는 커널 버전으로 인한 예기치 않은 오류를 방지하기 위해, kubeadm은 <code>SystemVerification</code> 사전 검사를 실행한다.
+이 검사는 커널 버전이 지원되지 않으면 실패한다.</p><p>kubeadm이 커널 버전을 지원하지 않더라도,
+커널이 필요한 기능을 제공한다는 것을 알고 있다면 검사를 건너뛰도록 선택할 수 있다.</p><h2 id=verify-mac-address>모든 노드에서 MAC 주소와 product_uuid가 고유한지 확인<a class=td-heading-self-link href=#verify-mac-address aria-label="Heading self-link"></a></h2><ul><li><code>ip link</code> 또는 <code>ifconfig -a</code> 명령을 사용하여 네트워크 인터페이스의 MAC 주소를 확인할 수 있다</li><li><code>sudo cat /sys/class/dmi/id/product_uuid</code> 명령을 사용하여 product_uuid를 확인할 수 있다</li></ul><p>하드웨어 장치는 고유한 주소를 가질 가능성이 매우 높지만, 일부 가상 머신은 동일한 값을 가질 수 있다.
+쿠버네티스는 이러한 값을 사용하여 클러스터의 노드를 고유하게 식별한다.
+이러한 값이 각 노드에서 고유하지 않으면 설치 과정이
+<a href=https://github.com/kubernetes/kubeadm/issues/31>실패</a>할 수 있다.</p><h2 id=네트워크-어댑터-확인>네트워크 어댑터 확인<a class=td-heading-self-link href=#%eb%84%a4%ed%8a%b8%ec%9b%8c%ed%81%ac-%ec%96%b4%eb%8c%91%ed%84%b0-%ed%99%95%ec%9d%b8 aria-label="Heading self-link"></a></h2><p>네트워크 어댑터가 두 개 이상이고, 쿠버네티스 컴포넌트가 디폴트 라우트(default route)에서 도달할 수 없는
+경우, 쿠버네티스 클러스터 주소가 적절한 어댑터를 통해 이동하도록 IP 경로를 추가하는 것이 좋다.</p><h2 id=check-required-ports>필수 포트 확인<a class=td-heading-self-link href=#check-required-ports aria-label="Heading self-link"></a></h2><p>쿠버네티스 컴포넌트가 서로 통신하려면 이러한
+<a href=https://kubernetes.io/ko/docs/reference/networking/ports-and-protocols/>필수 포트</a>가 열려 있어야 한다.
+<a href=https://netcat.sourceforge.net>netcat</a>과 같은 도구를 사용하여 포트가 열려 있는지 확인할 수 있다. 예를 들어</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>nc 127.0.0.1 <span class=m>6443</span> -zv -w <span class=m>2</span>
+</span></span></code></pre></div><p>사용하는 파드 네트워크 플러그인도 특정 포트가 열려 있어야 할 수 있다.
+각 파드 네트워크 플러그인마다 다르므로,
+해당 플러그인이 필요로 하는 포트에 대해서는 플러그인 문서를 참고한다.</p><h2 id=swap-configuration>스왑 구성<a class=td-heading-self-link href=#swap-configuration aria-label="Heading self-link"></a></h2><p>노드에서 스왑 메모리가 감지되면 kubelet의 기본 동작은 시작에 실패하는 것이다.
+이는 스왑이 비활성화되거나 kubelet에 의해 용인되어야 함을 의미한다.</p><ul><li>스왑을 용인하려면, kubelet 구성에 <code>failSwapOn: false</code>를 추가하거나 커맨드라인 인수로 설정한다.
+참고: <code>failSwapOn: false</code>가 제공되더라도 워크로드는 기본적으로 스왑에 접근할 수 없다.
+이는 kubelet 구성 파일에서 다시 <code>swapBehavior</code>를 설정하여 변경할 수 있다. 스왑을 사용하려면,
+기본 <code>NoSwap</code> 설정이 아닌 다른 <code>swapBehavior</code>를 설정한다.
+자세한 내용은 <a href=/ko/docs/concepts/architecture/nodes/#swap-memory>스왑 메모리 관리</a>를 참고한다.</li><li>스왑을 비활성화하려면, <code>sudo swapoff -a</code>를 사용하여 일시적으로 스와핑을 비활성화할 수 있다.
+재부팅 후에도 이 변경사항을 유지하려면, 시스템 구성 방법에 따라
+<code>/etc/fstab</code>, <code>systemd.swap</code>과 같은 구성 파일에서 스왑이 비활성화되어 있는지 확인한다.</li></ul><h2 id=installing-runtime>컨테이너 런타임 설치<a class=td-heading-self-link href=#installing-runtime aria-label="Heading self-link"></a></h2><p>파드에서 컨테이너를 실행하기 위해, 쿠버네티스는
+<a class=glossary-tooltip title='컨테이너 런타임은 컨테이너 실행을 담당하는 소프트웨어이다.' data-bs-toggle=tooltip data-bs-placement=top href=/ko/docs/setup/production-environment/container-runtimes/ target=_blank aria-label='컨테이너 런타임'>컨테이너 런타임</a>을 사용한다.</p><p>기본적으로, 쿠버네티스는
+<a class=glossary-tooltip title='Kubelet과 컨테이너 런타임을 통합시키기 위한 API' data-bs-toggle=tooltip data-bs-placement=top href=/ko/docs/concepts/overview/components/#%ec%bb%a8%ed%85%8c%ec%9d%b4%eb%84%88-%eb%9f%b0%ed%83%80%ec%9e%84 target=_blank aria-label='컨테이너 런타임 인터페이스'>컨테이너 런타임 인터페이스</a>(CRI)를
+사용하여 사용자가 선택한 컨테이너 런타임과 인터페이스한다.</p><p>런타임을 지정하지 않으면, kubeadm은 잘 알려진 엔드포인트를 스캐닝하여
+설치된 컨테이너 런타임을 자동으로 감지하려고 한다.</p><p>컨테이너 런타임이 여러 개 감지되거나 하나도 감지되지 않은 경우,
+kubeadm은 에러를 반환하고 사용자가 어떤 것을 사용할지를 명시하도록 요청할 것이다.</p><p>자세한 정보는 <a href=/ko/docs/setup/production-environment/container-runtimes/>컨테이너 런타임</a>
+을 참고한다.</p><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>도커 엔진은 컨테이너 런타임이 쿠버네티스와 호환되기 위한 요구 사항인
+<a href=/ko/docs/concepts/architecture/cri/>CRI</a>를 만족하지 않는다.
+이러한 이유로, 추가 서비스인 <a href=https://github.com/Mirantis/cri-dockerd>cri-dockerd</a>가 설치되어야 한다.
+cri-dockerd는 쿠버네티스 버전 1.24부터 kubelet에서 <a href=/dockershim/>제거</a>된
+기존 내장 도커 엔진 지원을 기반으로 한 프로젝트이다.</div><p>아래 표는 지원 운영 체제에 대한 알려진 엔드포인트를 담고 있다.</p><ul class="nav nav-tabs" id=tabs-container-runtime role=tablist><li class=nav-item><button class="nav-link active" id=tabs-container-runtime-0-tab data-bs-toggle=tab data-bs-target=#tabs-container-runtime-0 role=tab aria-controls=tabs-container-runtime-0 aria-selected=true>
+리눅스</button><li class=nav-item><button class=nav-link id=tabs-container-runtime-1-tab data-bs-toggle=tab data-bs-target=#tabs-container-runtime-1 role=tab aria-controls=tabs-container-runtime-1 aria-selected=false>
+윈도우</button></ul><div class=tab-content id=tabs-container-runtime-content><div class="tab-body tab-pane fadeshow active" id=tabs-container-runtime-0 role=tabpanel aria-labelledby=tabs-container-runtime-0-tab tabindex=container-runtime><table><caption style=display:none>리눅스 컨테이너 런타임</caption><thead><tr><th>런타임</th><th>유닉스 도메인 소켓 경로</th></tr></thead><tbody><tr><td>containerd</td><td><code>unix:///var/run/containerd/containerd.sock</code></td></tr><tr><td>CRI-O</td><td><code>unix:///var/run/crio/crio.sock</code></td></tr><tr><td>도커 엔진 (cri-dockerd 사용)</td><td><code>unix:///var/run/cri-dockerd.sock</code></td></tr></tbody></table></div><div class="tab-body tab-pane fade" id=tabs-container-runtime-1 role=tabpanel aria-labelledby=tabs-container-runtime-1-tab tabindex=container-runtime><table><caption style=display:none>윈도우 컨테이너 런타임</caption><thead><tr><th>런타임</th><th>윈도우 네임드 파이프(named pipe) 경로</th></tr></thead><tbody><tr><td>containerd</td><td><code>npipe:////./pipe/containerd-containerd</code></td></tr><tr><td>도커 엔진 (cri-dockerd 사용)</td><td><code>npipe:////./pipe/cri-dockerd</code></td></tr></tbody></table></div></div><h2 id=kubeadm-kubelet-및-kubectl-설치>kubeadm, kubelet 및 kubectl 설치<a class=td-heading-self-link href=#kubeadm-kubelet-%eb%b0%8f-kubectl-%ec%84%a4%ec%b9%98 aria-label="Heading self-link"></a></h2><p>모든 머신에 다음 패키지들을 설치한다.</p><ul><li><p><code>kubeadm</code>: 클러스터를 부트스트랩하는 명령이다.</p></li><li><p><code>kubelet</code>: 클러스터의 모든 머신에서 실행되는 파드와 컨테이너 시작과
+같은 작업을 수행하는 컴포넌트이다.</p></li><li><p><code>kubectl</code>: 클러스터와 통신하기 위한 커맨드 라인 유틸리티이다.</p></li></ul><p>kubeadm은 <code>kubelet</code> 또는 <code>kubectl</code> 을 설치하거나 관리하지 <strong>않으므로</strong>, kubeadm이
+설치하려는 쿠버네티스 컨트롤 플레인의 버전과 일치하는지
+확인해야 한다. 그렇지 않으면, 예상치 못한 버그 동작으로 이어질 수 있는
+버전 차이(skew)가 발생할 위험이 있다. 그러나, kubelet과 컨트롤 플레인 사이에 <em>하나의</em>
+마이너 버전 차이가 지원되지만, kubelet 버전은 API 서버 버전 보다
+높을 수 없다. 예를 들어, 1.7.0 버전의 kubelet은 1.8.0 API 서버와 완전히 호환되어야 하지만,
+그 반대의 경우는 아니다.</p><p><code>kubectl</code> 설치에 대한 정보는 <a href=/ko/docs/tasks/tools/>kubectl 설치 및 설정</a>을 참고한다.</p><div class="alert alert-danger" role=note><h4 class=alert-heading>경고:</h4>이 지침은 모든 시스템 업그레이드에서 모든 쿠버네티스 패키지를 제외한다.
+이는 kubeadm 및 쿠버네티스를
+<a href=/ko/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/>업그레이드 하는 데 특별한 주의</a>가 필요하기 때문이다.</div><p>버전 차이에 대한 자세한 내용은 다음을 참고한다.</p><ul><li>쿠버네티스 <a href=/ko/releases/version-skew-policy/>버전 및 버전-차이 정책</a></li><li>Kubeadm 관련 <a href=/ko/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#version-skew-policy>버전 차이 정책</a></li></ul><div class="alert alert-secondary callout note" role=note><strong>참고:</strong> The legacy package repositories (<code>apt.kubernetes.io</code> and <code>yum.kubernetes.io</code>) have been
+<a href=/blog/2023/08/31/legacy-package-repository-deprecation/>deprecated and frozen starting from September 13, 2023</a>.
+<strong>Using the <a href=/blog/2023/08/15/pkgs-k8s-io-introduction/>new package repositories hosted at <code>pkgs.k8s.io</code></a>
+is strongly recommended and required in order to install Kubernetes versions released after September 13, 2023.</strong>
+The deprecated legacy repositories, and their contents, might be removed at any time in the future and without
+a further notice period. The new package repositories provide downloads for Kubernetes versions starting with v1.24.0.</div><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>각 쿠버네티스 마이너 버전마다 전용 패키지 저장소가 있다.
+v1.36가 아닌 다른 마이너 버전을 설치하려면,
+원하는 마이너 버전에 대한 설치 가이드를 참고한다.</div><ul class="nav nav-tabs" id=tabs-k8s-install role=tablist><li class=nav-item><button class="nav-link active" id=tabs-k8s-install-0-tab data-bs-toggle=tab data-bs-target=#tabs-k8s-install-0 role=tab aria-controls=tabs-k8s-install-0 aria-selected=true>
+데비안 기반 배포판</button><li class=nav-item><button class=nav-link id=tabs-k8s-install-1-tab data-bs-toggle=tab data-bs-target=#tabs-k8s-install-1 role=tab aria-controls=tabs-k8s-install-1 aria-selected=false>
+레드햇 기반 배포판</button><li class=nav-item><button class=nav-link id=tabs-k8s-install-2-tab data-bs-toggle=tab data-bs-target=#tabs-k8s-install-2 role=tab aria-controls=tabs-k8s-install-2 aria-selected=false>
+패키지 매니저를 사용하지 않는 경우</button></ul><div class=tab-content id=tabs-k8s-install-content><div class="tab-body tab-pane fadeshow active" id=tabs-k8s-install-0 role=tabpanel aria-labelledby=tabs-k8s-install-0-tab tabindex=k8s-install><p>다음 지침은 쿠버네티스 v1.36에 대한 것이다.</p><ol><li><p><code>apt</code> 패키지 인덱스를 업데이트하고 쿠버네티스 <code>apt</code> 리포지터리를 사용하는 데 필요한 패키지를 설치한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>sudo apt-get update
+</span></span><span class=line><span class=cl><span class=c1># apt-transport-https는 더미 패키지일 수 있다. 그렇다면 해당 패키지를 건너뛸 수 있다</span>
+</span></span><span class=line><span class=cl>sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+</span></span></code></pre></div></li><li><p>쿠버네티스 패키지 리포지터리용 공개 샤이닝 키를 다운로드한다.
+모든 리포지터리에 동일한 서명 키가 사용되므로 URL의 버전은 무시할 수 있다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># `/etc/apt/keyrings` 디렉터리가 존재하지 않으면, curl 명령 전에 생성해야 한다. 아래 참고사항을 읽어본다.</span>
+</span></span><span class=line><span class=cl><span class=c1># sudo mkdir -p -m 755 /etc/apt/keyrings</span>
+</span></span><span class=line><span class=cl>curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.36/deb/Release.key <span class=p>|</span> sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+</span></span></code></pre></div></li></ol><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>데비안 12와 우분투 22.04보다 오래된 릴리스에서는 <code>/etc/apt/keyrings</code>
+디렉터리가 기본적으로 존재하지 않으며, curl 명령 전에 생성되어야 한다.</div><ol start=3><li><p>적절한 쿠버네티스 <code>apt</code> 리포지터리를 추가한다. 이 리포지터리에는 쿠버네티스 1.36에 대한
+패키지만 있다는 점에 유의한다. 다른 쿠버네티스 마이너 버전의 경우, 원하는 마이너 버전과 일치하도록
+URL의 쿠버네티스 마이너 버전을 변경해야 한다
+(설치할 계획인 쿠버네티스 버전에 대한 문서를 읽고 있는지도
+확인해야 한다).</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 이 명령어는 /etc/apt/sources.list.d/kubernetes.list 에 있는 기존 구성을 덮어쓴다.</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s1>&#39;deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.36/deb/ /&#39;</span> <span class=p>|</span> sudo tee /etc/apt/sources.list.d/kubernetes.list
+</span></span></code></pre></div></li><li><p><code>apt</code> 패키지 색인을 업데이트하고, kubelet, kubeadm, kubectl을 설치하고 해당 버전을 고정한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>sudo apt-get update
+</span></span><span class=line><span class=cl>sudo apt-get install -y kubelet kubeadm kubectl
+</span></span><span class=line><span class=cl>sudo apt-mark hold kubelet kubeadm kubectl
+</span></span></code></pre></div></li><li><p>(선택사항) kubeadm을 실행하기 전에 kubelet 서비스를 활성화한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span> --now kubelet
+</span></span></code></pre></div></li></ol></div><div class="tab-body tab-pane fade" id=tabs-k8s-install-1 role=tabpanel aria-labelledby=tabs-k8s-install-1-tab tabindex=k8s-install><ol><li><p>SELinux를 <code>permissive</code> 모드로 설정한다.</p><p>다음 지침은 쿠버네티스 1.36에 대한 것이다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># SELinux를 permissive 모드로 설정한다 (효과적으로 비활성화)</span>
+</span></span><span class=line><span class=cl>sudo setenforce <span class=m>0</span>
+</span></span><span class=line><span class=cl>sudo sed -i <span class=s1>&#39;s/^SELINUX=enforcing$/SELINUX=permissive/&#39;</span> /etc/selinux/config
+</span></span></code></pre></div></li></ol><div class="alert alert-caution" role=note><h4 class=alert-heading>주의:</h4><ul><li><code>setenforce 0</code> 및 <code>sed ...</code> 실행으로 SELinux를 permissive 모드로 설정하면 효과적으로 비활성화된다.
+이는 컨테이너가 호스트 파일시스템에 접근할 수 있도록 하기 위해 필요하다.
+예를 들어, 일부 클러스터 네트워크 플러그인에서 이를 요구한다.
+kubelet에서 SELinux 지원이 개선될 때까지 이렇게 해야 한다.</li><li>SELinux를 구성하는 방법을 알고 있다면 SELinux를 활성화된 상태로 둘 수 있지만
+kubeadm에서 지원하지 않는 설정이 필요할 수 있다.</li></ul></div><ol start=2><li><p>쿠버네티스 <code>yum</code> 리포지터리를 추가한다.
+리포지터리 정의의 <code>exclude</code> 파라미터는 쿠버네티스를 업그레이드하기 위해
+따라야 하는 특별한 절차가 있으므로 <code>yum update</code> 실행 시 쿠버네티스와 관련된
+패키지가 업그레이드되지 않도록 한다.
+이 리포지터리에는 쿠버네티스 1.36에
+대한 패키지만 있다는 점에 유의한다.
+다른 쿠버네티스 마이너 버전의 경우, 원하는 마이너 버전과 일치하도록
+URL의 쿠버네티스 마이너 버전을 변경해야 한다
+(설치할 계획인 쿠버네티스 버전에 대한 문서를 읽고 있는지도 확인해야 한다).</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 이것은 /etc/yum.repos.d/kubernetes.repo에 있는 기존 구성을 덮어쓴다</span>
+</span></span><span class=line><span class=cl>cat <span class=s>&lt;&lt;EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+</span></span></span><span class=line><span class=cl><span class=s>[kubernetes]
+</span></span></span><span class=line><span class=cl><span class=s>name=Kubernetes
+</span></span></span><span class=line><span class=cl><span class=s>baseurl=https://pkgs.k8s.io/core:/stable:/v1.36/rpm/
+</span></span></span><span class=line><span class=cl><span class=s>enabled=1
+</span></span></span><span class=line><span class=cl><span class=s>gpgcheck=1
+</span></span></span><span class=line><span class=cl><span class=s>gpgkey=https://pkgs.k8s.io/core:/stable:/v1.36/rpm/repodata/repomd.xml.key
+</span></span></span><span class=line><span class=cl><span class=s>exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
+</span></span></span><span class=line><span class=cl><span class=s>EOF</span>
+</span></span></code></pre></div></li><li><p>kubelet, kubeadm 및 kubectl을 설치한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>sudo yum install -y kubelet kubeadm kubectl --disableexcludes<span class=o>=</span>kubernetes
+</span></span></code></pre></div></li><li><p>(선택사항) kubeadm을 실행하기 전에 kubelet 서비스를 활성화한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span> --now kubelet
+</span></span></code></pre></div></li></ol></div><div class="tab-body tab-pane fade" id=tabs-k8s-install-2 role=tabpanel aria-labelledby=tabs-k8s-install-2-tab tabindex=k8s-install><p>CNI 플러그인 설치(대부분의 파드 네트워크에 필요)</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nv>CNI_PLUGINS_VERSION</span><span class=o>=</span><span class=s2>&#34;v1.3.0&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>ARCH</span><span class=o>=</span><span class=s2>&#34;amd64&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>DEST</span><span class=o>=</span><span class=s2>&#34;/opt/cni/bin&#34;</span>
+</span></span><span class=line><span class=cl>sudo mkdir -p <span class=s2>&#34;</span><span class=nv>$DEST</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>curl -L <span class=s2>&#34;https://github.com/containernetworking/plugins/releases/download/</span><span class=si>${</span><span class=nv>CNI_PLUGINS_VERSION</span><span class=si>}</span><span class=s2>/cni-plugins-linux-</span><span class=si>${</span><span class=nv>ARCH</span><span class=si>}</span><span class=s2>-</span><span class=si>${</span><span class=nv>CNI_PLUGINS_VERSION</span><span class=si>}</span><span class=s2>.tgz&#34;</span> <span class=p>|</span> sudo tar -C <span class=s2>&#34;</span><span class=nv>$DEST</span><span class=s2>&#34;</span> -xz
+</span></span></code></pre></div><p>명령어 파일을 다운로드할 디렉터리 정의</p><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4><code>DOWNLOAD_DIR</code> 변수는 쓰기 가능한 디렉터리로 설정되어야 한다.
+Flatcar Container Linux를 실행 중인 경우, <code>DOWNLOAD_DIR="/opt/bin"</code> 을 설정한다.</div><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nv>DOWNLOAD_DIR</span><span class=o>=</span><span class=s2>&#34;/usr/local/bin&#34;</span>
+</span></span><span class=line><span class=cl>sudo mkdir -p <span class=s2>&#34;</span><span class=nv>$DOWNLOAD_DIR</span><span class=s2>&#34;</span>
+</span></span></code></pre></div><p>선택적으로 crictl을 설치한다 (컨테이너 런타임 인터페이스(CRI)와의 상호작용에 필요, kubeadm에는 선택사항).</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nv>CRICTL_VERSION</span><span class=o>=</span><span class=s2>&#34;v1.31.0&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>ARCH</span><span class=o>=</span><span class=s2>&#34;amd64&#34;</span>
+</span></span><span class=line><span class=cl>curl -L <span class=s2>&#34;https://github.com/kubernetes-sigs/cri-tools/releases/download/</span><span class=si>${</span><span class=nv>CRICTL_VERSION</span><span class=si>}</span><span class=s2>/crictl-</span><span class=si>${</span><span class=nv>CRICTL_VERSION</span><span class=si>}</span><span class=s2>-linux-</span><span class=si>${</span><span class=nv>ARCH</span><span class=si>}</span><span class=s2>.tar.gz&#34;</span> <span class=p>|</span> sudo tar -C <span class=nv>$DOWNLOAD_DIR</span> -xz
+</span></span></code></pre></div><p><code>kubeadm</code>, <code>kubelet</code>을 설치하고 <code>kubelet</code> systemd 서비스를 추가한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nv>RELEASE</span><span class=o>=</span><span class=s2>&#34;</span><span class=k>$(</span>curl -sSL https://dl.k8s.io/release/stable.txt<span class=k>)</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>ARCH</span><span class=o>=</span><span class=s2>&#34;amd64&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>cd</span> <span class=nv>$DOWNLOAD_DIR</span>
+</span></span><span class=line><span class=cl>sudo curl -L --remote-name-all https://dl.k8s.io/release/<span class=si>${</span><span class=nv>RELEASE</span><span class=si>}</span>/bin/linux/<span class=si>${</span><span class=nv>ARCH</span><span class=si>}</span>/<span class=o>{</span>kubeadm,kubelet<span class=o>}</span>
+</span></span><span class=line><span class=cl>sudo chmod +x <span class=o>{</span>kubeadm,kubelet<span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>RELEASE_VERSION</span><span class=o>=</span><span class=s2>&#34;v0.16.2&#34;</span>
+</span></span><span class=line><span class=cl>curl -sSL <span class=s2>&#34;https://raw.githubusercontent.com/kubernetes/release/</span><span class=si>${</span><span class=nv>RELEASE_VERSION</span><span class=si>}</span><span class=s2>/cmd/krel/templates/latest/kubelet/kubelet.service&#34;</span> <span class=p>|</span> sed <span class=s2>&#34;s:/usr/bin:</span><span class=si>${</span><span class=nv>DOWNLOAD_DIR</span><span class=si>}</span><span class=s2>:g&#34;</span> <span class=p>|</span> sudo tee /usr/lib/systemd/system/kubelet.service
+</span></span><span class=line><span class=cl>sudo mkdir -p /usr/lib/systemd/system/kubelet.service.d
+</span></span><span class=line><span class=cl>curl -sSL <span class=s2>&#34;https://raw.githubusercontent.com/kubernetes/release/</span><span class=si>${</span><span class=nv>RELEASE_VERSION</span><span class=si>}</span><span class=s2>/cmd/krel/templates/latest/kubeadm/10-kubeadm.conf&#34;</span> <span class=p>|</span> sed <span class=s2>&#34;s:/usr/bin:</span><span class=si>${</span><span class=nv>DOWNLOAD_DIR</span><span class=si>}</span><span class=s2>:g&#34;</span> <span class=p>|</span> sudo tee /usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf
+</span></span></code></pre></div><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>기본적으로 <code>glibc</code>를 포함하지 않는 리눅스 배포판에 대해서는
+<a href=#before-you-begin>시작하기 전에</a> 섹션의 참고사항을 참고한다.</div><p><a href=/ko/docs/tasks/tools/#kubectl>도구 설치 페이지</a>의 지침에 따라 <code>kubectl</code>을 설치한다.</p><p>선택적으로, kubeadm을 실행하기 전에 kubelet 서비스를 활성화한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span> --now kubelet
+</span></span></code></pre></div><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>Flatcar Container Linux 배포판은 <code>/usr</code> 디렉터리를 읽기 전용 파일시스템으로 마운트한다.
+클러스터를 부트스트랩하기 전에, 쓰기 가능한 디렉터리를 구성하기 위한 추가 단계를 수행해야 한다.
+쓰기 가능한 디렉터리를 설정하는 방법을 알아 보려면
+<a href=/ko/docs/setup/production-environment/tools/kubeadm/troubleshooting-kubeadm/#usr-mounted-read-only/>Kubeadm 문제 해결 가이드</a>를 참고한다.</div></div></div><p>kubelet은 이제 kubeadm이 수행할 작업을 알려 줄 때까지 크래시루프(crashloop) 상태로
+기다려야 하므로 몇 초마다 다시 시작된다.</p><h2 id=cgroup-드라이버-구성>cgroup 드라이버 구성<a class=td-heading-self-link href=#cgroup-%eb%93%9c%eb%9d%bc%ec%9d%b4%eb%b2%84-%ea%b5%ac%ec%84%b1 aria-label="Heading self-link"></a></h2><p>컨테이너 런타임과 kubelet은
+<a href=/ko/docs/setup/production-environment/container-runtimes/>"cgroup 드라이버"</a>라는 속성을 갖고 있으며,
+cgroup 드라이버는 리눅스 머신의 cgroup 관리 측면에 있어서 중요하다.</p><div class="alert alert-danger" role=note><h4 class=alert-heading>경고:</h4><p>컨테이너 런타임과 kubelet의 cgroup 드라이버를 일치시켜야 하며, 그렇지 않으면 kubelet 프로세스에 오류가 발생한다.</p><p>더 자세한 사항은 <a href=/docs/tasks/administer-cluster/kubeadm/configure-cgroup-driver/>cgroup 드라이버 설정하기</a>를 참고한다.</p></div><h2 id=문제-해결>문제 해결<a class=td-heading-self-link href=#%eb%ac%b8%ec%a0%9c-%ed%95%b4%ea%b2%b0 aria-label="Heading self-link"></a></h2><p>kubeadm에 문제가 있는 경우,
+<a href=/ko/docs/setup/production-environment/tools/kubeadm/troubleshooting-kubeadm/>문제 해결 문서</a>를 참고한다.</p><h2 id=다음-내용>다음 내용<a class=td-heading-self-link href=#%eb%8b%a4%ec%9d%8c-%eb%82%b4%ec%9a%a9 aria-label="Heading self-link"></a></h2><ul><li><a href=/ko/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/>kubeadm을 사용하여 클러스터 생성</a></li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-c3689df4b0c61a998e79d91a865aa244>2.1.2 - kubeadm 문제 해결</h1><p>다른 프로그램과 마찬가지로, kubeadm을 설치하거나 실행하는 중에 오류가 발생할 수 있다.
+이 페이지에는 일반적인 실패 시나리오를 나열하고 문제를 이해하고 해결하는 데 도움을 줄 수 있는 단계를 제공한다.</p><p>아래에 문제가 언급되어 있지 않다면 다음 단계를 따르도록 한다.</p><ul><li><p>문제가 kubeadm의 버그라고 생각되는 경우:</p><ul><li><a href=https://github.com/kubernetes/kubeadm/issues>github.com/kubernetes/kubeadm</a>으로 이동하여 기존 이슈를 검색한다.</li><li>이슈가 없으면 <a href=https://github.com/kubernetes/kubeadm/issues/new>새로운 이슈를 열고</a> 이슈 템플릿을 따른다.</li></ul></li><li><p>kubeadm 작동 방식이 확실하지 않은 경우, <a href=https://slack.k8s.io/>슬랙</a>의 <code>#kubeadm</code>에서 질문하거나,
+<a href=https://stackoverflow.com/questions/tagged/kubernetes>스택오버플로우</a>에 질문을 올릴 수 있다. 사람들이 도움을 줄 수
+있도록 <code>#kubernetes</code> 및 <code>#kubeadm</code>과 같은 관련 태그를 포함한다.</p></li></ul><h2 id=rbac-누락으로-인해-v1-18-노드를-v1-17-클러스터에-참여할-수-없음>RBAC 누락으로 인해 v1.18 노드를 v1.17 클러스터에 참여할 수 없음<a class=td-heading-self-link href=#rbac-%eb%88%84%eb%9d%bd%ec%9c%bc%eb%a1%9c-%ec%9d%b8%ed%95%b4-v1-18-%eb%85%b8%eb%93%9c%eb%a5%bc-v1-17-%ed%81%b4%eb%9f%ac%ec%8a%a4%ed%84%b0%ec%97%90-%ec%b0%b8%ec%97%ac%ed%95%a0-%ec%88%98-%ec%97%86%ec%9d%8c aria-label="Heading self-link"></a></h2><p>v1.18 kubeadm은 같은 이름의 노드가 이미 존재하는 경우 클러스터에 노드가 참여하는 것을 방지하는 기능을 추가했다.
+이를 위해 bootstrap-token 사용자가 노드 객체를 GET할 수 있도록 RBAC를 추가해야 했다.</p><p>그러나 이로 인해 v1.18의 <code>kubeadm join</code>이 kubeadm 1.17로 생성된 클러스터에 참여할 수 없는 문제가 발생한다.</p><p>이 문제를 해결하기 위한 두 가지 옵션이 있다.</p><p>kubeadm v1.18을 사용하여 컨트롤 플레인 노드에서 <code>kubeadm init phase bootstrap-token</code>을 실행한다.
+이렇게 하면 나머지 bootstrap-token 권한도 활성화된다는 점에 유의한다.</p><p>또는</p><p><code>kubectl apply -f ...</code>를 사용하여 다음 RBAC를 수동으로 적용한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io/v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterRole</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>kubeadm:get-nodes</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>rules</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>apiGroups</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=s2>&#34;&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>resources</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>nodes</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>verbs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>get</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nn>---</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io/v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterRoleBinding</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>kubeadm:get-nodes</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>roleRef</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>apiGroup</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterRole</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>kubeadm:get-nodes</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>subjects</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>apiGroup</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Group</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>system:bootstrappers:kubeadm:default-node-token</span><span class=w>
+</span></span></span></code></pre></div><h2 id=설치-중-ebtables-또는-유사한-실행-파일을-찾을-수-없음>설치 중 <code>ebtables</code> 또는 유사한 실행 파일을 찾을 수 없음<a class=td-heading-self-link href=#%ec%84%a4%ec%b9%98-%ec%a4%91-ebtables-%eb%98%90%eb%8a%94-%ec%9c%a0%ec%82%ac%ed%95%9c-%ec%8b%a4%ed%96%89-%ed%8c%8c%ec%9d%bc%ec%9d%84-%ec%b0%be%ec%9d%84-%ec%88%98-%ec%97%86%ec%9d%8c aria-label="Heading self-link"></a></h2><p><code>kubeadm init</code>을 실행하는 동안 다음과 같은 경고 메시지가 출력된다면</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>[preflight] WARNING: ebtables not found in system path
+</span></span></span><span class=line><span class=cl><span class=go>[preflight] WARNING: ethtool not found in system path
+</span></span></span></code></pre></div><p>노드에 <code>ebtables</code>, <code>ethtool</code> 또는 유사한 실행 파일이 누락되었을 수 있다.
+다음 명령으로 설치할 수 있다.</p><ul><li>우분투/데비안 사용자의 경우, <code>apt install ebtables ethtool</code>을 실행한다.</li><li>CentOS/페도라 사용자의 경우, <code>yum install ebtables ethtool</code>을 실행한다.</li></ul><h2 id=설치-중-kubeadm이-컨트롤-플레인을-기다리다가-진행되지-않음-block>설치 중 kubeadm이 컨트롤 플레인을 기다리다가 진행되지 않음 (block)<a class=td-heading-self-link href=#%ec%84%a4%ec%b9%98-%ec%a4%91-kubeadm%ec%9d%b4-%ec%bb%a8%ed%8a%b8%eb%a1%a4-%ed%94%8c%eb%a0%88%ec%9d%b8%ec%9d%84-%ea%b8%b0%eb%8b%a4%eb%a6%ac%eb%8b%a4%ea%b0%80-%ec%a7%84%ed%96%89%eb%90%98%ec%a7%80-%ec%95%8a%ec%9d%8c-block aria-label="Heading self-link"></a></h2><p><code>kubeadm init</code>이 다음 줄을 출력한 후 중단되는 경우</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>[apiclient] Created API client, waiting for the control plane to become ready
+</span></span></span></code></pre></div><p>이는 여러 문제로 인해 발생할 수 있다. 가장 일반적인 원인은</p><ul><li>네트워크 연결 문제: 계속하기 전에 머신에 완전한 네트워크 연결이 있는지 확인한다.</li><li>컨테이너 런타임의 cgroup 드라이버가 kubelet과 다름. 올바르게
+구성하는 방법은 <a href=/docs/tasks/administer-cluster/kubeadm/configure-cgroup-driver/>cgroup 드라이버 구성</a>을 참조한다.</li><li>컨트롤 플레인 컨테이너가 크래시 루프에 있거나 중단됨. <code>docker ps</code>를 실행하고
+<code>docker logs</code>를 실행하여 각 컨테이너를 조사할 수 있다. 다른 컨테이너 런타임의 경우
+<a href=/ko/docs/tasks/debug/debug-cluster/crictl/>crictl로 쿠버네티스 노드 디버깅하기</a>를 참조한다.</li></ul><h2 id=관리되는-컨테이너를-제거할-때-kubeadm이-멈춤>관리되는 컨테이너를 제거할 때 kubeadm이 멈춤<a class=td-heading-self-link href=#%ea%b4%80%eb%a6%ac%eb%90%98%eb%8a%94-%ec%bb%a8%ed%85%8c%ec%9d%b4%eb%84%88%eb%a5%bc-%ec%a0%9c%ea%b1%b0%ed%95%a0-%eb%95%8c-kubeadm%ec%9d%b4-%eb%a9%88%ec%b6%a4 aria-label="Heading self-link"></a></h2><p>컨테이너 런타임이 중단되고 쿠버네티스가 관리하는 컨테이너를 제거하지 않으면
+다음과 같은 일이 발생할 수 있다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>sudo kubeadm reset
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>[preflight] Running pre-flight checks
+</span></span></span><span class=line><span class=cl><span class=go>[reset] Stopping the kubelet service
+</span></span></span><span class=line><span class=cl><span class=go>[reset] Unmounting mounted directories in &#34;/var/lib/kubelet&#34;
+</span></span></span><span class=line><span class=cl><span class=go>[reset] Removing kubernetes-managed containers
+</span></span></span><span class=line><span class=cl><span class=go>(block)
+</span></span></span></code></pre></div><p>가능한 해결 방안은 컨테이너 런타임을 재시작한 뒤 <code>kubeadm reset</code>을 다시 실행하는 것이다.
+또한 <code>crictl</code>을 사용하여 컨테이너 런타임의 상태를 디버그할 수도 있다.
+<a href=/ko/docs/tasks/debug/debug-cluster/crictl/>crictl로 쿠버네티스 노드 디버깅하기</a>를 참조한다.</p><h2 id=runcontainererror-crashloopbackoff-또는-error-상태의-파드><code>RunContainerError</code>, <code>CrashLoopBackOff</code> 또는 <code>Error</code> 상태의 파드<a class=td-heading-self-link href=#runcontainererror-crashloopbackoff-%eb%98%90%eb%8a%94-error-%ec%83%81%ed%83%9c%ec%9d%98-%ed%8c%8c%eb%93%9c aria-label="Heading self-link"></a></h2><p><code>kubeadm init</code> 직후에는 이러한 상태의 파드가 없어야 한다.</p><ul><li><code>kubeadm init</code> <em>직후</em> 에 이러한 상태의 파드가 있다면
+kubeadm 저장소에 이슈를 열자. <code>coredns</code>(또는 <code>kube-dns</code>)는
+네트워크 애드온을 배포하기 전까지는 <code>Pending</code> 상태여야 한다.</li><li>네트워크 애드온을 배포한 이후에도 <code>RunContainerError</code>, <code>CrashLoopBackOff</code> 또는 <code>Error</code> 상태의
+파드가 보이고 <code>coredns</code>(또는 <code>kube-dns</code>)에 아무 일도 일어나지 않는다면,
+설치한 파드 네트워크 애드온이 어떤 식으로든 손상되었을 가능성이 높다.
+더 많은 RBAC 권한을 부여하거나 최신 버전을 사용해야 할 수 있다. 파드
+네트워크 공급자의 이슈 트래커에 이슈를 제출하고 분류를 받자.</li></ul><h2 id=coredns가-pending-상태에-멈춤><code>coredns</code>가 <code>Pending</code> 상태에 멈춤<a class=td-heading-self-link href=#coredns%ea%b0%80-pending-%ec%83%81%ed%83%9c%ec%97%90-%eb%a9%88%ec%b6%a4 aria-label="Heading self-link"></a></h2><p>이는 <strong>예상된</strong> 동작이며 설계의 일부다. kubeadm은 네트워크 공급자에 구애받지 않으므로 관리자가
+선택한 <a href=/ko/docs/concepts/cluster-administration/addons/>파드 네트워크 애드온을 설치</a>해야
+한다. CoreDNS가 완전히 배포되기
+전에 파드 네트워크를 설치해야 한다. 따라서 네트워크가 설정되기 전까지 <code>Pending</code> 상태가 된다.</p><h2 id=hostport-서비스가-동작하지-않음><code>HostPort</code> 서비스가 동작하지 않음<a class=td-heading-self-link href=#hostport-%ec%84%9c%eb%b9%84%ec%8a%a4%ea%b0%80-%eb%8f%99%ec%9e%91%ed%95%98%ec%a7%80-%ec%95%8a%ec%9d%8c aria-label="Heading self-link"></a></h2><p><code>HostPort</code>와 <code>HostIP</code> 기능의 지원 여부는 파드 네트워크 공급자에 따라
+달라진다. <code>HostPort</code> 및 <code>HostIP</code> 기능을 사용할 수 있는지 알아보려면 파드 네트워크 애드온
+작성자에게 문의한다.</p><p>Calico, Canal 및 Flannel CNI 공급자는 HostPort를 지원하는 것으로 확인되었다.</p><p>자세한 내용은
+<a href=https://github.com/containernetworking/plugins/blob/master/plugins/meta/portmap/README.md>CNI portmap 문서</a>를 참조한다.</p><p>네트워크 공급자가 portmap CNI 플러그인을 지원하지 않는 경우,
+<a href=/ko/docs/concepts/services-networking/service/#type-nodeport>서비스의 NodePort 기능</a>을
+사용하거나 <code>HostNetwork=true</code>를 사용해야 할 수 있다.</p><h2 id=파드가-서비스-ip를-통해-액세스할-수-없음>파드가 서비스 IP를 통해 액세스할 수 없음<a class=td-heading-self-link href=#%ed%8c%8c%eb%93%9c%ea%b0%80-%ec%84%9c%eb%b9%84%ec%8a%a4-ip%eb%a5%bc-%ed%86%b5%ed%95%b4-%ec%95%a1%ec%84%b8%ec%8a%a4%ed%95%a0-%ec%88%98-%ec%97%86%ec%9d%8c aria-label="Heading self-link"></a></h2><ul><li><p>많은 네트워크 애드온이 아직 파드가 서비스 IP를 통해 자신에 액세스할 수 있도록 하는 <a href=/ko/docs/tasks/debug/debug-application/debug-service/#a-pod-fails-to-reach-itself-via-the-service-ip>헤어핀 모드</a>
+를 활성화하지 않는다. 이는
+<a href=https://github.com/containernetworking/cni/issues/476>CNI</a>와 관련된 문제다. 헤어핀 모드 지원의
+최신 상태를 확인하려면 네트워크 애드온 공급자에게 문의한다.</p></li><li><p>VirtualBox를 사용하는 경우(직접 또는 Vagrant를 통해)
+<code>hostname -i</code>가 라우팅 가능한 IP 주소를 반환하는지 확인해야 한다. 기본적으로 첫 번째
+인터페이스는 라우팅할 수 없는 호스트 전용 네트워크에 연결된다. 해결 방법은
+<code>/etc/hosts</code>를 수정하는 것이다. 예시는 이
+<a href=https://github.com/errordeveloper/k8s-playground/blob/22dd39dfc06111235620e6c4404a96ae146f26fd/Vagrantfile#L11>Vagrantfile</a>을
+참조한다.</p></li></ul><h2 id=tls-인증서-오류>TLS 인증서 오류<a class=td-heading-self-link href=#tls-%ec%9d%b8%ec%a6%9d%ec%84%9c-%ec%98%a4%eb%a5%98 aria-label="Heading self-link"></a></h2><p>다음 오류는 인증서 불일치 가능성을 나타낸다.</p><pre tabindex=0><code class=language-none data-lang=none># kubectl get pods
+Unable to connect to the server: x509: certificate signed by unknown authority (possibly because of &#34;crypto/rsa: verification error&#34; while trying to verify candidate authority certificate &#34;kubernetes&#34;)
+</code></pre><ul><li><p><code>$HOME/.kube/config</code> 파일에 유효한 인증서가 포함되어 있는지 확인하고 필요한 경우
+인증서를 재생성한다. kubeconfig 파일의 인증서는 base64로
+인코딩되어 있다. <code>base64 --decode</code> 명령을 사용하여 인증서를 디코딩하고
+<code>openssl x509 -text -noout</code>을 사용하여 인증서 정보를 볼 수 있다.</p></li><li><p>다음을 사용하여 <code>KUBECONFIG</code> 환경 변수를 해제한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>unset</span> KUBECONFIG
+</span></span></code></pre></div><p>또는 기본 <code>KUBECONFIG</code> 위치로 설정한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>export</span> <span class=nv>KUBECONFIG</span><span class=o>=</span>/etc/kubernetes/admin.conf
+</span></span></code></pre></div></li><li><p>또 다른 해결 방법은 "admin" 사용자의 기존 <code>kubeconfig</code>를 덮어쓰는 것이다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>mv <span class=nv>$HOME</span>/.kube <span class=nv>$HOME</span>/.kube.bak
+</span></span><span class=line><span class=cl>mkdir <span class=nv>$HOME</span>/.kube
+</span></span><span class=line><span class=cl>sudo cp -i /etc/kubernetes/admin.conf <span class=nv>$HOME</span>/.kube/config
+</span></span><span class=line><span class=cl>sudo chown <span class=k>$(</span>id -u<span class=k>)</span>:<span class=k>$(</span>id -g<span class=k>)</span> <span class=nv>$HOME</span>/.kube/config
+</span></span></code></pre></div></li></ul><h2 id=kubelet-client-cert>Kubelet 클라이언트 인증서 갱신 실패<a class=td-heading-self-link href=#kubelet-client-cert aria-label="Heading self-link"></a></h2><p>기본적으로 kubeadm은 <code>/etc/kubernetes/kubelet.conf</code>에 지정된 <code>/var/lib/kubelet/pki/kubelet-client-current.pem</code>
+심볼릭 링크를 사용하여 kubelet 클라이언트 인증서가 자동 갱신되도록 구성한다.
+이 갱신 프로세스가 실패하면 kube-apiserver 로그에 <code>x509: certificate has expired or is not yet valid</code>와
+같은 오류가 표시될 수 있다. 이 문제를 해결하려면 다음 단계를 따라야 한다.</p><ol><li><p>실패한 노드에서 <code>/etc/kubernetes/kubelet.conf</code> 및 <code>/var/lib/kubelet/pki/kubelet-client*</code>를 백업하고 삭제한다.</p></li><li><p><code>/etc/kubernetes/pki/ca.key</code>가 있는 클러스터의 작동 중인 컨트롤 플레인 노드에서
+<code>kubeadm kubeconfig user --org system:nodes --client-name system:node:$NODE > kubelet.conf</code>를 실행한다.
+<code>$NODE</code>는 클러스터에서 기존에 실패한 노드 이름으로 설정해야 한다.
+결과 <code>kubelet.conf</code>를 수동으로 수정하여 클러스터 이름과 서버 엔드포인트를 조정하거나
+<code>kubeconfig user --config</code>를 전달한다(<a href=/ko/docs/tasks/administer-cluster/kubeadm/kubeadm-certs/#kubeconfig-additional-users>추가 사용자를 위한 kubeconfig 파일 생성</a> 참조). 클러스터에
+<code>ca.key</code>가 없으면 <code>kubelet.conf</code>에 포함된 인증서에 외부에서 서명해야 한다.</p></li><li><p>결과 <code>kubelet.conf</code>를 실패한 노드의 <code>/etc/kubernetes/kubelet.conf</code>에 복사한다.</p></li><li><p>실패한 노드에서 kubelet을 재시작(<code>systemctl restart kubelet</code>)하고
+<code>/var/lib/kubelet/pki/kubelet-client-current.pem</code>이 재생성될 때까지 기다린다.</p></li><li><p><code>kubelet.conf</code>를 수동으로 편집하여 갱신된 kubelet 클라이언트 인증서를 가리키도록 한다.<br><code>client-certificate-data</code> 및 <code>client-key-data</code>를 다음으로 교체한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>client-certificate</span><span class=p>:</span><span class=w> </span><span class=l>/var/lib/kubelet/pki/kubelet-client-current.pem</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>client-key</span><span class=p>:</span><span class=w> </span><span class=l>/var/lib/kubelet/pki/kubelet-client-current.pem</span><span class=w>
+</span></span></span></code></pre></div></li><li><p>kubelet을 재시작한다.</p></li><li><p>노드가 <code>Ready</code>가 되었는지 확인한다.</p></li></ol><h2 id=vagrant에서-flannel을-파드-네트워크로-사용할-때-기본-nic>Vagrant에서 flannel을 파드 네트워크로 사용할 때 기본 NIC<a class=td-heading-self-link href=#vagrant%ec%97%90%ec%84%9c-flannel%ec%9d%84-%ed%8c%8c%eb%93%9c-%eb%84%a4%ed%8a%b8%ec%9b%8c%ed%81%ac%eb%a1%9c-%ec%82%ac%ec%9a%a9%ed%95%a0-%eb%95%8c-%ea%b8%b0%eb%b3%b8-nic aria-label="Heading self-link"></a></h2><p>다음 오류는 파드 네트워크에 문제가 있음을 나타낼 수 있다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>Error from server <span class=o>(</span>NotFound<span class=o>)</span>: the server could not find the requested resource
+</span></span></code></pre></div><ul><li><p>Vagrant 내에서 파드 네트워크로 flannel을 사용하는 경우, flannel의
+기본 인터페이스 이름을 지정해야 한다.</p><p>Vagrant는 일반적으로 모든 VM에 두 개의 인터페이스를 할당한다. 첫 번째는 모든 호스트에
+<code>10.0.2.15</code> IP 주소가 할당되며, NAT 처리되는 외부 트래픽을 위한 것이다.</p><p>이는 호스트의 첫 번째 인터페이스를 기본값으로 하는 flannel에 문제를 일으킬 수 있다.
+이로 인해 모든 호스트가 동일한 공용 IP 주소를 가지고 있다고 생각하게 된다. 이를 방지하려면
+flannel에 <code>--iface eth1</code> 플래그를 전달하여 두 번째 인터페이스가 선택하도록 한다.</p></li></ul><h2 id=컨테이너에-공용이-아닌-ip가-사용됨>컨테이너에 공용이 아닌 IP가 사용됨<a class=td-heading-self-link href=#%ec%bb%a8%ed%85%8c%ec%9d%b4%eb%84%88%ec%97%90-%ea%b3%b5%ec%9a%a9%ec%9d%b4-%ec%95%84%eb%8b%8c-ip%ea%b0%80-%ec%82%ac%ec%9a%a9%eb%90%a8 aria-label="Heading self-link"></a></h2><p>정상적으로 작동하는 클러스터에서 <code>kubectl logs</code> 및 <code>kubectl run</code> 명령이
+다음 오류와 함께 반환될 수 있다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>Error from server: Get https://10.19.0.41:10250/containerLogs/default/mysql-ddc65b868-glc5m/mysql: dial tcp 10.19.0.41:10250: getsockopt: no route to host
+</span></span></span></code></pre></div><ul><li><p>이는 쿠버네티스에서 머신 공급자의 정책에 따라, 겉보기에는 동일한 서브넷에 있는 다른 IP와
+통신할 수 없는 IP를 사용하는 쿠버네티스 (환경) 때문일 수 있다.</p></li><li><p>DigitalOcean은 <code>eth0</code>에 공용 IP와 플로팅 IP 기능의 앵커로 내부적으로
+사용되는 프라이빗 IP를 할당하지만, <code>kubelet</code>은 공용 IP 대신 후자를 노드의
+<code>InternalIP</code>로 선택한다.</p><p><code>ifconfig</code>는 문제가 되는 별칭 IP 주소를 표시하지 않으므로 이 시나리오를 확인하려면
+<code>ifconfig</code> 대신 <code>ip addr show</code>를 사용한다. 또는 DigitalOcean에 특정한 API 엔드포인트를
+사용하여 드롭릿(droplet)에서 앵커 IP를 쿼리할 수 있다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>curl http://169.254.169.254/metadata/v1/interfaces/public/0/anchor_ipv4/address
+</span></span></code></pre></div><p>해결 방법은 <code>--node-ip</code>를 사용하여 <code>kubelet</code>에 사용할 IP를 알려주는 것이다.
+DigitalOcean을 사용하는 경우, 공용 IP(<code>eth0</code>에 할당됨) 또는
+선택적 프라이빗 네트워크를 사용하려는 경우 프라이빗 IP(<code>eth1</code>에 할당됨)가
+될 수 있다. kubeadm
+<a href=/docs/reference/config-api/kubeadm-config.v1beta4/#kubeadm-k8s-io-v1beta4-NodeRegistrationOptions><code>NodeRegistrationOptions</code> 구조</a>의
+<code>kubeletExtraArgs</code> 섹션을 이에 사용할 수 있다.</p><p>그런 다음 <code>kubelet</code>을 재시작한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>systemctl daemon-reload
+</span></span><span class=line><span class=cl>systemctl restart kubelet
+</span></span></code></pre></div></li></ul><h2 id=coredns-파드가-crashloopbackoff-또는-error-상태><code>coredns</code> 파드가 <code>CrashLoopBackOff</code> 또는 <code>Error</code> 상태<a class=td-heading-self-link href=#coredns-%ed%8c%8c%eb%93%9c%ea%b0%80-crashloopbackoff-%eb%98%90%eb%8a%94-error-%ec%83%81%ed%83%9c aria-label="Heading self-link"></a></h2><p>이전 버전의 Docker와 함께 SELinux를 실행하는 노드가 있는 경우, <code>coredns</code> 파드가 시작되지 않는 시나리오가
+발생할 수 있다. 이를 해결하려면 다음 옵션 중 하나를 시도할 수 있다.</p><ul><li><p><a href=/ko/docs/setup/production-environment/container-runtimes/#docker>최신 버전의 Docker</a>로 업그레이드</p></li><li><p><a href=https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/security-enhanced_linux/sect-security-enhanced_linux-enabling_and_disabling_selinux-disabling_selinux>SELinux 비활성화</a>.</p></li><li><p><code>coredns</code> 배포를 수정하여 <code>allowPrivilegeEscalation</code>을 <code>true</code>로 설정</p></li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>kubectl -n kube-system get deployment coredns -o yaml <span class=p>|</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  sed <span class=s1>&#39;s/allowPrivilegeEscalation: false/allowPrivilegeEscalation: true/g&#39;</span> <span class=p>|</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>  kubectl apply -f -
+</span></span></code></pre></div><p>CoreDNS가 <code>CrashLoopBackOff</code>를 가지는 또 다른 원인은 쿠버네티스에 배포된 CoreDNS 파드가 루프를 감지하는 경우다.
+CoreDNS가 루프를 감지하고 종료할 때마다 쿠버네티스가 CoreDNS 파드를 재시작하지 않도록
+<a href=https://github.com/coredns/coredns/tree/master/plugin/loop#troubleshooting-loops-in-kubernetes-clusters>여러 해결 방법</a>을 사용할 수 있다.</p><div class="alert alert-danger" role=note><h4 class=alert-heading>경고:</h4>SELinux를 비활성화하거나 <code>allowPrivilegeEscalation</code>을 <code>true</code>로 설정하면
+클러스터의 보안이 손상될 수 있다.</div><h2 id=etcd-파드가-지속적으로-재시작됨>etcd 파드가 지속적으로 재시작됨<a class=td-heading-self-link href=#etcd-%ed%8c%8c%eb%93%9c%ea%b0%80-%ec%a7%80%ec%86%8d%ec%a0%81%ec%9c%bc%eb%a1%9c-%ec%9e%ac%ec%8b%9c%ec%9e%91%eb%90%a8 aria-label="Heading self-link"></a></h2><p>다음 오류가 발생하는 경우</p><pre tabindex=0><code>rpc error: code = 2 desc = oci runtime error: exec failed: container_linux.go:247: starting container process caused &#34;process_linux.go:110: decoding init error from pipe caused \&#34;read parent: connection reset by peer\&#34;&#34;
+</code></pre><p>이 문제는 Docker 1.13.1.84와 함께 CentOS 7을 실행하는 경우 나타난다.
+이 버전의 Docker는 kubelet이 etcd 컨테이너로 실행되는 것을 방지할 수 있다.</p><p>이 문제를 해결하려면 다음 옵션 중 하나를 선택한다.</p><ul><li><p>1.13.1-75와 같은 이전 버전의 Docker로 롤백</p><pre tabindex=0><code>yum downgrade docker-1.13.1-75.git8633870.el7.centos.x86_64 docker-client-1.13.1-75.git8633870.el7.centos.x86_64 docker-common-1.13.1-75.git8633870.el7.centos.x86_64
+</code></pre></li><li><p>18.06과 같은 최신 권장 버전 중 하나를 설치</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+</span></span><span class=line><span class=cl>yum install docker-ce-18.06.1.ce-3.el7.x86_64
+</span></span></code></pre></div></li></ul><h2 id=component-extra-args-플래그-내부의-인수에-쉼표로-구분된-값-목록을-전달할-수-없음><code>--component-extra-args</code> 플래그 내부의 인수에 쉼표로 구분된 값 목록을 전달할 수 없음<a class=td-heading-self-link href=#component-extra-args-%ed%94%8c%eb%9e%98%ea%b7%b8-%eb%82%b4%eb%b6%80%ec%9d%98-%ec%9d%b8%ec%88%98%ec%97%90-%ec%89%bc%ed%91%9c%eb%a1%9c-%ea%b5%ac%eb%b6%84%eb%90%9c-%ea%b0%92-%eb%aa%a9%eb%a1%9d%ec%9d%84-%ec%a0%84%eb%8b%ac%ed%95%a0-%ec%88%98-%ec%97%86%ec%9d%8c aria-label="Heading self-link"></a></h2><p><code>--component-extra-args</code>와 같은 <code>kubeadm init</code> 플래그를 사용하면 kube-apiserver와 같은 컨트롤 플레인
+구성 요소에 사용자 정의 인수를 전달할 수 있다. 그러나 이 메커니즘은 값을 구문 분석하는 데 사용되는
+기본 유형(<code>mapStringString</code>)으로 인해 제한된다.</p><p><code>--apiserver-extra-args "enable-admission-plugins=LimitRanger,NamespaceExists"</code>와 같이
+여러 쉼표로 구분된 값을 지원하는 인수를 전달하기로 결정한 경우, 이 플래그는
+<code>flag: malformed pair, expect string=string</code>으로 실패한다. 이는 <code>--apiserver-extra-args</code>의
+인수 목록이 <code>key=value</code> 쌍을 예상하고 이 경우 <code>NamespacesExists</code>가 값이 없는 키로
+간주되기 때문이다.</p><p>대안으로 <code>key=value</code> 쌍을 다음과 같이 분리할 수 있다.
+<code>--apiserver-extra-args "enable-admission-plugins=LimitRanger,enable-admission-plugins=NamespaceExists"</code>
+그러나 이는 <code>enable-admission-plugins</code> 키가 <code>NamespaceExists</code> 값만 가지게 된다.</p><p>알려진 해결 방법은 kubeadm <a href=/docs/reference/config-api/kubeadm-config.v1beta4/>구성 파일</a>을 사용하는 것이다.</p><h2 id=cloud-controller-manager가-노드를-초기화하기-전에-kube-proxy가-스케줄됨>cloud-controller-manager가 노드를 초기화하기 전에 kube-proxy가 스케줄됨<a class=td-heading-self-link href=#cloud-controller-manager%ea%b0%80-%eb%85%b8%eb%93%9c%eb%a5%bc-%ec%b4%88%ea%b8%b0%ed%99%94%ed%95%98%ea%b8%b0-%ec%a0%84%ec%97%90-kube-proxy%ea%b0%80-%ec%8a%a4%ec%bc%80%ec%a4%84%eb%90%a8 aria-label="Heading self-link"></a></h2><p>클라우드 공급자 시나리오에서 kube-proxy는 cloud-controller-manager가 노드 주소를
+초기화하기 전에 새 워커 노드에 스케줄될 수 있다. 이로 인해 kube-proxy가
+노드의 IP 주소를 제대로 가져오지 못하고 로드 밸런서를 관리하는 프록시 기능에 연쇄적인
+영향을 미친다.</p><p>kube-proxy 파드에서 다음 오류를 볼 수 있다.</p><pre tabindex=0><code>server.go:610] Failed to retrieve node IP: host IP unknown; known addresses: []
+proxier.go:340] invalid nodeIP, initializing kube-proxy with 127.0.0.1 as nodeIP
+</code></pre><p>알려진 해결 방법은 kube-proxy DaemonSet을 패치하여 조건에 관계없이 컨트롤 플레인 노드에
+스케줄할 수 있도록 하고, 초기 보호 조건이 완화될 때까지 다른 노드에서
+제외하는 것이다.</p><pre tabindex=0><code>kubectl -n kube-system patch ds kube-proxy -p=&#39;{
+  &#34;spec&#34;: {
+    &#34;template&#34;: {
+      &#34;spec&#34;: {
+        &#34;tolerations&#34;: [
+          {
+            &#34;key&#34;: &#34;CriticalAddonsOnly&#34;,
+            &#34;operator&#34;: &#34;Exists&#34;
+          },
+          {
+            &#34;effect&#34;: &#34;NoSchedule&#34;,
+            &#34;key&#34;: &#34;node-role.kubernetes.io/control-plane&#34;
+          }
+        ]
+      }
+    }
+  }
+}&#39;
+</code></pre><p>이 문제에 대한 추적 이슈는 <a href=https://github.com/kubernetes/kubeadm/issues/1027>여기</a>에 있다.</p><h2 id=usr-mounted-read-only>노드에서 <code>/usr</code>이 읽기 전용으로 마운트됨<a class=td-heading-self-link href=#usr-mounted-read-only aria-label="Heading self-link"></a></h2><p>Fedora CoreOS 또는 Flatcar Container Linux와 같은 리눅스 배포판에서는 <code>/usr</code> 디렉터리가 읽기 전용 파일시스템으로 마운트된다.
+<a href=https://github.com/kubernetes/community/blob/ab55d85/contributors/devel/sig-storage/flexvolume.md>flex-volume 지원</a>을 위해
+kubelet 및 kube-controller-manager와 같은 쿠버네티스 구성 요소는
+<code>/usr/libexec/kubernetes/kubelet-plugins/volume/exec/</code>의 기본 경로를 사용하지만, flex-volume 디렉터리는 기능이
+작동하려면 <em>쓰기 가능해야 한다.</em></p><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>FlexVolume은 쿠버네티스 v1.23 릴리스에서 사용 중단되었다.</div><p>이 문제를 해결하려면 kubeadm <a href=/docs/reference/config-api/kubeadm-config.v1beta4/>구성 파일</a>을<br>사용하여 flex-volume 디렉터리를 구성할 수 있다.</p><p>기본 컨트롤 플레인 노드(<code>kubeadm init</code>을 사용하여 생성)에서
+<code>--config</code>를 사용하여 다음 파일을 전달한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>kubeadm.k8s.io/v1beta4</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>InitConfiguration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>nodeRegistration</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>kubeletExtraArgs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;volume-plugin-dir&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>value</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;/opt/libexec/kubernetes/kubelet-plugins/volume/exec/&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nn>---</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>kubeadm.k8s.io/v1beta4</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterConfiguration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>controllerManager</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>extraArgs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;flex-volume-plugin-dir&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>value</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;/opt/libexec/kubernetes/kubelet-plugins/volume/exec/&#34;</span><span class=w>
+</span></span></span></code></pre></div><p>참여하는 노드에서</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>kubeadm.k8s.io/v1beta4</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>JoinConfiguration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>nodeRegistration</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>kubeletExtraArgs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;volume-plugin-dir&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>value</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;/opt/libexec/kubernetes/kubelet-plugins/volume/exec/&#34;</span><span class=w>
+</span></span></span></code></pre></div><p>또는 <code>/etc/fstab</code>를 수정하여 <code>/usr</code> 마운트를 쓰기 가능하게 만들 수 있지만,
+이는 리눅스 배포판의 설계 원칙을 수정하는 것임을 유의한다.</p><h2 id=kubeadm-upgrade-plan이-context-deadline-exceeded-오류-메시지-출력><code>kubeadm upgrade plan</code>이 <code>context deadline exceeded</code> 오류 메시지 출력<a class=td-heading-self-link href=#kubeadm-upgrade-plan%ec%9d%b4-context-deadline-exceeded-%ec%98%a4%eb%a5%98-%eb%a9%94%ec%8b%9c%ec%a7%80-%ec%b6%9c%eb%a0%a5 aria-label="Heading self-link"></a></h2><p>이 오류 메시지는 외부 etcd를 실행하는 경우 <code>kubeadm</code>으로 쿠버네티스 클러스터를
+업그레이드할 때 표시된다. 이는 중요한 버그가 아니며 이전 버전의 kubeadm이
+외부 etcd 클러스터에서 버전 검사를 수행하기 때문에 발생한다.
+<code>kubeadm upgrade apply ...</code>를 계속 진행할 수 있다.</p><p>이 문제는 버전 1.19부터 수정되었다.</p><h2 id=kubeadm-reset이-var-lib-kubelet을-언마운트함><code>kubeadm reset</code>이 <code>/var/lib/kubelet</code>을 언마운트함<a class=td-heading-self-link href=#kubeadm-reset%ec%9d%b4-var-lib-kubelet%ec%9d%84-%ec%96%b8%eb%a7%88%ec%9a%b4%ed%8a%b8%ed%95%a8 aria-label="Heading self-link"></a></h2><p><code>/var/lib/kubelet</code>이 마운트되어 있는 경우, <code>kubeadm reset</code>을 수행하면 효과적으로 언마운트된다.</p><p>이 문제를 해결하려면 <code>kubeadm reset</code> 작업을 수행한 후 <code>/var/lib/kubelet</code> 디렉터리를 다시 마운트한다.</p><p>이는 kubeadm 1.15에서 도입된 회귀 버그다. 이 문제는 1.20에서 수정되었다.</p><h2 id=kubeadm-클러스터에서-metrics-server를-안전하게-사용할-수-없음>kubeadm 클러스터에서 metrics-server를 안전하게 사용할 수 없음<a class=td-heading-self-link href=#kubeadm-%ed%81%b4%eb%9f%ac%ec%8a%a4%ed%84%b0%ec%97%90%ec%84%9c-metrics-server%eb%a5%bc-%ec%95%88%ec%a0%84%ed%95%98%ea%b2%8c-%ec%82%ac%ec%9a%a9%ed%95%a0-%ec%88%98-%ec%97%86%ec%9d%8c aria-label="Heading self-link"></a></h2><p>kubeadm 클러스터에서 <a href=https://github.com/kubernetes-sigs/metrics-server>metrics-server</a>는
+<code>--kubelet-insecure-tls</code>를 전달하여 안전하지 않게 사용할 수 있다. 이는 프로덕션 클러스터에는 권장되지 않는다.</p><p>metrics-server와 kubelet 간에 TLS를 사용하려는 경우 문제가 있다.
+kubeadm이 kubelet에 대해 자체 서명된 서빙 인증서를 배포하기 때문이다. 이로 인해
+metrics-server 측에서 다음 오류가 발생할 수 있다.</p><pre tabindex=0><code>x509: certificate signed by unknown authority
+x509: certificate is valid for IP-foo not IP-bar
+</code></pre><p>kubeadm 클러스터에서 kubelet이 올바르게 서명된 서빙 인증서를 갖도록 구성하는 방법을 이해하려면
+<a href=/ko/docs/tasks/administer-cluster/kubeadm/kubeadm-certs/#kubelet-serving-certs>서명된 kubelet 서빙 인증서 활성화</a>를 참조한다.</p><p>또는 <a href=https://github.com/kubernetes-sigs/metrics-server/blob/master/FAQ.md#how-to-run-metrics-server-securely>metrics-server를 안전하게 실행하는 방법</a>을 참조한다.</p><h2 id=etcd-해시가-변경되지-않아-업그레이드-실패>etcd 해시가 변경되지 않아 업그레이드 실패<a class=td-heading-self-link href=#etcd-%ed%95%b4%ec%8b%9c%ea%b0%80-%eb%b3%80%ea%b2%bd%eb%90%98%ec%a7%80-%ec%95%8a%ec%95%84-%ec%97%85%ea%b7%b8%eb%a0%88%ec%9d%b4%eb%93%9c-%ec%8b%a4%ed%8c%a8 aria-label="Heading self-link"></a></h2><p>노드가 현재 kubeadm 버전 v1.28.0, v1.28.1 또는 v1.28.2로 관리되는 경우
+kubeadm 바이너리 v1.28.3 이상으로 컨트롤 플레인 노드를 업그레이드하는 경우에만 해당된다.</p><p>발생할 수 있는 오류 메시지는 다음과 같다.</p><pre tabindex=0><code>[upgrade/etcd] Failed to upgrade etcd: couldn&#39;t upgrade control plane. kubeadm has tried to recover everything into the earlier state. Errors faced: static Pod hash for component etcd on Node kinder-upgrade-control-plane-1 did not change after 5m0s: timed out waiting for the condition
+[upgrade/etcd] Waiting for previous etcd to become available
+I0907 10:10:09.109104    3704 etcd.go:588] [etcd] attempting to see if all cluster endpoints ([https://172.17.0.6:2379/ https://172.17.0.4:2379/ https://172.17.0.3:2379/]) are available 1/10
+[upgrade/etcd] Etcd was rolled back and is now available
+static Pod hash for component etcd on Node kinder-upgrade-control-plane-1 did not change after 5m0s: timed out waiting for the condition
+couldn&#39;t upgrade control plane. kubeadm has tried to recover everything into the earlier state. Errors faced
+k8s.io/kubernetes/cmd/kubeadm/app/phases/upgrade.rollbackOldManifests
+	cmd/kubeadm/app/phases/upgrade/staticpods.go:525
+k8s.io/kubernetes/cmd/kubeadm/app/phases/upgrade.upgradeComponent
+	cmd/kubeadm/app/phases/upgrade/staticpods.go:254
+k8s.io/kubernetes/cmd/kubeadm/app/phases/upgrade.performEtcdStaticPodUpgrade
+	cmd/kubeadm/app/phases/upgrade/staticpods.go:338
+...
+</code></pre><p>이 실패의 이유는 영향을 받는 버전이 PodSpec에 원하지 않는 기본값을 사용하여
+etcd 매니페스트 파일을 생성하기 때문이다. 이로 인해 매니페스트 비교에서 차이가 발생하고
+kubeadm은 파드 해시의 변경을 기대하지만 kubelet은 해시를 업데이트하지 않는다.</p><p>클러스터에서 이 문제가 표시되는 경우 이를 해결하는 두 가지 방법이 있다.</p><ul><li><p>영향을 받는 버전과 v1.28.3(또는 이후 버전) 사이에서 etcd 업그레이드를 건너뛸 수 있다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>kubeadm upgrade <span class=o>{</span>apply<span class=p>|</span>node<span class=o>}</span> <span class=o>[</span>version<span class=o>]</span> --etcd-upgrade<span class=o>=</span><span class=nb>false</span>
+</span></span></code></pre></div><p>이는 나중의 v1.28 패치 버전에서 새 etcd 버전이 도입된 경우 권장되지 않는다.</p></li><li><p>업그레이드하기 전에 etcd 정적 파드의 매니페스트를 패치하여 문제가 있는 기본 속성을 제거한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-patch data-lang=patch><span class=line><span class=cl><span class=gh>diff --git a/etc/kubernetes/manifests/etcd_defaults.yaml b/etc/kubernetes/manifests/etcd_origin.yaml
+</span></span></span><span class=line><span class=cl><span class=gh>index d807ccbe0aa..46b35f00e15 100644
+</span></span></span><span class=line><span class=cl><span class=gh></span><span class=gd>--- a/etc/kubernetes/manifests/etcd_defaults.yaml
+</span></span></span><span class=line><span class=cl><span class=gd></span><span class=gi>+++ b/etc/kubernetes/manifests/etcd_origin.yaml
+</span></span></span><span class=line><span class=cl><span class=gi></span><span class=gu>@@ -43,7 +43,6 @@ spec:
+</span></span></span><span class=line><span class=cl><span class=gu></span>        scheme: HTTP
+</span></span><span class=line><span class=cl>      initialDelaySeconds: 10
+</span></span><span class=line><span class=cl>      periodSeconds: 10
+</span></span><span class=line><span class=cl><span class=gd>-      successThreshold: 1
+</span></span></span><span class=line><span class=cl><span class=gd></span>      timeoutSeconds: 15
+</span></span><span class=line><span class=cl>    name: etcd
+</span></span><span class=line><span class=cl>    resources:
+</span></span><span class=line><span class=cl><span class=gu>@@ -59,26 +58,18 @@ spec:
+</span></span></span><span class=line><span class=cl><span class=gu></span>        scheme: HTTP
+</span></span><span class=line><span class=cl>      initialDelaySeconds: 10
+</span></span><span class=line><span class=cl>      periodSeconds: 10
+</span></span><span class=line><span class=cl><span class=gd>-      successThreshold: 1
+</span></span></span><span class=line><span class=cl><span class=gd></span>      timeoutSeconds: 15
+</span></span><span class=line><span class=cl><span class=gd>-    terminationMessagePath: /dev/termination-log
+</span></span></span><span class=line><span class=cl><span class=gd>-    terminationMessagePolicy: File
+</span></span></span><span class=line><span class=cl><span class=gd></span>    volumeMounts:
+</span></span><span class=line><span class=cl>    - mountPath: /var/lib/etcd
+</span></span><span class=line><span class=cl>      name: etcd-data
+</span></span><span class=line><span class=cl>    - mountPath: /etc/kubernetes/pki/etcd
+</span></span><span class=line><span class=cl>      name: etcd-certs
+</span></span><span class=line><span class=cl><span class=gd>-  dnsPolicy: ClusterFirst
+</span></span></span><span class=line><span class=cl><span class=gd>-  enableServiceLinks: true
+</span></span></span><span class=line><span class=cl><span class=gd></span>  hostNetwork: true
+</span></span><span class=line><span class=cl>  priority: 2000001000
+</span></span><span class=line><span class=cl>  priorityClassName: system-node-critical
+</span></span><span class=line><span class=cl><span class=gd>-  restartPolicy: Always
+</span></span></span><span class=line><span class=cl><span class=gd>-  schedulerName: default-scheduler
+</span></span></span><span class=line><span class=cl><span class=gd></span>  securityContext:
+</span></span><span class=line><span class=cl>    seccompProfile:
+</span></span><span class=line><span class=cl>      type: RuntimeDefault
+</span></span><span class=line><span class=cl><span class=gd>-  terminationGracePeriodSeconds: 30
+</span></span></span><span class=line><span class=cl><span class=gd></span>  volumes:
+</span></span><span class=line><span class=cl>  - hostPath:
+</span></span><span class=line><span class=cl>      path: /etc/kubernetes/pki/etcd
+</span></span></code></pre></div></li></ul><p>이 버그에 대한 자세한 정보는
+<a href=https://github.com/kubernetes/kubeadm/issues/2927>추적 이슈</a>에서 찾을 수 있다.</p></div><div class=td-content style=page-break-before:always><h1 id=pg-134ed1f6142a98e6ac681a1ba4920e53>2.1.3 - kubeadm으로 클러스터 생성하기</h1><p><img src=/images/kubeadm-stacked-color.png align=right width=150px></img>
+<code>kubeadm</code>을 사용하면, 모범 사례를 준수하는 최소 작동 가능한 쿠버네티스 클러스터를 생성할 수 있다.
+실제로 <code>kubeadm</code>을 사용하여
+<a href=/blog/2017/10/software-conformance-certification/>쿠버네티스 적합성 테스트</a>를 통과하는 클러스터를 구성할 수 있다.
+<code>kubeadm</code>은 <a href=/ko/docs/reference/access-authn-authz/bootstrap-tokens/>부트스트랩 토큰</a> 및
+클러스터 업그레이드와 같은 다른 클러스터 수명 주기 기능도 지원한다.</p><p><code>kubeadm</code> 도구는 다음과 같은 경우에 적합하다.</p><ul><li>간단한 방법으로 쿠버네티스를 처음 시도해 보려는 경우</li><li>기존 사용자가 클러스터 설정을 자동화하고 애플리케이션을 테스트하려는 경우</li><li>더 큰 범위를 가진 다른 생태계 및/또는 설치 도구의 구성 요소로 사용하는
+경우</li></ul><p>노트북, 클라우드 서버 세트, 라즈베리 파이 등 다양한 머신에
+<code>kubeadm</code>을 설치하여 사용할 수 있다. 클라우드 또는
+온프레미스에 배포하든, <code>kubeadm</code>을 Ansible 또는 Terraform과 같은
+프로비저닝 시스템에 통합할 수 있다.</p><h2 id=시작하기-전에>시작하기 전에<a class=td-heading-self-link href=#%ec%8b%9c%ec%9e%91%ed%95%98%ea%b8%b0-%ec%a0%84%ec%97%90 aria-label="Heading self-link"></a></h2><p>이 가이드를 따르려면 다음이 필요하다.</p><ul><li>deb/rpm 호환 리눅스 OS를 실행하는 하나 이상의 머신(예: 우분투 또는 CentOS)</li><li>머신당 2GiB 이상의 RAM(이보다 적으면 앱을 위한 공간이 거의 남지 않음)</li><li>컨트롤 플레인 노드로 사용하는 머신에 최소 2개의 CPU</li><li>클러스터의 모든 머신 간 전체 네트워크 연결. 퍼블릭 또는 프라이빗
+네트워크를 사용할 수 있다.</li></ul><p>또한 새 클러스터에서 사용하려는 쿠버네티스 버전을 배포할 수
+있는 <code>kubeadm</code> 버전을 사용해야 한다.</p><p><a href=/docs/setup/release/version-skew-policy/#supported-versions>쿠버네티스 버전 및 버전 차이 지원 정책</a>
+이 쿠버네티스 전체와 마찬가지로 <code>kubeadm</code>에도 적용된다.
+해당 정책을 확인하여 지원되는 쿠버네티스 및 <code>kubeadm</code> 버전을
+알아보자. 이 페이지는 쿠버네티스 v1.36용으로 작성되었다.</p><p><code>kubeadm</code> 도구의 전체 기능 상태는 일반 가용성(GA)이다. 일부 하위 기능은
+아직 활발히 개발 중이다. 도구가 발전함에 따라 클러스터 생성 구현이 약간 변경될
+수 있지만, 전체적인 구현은 꽤 안정적이어야 한다.</p><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4><code>kubeadm alpha</code> 아래의 모든 명령은 정의상 알파 수준에서 지원된다.</div><h2 id=목표>목표<a class=td-heading-self-link href=#%eb%aa%a9%ed%91%9c aria-label="Heading self-link"></a></h2><ul><li>단일 컨트롤 플레인 쿠버네티스 클러스터 설치</li><li>파드가 서로 통신할 수 있도록 클러스터에 파드
+네트워크 설치</li></ul><h2 id=지침>지침<a class=td-heading-self-link href=#%ec%a7%80%ec%b9%a8 aria-label="Heading self-link"></a></h2><h3 id=호스트-준비>호스트 준비<a class=td-heading-self-link href=#%ed%98%b8%ec%8a%a4%ed%8a%b8-%ec%a4%80%eb%b9%84 aria-label="Heading self-link"></a></h3><h4 id=구성-요소-설치>구성 요소 설치<a class=td-heading-self-link href=#%ea%b5%ac%ec%84%b1-%ec%9a%94%ec%86%8c-%ec%84%a4%ec%b9%98 aria-label="Heading self-link"></a></h4><p>모든 호스트에 <a class=glossary-tooltip title='컨테이너 런타임은 컨테이너 실행을 담당하는 소프트웨어이다.' data-bs-toggle=tooltip data-bs-placement=top href=/ko/docs/setup/production-environment/container-runtimes/ target=_blank aria-label='컨테이너 런타임'>컨테이너 런타임</a>과
+kubeadm을 설치한다. 자세한 지침과 기타 전제 조건은
+<a href=/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>kubeadm 설치하기</a>를 참조한다.</p><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4><p>이미 kubeadm을 설치한 경우, kubeadm 업그레이드 방법은
+<a href=/ko/docs/tasks/administer-cluster/kubeadm/upgrading-linux-nodes>리눅스 노드 업그레이드</a>
+문서의 처음 두 단계를 참조한다.</p><p>업그레이드할 때 kubelet은 kubeadm이 수행할 작업을 알려줄 때까지 크래시루프(crashloop)에서
+대기하면서 몇 초마다 재시작된다. 이 크래시루프는 예상되고 정상적인 동작이다.
+컨트롤 플레인을 초기화한 후 kubelet은 정상적으로 실행된다.</p></div><h4 id=네트워크-설정>네트워크 설정<a class=td-heading-self-link href=#%eb%84%a4%ed%8a%b8%ec%9b%8c%ed%81%ac-%ec%84%a4%ec%a0%95 aria-label="Heading self-link"></a></h4><p>kubeadm은 다른 쿠버네티스 구성 요소와 마찬가지로 호스트의
+기본 게이트웨이와 연결된 네트워크 인터페이스에서 사용 가능한 IP를 찾으려고 시도한다. 그런 다음
+이 IP는 구성 요소가 수행하는 광고 및/또는 수신에 사용된다.</p><p>리눅스 호스트에서 이 IP가 무엇인지 확인하려면 다음을 사용할 수 있다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>ip route show <span class=c1># &#34;default via&#34;로 시작하는 줄을 찾는다</span>
+</span></span></code></pre></div><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>호스트에 둘 이상의 기본 게이트웨이가 있는 경우, 쿠버네티스 구성 요소는
+적합한 글로벌 유니캐스트 IP 주소를 가진 첫 번째 게이트웨이를 사용하려고 시도한다.
+이러한 선택을 할 때 게이트웨이의 정확한 순서는
+운영 체제와 커널 버전에 따라 다를 수 있다.</div><p>쿠버네티스 구성 요소는 사용자 정의 네트워크 인터페이스를 옵션으로 허용하지 않으므로,
+이러한 사용자 정의 구성이 필요한 모든 구성 요소 인스턴스에 사용자 정의 IP 주소를
+플래그로 전달해야 한다.</p><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>호스트에 기본 게이트웨이가 없고 사용자 정의 IP 주소가
+쿠버네티스 구성 요소에 전달되지 않으면, 구성 요소가 오류와 함께 종료될 수 있다.</div><p><code>init</code>과 <code>join</code> 모두로 생성된 컨트롤 플레인 노드에 대한 API 서버 광고(advertise) 주소를
+구성하려면 <code>--apiserver-advertise-address</code> 플래그를 사용할 수 있다.
+선호하는 방법은 이 옵션을 <a href=/docs/reference/config-api/kubeadm-config.v1beta4>kubeadm API</a>에서
+<code>InitConfiguration.localAPIEndpoint</code> 및 <code>JoinConfiguration.controlPlane.localAPIEndpoint</code>로 설정하는 것이다.</p><p>모든 노드의 kubelet의 경우, kubeadm
+구성 파일(<code>InitConfiguration</code> 또는 <code>JoinConfiguration</code>)내의
+<code>.nodeRegistration.kubeletExtraArgs</code>에서 <code>--node-ip</code> 옵션을 전달할 수 있다.</p><p>듀얼 스택의 경우
+<a href=/docs/setup/production-environment/tools/kubeadm/dual-stack-support>kubeadm을 사용한 듀얼 스택 지원</a>을 참조한다.</p><p>컨트롤 플레인 구성 요소에 할당하는 IP 주소는 X.509 인증서의 주체
+대체 이름 필드의 일부가 된다. 이러한 IP 주소를 변경하려면
+새 인증서에 서명하고 영향을 받는 구성 요소를 재시작하여 인증서 파일의 변경
+사항이 반영되도록 해야 한다. 이 주제에 대한 자세한 내용은
+<a href=/ko/docs/tasks/administer-cluster/kubeadm/kubeadm-certs/#manual-certificate-renewal>수동 인증서 갱신</a>을
+참조한다.</p><div class="alert alert-danger" role=note><h4 class=alert-heading>경고:</h4>쿠버네티스 프로젝트는 이 접근 방식(사용자 정의 IP 주소로 모든 구성 요소 인스턴스를 구성)을
+권장하지 않는다. 대신 쿠버네티스 관리자는 기본 게이트웨이 IP가 쿠버네티스 구성 요소가 자동 감지하고
+사용하는 IP가 되도록 호스트 네트워크를 설정하는 것을 권장한다.
+리눅스 노드에서는 <code>ip route</code>와 같은 명령을 사용하여 네트워킹을 구성할 수 있으며, 운영
+체제에서 더 높은 수준의 네트워크 관리 도구를 제공할 수도 있다. 노드의 기본 게이트웨이가
+퍼블릭 IP 주소인 경우, 노드와 클러스터를 보호하는 패킷 필터링 또는 기타
+보안 조치를 구성해야 한다.</div><h3 id=필요한-컨테이너-이미지-준비>필요한 컨테이너 이미지 준비<a class=td-heading-self-link href=#%ed%95%84%ec%9a%94%ed%95%9c-%ec%bb%a8%ed%85%8c%ec%9d%b4%eb%84%88-%ec%9d%b4%eb%af%b8%ec%a7%80-%ec%a4%80%eb%b9%84 aria-label="Heading self-link"></a></h3><p>이 단계는 선택 사항이며, 노드에서 인터넷 연결 없이 클러스터를 생성할 때 <code>kubeadm init</code> 및 <code>kubeadm join</code>이
+<code>registry.k8s.io</code>에 호스팅된 기본 컨테이너 이미지를 다운로드하지 않도록 하려는 경우에만 적용된다.</p><p>kubeadm에는 인터넷 연결 없이 클러스터를 생성할 때 필요한 이미지를
+미리 가져오는 데 도움이 되는 명령이 있다.
+자세한 내용은 <a href=/docs/reference/setup-tools/kubeadm/kubeadm-init#without-internet-connection>인터넷 연결 없이 kubeadm 실행</a>을
+참조한다.</p><p>kubeadm을 사용하면 필요한 이미지에 대해 사용자 정의 이미지 저장소를 사용할 수 있다. 자세한 내용은
+<a href=/docs/reference/setup-tools/kubeadm/kubeadm-init#custom-images>사용자 정의 이미지 사용</a>을
+참조한다.</p><h3 id=컨트롤-플레인-노드-초기화>컨트롤 플레인 노드 초기화<a class=td-heading-self-link href=#%ec%bb%a8%ed%8a%b8%eb%a1%a4-%ed%94%8c%eb%a0%88%ec%9d%b8-%eb%85%b8%eb%93%9c-%ec%b4%88%ea%b8%b0%ed%99%94 aria-label="Heading self-link"></a></h3><p>컨트롤 플레인 노드는 <a class=glossary-tooltip title='모든 클러스터 데이터를 담는 쿠버네티스 뒷단의 저장소로 사용되는 일관성·고가용성 키-값 저장소.' data-bs-toggle=tooltip data-bs-placement=top href=/ko/docs/tasks/administer-cluster/configure-upgrade-etcd/ target=_blank aria-label=etcd>etcd</a>
+(클러스터 데이터베이스) 및
+<a class=glossary-tooltip title='쿠버네티스 API를 제공하는 컨트롤 플레인 컴포넌트.' data-bs-toggle=tooltip data-bs-placement=top href=/ko/docs/concepts/overview/components/#kube-apiserver target=_blank aria-label='API 서버'>API 서버</a>
+(<a class=glossary-tooltip title='쿠버네티스 클러스터와 통신하기 위한 커맨드라인 툴.' data-bs-toggle=tooltip data-bs-placement=top href=/ko/docs/user-guide/kubectl-overview/ target=_blank aria-label=kubectl>kubectl</a> 명령줄 도구가 통신하는)를
+포함한 컨트롤 플레인 구성 요소가 실행되는 머신이다.</p><ol><li>(권장) 이 단일 컨트롤 플레인 <code>kubeadm</code> 클러스터를
+<a href=/docs/setup/production-environment/tools/kubeadm/high-availability/>고가용성</a>으로
+업그레이드할 계획이 있다면, 모든 컨트롤 플레인 노드에 대한 공유 엔드포인트를 설정하기 위해 <code>--control-plane-endpoint</code>를 지정해야 한다.
+이러한 엔드포인트는 로드 밸런서의 DNS 이름 또는 IP 주소일 수 있다.</li><li>파드 네트워크 애드온(add-on)을 선택하고,
+<code>kubeadm init</code>에 전달해야 하는 인수가 있는지 확인한다. 선택한
+서드파티 공급자에 따라 <code>--pod-network-cidr</code>을
+공급자별 값으로 설정해야 할 수 있다. <a href=#pod-network>파드 네트워크 애드온 설치</a>를 참조한다.</li><li>(선택 사항) <code>kubeadm</code>은 잘 알려진 엔드포인트 목록을 사용하여 컨테이너 런타임을
+감지하려고 시도한다. 다른 컨테이너 런타임을 사용하거나 프로비저닝된
+노드에 둘 이상이 설치된 경우 <code>kubeadm</code>에 <code>--cri-socket</code> 인수를 지정한다.
+<a href=/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-runtime>런타임 설치</a>를 참조한다.</li></ol><p>컨트롤 플레인 노드를 초기화하려면 다음을 실행한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>kubeadm init &lt;args&gt;
+</span></span></code></pre></div><h3 id=apiserver-advertise-address-및-controlplaneendpoint에-대한-고려-사항>apiserver-advertise-address 및 ControlPlaneEndpoint에 대한 고려 사항<a class=td-heading-self-link href=#apiserver-advertise-address-%eb%b0%8f-controlplaneendpoint%ec%97%90-%eb%8c%80%ed%95%9c-%ea%b3%a0%eb%a0%a4-%ec%82%ac%ed%95%ad aria-label="Heading self-link"></a></h3><p><code>--apiserver-advertise-address</code>를 사용하여 이 특정 컨트롤 플레인 노드의 API 서버에 대한 광고 주소를
+설정할 수 있지만, <code>--control-plane-endpoint</code>를 사용하여 모든 컨트롤 플레인 노드에 대한
+공유 엔드포인트를 설정할 수 있다.</p><p><code>--control-plane-endpoint</code>는 IP 주소와 IP 주소에 매핑할 수 있는 DNS 이름을 모두 허용한다.
+이러한 매핑과 관련하여 가능한 솔루션을 평가하려면 네트워크 관리자에게 문의하는 것이 좋다.</p><p>다음은 매핑 예시이다.</p><pre tabindex=0><code>192.168.0.102 cluster-endpoint
+</code></pre><p>여기서 <code>192.168.0.102</code>는 이 노드의 IP 주소이고 <code>cluster-endpoint</code>는 이 IP에 매핑되는 사용자 정의 DNS 이름이다.
+이를 통해 <code>kubeadm init</code>에 <code>--control-plane-endpoint=cluster-endpoint</code>를 전달하고 <code>kubeadm join</code>에 동일한 DNS
+이름을 전달할 수 있다. 나중에 고가용성 시나리오에서 <code>cluster-endpoint</code>가 로드 밸런서 주소를
+가리키도록 수정할 수 있다.</p><p><code>--control-plane-endpoint</code> 없이 생성된 단일 컨트롤 플레인 클러스터를 고가용성 클러스터로 전환하는 것은
+kubeadm에서 지원하지 않는다.</p><h3 id=추가-정보>추가 정보<a class=td-heading-self-link href=#%ec%b6%94%ea%b0%80-%ec%a0%95%eb%b3%b4 aria-label="Heading self-link"></a></h3><p><code>kubeadm init</code> 인수에 대한 자세한 내용은 <a href=/ko/docs/reference/setup-tools/kubeadm/>kubeadm 참조 가이드</a>를 참조한다.</p><p>구성 파일로 <code>kubeadm init</code>을 구성하려면
+<a href=/docs/reference/setup-tools/kubeadm/kubeadm-init/#config-file>구성 파일과 함께 kubeadm init 사용</a>을 참조한다.</p><p>컨트롤 플레인 구성 요소 및 etcd 서버에 대한 활성(liveness) 프로브에 선택적 IPv6 할당을
+포함하여 컨트롤 플레인 구성 요소를 사용자 정의하려면
+<a href=/ko/docs/setup/production-environment/tools/kubeadm/control-plane-flags/>사용자 정의 인수</a>에 문서화된 대로 각 구성 요소에 추가 인수를 제공한다.</p><p>이미 생성된 클러스터를 재구성하려면
+<a href=/docs/tasks/administer-cluster/kubeadm/kubeadm-reconfigure>kubeadm 클러스터 재구성</a>을 참조한다.</p><p><code>kubeadm init</code>을 다시 실행하려면 먼저 <a href=#tear-down>클러스터를 해체</a>해야 한다.</p><p>클러스터에 다른 아키텍처의 노드를 추가(join)하는 경우, 배포된 데몬셋이
+이 아키텍처에 대한 컨테이너 이미지를 지원하는지 확인한다.</p><p><code>kubeadm init</code>은 먼저 머신이 쿠버네티스를 실행할 준비가 되었는지 확인하기 위해 일련의
+사전 검사를 실행한다. 이러한 사전 검사는 경고를 표시하고 오류가 발생하면 종료된다. 그런 다음 <code>kubeadm init</code>은
+클러스터 컨트롤 플레인 구성 요소를 다운로드하고 설치한다. 이 작업은 몇 분 정도 걸릴 수 있다.
+완료되면 다음이 표시된다.</p><pre tabindex=0><code class=language-none data-lang=none>Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+You should now deploy a Pod network to the cluster.
+Run &#34;kubectl apply -f [podnetwork].yaml&#34; with one of the options listed at:
+  /docs/concepts/cluster-administration/addons/
+
+You can now join any number of machines by running the following on each node
+as root:
+
+  kubeadm join &lt;control-plane-host&gt;:&lt;control-plane-port&gt; --token &lt;token&gt; --discovery-token-ca-cert-hash sha256:&lt;hash&gt;
+</code></pre><p>루트(root)가 아닌 사용자가 kubectl을 사용할 수 있도록 하려면
+<code>kubeadm init</code> 출력의 일부이기도 한 다음 명령을 실행한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>mkdir -p <span class=nv>$HOME</span>/.kube
+</span></span><span class=line><span class=cl>sudo cp -i /etc/kubernetes/admin.conf <span class=nv>$HOME</span>/.kube/config
+</span></span><span class=line><span class=cl>sudo chown <span class=k>$(</span>id -u<span class=k>)</span>:<span class=k>$(</span>id -g<span class=k>)</span> <span class=nv>$HOME</span>/.kube/config
+</span></span></code></pre></div><p>또는 <code>root</code> 사용자인 경우 다음을 실행할 수 있다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>export</span> <span class=nv>KUBECONFIG</span><span class=o>=</span>/etc/kubernetes/admin.conf
+</span></span></code></pre></div><div class="alert alert-danger" role=note><h4 class=alert-heading>경고:</h4><p><code>kubeadm init</code>이 생성하는 kubeconfig 파일 <code>admin.conf</code>에는
+<code>Subject: O = kubeadm:cluster-admins, CN = kubernetes-admin</code> 인증서가 포함되어 있다. <code>kubeadm:cluster-admins</code> 그룹은
+내장 <code>cluster-admin</code> ClusterRole에 바인딩된다.
+<code>admin.conf</code> 파일을 누구와도 공유하지 않는다.</p><p><code>kubeadm init</code>은 <code>Subject: O = system:masters, CN = kubernetes-super-admin</code> 인증서가
+포함된 또 다른 kubeconfig 파일 <code>super-admin.conf</code>를 생성한다.
+<code>system:masters</code>는 권한 부여 계층(예: RBAC)을 우회하는 긴급 수퍼 사용자 그룹이다.
+<code>super-admin.conf</code> 파일을 누구와도 공유하지 않는다. 파일을 안전한 위치로 이동하는 것을 권장한다.</p><p>추가 사용자를 위한 kubeconfig 파일을 생성하기 위해
+<code>kubeadm kubeconfig user</code>를 사용하는 방법은
+<a href=/ko/docs/tasks/administer-cluster/kubeadm/kubeadm-certs#kubeconfig-additional-users>추가 사용자를 위한 kubeconfig 파일 생성</a>을 참조한다.</p></div><p><code>kubeadm init</code>이 출력하는 <code>kubeadm join</code> 명령을 기록해 둔다.
+<a href=#join-nodes>클러스터에 노드를 추가</a>하려면 이 명령이 필요하다.</p><p>토큰은 컨트롤 플레인 노드와 추가되는 노드 간의 상호 인증에 사용된다.
+여기에 포함된 토큰은 비밀(secret)이다. 이 토큰을 안전하게 보관한다. 이 토큰을 가진 사람은 누구나
+클러스터에 인증된 노드를 추가할 수 있기 때문이다. 이러한 토큰은
+<code>kubeadm token</code> 명령으로 나열, 생성 및 삭제할 수 있다.
+<a href=/docs/reference/setup-tools/kubeadm/kubeadm-token/>kubeadm 참조 가이드</a>를 참조한다.</p><h3 id=pod-network>파드 네트워크 애드온 설치<a class=td-heading-self-link href=#pod-network aria-label="Heading self-link"></a></h3><div class="alert alert-caution" role=note><h4 class=alert-heading>주의:</h4><p>이 섹션에는 네트워킹 설정 및 배포 순서에 대한 중요한
+정보가 포함되어 있다.
+진행하기 전에 이 모든 조언을 주의 깊게 읽어보자.</p><p><strong>파드가 서로 통신할 수 있도록
+<a class=glossary-tooltip title='컨테이너 네트워크 인터페이스(CNI) 플러그인은 appc/CNI 스팩을 따르는 네트워크 플러그인의 일종이다.' data-bs-toggle=tooltip data-bs-placement=top href=/ko/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/ target=_blank aria-label='컨테이너 네트워크 인터페이스'>컨테이너 네트워크 인터페이스</a>
+(CNI) 기반 파드 네트워크 애드온을 배포해야 한다.
+네트워크가 설치되기 전에는 클러스터 DNS(CoreDNS)가 시작되지 않는다.</strong></p><ul><li><p>파드 네트워크가 호스트 네트워크와 겹치지 않도록
+주의한다. 겹치는 부분이 있으면 문제가 발생할 가능성이 높다.
+(네트워크 플러그인의 선호 파드 네트워크와 일부 호스트
+네트워크 간에 충돌을 발견한 경우, 대신 사용할 적절한
+CIDR 블록을 생각한 다음 <code>kubeadm init</code> 중에
+<code>--pod-network-cidr</code>과 함께 사용하고 네트워크 플러그인의 YAML에서 대체해야 한다.)</p></li><li><p>기본적으로 <code>kubeadm</code>은
+<a href=/docs/reference/access-authn-authz/rbac/>RBAC</a>(역할 기반 액세스
+제어) 사용을 설정하고 시행한다.
+파드 네트워크 플러그인이 RBAC를 지원하는지, 그리고 배포에 사용하는 매니페스트도
+지원하는지 확인한다.</p></li><li><p>클러스터에 IPv6(듀얼 스택 또는 단일 스택 IPv6 전용 네트워킹)를
+사용하려면 파드 네트워크 플러그인이
+IPv6를 지원하는지 확인한다.
+IPv6 지원은 CNI <a href=https://github.com/containernetworking/cni/releases/tag/v0.6.0>v0.6.0</a>에 추가되었다.</p></li></ul></div><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>Kubeadm은 CNI에 구애받지 않아야 하며 CNI 공급자 검증은 현재 e2e 테스트 범위를 벗어난다.
+CNI 플러그인과 관련된 문제를 발견하면 kubeadm 또는 쿠버네티스 이슈
+트래커가 아닌 해당 이슈 트래커에 티켓을 기록해야 한다.</div><p>여러 외부 프로젝트가 CNI를 사용하여 쿠버네티스 파드 네트워크를 제공하며, 그 중 일부는
+<a href=/ko/docs/concepts/services-networking/network-policies/>네트워크 정책</a>도 지원한다.</p><p><a href=/ko/docs/concepts/cluster-administration/networking/#how-to-implement-the-kubernetes-network-model>쿠버네티스 네트워킹 모델</a>을
+구현하는 애드온 목록을 참조한다.</p><p>쿠버네티스에서 지원하는 네트워킹 애드온의 전체 목록은 아니지만
+<a href=/ko/docs/concepts/cluster-administration/addons/#networking-and-network-policy>애드온 설치</a> 페이지를 참조한다.
+컨트롤 플레인 노드 또는 kubeconfig 자격 증명이 있는 노드에서
+다음 명령으로 파드 네트워크 애드온을 설치할 수 있다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>kubectl apply -f &lt;add-on.yaml&gt;
+</span></span></code></pre></div><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>몇 가지 CNI 플러그인만 Windows를 지원한다. 자세한 내용과 설정 지침은
+<a href=/docs/tasks/administer-cluster/kubeadm/adding-windows-nodes/#network-config>Windows 워커 노드 추가</a>에서 확인할 수 있다.</div><p>클러스터당 하나의 파드 네트워크만 설치할 수 있다.</p><p>파드 네트워크가 설치되면 <code>kubectl get pods --all-namespaces</code>
+출력에서 CoreDNS 파드가 <code>Running</code> 상태인지 확인하여 작동하는지 확인할 수 있다.
+CoreDNS 파드가 실행 중이면 노드 추가를 계속할 수 있다.</p><p>네트워크가 작동하지 않거나 CoreDNS가 <code>Running</code> 상태가 아닌 경우 <code>kubeadm</code>에 대한
+<a href=/ko/docs/setup/production-environment/tools/kubeadm/troubleshooting-kubeadm/>문제 해결 가이드</a>를
+확인한다.</p><h3 id=관리되는-노드-레이블>관리되는 노드 레이블<a class=td-heading-self-link href=#%ea%b4%80%eb%a6%ac%eb%90%98%eb%8a%94-%eb%85%b8%eb%93%9c-%eb%a0%88%ec%9d%b4%eb%b8%94 aria-label="Heading self-link"></a></h3><p>기본적으로 kubeadm은 노드 등록 시 kubelet이 자체 적용할 수 있는 레이블을 제한하는
+<a href=/docs/reference/access-authn-authz/admission-controllers/#noderestriction>NodeRestriction</a> 어드미션 컨트롤러를 활성화한다.
+어드미션 컨트롤러 문서에서는 kubelet <code>--node-labels</code> 옵션과 함께 사용할 수 있는 레이블을 다룬다.
+<code>node-role.kubernetes.io/control-plane</code> 레이블은 이러한 제한된 레이블이며 kubeadm은
+노드가 생성된 후 권한 있는 클라이언트를 사용하여 수동으로 적용한다. 수동으로 수행하려면 <code>kubectl label</code>을 사용하고
+kubeadm이 관리하는 <code>/etc/kubernetes/admin.conf</code>와 같은 권한 있는 kubeconfig를 사용하는지 확인한다.</p><h3 id=컨트롤-플레인-노드-격리>컨트롤 플레인 노드 격리<a class=td-heading-self-link href=#%ec%bb%a8%ed%8a%b8%eb%a1%a4-%ed%94%8c%eb%a0%88%ec%9d%b8-%eb%85%b8%eb%93%9c-%ea%b2%a9%eb%a6%ac aria-label="Heading self-link"></a></h3><p>기본적으로 클러스터는 보안상의 이유로 컨트롤 플레인 노드에 파드를 스케줄하지
+않는다. 예를 들어 단일 머신 쿠버네티스 클러스터의 경우 컨트롤 플레인 노드에
+파드를 스케줄할 수 있도록 하려면 다음을 실행한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+</span></span></code></pre></div><p>출력은 다음과 같다.</p><pre tabindex=0><code>node &#34;test-01&#34; untainted
+...
+</code></pre><p>이렇게 하면 컨트롤 플레인 노드를 포함하여 <code>node-role.kubernetes.io/control-plane:NoSchedule</code> 테인트(taint)가
+있는 모든 노드에서 해당 테인트가 제거되어
+스케줄러가 모든 곳에 파드를 스케줄할 수 있게 된다.</p><p>또한 다음 명령을 실행하여 컨트롤 플레인 노드에서
+<a href=/ko/docs/reference/labels-annotations-taints/#node-kubernetes-io-exclude-from-external-load-balancers><code>node.kubernetes.io/exclude-from-external-load-balancers</code></a> 레이블을
+제거할 수 있다. 이 레이블은 해당 노드를 백엔드 서버 목록에서 제외한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>kubectl label nodes --all node.kubernetes.io/exclude-from-external-load-balancers-
+</span></span></code></pre></div><h3 id=더-많은-컨트롤-플레인-노드-추가>더 많은 컨트롤 플레인 노드 추가<a class=td-heading-self-link href=#%eb%8d%94-%eb%a7%8e%ec%9d%80-%ec%bb%a8%ed%8a%b8%eb%a1%a4-%ed%94%8c%eb%a0%88%ec%9d%b8-%eb%85%b8%eb%93%9c-%ec%b6%94%ea%b0%80 aria-label="Heading self-link"></a></h3><p>더 많은 컨트롤 플레인 노드를 추가하여 고가용성 kubeadm 클러스터를 생성하는 단계는
+<a href=/docs/setup/production-environment/tools/kubeadm/high-availability/>kubeadm으로 고가용성 클러스터 생성</a>을 참조한다.</p><h3 id=join-nodes>워커 노드 추가<a class=td-heading-self-link href=#join-nodes aria-label="Heading self-link"></a></h3><p>워커 노드는 워크로드가 실행되는 곳이다.</p><p>다음 페이지에서는 <code>kubeadm join</code> 명령을 사용하여 클러스터에 리눅스 및 Windows
+워커 노드를 추가하는 방법을 보여준다.</p><ul><li><a href=/docs/tasks/administer-cluster/kubeadm/adding-linux-nodes/>리눅스 워커 노드 추가</a></li><li><a href=/docs/tasks/administer-cluster/kubeadm/adding-windows-nodes/>Windows 워커 노드 추가</a></li></ul><h3 id=선택-사항-컨트롤-플레인-노드가-아닌-머신에서-클러스터-제어>(선택 사항) 컨트롤 플레인 노드가 아닌 머신에서 클러스터 제어<a class=td-heading-self-link href=#%ec%84%a0%ed%83%9d-%ec%82%ac%ed%95%ad-%ec%bb%a8%ed%8a%b8%eb%a1%a4-%ed%94%8c%eb%a0%88%ec%9d%b8-%eb%85%b8%eb%93%9c%ea%b0%80-%ec%95%84%eb%8b%8c-%eb%a8%b8%ec%8b%a0%ec%97%90%ec%84%9c-%ed%81%b4%eb%9f%ac%ec%8a%a4%ed%84%b0-%ec%a0%9c%ec%96%b4 aria-label="Heading self-link"></a></h3><p>다른 컴퓨터(예: 노트북)의 kubectl이 클러스터와 통신하도록
+하려면 다음과 같이 컨트롤 플레인 노드에서 관리자 kubeconfig 파일을
+워크스테이션으로 복사해야 한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>scp root@&lt;control-plane-host&gt;:/etc/kubernetes/admin.conf .
+</span></span><span class=line><span class=cl>kubectl --kubeconfig ./admin.conf get nodes
+</span></span></code></pre></div><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4><p>위의 예시는 루트에 대해 SSH 액세스가 활성화되어 있다고 가정한다. 그렇지 않은 경우
+<code>admin.conf</code> 파일을 다른 사용자가 액세스할 수 있도록 복사하고 대신 해당 사용자를
+사용하여 <code>scp</code>할 수 있다.</p><p><code>admin.conf</code> 파일은 사용자에게 클러스터에 대한 <em>수퍼유저(superuser)</em> 권한을 부여한다.
+이 파일은 드물게 사용해야 한다. 일반 사용자의 경우 권한을 부여할
+고유한 자격 증명을 생성하는 것이 좋다.
+<code>kubeadm kubeconfig user --client-name &lt;CN></code> 명령으로 이 작업을 수행할 수 있다.
+이 명령은 KubeConfig 파일을 STDOUT으로 출력하며,
+이를 파일에 저장하고 사용자에게 배포해야 한다. 그런 다음
+<code>kubectl create (cluster)rolebinding</code>을 사용하여 권한을 부여한다.</p></div><h3 id=선택-사항-api-서버를-localhost로-프록시>(선택 사항) API 서버를 localhost로 프록시<a class=td-heading-self-link href=#%ec%84%a0%ed%83%9d-%ec%82%ac%ed%95%ad-api-%ec%84%9c%eb%b2%84%eb%a5%bc-localhost%eb%a1%9c-%ed%94%84%eb%a1%9d%ec%8b%9c aria-label="Heading self-link"></a></h3><p>클러스터 외부에서 API 서버에 연결하려면
+<code>kubectl proxy</code>를 사용할 수 있다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>scp root@&lt;control-plane-host&gt;:/etc/kubernetes/admin.conf .
+</span></span><span class=line><span class=cl>kubectl --kubeconfig ./admin.conf proxy
+</span></span></code></pre></div><p>이제 <code>http://localhost:8001/api/v1</code>에서 로컬로 API 서버에 액세스할 수 있다.</p><h2 id=tear-down>정리<a class=td-heading-self-link href=#tear-down aria-label="Heading self-link"></a></h2><p>테스트용으로 클러스터에 일회용 서버를 사용한 경우, 전원을
+끄고 추가 정리를 수행하지 않을 수 있다.
+<code>kubectl config delete-cluster</code>를 사용하여
+클러스터에 대한 로컬 참조를 삭제할 수 있다.</p><p>그러나 클러스터를 더 깔끔하게 프로비저닝 해제하려면
+먼저 <a href=/docs/reference/generated/kubectl/kubectl-commands#drain>노드를 드레인(drain)</a>하고
+노드가 비어 있는지 확인한 다음 노드 구성을 해제해야 한다.</p><h3 id=노드-제거>노드 제거<a class=td-heading-self-link href=#%eb%85%b8%eb%93%9c-%ec%a0%9c%ea%b1%b0 aria-label="Heading self-link"></a></h3><p>적절한 자격 증명으로 컨트롤 플레인 노드와 통신하여 다음을 실행한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>kubectl drain &lt;node name&gt; --delete-emptydir-data --force --ignore-daemonsets
+</span></span></code></pre></div><p>노드를 제거하기 전에 <code>kubeadm</code>이 설치한 상태를 재설정한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>kubeadm reset
+</span></span></code></pre></div><p>재설정 프로세스는 iptables 규칙이나 IPVS 테이블을 재설정하거나 정리하지 않는다.
+iptables를 재설정하려면 수동으로 수행해야 한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>iptables -F <span class=o>&amp;&amp;</span> iptables -t nat -F <span class=o>&amp;&amp;</span> iptables -t mangle -F <span class=o>&amp;&amp;</span> iptables -X
+</span></span></code></pre></div><p>IPVS 테이블을 재설정하려면 다음 명령을 실행해야 한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>ipvsadm -C
+</span></span></code></pre></div><p>이제 노드를 제거한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>kubectl delete node &lt;node name&gt;
+</span></span></code></pre></div><p>다시 시작하려면 적절한 인수와 함께 <code>kubeadm init</code> 또는 <code>kubeadm join</code>을
+실행한다.</p><h3 id=컨트롤-플레인-정리>컨트롤 플레인 정리<a class=td-heading-self-link href=#%ec%bb%a8%ed%8a%b8%eb%a1%a4-%ed%94%8c%eb%a0%88%ec%9d%b8-%ec%a0%95%eb%a6%ac aria-label="Heading self-link"></a></h3><p>컨트롤 플레인 호스트에서 <code>kubeadm reset</code>을 사용하여 최선의 노력으로
+정리를 트리거할 수 있다.</p><p>이 하위 명령 및 해당 옵션에 대한
+자세한 내용은 <a href=/docs/reference/setup-tools/kubeadm/kubeadm-reset/><code>kubeadm reset</code></a>
+참조 문서를 확인한다.</p><h2 id=version-skew-policy>버전 차이 정책<a class=td-heading-self-link href=#version-skew-policy aria-label="Heading self-link"></a></h2><p>kubeadm이 관리하는 일부 구성 요소에 대해 버전 차이를 허용하지만, kubeadm 버전을
+컨트롤 플레인 구성 요소, kube-proxy 및 kubelet의 버전과 일치시키는 것이 좋다.</p><h3 id=kubeadm과-쿠버네티스-버전-간의-차이>kubeadm과 쿠버네티스 버전 간의 차이<a class=td-heading-self-link href=#kubeadm%ea%b3%bc-%ec%bf%a0%eb%b2%84%eb%84%a4%ed%8b%b0%ec%8a%a4-%eb%b2%84%ec%a0%84-%ea%b0%84%ec%9d%98-%ec%b0%a8%ec%9d%b4 aria-label="Heading self-link"></a></h3><p>kubeadm은 kubeadm과 동일한 버전 또는 한 버전 이전의 쿠버네티스 구성 요소와
+함께 사용할 수 있다. 쿠버네티스 버전은 <code>kubeadm init</code>의
+<code>--kubernetes-version</code> 플래그 또는 <code>--config</code> 사용 시
+<a href=/docs/reference/config-api/kubeadm-config.v1beta4/><code>ClusterConfiguration.kubernetesVersion</code></a>
+필드를 사용하여 kubeadm에 지정할 수 있다. 이 옵션은
+kube-apiserver, kube-controller-manager, kube-scheduler 및 kube-proxy의 버전을 제어한다.</p><p>예시:</p><ul><li>kubeadm이 1.36인 경우</li><li><code>kubernetesVersion</code>은 1.36 또는 1.35이어야 한다</li></ul><h3 id=kubeadm과-kubelet-간의-차이>kubeadm과 kubelet 간의 차이<a class=td-heading-self-link href=#kubeadm%ea%b3%bc-kubelet-%ea%b0%84%ec%9d%98-%ec%b0%a8%ec%9d%b4 aria-label="Heading self-link"></a></h3><p>쿠버네티스 버전과 마찬가지로, kubeadm은 kubeadm과 동일한 버전 또는
+세 버전 이전의 kubelet 버전과 함께 사용할 수 있다.</p><p>예시:</p><ul><li>kubeadm이 1.36인 경우</li><li>호스트의 kubelet은 1.36, 1.35,
+1.34 또는 1.33이어야 한다</li></ul><h3 id=kubeadm-간의-차이>kubeadm 간의 차이<a class=td-heading-self-link href=#kubeadm-%ea%b0%84%ec%9d%98-%ec%b0%a8%ec%9d%b4 aria-label="Heading self-link"></a></h3><p>kubeadm 명령이 kubeadm이 관리하는 기존 노드 또는 전체 클러스터에서 작동할 수 있는 방법에는
+특정 제한이 있다.</p><p>새 노드가 클러스터에 추가되는 경우, <code>kubeadm join</code>에 사용되는 kubeadm 바이너리는
+<code>kubeadm init</code>으로 클러스터를 생성하거나 <code>kubeadm upgrade</code>로 동일한 노드를 업그레이드하는
+데 사용된 kubeadm의 마지막 버전과 일치해야 한다. <code>kubeadm upgrade</code>를 제외한 나머지 kubeadm 명령에도
+유사한 규칙이 적용된다.</p><p><code>kubeadm join</code> 예시:</p><ul><li>kubeadm 버전 1.36을 사용하여 <code>kubeadm init</code>으로 클러스터를 생성한 경우</li><li>추가되는 노드는 1.36 버전의 kubeadm 바이너리를 사용해야 한다</li></ul><p>업그레이드 중인 노드는 노드 관리에 사용된 kubeadm 버전과 동일한 MINOR
+버전 또는 하나 높은 MINOR 버전의 kubeadm을 사용해야
+한다.</p><p><code>kubeadm upgrade</code> 예시:</p><ul><li>kubeadm 버전 1.35을 사용하여 노드를 생성하거나 업그레이드한 경우</li><li>노드 업그레이드에 사용되는 kubeadm 버전은 1.35
+또는 1.36이어야 한다</li></ul><p>다른 쿠버네티스 구성 요소 간의 버전 차이에 대해 자세히 알아보려면
+<a href=/ko/releases/version-skew-policy/>버전 차이 정책</a>을 참조한다.</p><h2 id=limitations>제한사항<a class=td-heading-self-link href=#limitations aria-label="Heading self-link"></a></h2><h3 id=resilience>클러스터 복원력(resilience)<a class=td-heading-self-link href=#resilience aria-label="Heading self-link"></a></h3><p>여기서 생성된 클러스터에는 단일 etcd 데이터베이스가 실행되는 단일 컨트롤 플레인
+노드가 있다. 즉, 컨트롤 플레인 노드가 실패하면 클러스터가 데이터를 잃을 수 있으며
+처음부터 다시 생성해야 할 수 있다.</p><p>해결 방법:</p><ul><li><p>정기적으로 <a href=https://etcd.io/docs/v3.5/op-guide/recovery/>etcd를 백업</a>한다.
+kubeadm이 구성한 etcd 데이터 디렉터리는 컨트롤 플레인 노드의 <code>/var/lib/etcd</code>에 있다.</p></li><li><p>여러 컨트롤 플레인 노드를 사용한다.
+<a href=/docs/setup/production-environment/tools/kubeadm/high-availability/>고가용성</a>을 제공하는 클러스터
+토폴로지를 선택하려면 <a href=/ko/docs/setup/production-environment/tools/kubeadm/ha-topology/>고가용성 토폴로지 옵션</a>을 읽을 수 있다.</p></li></ul><h3 id=multi-platform>플랫폼 호환성<a class=td-heading-self-link href=#multi-platform aria-label="Heading self-link"></a></h3><p>kubeadm deb/rpm 패키지와 바이너리는
+<a href=https://git.k8s.io/design-proposals-archive/multi-platform.md>멀티 플랫폼 제안</a>에 따라 amd64, arm(32비트), arm64, ppc64le 및 s390x용으로 빌드된다.</p><p>컨트롤 플레인 및 애드온용 멀티 플랫폼 컨테이너 이미지도 v1.12부터 지원된다.</p><p>일부 네트워크 공급자만 모든 플랫폼에 대한 솔루션을 제공한다. 공급자가
+선택한 플랫폼을 지원하는지 확인하려면 위의 네트워크 공급자 목록이나
+각 공급자의 문서를 참조한다.</p><h2 id=troubleshooting>문제 해결<a class=td-heading-self-link href=#troubleshooting aria-label="Heading self-link"></a></h2><p>kubeadm에 문제가 발생하면
+<a href=/ko/docs/setup/production-environment/tools/kubeadm/troubleshooting-kubeadm/>문제 해결 문서</a>를 참조한다.</p><h2 id=다음-내용>다음 내용<a class=td-heading-self-link href=#%eb%8b%a4%ec%9d%8c-%eb%82%b4%ec%9a%a9 aria-label="Heading self-link"></a></h2><ul><li><a href=https://github.com/heptio/sonobuoy>Sonobuoy</a>로 클러스터가 제대로 실행되고 있는지 확인</li><li><a id=lifecycle><code>kubeadm</code>을 사용한 클러스터 업그레이드에 대한 자세한 내용은
+<a href=/ko/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/>kubeadm 클러스터 업그레이드</a>를 참조한다.</li><li><a href=/ko/docs/reference/setup-tools/kubeadm/>kubeadm 참조 문서</a>에서 고급 <code>kubeadm</code> 사용법에 대해 알아보기</li><li>쿠버네티스 <a href=/ko/docs/concepts/>개념</a> 및 <a href=/ko/docs/reference/kubectl/><code>kubectl</code></a>에 대해 자세히 알아보기</li><li>파드 네트워크 애드온의 더 큰 목록은 <a href=/ko/docs/concepts/cluster-administration/networking/>클러스터 네트워킹</a>
+페이지를 참조한다.</li><li><a id=other-addons>로깅, 모니터링, 네트워크 정책, 시각화 및 쿠버네티스 클러스터 제어를 위한
+도구를 포함한 다른 애드온을 탐색하려면
+<a href=/ko/docs/concepts/cluster-administration/addons/>애드온 목록</a>을 참조한다.</li><li>클러스터 이벤트 및 파드에서 실행되는 애플리케이션의 로그를
+클러스터가 처리하는 방법을 구성한다.
+관련 사항에 대한 개요는 <a href=/ko/docs/concepts/cluster-administration/logging/>로깅 아키텍처</a>를
+참조한다.</li></ul><h3 id=feedback>피드백<a class=td-heading-self-link href=#feedback aria-label="Heading self-link"></a></h3><ul><li>버그의 경우, <a href=https://github.com/kubernetes/kubeadm/issues>kubeadm GitHub 이슈 트래커</a>를 방문한다</li><li>지원을 받으려면
+<a href=https://kubernetes.slack.com/messages/kubeadm/>#kubeadm</a> 슬랙 채널을 방문한다</li><li>일반 SIG 클러스터 수명 주기 개발 슬랙 채널:
+<a href=https://kubernetes.slack.com/messages/sig-cluster-lifecycle/>#sig-cluster-lifecycle</a></li><li>SIG 클러스터 수명 주기 <a href=https://github.com/kubernetes/community/tree/master/sig-cluster-lifecycle#readme>SIG 정보</a></li><li>SIG 클러스터 수명 주기 메일링 리스트:
+<a href=https://groups.google.com/forum/#!forum/kubernetes-sig-cluster-lifecycle>kubernetes-sig-cluster-lifecycle</a></li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-4c656c5eda3e1c06ad1aedebdc04a211>2.1.4 - kubeadm API로 컴포넌트 사용자 정의하기</h1><p>이 페이지는 kubeadm이 배포하는 컴포넌트(component)들을 사용자 정의하는 방법을 다룬다. 컨트롤 플레인 컴포넌트에
+대해서는 <code>Cluster Configuration</code> 구조에서 플래그를 사용하거나 노드당 패치를 사용할 수 있다. kubelet과
+kube-proxy의 경우, <code>KubeletConfiguration</code>과 <code>KubeProxyConfiguration</code>을 각각 사용할 수 있다.</p><p>이 모든 옵션이 kubeadm 구성 API를 통해 가용하다.
+구성의 각 필드 상세 사항은
+<a href=/docs/reference/config-api/kubeadm-config.v1beta3/>API 참조 페이지</a>에서 찾아볼 수 있다.</p><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>kubeadm의 CoreDNS 디플로이먼트 사용자 정의는 현재 제공되지 않는다.
+<code>kube-system/coredns</code> <a class=glossary-tooltip title='키-값 쌍으로 기밀이 아닌 데이터를 저장하는 데 사용하는 API 오브젝트이다. 볼륨에서 환경 변수, 커맨드-라인 인수 또는 구성 파일로 사용될 수 있다.' data-bs-toggle=tooltip data-bs-placement=top href=/ko/docs/concepts/configuration/configmap/ target=_blank aria-label=컨피그맵>컨피그맵</a>을 수동으로
+패치하고, 그 이후에 CoreDNS <a class=glossary-tooltip title='파드는 클러스터에서 실행 중인 컨테이너의 집합을 나타낸다.' data-bs-toggle=tooltip data-bs-placement=top href=/ko/docs/concepts/workloads/pods/ target=_blank aria-label=파드>파드</a>를 다시 생성해야 한다. 또는,
+기본 CoreDNS 디플로이먼트를 생략하고 자체 변형(variant)을 배포할 수 있다.
+더 자세한 사항은 <a href=/docs/reference/setup-tools/kubeadm/kubeadm-init/#init-phases>kubeadm에서 초기화 단계 사용하기</a>을 참고한다.</div><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>이미 생성된 클러스터를 다시 구성하려면
+<a href=/docs/tasks/administer-cluster/kubeadm/kubeadm-reconfigure/>kubeadm 클러스터 다시 구성하기</a>를 참고한다.</div><h2 id=clusterconfiguration의-플래그로-컨트롤-플레인-사용자-정의하기><code>ClusterConfiguration</code>의 플래그로 컨트롤 플레인 사용자 정의하기<a class=td-heading-self-link href=#clusterconfiguration%ec%9d%98-%ed%94%8c%eb%9e%98%ea%b7%b8%eb%a1%9c-%ec%bb%a8%ed%8a%b8%eb%a1%a4-%ed%94%8c%eb%a0%88%ec%9d%b8-%ec%82%ac%ec%9a%a9%ec%9e%90-%ec%a0%95%ec%9d%98%ed%95%98%ea%b8%b0 aria-label="Heading self-link"></a></h2><p>kubeadm의 <code>ClusterConfiguration</code> 오브젝트는 API 서버, 컨트롤러매니저, 스케줄러, Etcd와 같은 컨트롤 플레인 컴포넌트에 전달되는
+기본 플래그를 사용자가 덮어쓸 수 있도록 노출한다.
+이 컴포넌트는 다음 구조체를 사용하여 정의된다.</p><ul><li><code>apiServer</code></li><li><code>controllerManager</code></li><li><code>scheduler</code></li><li><code>etcd</code></li></ul><p>이 구조체들은 공통 필드인 <code>extraArgs</code>를 포함하며, 이 필드는 <code>키: 값</code> 쌍으로 구성된다.
+컨트롤 플레인 컴포넌트를 위한 플래그를 덮어쓰려면 다음을 수행한다.</p><ol><li>사용자 구성에 적절한 <code>extraArgs</code> 필드를 추가한다.</li><li><code>extraArgs</code> 필드에 플래그를 추가한다.</li><li><code>kubeadm init</code>에 <code>--config &lt;CONFIG YAML 파일></code> 파라미터를 추가해서 실행한다.</li></ol><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4><code>kubeadm config print init-defaults</code>를 실행하고 원하는 파일에 출력을
+저장하여 기본값들로 구성된 <code>ClusterConfiguration</code> 오브젝트를 생성할 수 있다.</div><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4><code>ClusterConfiguration</code> 오브젝트는 현재 kubeadm 클러스터에서 전역(global)으로 사용된다. 즉, 사용자가 추가하는 모든 플래그는
+다른 노드에 있는 동일한 컴포넌트에도 모두 적용될 것이다. 다른 노드에서
+컴포넌트별로 개별 구성을 적용하려면 <a href=#patches>패치</a>를 사용하면 된다.</div><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>플래그(키)를 복제하거나 동일한 플래그 <code>--foo</code>를 여러 번 전달하는 것은 현재 지원하지 않는다.
+이 문제를 해결하려면 <a href=#patches>패치</a>를 사용해야 한다.</div><h3 id=apiserver-플래그>APIServer 플래그<a class=td-heading-self-link href=#apiserver-%ed%94%8c%eb%9e%98%ea%b7%b8 aria-label="Heading self-link"></a></h3><p>자세한 내용은 <a href=/docs/reference/command-line-tools-reference/kube-apiserver/>kube-apiserver 레퍼런스 문서</a>를 확인한다.</p><p>사용 예시:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>kubeadm.k8s.io/v1beta3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterConfiguration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kubernetesVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1.16.0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>apiServer</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>extraArgs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>anonymous-auth</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;false&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>enable-admission-plugins</span><span class=p>:</span><span class=w> </span><span class=l>AlwaysPullImages,DefaultStorageClass</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>audit-log-path</span><span class=p>:</span><span class=w> </span><span class=l>/home/johndoe/audit.log</span><span class=w>
+</span></span></span></code></pre></div><h3 id=컨트롤러매니저-플래그>컨트롤러매니저 플래그<a class=td-heading-self-link href=#%ec%bb%a8%ed%8a%b8%eb%a1%a4%eb%9f%ac%eb%a7%a4%eb%8b%88%ec%a0%80-%ed%94%8c%eb%9e%98%ea%b7%b8 aria-label="Heading self-link"></a></h3><p>자세한 내용은 <a href=/docs/reference/command-line-tools-reference/kube-controller-manager/>kube-controller-manager 레퍼런스 문서</a>를 확인한다.</p><p>사용 예시:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>kubeadm.k8s.io/v1beta3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterConfiguration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kubernetesVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1.16.0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>controllerManager</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>extraArgs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>cluster-signing-key-file</span><span class=p>:</span><span class=w> </span><span class=l>/home/johndoe/keys/ca.key</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>deployment-controller-sync-period</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;50&#34;</span><span class=w>
+</span></span></span></code></pre></div><h3 id=스케줄러-플래그>스케줄러 플래그<a class=td-heading-self-link href=#%ec%8a%a4%ec%bc%80%ec%a4%84%eb%9f%ac-%ed%94%8c%eb%9e%98%ea%b7%b8 aria-label="Heading self-link"></a></h3><p>자세한 내용은 <a href=/docs/reference/command-line-tools-reference/kube-scheduler/>kube-scheduler 레퍼런스 문서</a>를 확인한다.</p><p>사용 예시:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>kubeadm.k8s.io/v1beta3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterConfiguration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kubernetesVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1.16.0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>scheduler</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>extraArgs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>config</span><span class=p>:</span><span class=w> </span><span class=l>/etc/kubernetes/scheduler-config.yaml</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>extraVolumes</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>schedulerconfig</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>hostPath</span><span class=p>:</span><span class=w> </span><span class=l>/home/johndoe/schedconfig.yaml</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>mountPath</span><span class=p>:</span><span class=w> </span><span class=l>/etc/kubernetes/scheduler-config.yaml</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>readOnly</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pathType</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;File&#34;</span><span class=w>
+</span></span></span></code></pre></div><h3 id=etcd-플래그>Etcd 플래그<a class=td-heading-self-link href=#etcd-%ed%94%8c%eb%9e%98%ea%b7%b8 aria-label="Heading self-link"></a></h3><p>자세한 사항은 <a href=https://etcd.io/docs/>etcd 서버 문서</a>를 확인한다.</p><p>사용 예시:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>kubeadm.k8s.io/v1beta3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterConfiguration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>etcd</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>local</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>extraArgs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>election-timeout</span><span class=p>:</span><span class=w> </span><span class=m>1000</span><span class=w>
+</span></span></span></code></pre></div><h2 id=patches>패치를 통해 사용자 정의하기<a class=td-heading-self-link href=#patches aria-label="Heading self-link"></a></h2><div class="feature-state-notice feature-beta"><span class=feature-state-name>기능 상태:</span>
+<code>Kubernetes v1.22 [beta]</code></div><p>Kubeadm을 사용하면 패치 파일이 있는 디렉토리를 개별 노드에 대한 <code>InitConfiguration</code>과 <code>JoinConfiguration</code>에
+전달할 수 있다. 이 패치는 컴포넌트 구성이 디스크에 기록되기 전에 최종 사용자 정의 단계로
+사용될 수 있다.</p><p><code>--config &lt;YOUR CONFIG YAML></code>을 사용하여 이 파일을 <code>kubeadm init</code>에 전달할 수 있다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>kubeadm.k8s.io/v1beta3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>InitConfiguration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>patches</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>directory</span><span class=p>:</span><span class=w> </span><span class=l>/home/user/somedir</span><span class=w>
+</span></span></span></code></pre></div><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4><code>kubeadm init</code>의 경우, <code>---</code>로 구분된 <code>ClusterConfiguration</code>과 <code>InitConfiguration</code>을 모두
+포함하는 파일을 전달할 수 있다.</div><p><code>--config &lt;YOUR CONFIG YAML></code>을 사용하여 이 파일을 <code>kubeadm join</code>에 전달할 수 있다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>kubeadm.k8s.io/v1beta3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>JoinConfiguration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>patches</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>directory</span><span class=p>:</span><span class=w> </span><span class=l>/home/user/somedir</span><span class=w>
+</span></span></span></code></pre></div><p>디렉토리는 <code>target[suffix][+patchtype].extension</code> 형태의 파일을 포함해야 한다.
+예를 들면, <code>kube-apiserver0+merge.yaml</code> 또는 단순히 <code>etcd.json</code>의 형태이다.</p><ul><li><code>target</code>은 <code>kube-apiserver</code>, <code>kube-controller-manager</code>, <code>kube-scheduler</code>, <code>etcd</code>
+그리고 <code>kubeletconfiguration</code> 중 하나가 될 수 있다.</li><li><code>patchtype</code>은 <code>strategic</code>, <code>merge</code> 그리고 <code>json</code> 중 하나가 될 수 있으며
+<a href=/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch>kubectl에서 지원하는</a> 패치 형식을 준수해야 한다.
+<code>patchtype</code>의 기본값은 <code>strategic</code>이다.</li><li><code>extension</code>은 <code>json</code> 또는 <code>yaml</code> 중 하나여야 한다.</li><li><code>suffix</code>는 어떤 패치가 먼저 적용되는지를 결정하는 데 사용할 수 있는 영숫자 형태의
+선택적 문자열이다.</li></ul><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4><code>kubeadm upgrade</code>를 사용하여 kubeadm 노드를 업그레이드하는 경우, 업그레이드 이후에도
+사용자 정의를 유지하려면 동일한 패치를 다시 제공해야 한다. 이는 동일한 디렉토리로 지정된 <code>--patches</code>
+플래그를 사용하여 처리할 수 있다. <code>kubeadm upgrade</code>는 동일 목적으로 재사용할 수 있는 구성
+API 구조를 현재는 지원하지 않는다.</div><h2 id=kubelet>kubelet 사용자 정의하기<a class=td-heading-self-link href=#kubelet aria-label="Heading self-link"></a></h2><p>kubelet을 사용자 정의하려면, <a href=/docs/reference/config-api/kubelet-config.v1beta1/><code>KubeletConfiguration</code></a>을
+동일한 구성 파일 내에서 <code>---</code>로 구분된 <code>ClusterConfiguration</code>이나 <code>InitConfiguration</code> 다음에 추가하면 된다.
+그런 다음 <code>kubeadm init</code>에 해당 파일을 전달하면, kubeadm은 동일한 기본 <code>KubeletConfiguration</code>을
+클러스터의 모든 노드에 적용한다.</p><p>기본 <code>KubeletConfiguration</code>에 더하여 인스턴스별 구성을 적용하기 위해서는
+<a href=#patches><code>kubeletconfiguration</code> 패치 target</a>을 이용할 수 있다.</p><p>다른 방법으로는, kubelet 플래그를 덮어쓰기(overrides)로 사용하여,
+<code>InitConfiguration</code> 및 <code>JoinConfiguration</code> 모두에서 지원되는 <code>nodeRegistration.kubeletExtraArgs</code>에 전달할 수 있다.
+일부 kubelet 플래그는 더 이상 사용되지 않는다(deprecated). 따라서 사용하기 전에
+<a href=/docs/reference/command-line-tools-reference/kubelet>kubelet 참조 문서</a>를 통해 상태를 확인해야 한다.</p><p>이 외 더 자세한 사항은 <a href=/docs/setup/production-environment/tools/kubeadm/kubelet-integration>kubeadm을 통해 클러스터의 각 kubelet 구성하기</a>에서 살펴본다.</p><h2 id=kube-proxy-사용자-정의하기>kube-proxy 사용자 정의하기<a class=td-heading-self-link href=#kube-proxy-%ec%82%ac%ec%9a%a9%ec%9e%90-%ec%a0%95%ec%9d%98%ed%95%98%ea%b8%b0 aria-label="Heading self-link"></a></h2><p>kube-proxy를 사용자 정의하려면, <code>KubeProxyConfiguration</code>을 <code>---</code>로 구분된 <code>ClusterConfiguration</code>이나 <code>InitConfiguration</code>
+다음에 두고 <code>kubeadm init</code>에 전달하면 된다.</p><p>자세한 사항은 <a href=/docs/reference/config-api/kubeadm-config.v1beta3/>API 참조 페이지</a>에서 살펴볼 수 있다.</p><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>kubeadm은 kube-proxy를 <a class=glossary-tooltip title='파드의 복제본을 클러스터 노드 집합에서 동작하게 한다.' data-bs-toggle=tooltip data-bs-placement=top href=/ko/docs/concepts/workloads/controllers/daemonset target=_blank aria-label=데몬셋>데몬셋</a>으로 배포한다. 이것은
+<code>KubeProxyConfiguration</code>이 클러스터의 모든 kube-proxy 인스턴스에 적용된다는 것을 의미한다.</div></div><div class=td-content style=page-break-before:always><h1 id=pg-015edbc7cc688d31b1d1edce7c186135>2.1.5 - 고가용성 토폴로지 선택</h1><p>이 페이지는 고가용성(HA) 쿠버네티스 클러스터의 토폴로지를 구성하는 두 가지 선택 사항을 설명한다.</p><p>다음과 같이 HA 클러스터를 구성할 수 있다.</p><ul><li>etcd 노드와 컨트롤 플레인 노드를 함께 배치하는 중첩된(stacked) 컨트롤 플레인 노드 방식</li><li>etcd가 컨트롤 플레인과 분리된 노드에서 실행되는 외부 etcd 노드 방식</li></ul><p>HA 클러스터를 구성하기 전에 각 토폴로지의 장단점을 주의 깊게 고려해야 한다.</p><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>kubeadm은 etcd 클러스터를 정적으로 부트스트랩한다. 자세한 내용은 etcd
+<a href=https://github.com/etcd-io/etcd/blob/release-3.4/Documentation/op-guide/clustering.md#static>클러스터 구성 가이드</a>
+를 읽는다.</div><h2 id=중첩된-etcd-토폴로지>중첩된 etcd 토폴로지<a class=td-heading-self-link href=#%ec%a4%91%ec%b2%a9%eb%90%9c-etcd-%ed%86%a0%ed%8f%b4%eb%a1%9c%ec%a7%80 aria-label="Heading self-link"></a></h2><p>중첩된 HA 클러스터는 etcd가 제공하는 분산 데이터 저장소 클러스터를,
+컨트롤 플레인 컴포넌트를 실행하며 kubeadm이 관리하는 노드가 형성하는 클러스터 상단에
+중첩하는 <a href=https://en.wikipedia.org/wiki/Network_topology>토폴로지</a>이다.</p><p>각 컨트롤 플레인 노드는 <code>kube-apiserver</code>, <code>kube-scheduler</code>, <code>kube-controller-manager</code> 인스턴스를 운영한다.
+<code>kube-apiserver</code>는 로드 밸런서를 이용하여 워커 노드에 노출되어 있다.</p><p>각 컨트롤 플레인 노드는 로컬 etcd 멤버를 생성하고
+이 etcd 멤버는 오직 해당 노드의 <code>kube-apiserver</code>와 통신한다.
+같은 방식이 로컬 <code>kube-controller-manager</code>와 <code>kube-scheduler</code> 인스턴스에도 적용된다.</p><p>이 토폴로지는 컨트롤 플레인과 etcd 멤버를 같은 노드에 결합한다.
+이는 외부 etcd 노드를 두는 클러스터보다 구성이 단순하며 복제 관리도 간단하다.</p><p>그러나 중첩된 클러스터는 결합이 실패할 위험이 있다. 한 노드가 다운되면 etcd 멤버와 컨트롤 플레인 인스턴스를 모두 잃어버리고,
+중복성도 손상된다. 더 많은 컨트롤 플레인 노드를 추가하여 이 위험을 완화할 수 있다.</p><p>그러므로 HA 클러스터를 위해 최소 3개인 중첩된 컨트롤 플레인 노드를 운영해야 한다.</p><p>이는 kubeadm의 기본 토폴로지이다. 로컬 etcd 멤버는
+<code>kubeadm init</code>와 <code>kubeadm join --control-plane</code>을 이용할 때 컨트롤 플레인 노드에 자동으로 생성된다.</p><p><img src=/images/kubeadm/kubeadm-ha-topology-stacked-etcd.svg alt="중첩된 etcd 토폴로지"></p><h2 id=외부-etcd-토폴로지>외부 etcd 토폴로지<a class=td-heading-self-link href=#%ec%99%b8%eb%b6%80-etcd-%ed%86%a0%ed%8f%b4%eb%a1%9c%ec%a7%80 aria-label="Heading self-link"></a></h2><p>외부 etcd를 이용하는 HA 클러스터는 etcd가 제공하는 분산 데이터 저장소 클러스터가
+컨트롤 플레인 컴포넌트를 실행하는 노드가 형성하는 클러스터의 외부에 있는
+<a href=https://en.wikipedia.org/wiki/Network_topology>토폴로지</a>이다.</p><p>중첩된 etcd 토폴로지와 같이, 외부 etcd 토폴로지에서 각 컨트롤 플레인 노드는
+<code>kube-apiserver</code>, <code>kube-scheduler</code>, <code>kube-controller-manager</code>의 인스턴스를 운영한다.
+그리고 <code>kube-apiserver</code>는 로드 밸런서를 이용하여 워커 노드에 노출한다. 그러나,
+etcd 멤버는 분리된 호스트에서 운영되고, 각 etcd 호스트는 각 컨트롤 플레인 노드의
+<code>kube-apiserver</code>와 통신한다.</p><p>이 토폴로지는 컨트롤 플레인과 etcd 멤버를 분리한다. 따라서
+컨트롤 플레인 인스턴스 또는 etcd 멤버 하나를 잃더라도 영향이 더 적고,
+중첩된 HA 토폴로지만큼 클러스터 중복성에 영향을 미치지 않는 HA 구성을 제공한다.</p><p>그러나 이 토폴로지는 중첩된 HA 토폴로지보다 두 배 많은 호스트 수가 필요하다.
+이 토폴로지로 HA 클러스터를 구성하려면 컨트롤 플레인 노드용 호스트와 etcd 노드용 호스트가
+각각 최소 3대씩 필요하다.</p><p><img src=/images/kubeadm/kubeadm-ha-topology-external-etcd.svg alt="외부 etcd 토폴로지"></p><h2 id=다음-내용>다음 내용<a class=td-heading-self-link href=#%eb%8b%a4%ec%9d%8c-%eb%82%b4%ec%9a%a9 aria-label="Heading self-link"></a></h2><ul><li><a href=/docs/setup/production-environment/tools/kubeadm/high-availability/>kubeadm을 이용하여 고가용성 클러스터 구성하기</a></li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-d2f55eefe7222b7c637875af9c3ec199>3 - 턴키 클라우드 솔루션</h1><p>이 페이지는 인증된 쿠버네티스 솔루션 제공자 목록을 제공한다. 각 제공자
+페이지를 통해서, 프로덕션에 준비된 클러스터를 설치 및 설정하는 방법을
+학습할 수 있다.</p><script>function updateLandscapeSource(e,t){console.log({button:e,shouldUpdateFragment:t});try{if(t)window.location.hash="#iframe-landscape-"+e.id;else{var n=document.querySelectorAll("#landscape");let t=e.dataset.landscapeTypes,s=`https://landscape.cncf.io/embed/embed.html?key=${encodeURIComponent(t)}&headers=false&style=shadowed&size=md&bg-color=%23d95e00&fg-color=%23ffffff&iframe-resizer=true`;n[0].src=s}}catch(e){console.log({message:"error handling Landscape switch",error:e})}}document.addEventListener("DOMContentLoaded",function(){let t=()=>{if(window.location.hash){let e=document.querySelectorAll(".landscape-trigger"+window.location.hash);e.length==1&&(landscapeSource=e[0],console.log("Updating Landscape source based on fragment:",window.location.hash.substring(1)),updateLandscapeSource(landscapeSource,!1))}};var e,n=document.querySelectorAll(".landscape-trigger");if(n.forEach(e=>{e.onclick=function(){updateLandscapeSource(e,!0)}}),e=document.querySelectorAll(".landscape-trigger.landscape-default"),e.length==1){let t=e[0];updateLandscapeSource(t,!1)}window.addEventListener("hashchange",t,!1),t()})</script><div id=frameHolder><iframe id=iframe-landscape src="https://landscape.cncf.io/embed/embed.html?key=platform--certified-kubernetes-hosted&headers=false&style=shadowed&size=md&bg-color=%233371e3&fg-color=%23ffffff&iframe-resizer=true" style=width:1px;min-width:100%;min-height:100px;border:0></iframe>
+<script>iFrameResize({},"#iframe-landscape")</script></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col col-sm-3 text-xs-center order-1"><ul class="list-inline mb-0 footer-icons"><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=YouTube><a class=text-white target=_blank rel=noopener href=https://youtube.com/kubernetescommunity aria-label=YouTube><i class="fa-brands fa-youtube"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Forum><a class=text-white target=_blank rel=noopener href=https://discuss.kubernetes.io aria-label=Forum><i class="fa-solid fa-envelope"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title="Server Fault"><a class=text-white target=_blank rel=noopener href=https://serverfault.com/questions/tagged/kubernetes aria-label="Server Fault"><i class="fa-brands fa-stack-overflow"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=LinkedIn><a class=text-white target=_blank rel=noopener href=https://www.linkedin.com/company/kubernetes/ aria-label=LinkedIn><i class="fa-brands fa-linkedin"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Bluesky><a class=text-white target=_blank rel=noopener href=https://bsky.app/profile/kubernetes.io aria-label=Bluesky><i class="fa-brands fa-bluesky"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title="X (formerly Twitter)"><a class=text-white target=_blank rel=noopener href=https://x.com/kubernetesio aria-label="X (formerly Twitter)"><i class="fa-brands fa-x-twitter"></i></a></li></ul></div><div class="col-5 col-sm-6 text-center order-2 footer-main"><p><span class=copyright-notice>&copy; 2026 The Kubernetes Authors | Documentation Distributed under <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a></span></p><p><span class=copyright-notice>&copy; 2026 The Linux Foundation &reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href=https://www.linuxfoundation.org/trademark-usage class=light-text>Trademark Usage page</a></span></p><p><span class=certification-notice>ICP license: <a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></span></p></div><div class="col col-sm-3 text-end text-xs-center order-3"><ul class="list-inline mb-0 footer-icons"><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title="Contributor website"><a class=text-white target=_blank rel=noopener href=https://k8s.dev/ aria-label="Contributor website"><i class="fa-solid fa-laptop-code"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/kubernetes/kubernetes aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Slack><a class=text-white target=_blank rel=noopener href=https://slack.k8s.io aria-label=Slack><i class="fa-brands fa-slack"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title="Events Calendar"><a class=text-white target=_blank rel=noopener href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io" aria-label="Events Calendar"><i class="fa-solid fa-calendar-days"></i></a></li></ul></div></div></div></footer></div><script src=/js/main.js></script><script src=/js/tabpane-persist.js></script><script src=/js/theme-image-swap.js></script><script defer src=/js/detect-js.js></script></body></html>
