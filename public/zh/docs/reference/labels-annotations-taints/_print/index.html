@@ -1,0 +1,702 @@
+<!doctype html><html lang=zh class=no-js>
+<head>
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','G-JPP6RFM2BP')</script>
+<script type=text/javascript>(function(a,e,b,f,g,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},c=e.createElement(f),c.async=1,c.src="https://www.clarity.ms/tag/"+g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d)})(window,document,"clarity","script","yn9sj6xc09")</script>
+<link rel=alternate hreflang=en href=https://kubernetes.xuxiaowei.com.cn/docs/reference/labels-annotations-taints/>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=generator content="Hugo 0.87.0">
+<link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/>
+<link rel="shortcut icon" type=image/png href=/images/favicon.png>
+<link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180>
+<link rel=manifest href=/manifest.webmanifest>
+<link rel=apple-touch-icon href=/images/kubernetes-192x192.png>
+<title>众所周知的标签、注解和污点 | Kubernetes</title><meta property="og:title" content="众所周知的标签、注解和污点">
+<meta property="og:description" content="生产级别的容器编排系统">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/"><meta property="og:site_name" content="Kubernetes">
+<meta itemprop=name content="众所周知的标签、注解和污点">
+<meta itemprop=description content="生产级别的容器编排系统"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="众所周知的标签、注解和污点">
+<meta name=twitter:description content="生产级别的容器编排系统">
+<link href=/scss/main.css rel=stylesheet>
+<script src=/js/jquery-3.3.1.min.js integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin=anonymous></script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png"}</script>
+<meta name=theme-color content="#326ce5">
+<link rel=stylesheet href=/css/feature-states.css>
+<meta name=description content="Kubernetes 将所有标签和注解保留在 kubernetes.io Namespace中。
+本文档既可作为值的参考，也可作为分配值的协调点。
+API 对象上使用的标签、注解和污点 app.kubernetes.io/component 例子: app.kubernetes.io/component=database
+用于: 所有对象
+架构中的组件。
+推荐标签之一。
+app.kubernetes.io/created-by 示例：app.kubernetes.io/created-by=controller-manager
+用于：所有对象
+创建此资源的控制器/用户。
+推荐标签之一。
+app.kubernetes.io/instance 示例：app.kubernetes.io/instance=mysql-abcxzy
+用于：所有对象
+标识应用实例的唯一名称。
+推荐标签之一。
+app.kubernetes.io/managed-by 示例：app.kubernetes.io/managed-by=helm
+用于：所有对象
+用于管理应用操作的工具。
+推荐标签之一。
+app.kubernetes.io/name 示例：app.kubernetes.io/name=mysql
+用于：所有对象
+应用的名称。
+推荐标签之一。
+app.kubernetes.io/part-of 示例：app.kubernetes.io/part-of=wordpress
+用于：所有对象
+此应用所属的更高级别应用的名称。
+推荐标签之一。
+app.kubernetes.io/version 示例：app.kubernetes.io/version=&#34;5.7.21&#34;
+用于：所有对象
+应用的当前版本（例如，语义版本、修订哈希等）。
+推荐标签之一。
+kubernetes.io/arch 例子：kubernetes.io/arch=amd64
+用于：Node
+Kubelet 使用 Go 定义的 runtime.GOARCH 填充它。 如果你混合使用 ARM 和 X86 节点，这会很方便。
+kubernetes.io/os 例子：kubernetes.io/os=linux
+用于：Node
+Kubelet 使用 Go 定义的 runtime.GOOS 填充它。如果你在集群中混合使用操作系统（例如：混合 Linux 和 Windows 节点），这会很方便。">
+<meta property="og:description" content="Kubernetes 将所有标签和注解保留在 kubernetes.io Namespace中。
+本文档既可作为值的参考，也可作为分配值的协调点。
+API 对象上使用的标签、注解和污点 app.kubernetes.io/component 例子: app.kubernetes.io/component=database
+用于: 所有对象
+架构中的组件。
+推荐标签之一。
+app.kubernetes.io/created-by 示例：app.kubernetes.io/created-by=controller-manager
+用于：所有对象
+创建此资源的控制器/用户。
+推荐标签之一。
+app.kubernetes.io/instance 示例：app.kubernetes.io/instance=mysql-abcxzy
+用于：所有对象
+标识应用实例的唯一名称。
+推荐标签之一。
+app.kubernetes.io/managed-by 示例：app.kubernetes.io/managed-by=helm
+用于：所有对象
+用于管理应用操作的工具。
+推荐标签之一。
+app.kubernetes.io/name 示例：app.kubernetes.io/name=mysql
+用于：所有对象
+应用的名称。
+推荐标签之一。
+app.kubernetes.io/part-of 示例：app.kubernetes.io/part-of=wordpress
+用于：所有对象
+此应用所属的更高级别应用的名称。
+推荐标签之一。
+app.kubernetes.io/version 示例：app.kubernetes.io/version=&#34;5.7.21&#34;
+用于：所有对象
+应用的当前版本（例如，语义版本、修订哈希等）。
+推荐标签之一。
+kubernetes.io/arch 例子：kubernetes.io/arch=amd64
+用于：Node
+Kubelet 使用 Go 定义的 runtime.GOARCH 填充它。 如果你混合使用 ARM 和 X86 节点，这会很方便。
+kubernetes.io/os 例子：kubernetes.io/os=linux
+用于：Node
+Kubelet 使用 Go 定义的 runtime.GOOS 填充它。如果你在集群中混合使用操作系统（例如：混合 Linux 和 Windows 节点），这会很方便。">
+<meta name=twitter:description content="Kubernetes 将所有标签和注解保留在 kubernetes.io Namespace中。
+本文档既可作为值的参考，也可作为分配值的协调点。
+API 对象上使用的标签、注解和污点 app.kubernetes.io/component 例子: app.kubernetes.io/component=database
+用于: 所有对象
+架构中的组件。
+推荐标签之一。
+app.kubernetes.io/created-by 示例：app.kubernetes.io/created-by=controller-manager
+用于：所有对象
+创建此资源的控制器/用户。
+推荐标签之一。
+app.kubernetes.io/instance 示例：app.kubernetes.io/instance=mysql-abcxzy
+用于：所有对象
+标识应用实例的唯一名称。
+推荐标签之一。
+app.kubernetes.io/managed-by 示例：app.kubernetes.io/managed-by=helm
+用于：所有对象
+用于管理应用操作的工具。
+推荐标签之一。
+app.kubernetes.io/name 示例：app.kubernetes.io/name=mysql
+用于：所有对象
+应用的名称。
+推荐标签之一。
+app.kubernetes.io/part-of 示例：app.kubernetes.io/part-of=wordpress
+用于：所有对象
+此应用所属的更高级别应用的名称。
+推荐标签之一。
+app.kubernetes.io/version 示例：app.kubernetes.io/version=&#34;5.7.21&#34;
+用于：所有对象
+应用的当前版本（例如，语义版本、修订哈希等）。
+推荐标签之一。
+kubernetes.io/arch 例子：kubernetes.io/arch=amd64
+用于：Node
+Kubelet 使用 Go 定义的 runtime.GOARCH 填充它。 如果你混合使用 ARM 和 X86 节点，这会很方便。
+kubernetes.io/os 例子：kubernetes.io/os=linux
+用于：Node
+Kubelet 使用 Go 定义的 runtime.GOOS 填充它。如果你在集群中混合使用操作系统（例如：混合 Linux 和 Windows 节点），这会很方便。">
+<meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/">
+<meta property="og:title" content="众所周知的标签、注解和污点">
+<meta name=twitter:title content="众所周知的标签、注解和污点">
+<meta name=twitter:image content="https://kubernetes.io/images/favicon.png">
+<meta name=twitter:image:alt content="Kubernetes">
+<meta property="og:image" content="/images/kubernetes-horizontal-color.png">
+<meta property="og:type" content="article">
+<script src=/js/script.js></script>
+<link type=text/css rel=stylesheet href=/css/custom.css>
+</head>
+<body class=td-section>
+<header>
+<nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-column flex-md-row td-navbar" data-auto-burger=primary>
+<a class=navbar-brand href=/zh/></a>
+<div class="td-navbar-nav-scroll ml-md-auto" id=main_navbar>
+<ul class="navbar-nav mt-2 mt-lg-0">
+<li class="nav-item mr-2 mb-lg-0">
+<a class="nav-link active" href=/zh/docs/>文档</a>
+</li>
+<li class="nav-item mr-2 mb-lg-0">
+<a class=nav-link href=/zh/blog/>Kubernetes 博客</a>
+</li>
+<li class="nav-item mr-2 mb-lg-0">
+<a class=nav-link href=/zh/training/>培训</a>
+</li>
+<li class="nav-item mr-2 mb-lg-0">
+<a class=nav-link href=/zh/partners/>合作伙伴</a>
+</li>
+<li class="nav-item mr-2 mb-lg-0">
+<a class=nav-link href=/zh/community/>社区</a>
+</li>
+<li class="nav-item mr-2 mb-lg-0">
+<a class=nav-link href=/zh/case-studies/>案例分析</a>
+</li>
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+Versions
+</a>
+<div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink>
+<a class=dropdown-item href=/releases>Release Information</a>
+<a class=dropdown-item href=https://xuxiaowei.io/t/1320/zh/docs/reference/labels-annotations-taints/>Kubernetes 文档说明</a>
+<a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/>v1.38</a>
+<a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/>v1.37</a>
+<a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/>v1.36</a>
+<a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/>v1.35</a>
+<a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/>v1.34</a>
+<a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/>v1.33</a>
+<a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/>v1.32</a>
+<a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/>v1.31</a>
+<a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/>v1.30</a>
+<a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/>v1.29</a>
+<a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/>v1.28</a>
+<a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/>v1.27</a>
+<a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/>v1.26</a>
+<a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/>v1.25</a>
+<a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/>v1.24</a>
+<a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/>v1.23</a>
+<a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/>v1.22</a>
+<a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/>v1.21</a>
+<a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn/zh/docs/reference/labels-annotations-taints/>v1.20</a>
+</div>
+</li>
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href=# id=navbarDropdownMenuLink role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+中文 Chinese
+</a>
+<div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink>
+<a class=dropdown-item href=/docs/reference/labels-annotations-taints/>English</a>
+</div>
+</li>
+</ul>
+</div>
+<button id=hamburger onclick=kub.toggleMenu() data-auto-burger-exclude><div></div></button>
+</nav>
+</header>
+<div class="container-fluid td-outer">
+<div class=td-main>
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main>
+<div class=td-content>
+<div class="pageinfo pageinfo-primary d-print-none">
+<p>
+这是本节的多页打印视图。
+<a href=# onclick="return print(),!1">点击此处打印</a>.
+</p><p>
+<a href=/zh/docs/reference/labels-annotations-taints/>返回本页常规视图</a>.
+</p>
+</div>
+<h1 class=title>众所周知的标签、注解和污点</h1>
+<ul>
+<li>1: <a href=#pg-0adf63217075ed2dc0a3030d9673e75e>审计注解</a></li>
+</ul>
+<div class=content>
+<p>Kubernetes 将所有标签和注解保留在 kubernetes.io Namespace中。</p>
+<p>本文档既可作为值的参考，也可作为分配值的协调点。</p>
+<h2 id=api-对象上使用的标签-注解和污点>API 对象上使用的标签、注解和污点</h2>
+<h3 id=app-kubernetes-io-component>app.kubernetes.io/component</h3>
+<p>例子: <code>app.kubernetes.io/component=database</code></p>
+<p>用于: 所有对象</p>
+<p>架构中的组件。</p>
+<p><a href=/zh/docs/concepts/overview/working-with-objects/common-labels/#labels>推荐标签</a>之一。</p>
+<h3 id=app-kubernetes-io-created-by>app.kubernetes.io/created-by</h3>
+<p>示例：<code>app.kubernetes.io/created-by=controller-manager</code></p>
+<p>用于：所有对象</p>
+<p>创建此资源的控制器/用户。</p>
+<p><a href=/zh/docs/concepts/overview/working-with-objects/common-labels/#labels>推荐标签</a>之一。</p>
+<h3 id=app-kubernetes-io-instance>app.kubernetes.io/instance</h3>
+<p>示例：<code>app.kubernetes.io/instance=mysql-abcxzy</code></p>
+<p>用于：所有对象</p>
+<p>标识应用实例的唯一名称。</p>
+<p><a href=/zh/docs/concepts/overview/working-with-objects/common-labels/#labels>推荐标签</a>之一。</p>
+<h3 id=app-kubernetes-io-managed-by>app.kubernetes.io/managed-by</h3>
+<p>示例：<code>app.kubernetes.io/managed-by=helm</code></p>
+<p>用于：所有对象</p>
+<p>用于管理应用操作的工具。</p>
+<p><a href=/zh/docs/concepts/overview/working-with-objects/common-labels/#labels>推荐标签</a>之一。</p>
+<h3 id=app-kubernetes-io-name>app.kubernetes.io/name</h3>
+<p>示例：<code>app.kubernetes.io/name=mysql</code></p>
+<p>用于：所有对象</p>
+<p>应用的名称。</p>
+<p><a href=/zh/docs/concepts/overview/working-with-objects/common-labels/#labels>推荐标签</a>之一。</p>
+<h3 id=app-kubernetes-io-part-of>app.kubernetes.io/part-of</h3>
+<p>示例：<code>app.kubernetes.io/part-of=wordpress</code></p>
+<p>用于：所有对象</p>
+<p>此应用所属的更高级别应用的名称。</p>
+<p><a href=/zh/docs/concepts/overview/working-with-objects/common-labels/#labels>推荐标签</a>之一。</p>
+<h3 id=app-kubernetes-io-version>app.kubernetes.io/version</h3>
+<p>示例：<code>app.kubernetes.io/version="5.7.21"</code></p>
+<p>用于：所有对象</p>
+<p>应用的当前版本（例如，语义版本、修订哈希等）。</p>
+<p><a href=/zh/docs/concepts/overview/working-with-objects/common-labels/#labels>推荐标签</a>之一。</p>
+<h3 id=kubernetes-io-arch>kubernetes.io/arch</h3>
+<p>例子：<code>kubernetes.io/arch=amd64</code></p>
+<p>用于：Node</p>
+<p>Kubelet 使用 Go 定义的 <code>runtime.GOARCH</code> 填充它。 如果你混合使用 ARM 和 X86 节点，这会很方便。</p>
+<h3 id=kubernetes-io-os>kubernetes.io/os</h3>
+<p>例子：<code>kubernetes.io/os=linux</code></p>
+<p>用于：Node</p>
+<p>Kubelet 使用 Go 定义的 <code>runtime.GOOS</code> 填充它。如果你在集群中混合使用操作系统（例如：混合 Linux 和 Windows 节点），这会很方便。</p>
+<h3 id=kubernetes-io-metadata-name>kubernetes.io/metadata.name</h3>
+<p>例子：<code>kubernetes.io/metadata.name=mynamespace</code></p>
+<p>用于：Namespace</p>
+<p>Kubernetes API 服务器（<a class=glossary-tooltip title="控制平面是指容器编排层，它暴露 API 和接口来定义、部署容器和管理容器的生命周期。" data-toggle=tooltip data-placement=top href="/zh/docs/reference/glossary/?all=true#term-control-plane" target=_blank aria-label=控制平面>控制平面</a> 的一部分）在所有 Namespace 上设置此标签。
+标签值被设置 Namespace 的名称。你无法更改此标签的值。</p>
+<p>如果你想使用标签<a class=glossary-tooltip title=选择算符允许用户通过标签对一组资源对象进行筛选过滤。 data-toggle=tooltip data-placement=top href=/zh/docs/concepts/overview/working-with-objects/labels/ target=_blank aria-label=选择器>选择器</a>定位特定 Namespace，这很有用。</p>
+<h3 id=beta-kubernetes-io-arch>beta.kubernetes.io/arch (已弃用)</h3>
+<p>此标签已被弃用。请改用<code>kubernetes.io/arch</code>。</p>
+<h3 id=beta-kubernetes-io-os>beta.kubernetes.io/os (已弃用)</h3>
+<p>此标签已被弃用。请改用<code>kubernetes.io/os</code>。</p>
+<h3 id=kubernetesiohostname>kubernetes.io/hostname</h3>
+<p>例子：<code>kubernetes.io/hostname=ip-172-20-114-199.ec2.internal</code></p>
+<p>用于：Node</p>
+<p>Kubelet 使用主机名填充此标签。请注意，可以通过将 <code>--hostname-override</code> 标志传递给 <code>kubelet</code> 来替代“实际”主机名。</p>
+<p>此标签也用作拓扑层次结构的一部分。 有关详细信息，请参阅 <a href=#topologykubernetesiozone>topology.kubernetes.io/zone</a>。</p>
+<h3 id=change-cause>kubernetes.io/change-cause</h3>
+<p>例子：<code>kubernetes.io/change-cause=kubectl edit --record deployment foo</code></p>
+<p>用于：所有对象</p>
+<p>此注解是对某些事物发生变更的原因的最佳猜测。</p>
+<p>将 <code>--record</code> 添加到可能会更改对象的 <code>kubectl</code> 命令时会填充它。</p>
+<h3 id=description>kubernetes.io/description</h3>
+<p>例子：<code>kubernetes.io/description: "Description of K8s object."</code></p>
+<p>用于：所有对象</p>
+<p>此注解用于描述给定对象的特定行为。</p>
+<h3 id=enforce-mountable-secrets>kubernetes.io/enforce-mountable-secrets</h3>
+<p>例子：<code>kubernetes.io/enforce-mountable-secrets: "true"</code></p>
+<p>用于：ServiceAccount</p>
+<p>此注解的值必须为 <strong>true</strong> 才能生效。此注解表示作为此服务帐户运行的 Pod 只能引用在服务帐户的 <code>secrets</code> 字段中指定的 Secret API 对象。</p>
+<h3 id=pod-deletion-cost>controller.kubernetes.io/pod-deletion-cost</h3>
+<p>例子：<code>controller.kubernetes.io/pod-deletion-cost=10</code></p>
+<p>用于：Pod</p>
+<p>该注解用于设置 <a href=/docs/concepts/workloads/controllers/replicaset/#pod-deletion-cost>Pod 删除成本</a>允许用户影响 ReplicaSet 缩减顺序。注解解析为 <code>int32</code> 类型。</p>
+<h3 id=kubernetes-io-ingress-bandwidth>kubernetes.io/ingress-bandwidth</h3>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> 入站流量控制注解是一项实验性功能。
+如果要启用流量控制支持，必须将<code>bandwidth</code>插件添加到 CNI 配置文件（默认为<code>/etc/cni/net.d</code>）
+并确保二进制文件包含在你的 CNI bin 目录中（默认为<code>/opt/cni/bin</code>）。
+</div>
+<p>示例：<code>kubernetes.io/ingress-bandwidth: 10M</code></p>
+<p>用于：Pod</p>
+<p>你可以对 Pod 应用服务质量流量控制并有效限制其可用带宽。
+入站流量（到 Pod）通过控制排队的数据包来处理，以有效地处理数据。
+要限制 Pod 的带宽，请编写对象定义 JSON 文件并使用 <code>kubernetes.io/ingress-bandwidth</code>
+注解指定数据流量速度。 用于指定入站的速率单位是每秒，
+作为<a href=/zh/docs/reference/kubernetes-api/common-definitions/quantity/>量纲（Quantity）</a>。
+例如，<code>10M</code>表示每秒 10 兆比特。</p>
+<h3 id=kubernetes-io-egress-bandwidth>kubernetes.io/egress-bandwidth</h3>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> 出站流量控制注解是一项实验性功能。
+如果要启用流量控制支持，必须将<code>bandwidth</code>插件添加到 CNI 配置文件（默认为<code>/etc/cni/net.d</code>）
+并确保二进制文件包含在你的 CNI bin 目录中（默认为<code>/opt/cni/bin</code>）。
+</div>
+<p>示例：<code>kubernetes.io/egress-bandwidth: 10M</code></p>
+<p>用于：Pod</p>
+<p>出站流量（来自 pod）由策略控制，策略只是丢弃超过配置速率的数据包。
+你为一个 Pod 所设置的限制不会影响其他 Pod 的带宽。
+要限制 Pod 的带宽，请编写对象定义 JSON 文件并使用 <code>kubernetes.io/egress-bandwidth</code> 注解指定数据流量速度。
+用于指定出站的速率单位是每秒比特数，
+以<a href=/zh/docs/reference/kubernetes-api/common-definitions/quantity/>量纲（Quantity）</a>的形式给出。
+例如，<code>10M</code> 表示每秒 10 兆比特。</p>
+<h3 id=beta-kubernetes-io-instance-type>beta.kubernetes.io/instance-type (已弃用)</h3>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> 从 v1.17 开始，此标签已弃用，取而代之的是 <a href=#nodekubernetesioinstance-type>node.kubernetes.io/instance-type</a>。
+</div>
+<h3 id=nodekubernetesioinstance-type>node.kubernetes.io/instance-type</h3>
+<p>例子：<code>node.kubernetes.io/instance-type=m3.medium</code></p>
+<p>用于：Node</p>
+<p>Kubelet 使用 <code>cloudprovider</code> 定义的实例类型填充它。
+仅当你使用 <code>cloudprovider</code> 时才会设置此项。如果你希望将某些工作负载定位到某些实例类型，则此设置非常方便，但通常你希望依靠 Kubernetes 调度程序来执行基于资源的调度。
+你应该基于属性而不是实例类型来调度（例如：需要 GPU，而不是需要 <code>g2.2xlarge</code>）。</p>
+<h3 id=failure-domainbetakubernetesioregion>failure-domain.beta.kubernetes.io/region (已弃用)</h3>
+<p>请参阅 <a href=#topologykubernetesioregion>topology.kubernetes.io/region</a>。</p>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> 从 v1.17 开始，此标签已弃用，取而代之的是 <a href=#topologykubernetesioregion>topology.kubernetes.io/region</a>。
+</div>
+<h3 id=failure-domainbetakubernetesiozone>failure-domain.beta.kubernetes.io/zone (已弃用)</h3>
+<p>请参阅 <a href=#topologykubernetesiozone>topology.kubernetes.io/zone</a>。</p>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> 从 v1.17 开始，此标签已弃用，取而代之的是 <a href=#topologykubernetesiozone>topology.kubernetes.io/zone</a>。
+</div>
+<h3 id=statefulsetkubernetesiopod-name>statefulset.kubernetes.io/pod-name</h3>
+<p>例子：<code>statefulset.kubernetes.io/pod-name=mystatefulset-7</code></p>
+<p>当 StatefulSet 控制器为 StatefulSet 创建 Pod 时，控制平面会在该 Pod 上设置此标签。标签的值是正在创建的 Pod 的名称。</p>
+<p>有关详细信息，请参阅 StatefulSet 主题中的 <a href=/docs/concepts/workloads/controllers/statefulset/#pod-name-label>Pod 名称标签</a>。</p>
+<h3 id=topologykubernetesioregion>topology.kubernetes.io/region</h3>
+<p>例子：<code>topology.kubernetes.io/region=us-east-1</code></p>
+<p>请参阅 <a href=#topologykubernetesiozone>topology.kubernetes.io/zone</a>。</p>
+<h3 id=topologykubernetesiozone>topology.kubernetes.io/zone</h3>
+<p>例子：<code>topology.kubernetes.io/zone=us-east-1c</code></p>
+<p>用于：Node、PersistentVolume</p>
+<p>在 Node 上：<code>kubelet</code> 或外部 <code>cloud-controller-manager</code> 使用 <code>cloudprovider</code> 提供的信息填充它。仅当你使用 <code>cloudprovider</code> 时才会设置此项。
+但是，如果它在你的拓扑中有意义，你应该考虑在 Node 上设置它。</p>
+<p>在 PersistentVolume 上：拓扑感知卷配置器将自动在 <code>PersistentVolume</code> 上设置 Node 亲和性约束。</p>
+<p>一个 Zone 代表一个逻辑故障域。 Kubernetes 集群通常跨越多个 Zone 以提高可用性。虽然 Zone 的确切定义留给基础设施实现，
+但 Zone 的常见属性包括 Zone 内非常低的网络延迟、 Zone 内的免费网络流量以及与其他 Zone 的故障独立性。
+例如，一个 Zone 内的 Node 可能共享一个网络交换机，但不同 Zone 中的 Node 无法共享交换机。</p>
+<p>一个 Region 代表一个更大的域，由一个或多个 Zone 组成。Kubernetes 集群跨多个 Region 并不常见，虽然 Zone 或 Region 的确切定义留给基础设施实现，
+但 Region 的共同属性包括它们之间的网络延迟比它们内部更高，它们之间的网络流量成本非零，以及与其他 Zone 或 Region 的故障独立性。
+例如，一个 Region 内的 Node 可能共享电力基础设施（例如 UPS 或发电机），但不同 Region 的 Node 通常不会共享电力基础设施。</p>
+<p>Kubernetes 对 Zone 和 Region 的结构做了一些假设：</p>
+<ol>
+<li>
+<p>Zone 和 Region 是分层的： Zone 是 Region 的严格子集，没有 Zone 可以在两个 Region 中；</p>
+</li>
+<li>
+<p>Zone 名称跨 Region 是唯一的；例如， Region “africa-east-1” 可能由 Zone “africa-east-1a” 和 “africa-east-1b” 组成。</p>
+</li>
+</ol>
+<p>你可以大胆假设拓扑标签不会改变。尽管严格地讲标签是可变的，但节点的用户可以假设给定
+节点只能通过销毁和重新创建才能完成 Zone 间移动。</p>
+<p>Kubernetes 可以通过多种方式使用这些信息。例如，调度程序会自动尝试将 ReplicaSet 中的 Pod
+分布在单 Zone 集群中的多个节点上（以便减少节点故障的影响，请参阅 <a href=#kubernetesiohostname>kubernetes.io/hostname</a>）。
+对于多 Zone 集群，这种分布行为也适用于 Zone（以减少 Zone 故障的影响）。
+Zone 级别的 Pod 分布是通过 <em>SelectorSpreadPriority</em> 实现的。</p>
+<p><em>SelectorSpreadPriority</em> 是一个尽力而为的放置机制。如果集群中的 Zone 是异构的
+（例如：节点数量不同、节点类型不同或 Pod 资源需求有别等），这种放置机制可能会让你的
+Pod 无法实现跨 Zone 均匀分布。
+如果需要，你可以使用同质 Zone（节点数量和类型均相同）来减少不均匀分布的可能性。</p>
+<p>调度程序还将（通过 <em>VolumeZonePredicate</em> 条件）确保申领给定卷的 Pod 仅被放置在与该卷相同的 Zone 中。
+卷不能跨 Zone 挂接。</p>
+<p>你应该考虑手动添加标签（或添加对 <code>PersistentVolumeLabel</code> 的支持）。
+基于 <code>PersistentVolumeLabel</code> ，调度程序可以防止 Pod 挂载来自其他 Zone 的卷。如果你的基础架构没有此限制，则不需要将 Zone 标签添加到卷上。</p>
+<h3 id=volume-beta-kubernetes-io-storage-provisioner>volume.beta.kubernetes.io/storage-provisioner (已弃用)</h3>
+<p>例子：<code>volume.beta.kubernetes.io/storage-provisioner: k8s.io/minikube-hostpath</code></p>
+<p>用于：PersistentVolumeClaim</p>
+<p>此注解已被弃用。</p>
+<h3 id=volume-kubernetes-io-storage-provisioner>volume.kubernetes.io/storage-provisioner</h3>
+<p>用于：PersistentVolumeClaim</p>
+<p>此注解将被添加到根据需要动态制备的 PVC 上。</p>
+<h3 id=nodekubernetesiowindows-build>node.kubernetes.io/windows-build</h3>
+<p>例子：<code>node.kubernetes.io/windows-build=10.0.17763</code></p>
+<p>用于：Node</p>
+<p>当 kubelet 在 Microsoft Windows 上运行时，它会自动标记其所在节点以记录所使用的 Windows Server 的版本。</p>
+<p>标签的值采用 “MajorVersion.MinorVersion.BuildNumber” 格式。</p>
+<h3 id=servicekubernetesioheadless>service.kubernetes.io/headless</h3>
+<p>例子：<code>service.kubernetes.io/headless=""</code></p>
+<p>用于：Service</p>
+<p>当拥有的 Service 是无头类型时，控制平面将此标签添加到 Endpoints 对象。</p>
+<h3 id=kubernetesioservice-name>kubernetes.io/service-name</h3>
+<p>例子：<code>kubernetes.io/service-name="nginx"</code></p>
+<p>用于：Service</p>
+<p>Kubernetes 使用这个标签来区分多个服务。目前仅用于 <code>ELB</code> （弹性负载均衡器）。</p>
+<h3 id=endpointslicekubernetesiomanaged-by>endpointslice.kubernetes.io/managed-by</h3>
+<p>例子：<code>endpointslice.kubernetes.io/managed-by="controller"</code></p>
+<p>用于：EndpointSlice</p>
+<p>用于标示管理 EndpointSlice 的控制器或实体。该标签旨在使不同的 EndpointSlice
+对象能够由同一集群内的不同控制器或实体管理。</p>
+<h3 id=endpointslicekubernetesioskip-mirror>endpointslice.kubernetes.io/skip-mirror</h3>
+<p>例子：<code>endpointslice.kubernetes.io/skip-mirror="true"</code></p>
+<p>用于：Endpoints</p>
+<p>可以在 Endpoints 资源上将此标签设置为 <code>"true"</code>，以指示 EndpointSliceMirroring
+控制器不应使用 EndpointSlice 镜像此 Endpoints 资源。</p>
+<h3 id=servicekubernetesioservice-proxy-name>service.kubernetes.io/service-proxy-name</h3>
+<p>例子：<code>service.kubernetes.io/service-proxy-name="foo-bar"</code></p>
+<p>用于：Service</p>
+<p>kube-proxy 自定义代理会使用这个标签，它将服务控制委托给自定义代理。</p>
+<h3 id=experimental-windows-kubernetes-io-isolation-type>experimental.windows.kubernetes.io/isolation-type (已弃用)</h3>
+<p>例子：<code>experimental.windows.kubernetes.io/isolation-type: "hyperv"</code></p>
+<p>用于：Pod</p>
+<p>注解用于运行具有 Hyper-V 隔离的 Windows 容器。要使用 Hyper-V 隔离功能并创建 Hyper-V
+隔离容器，kubelet 启动时应该需要设置特性门控 HyperVContainer=true。</p>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> 你只能在具有单个容器的 Pod 上设置此注解。
+从 v1.20 开始，此注解已弃用。1.21 中删除了实验性 Hyper-V 支持。
+</div>
+<h3 id=ingressclass-kubernetes-io-is-default-class>ingressclass.kubernetes.io/is-default-class</h3>
+<p>例子：<code>ingressclass.kubernetes.io/is-default-class: "true"</code></p>
+<p>用于：IngressClass</p>
+<p>当单个 IngressClass 资源将此注解设置为 <code>"true"</code>时，新的未指定 Ingress 类的 Ingress
+资源将被设置为此默认类。</p>
+<h3 id=kubernetes-io-ingress-class>kubernetes.io/ingress.class (已弃用)</h3>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> 从 v1.18 开始，不推荐使用此注解以鼓励使用 <code>spec.ingressClassName</code>。
+</div>
+<h3 id=storageclass-kubernetes-io-is-default-class>storageclass.kubernetes.io/is-default-class</h3>
+<p>例子：<code>storageclass.kubernetes.io/is-default-class=true</code></p>
+<p>用于：StorageClass</p>
+<p>当单个 StorageClass 资源将此注解设置为 <code>"true"</code> 时，新的未指定存储类的 PersistentVolumeClaim
+资源将被设置为此默认类。</p>
+<h3 id=alpha-kubernetes-io-provided-node-ip>alpha.kubernetes.io/provided-node-ip</h3>
+<p>例子：<code>alpha.kubernetes.io/provided-node-ip: "10.0.0.1"</code></p>
+<p>用于：Node</p>
+<p>kubelet 可以在 Node 上设置此注解来表示其配置的 IPv4 地址。</p>
+<p>当使用“外部”云驱动启动时，kubelet 会在 Node 上设置此注解以表示从命令行标志 ( <code>--node-ip</code> ) 设置的 IP 地址。
+云控制器管理器通过云驱动验证此 IP 是否有效。</p>
+<h3 id=batch-kubernetes-io-job-completion-index>batch.kubernetes.io/job-completion-index</h3>
+<p>例子：<code>batch.kubernetes.io/job-completion-index: "3"</code></p>
+<p>用于：Pod</p>
+<p>kube-controller-manager 中的 Job 控制器为使用 Indexed
+<a href=/zh/docs/concepts/workloads/controllers/job/#completion-mode>完成模式</a>创建的 Pod
+设置此注解。</p>
+<h3 id=kubectl-kubernetes-io-default-container>kubectl.kubernetes.io/default-container</h3>
+<p>例子：<code>kubectl.kubernetes.io/default-container: "front-end-app"</code></p>
+<p>此注解的值是此 Pod 的默认容器名称。例如，未指定 <code>-c</code> 或 <code>--container</code> 标志时执行
+<code>kubectl logs</code> 或 <code>kubectl exec</code> 命令将使用此默认容器。</p>
+<h3 id=endpoints-kubernetes-io-over-capacity>endpoints.kubernetes.io/over-capacity</h3>
+<p>例子：<code>endpoints.kubernetes.io/over-capacity:truncated</code></p>
+<p>用于：Endpoints</p>
+<p>在 Kubernetes 集群 v1.22（或更高版本）中，如果 Endpoints 资源超过 1000 个，Endpoints
+控制器会将此注解添加到 Endpoints 资源。
+注解表示 Endpoints 资源已超出容量，并且已将 Endpoints 数截断为 1000。</p>
+<h3 id=batch-kubernetes-io-job-tracking>batch.kubernetes.io/job-tracking</h3>
+<p>例子：<code>batch.kubernetes.io/job-tracking: ""</code></p>
+<p>用于：Job</p>
+<p>Job 上存在此注解表明控制平面正在<a href=/zh/docs/concepts/workloads/controllers/job/#job-tracking-with-finalizers>使用 Finalizer 追踪 Job</a>。
+你 <strong>不</strong> 可以手动添加或删除此注解。</p>
+<h3 id=scheduleralphakubernetesio-preferavoidpods>scheduler.alpha.kubernetes.io/preferAvoidPods (deprecated)</h3>
+<p>用于：Node</p>
+<p>此注解需要启用 <a href=/zh/docs/reference/scheduling/config/#scheduling-plugins>NodePreferAvoidPods 调度插件</a>。
+该插件自 Kubernetes 1.22 起已被弃用。
+请改用<a href=/zh/docs/concepts/scheduling-eviction/taint-and-toleration/>污点和容忍度</a>。</p>
+<p><strong>下面列出的污点总是在 Node 上使用</strong></p>
+<h3 id=node-kubernetes-io-not-ready>node.kubernetes.io/not-ready</h3>
+<p>例子：<code>node.kubernetes.io/not-ready:NoExecute</code></p>
+<p>Node 控制器通过监控 Node 的健康状况来检测 Node 是否准备就绪，并相应地添加或删除此污点。</p>
+<h3 id=node-kubernetes-io-unreachable>node.kubernetes.io/unreachable</h3>
+<p>例子：<code>node.kubernetes.io/unreachable:NoExecute</code></p>
+<p>Node 控制器将此污点添加到对应<a href=/zh/docs/concepts/architecture/nodes/#condition>节点状况</a> <code>Ready</code>
+为 <code>Unknown</code> 的 Node 上。</p>
+<h3 id=node-kubernetes-io-unschedulable>node.kubernetes.io/unschedulable</h3>
+<p>例子：<code>node.kubernetes.io/unschedulable:NoSchedule</code></p>
+<p>在初始化 Node 期间，为避免竞争条件，此污点将被添加到 Node 上。</p>
+<h3 id=node-kubernetes-io-memory-pressure>node.kubernetes.io/memory-pressure</h3>
+<p>例子：<code>node.kubernetes.io/memory-pressure:NoSchedule</code></p>
+<p>kubelet 根据在 Node 上观察到的 <code>memory.available</code> 和 <code>allocatableMemory.available</code> 检测内存压力。
+然后将观察到的值与可以在 kubelet 上设置的相应阈值进行比较，以确定是否应添加/删除 Node 状况和污点。</p>
+<h3 id=node-kubernetes-io-disk-pressure>node.kubernetes.io/disk-pressure</h3>
+<p>例子：<code>node.kubernetes.io/disk-pressure:NoSchedule</code></p>
+<p>kubelet 根据在 Node 上观察到的 <code>imagefs.available</code>、<code>imagefs.inodesFree</code>、<code>nodefs.available</code> 和 <code>nodefs.inodesFree</code>（仅限 Linux ）检测磁盘压力。
+然后将观察到的值与可以在 kubelet 上设置的相应阈值进行比较，以确定是否应添加/删除 Node 状况和污点。</p>
+<h3 id=node-kubernetes-io-network-unavailable>node.kubernetes.io/network-unavailable</h3>
+<p>例子：<code>node.kubernetes.io/network-unavailable:NoSchedule</code></p>
+<p>当使用的云驱动指示需要额外的网络配置时，此注解最初由 kubelet 设置。
+只有云上的路由被正确地配置了，此污点才会被云驱动移除</p>
+<h3 id=node-kubernetes-io-pid-pressure>node.kubernetes.io/pid-pressure</h3>
+<p>例子：<code>node.kubernetes.io/pid-pressure:NoSchedule</code></p>
+<p>kubelet 检查 <code>/proc/sys/kernel/pid_max</code> 大小的 D 值和 Kubernetes 在 Node 上消耗的 PID，
+以获取可用 PID 数量，并将其作为 <code>pid.available</code> 指标值。
+然后该指标与在 kubelet 上设置的相应阈值进行比较，以确定是否应该添加/删除 Node 状况和污点。</p>
+<h3 id=node-cloudprovider-kubernetes-io-shutdown>node.cloudprovider.kubernetes.io/uninitialized</h3>
+<p>例子：<code>node.cloudprovider.kubernetes.io/uninitialized:NoSchedule</code></p>
+<p>在使用“外部”云驱动启动 kubelet 时，在 Node 上设置此污点以将其标记为不可用，直到来自
+cloud-controller-manager 的控制器初始化此 Node，然后移除污点。</p>
+<h3 id=node-cloudprovider-kubernetes-io-shutdown>node.cloudprovider.kubernetes.io/shutdown</h3>
+<p>例子：<code>node.cloudprovider.kubernetes.io/shutdown:NoSchedule</code></p>
+<p>如果 Node 处于云驱动所指定的关闭状态，则 Node 会相应地被设置污点，对应的污点和效果为
+<code>node.cloudprovider.kubernetes.io/shutdown</code> 和 <code>NoSchedule</code>。</p>
+<h3 id=pod-security-kubernetes-io-enforce>pod-security.kubernetes.io/enforce</h3>
+<p>例子：<code>pod-security.kubernetes.io/enforce: baseline</code></p>
+<p>用于：Namespace</p>
+<p>值<strong>必须</strong>是 <code>privileged</code>、<code>baseline</code> 或 <code>restricted</code> 之一，它们对应于
+<a href=/zh/docs/concepts/security/pod-security-standards>Pod 安全标准</a> 级别。
+特别地，<code>enforce</code> 标签 <strong>禁止</strong> 在带标签的 Namespace 中创建任何不符合指示级别要求的 Pod。</p>
+<p>请请参阅<a href=/zh/docs/concepts/security/pod-security-admission>在名字空间级别实施 Pod 安全性</a>了解更多信息。</p>
+<h3 id=pod-security-kubernetes-io-enforce-version>pod-security.kubernetes.io/enforce-version</h3>
+<p>例子：<code>pod-security.kubernetes.io/enforce-version: 1.27</code></p>
+<p>用于：Namespace</p>
+<p>值<strong>必须</strong>是 <code>latest</code> 或格式为 <code>v&lt;MAJOR>.&lt;MINOR></code> 的有效 Kubernetes 版本。
+此注解决定了在验证提交的 Pod 时要应用的 <a href=/zh/docs/concepts/security/pod-security-standards>Pod 安全标准</a>策略的版本。</p>
+<p>请参阅<a href=/zh/docs/concepts/security/pod-security-admission>在名字空间级别实施 Pod 安全性</a>了解更多信息。</p>
+<h3 id=pod-security-kubernetes-io-audit>pod-security.kubernetes.io/audit</h3>
+<p>例子：<code>pod-security.kubernetes.io/audit: baseline</code></p>
+<p>用于：Namespace</p>
+<p>值<strong>必须</strong>是与 <a href=/zh/docs/concepts/security/pod-security-standards>Pod 安全标准</a> 级别相对应的
+<code>privileged</code>、<code>baseline</code> 或 <code>restricted</code> 之一。
+具体来说，<code>audit</code> 标签不会阻止在带标签的 Namespace 中创建不符合指示级别要求的 Pod，
+但会向该 Pod 添加审计注解。</p>
+<p>请参阅<a href=/zh/docs/concepts/security/pod-security-admission>在名字空间级别实施 Pod 安全性</a>了解更多信息。</p>
+<h3 id=pod-security-kubernetes-io-audit-version>pod-security.kubernetes.io/audit-version</h3>
+<p>例子：<code>pod-security.kubernetes.io/audit-version: 1.27</code></p>
+<p>用于：Namespace</p>
+<p>值<strong>必须</strong>是 <code>latest</code> 或格式为 <code>v&lt;MAJOR>.&lt;MINOR></code> 的有效 Kubernetes 版本。
+此注解决定了在验证提交的 Pod 时要应用的 <a href=/zh/docs/concepts/security/pod-security-standards>Pod 安全标准</a>策略的版本。</p>
+<p>请参阅<a href=/zh/docs/concepts/security/pod-security-admission>在名字空间级别实施 Pod 安全性</a>了解更多信息。</p>
+<h3 id=pod-security-kubernetes-io-warn>pod-security.kubernetes.io/warn</h3>
+<p>例子：<code>pod-security.kubernetes.io/warn: baseline</code></p>
+<p>用于：Namespace</p>
+<p>值<strong>必须</strong>是与 <a href=/zh/docs/concepts/security/pod-security-standards>Pod 安全标准</a>级别相对应的
+<code>privileged</code>、<code>baseline</code> 或 <code>restricted</code> 之一。特别地，
+<code>warn</code> 标签不会阻止在带标签的 Namespace 中创建不符合指示级别概述要求的 Pod，但会在这样做后向用户返回警告。
+请注意，在创建或更新包含 Pod 模板的对象时也会显示警告，例如 Deployment、Jobs、StatefulSets 等。</p>
+<p>请参阅<a href=/zh/docs/concepts/security/pod-security-admission>在名字空间级别实施 Pod 安全性</a>了解更多信息。</p>
+<h3 id=pod-security-kubernetes-io-warn-version>pod-security.kubernetes.io/warn-version</h3>
+<p>例子：<code>pod-security.kubernetes.io/warn-version: 1.27</code></p>
+<p>用于：Namespace</p>
+<p>值<strong>必须</strong>是 <code>latest</code> 或格式为 <code>v&lt;MAJOR>.&lt;MINOR></code> 的有效 Kubernetes 版本。
+此注解决定了在验证提交的 Pod 时要应用的 <a href=/zh/docs/concepts/security/pod-security-standards>Pod 安全标准</a>策略的版本。
+请注意，在创建或更新包含 Pod 模板的对象时也会显示警告，
+例如 Deployment、Jobs、StatefulSets 等。</p>
+<p>请参阅<a href=/zh/docs/concepts/security/pod-security-admission>在名字空间级别实施 Pod 安全性</a>了解更多信息。</p>
+<h3 id=seccomp-security-alpha-kubernetes-io-pod>seccomp.security.alpha.kubernetes.io/pod (已弃用)</h3>
+<p>此注解自 Kubernetes v1.19 起已被弃用，将在 v1.25 中失效。
+要为 Pod 指定安全设置，请在 Pod 规范中包含 <code>securityContext</code> 字段。
+Pod 的 <code>.spec</code> 中的 <a href=/zh/docs/reference/kubernetes-api/workload-resources/pod-v1/#security-context><code>securityContext</code></a>
+字段定义了 Pod 级别的安全属性。
+你<a href=/zh/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod>为 Pod 设置安全上下文</a> 时，
+你所给出的设置适用于该 Pod 中的所有容器。</p>
+<h3 id=container-seccomp-security-alpha-kubernetes-io>container.seccomp.security.alpha.kubernetes.io/[NAME]</h3>
+<p>此注解自 Kubernetes v1.19 起已被弃用，将在 v1.25 中失效。
+教程<a href=/zh/docs/tutorials/clusters/seccomp/>使用 seccomp 限制容器的系统调用</a>将引导你完成将
+seccomp 配置文件应用于 Pod 或其容器的步骤。
+该教程介绍了在 Kubernetes 中配置 seccomp 的支持机制，基于在 Pod 的 <code>.spec</code> 中设置 <code>securityContext</code>。</p>
+<h2 id=annonations-used-for-audit>用于审计的注解 </h2>
+<ul>
+<li><a href=/zh/docs/reference/labels-annotations-taints/audit-annotations/#authorization-k8s-io-decision><code>authorization.k8s.io/decision</code></a></li>
+<li><a href=/zh/docs/reference/labels-annotations-taints/audit-annotations/#authorization-k8s-io-reason><code>authorization.k8s.io/reason</code></a></li>
+<li><a href=/zh/docs/reference/labels-annotations-taints/audit-annotations/#pod-security-kubernetes-io-audit-violations><code>pod-security.kubernetes.io/audit-violations</code></a></li>
+<li><a href=/zh/zh/docs/reference/labels-annotations-taints/audit-annotations/#pod-security-kubernetes-io-enforce-policy><code>pod-security.kubernetes.io/enforce-policy</code></a></li>
+<li><a href=/zh/docs/reference/labels-annotations-taints/audit-annotations/#pod-security-kubernetes-io-exempt><code>pod-security.kubernetes.io/exempt</code></a></li>
+</ul>
+<p>在<a href=/zh/docs/reference/labels-annotations-taints/audit-annotations/>审计注解</a>页面上查看更多详细信息。</p>
+</div>
+</div>
+<div class=td-content style=page-break-before:always>
+<h1 id=pg-0adf63217075ed2dc0a3030d9673e75e>1 - 审计注解</h1>
+<p>该页面作为 kubernetes.io 名字空间的审计注解的参考。这些注解适用于 API 组 <code>audit.k8s.io</code> 中的 <code>Event</code> 对象。</p>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> Kubernetes API 中不使用以下注解。当你在集群中<a href=/zh/docs/tasks/debug-application-cluster/audit/>启用审计</a>时，
+审计事件数据将使用 API 组 <code>audit.k8s.io</code> 中的 <code>Event</code> 写入。
+注解适用于审计事件。审计事件不同于<a href=/zh/docs/reference/kubernetes-api/cluster-resources/event-v1/>事件 API </a>
+（API 组 <code>events.k8s.io</code>）中的对象。
+</div>
+<h2 id=pod-security-kubernetes-io-exempt>pod-security.kubernetes.io/exempt</h2>
+<p>例子：<code>pod-security.kubernetes.io/exempt: namespace</code></p>
+<p>值<strong>必须</strong>是对应于 <a href=/zh/docs/concepts/security/pod-security-admission/#exemptions>Pod 安全豁免</a>维度的
+<code>user</code>、<code>namespace</code> 或 <code>runtimeClass</code> 之一。
+此注解指示 PodSecurity 基于哪个维度的强制豁免执行。</p>
+<h2 id=pod-security-kubernetes-io-enforce-policy>pod-security.kubernetes.io/enforce-policy</h2>
+<p>例子：<code>pod-security.kubernetes.io/enforce-policy: restricted:latest</code></p>
+<p>值<strong>必须</strong>是对应于 <a href=/zh/docs/concepts/security/pod-security-standards>Pod 安全标准</a> 级别的
+<code>privileged:&lt;版本></code>、<code>baseline:&lt;版本></code>、<code>restricted:&lt;版本></code>，
+关联的版本<strong>必须</strong>是 <code>latest</code> 或格式为 <code>v&lt;MAJOR>.&lt;MINOR></code> 的有效 Kubernetes 版本。
+此注解通知有关在 PodSecurity 准入期间允许或拒绝 Pod 的执行级别。</p>
+<p>有关详细信息，请参阅 <a href=/zh/docs/concepts/security/pod-security-standards/>Pod 安全标准</a>。</p>
+<h2 id=pod-security-kubernetes-io-audit-violations>pod-security.kubernetes.io/audit-violations</h2>
+<p>例子：<code>pod-security.kubernetes.io/audit-violations: would violate PodSecurity "restricted:latest": allowPrivilegeEscalation != false (container "example" must set securityContext.allowPrivilegeEscalation=false), ...</code></p>
+<p>注解值给出审计策略违规的详细说明，它包含所违反的 <a href=/zh/docs/concepts/security/pod-security-standards/>Pod 安全标准</a>级别以及
+PodSecurity 执行中违反的特定策略及对应字段。</p>
+<p>有关详细信息，请参阅 <a href=/zh/docs/concepts/security/pod-security-standards/>Pod 安全标准</a>。</p>
+<h2 id=authorization-k8s-io-decision>authorization.k8s.io/decision</h2>
+<p>例子：<code>authorization.k8s.io/decision: "forbid"</code></p>
+<p>此注解在 Kubernetes 审计日志中表示请求是否获得授权。</p>
+<p>有关详细信息，请参阅<a href=/zh/docs/tasks/debug-application-cluster/audit/>审计</a>。</p>
+<h2 id=authorization-k8s-io-reason>authorization.k8s.io/reason</h2>
+<p>例子：<code>authorization.k8s.io/reason: "Human-readable reason for the decision"</code></p>
+<p>此注解给出了 Kubernetes 审计日志中 <a href=#authorization-k8s-io-decision>decision</a> 的原因。</p>
+<p>有关详细信息，请参阅<a href=/zh/docs/tasks/debug-application-cluster/audit/>审计</a>。</p>
+</div>
+</main>
+</div>
+</div>
+<footer class=d-print-none>
+<div class=footer__links>
+<nav>
+<a class=text-white href=/zh/docs/home/>主页</a>
+<a class=text-white href=/zh/blog/>博客</a>
+<a class=text-white href=/zh/training/>培训</a>
+<a class=text-white href=/zh/partners/>合作伙伴</a>
+<a class=text-white href=/zh/community/>社区</a>
+<a class=text-white href=/zh/case-studies/>案例分析</a>
+</nav>
+</div>
+<div class=container-fluid>
+<div class=row>
+<div class="col-6 col-sm-2 text-xs-center order-sm-2">
+<ul class="list-inline mb-0">
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="User mailing list" aria-label="User mailing list">
+<a class=text-white target=_blank href=https://discuss.kubernetes.io>
+<i class="fa fa-envelope"></i>
+</a>
+</li>
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter>
+<a class=text-white target=_blank href=https://twitter.com/kubernetesio>
+<i class="fab fa-twitter"></i>
+</a>
+</li>
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Calendar aria-label=Calendar>
+<a class=text-white target=_blank href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io">
+<i class="fas fa-calendar-alt"></i>
+</a>
+</li>
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Youtube aria-label=Youtube>
+<a class=text-white target=_blank href=https://youtube.com/kubernetescommunity>
+<i class="fab fa-youtube"></i>
+</a>
+</li>
+</ul>
+</div>
+<div class="col-6 col-sm-2 text-right text-xs-center order-sm-3">
+<ul class="list-inline mb-0">
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub>
+<a class=text-white target=_blank href=https://github.com/kubernetes/kubernetes>
+<i class="fab fa-github"></i>
+</a>
+</li>
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Slack aria-label=Slack>
+<a class=text-white target=_blank href=https://slack.k8s.io>
+<i class="fab fa-slack"></i>
+</a>
+</li>
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Contribute aria-label=Contribute>
+<a class=text-white target=_blank href=https://git.k8s.io/community/contributors/guide>
+<i class="fas fa-edit"></i>
+</a>
+</li>
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="Stack Overflow" aria-label="Stack Overflow">
+<a class=text-white target=_blank href=https://stackoverflow.com/questions/tagged/kubernetes>
+<i class="fab fa-stack-overflow"></i>
+</a>
+</li>
+</ul>
+</div>
+<div class="col-12 col-sm-8 text-center order-sm-2">
+<small class=text-white>&copy; 2026 The Kubernetes Authors | Documentation Distributed under <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a></small>
+<br>
+<small class=text-white>Copyright &copy; 2026 The Linux Foundation &reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href=https://www.linuxfoundation.org/trademark-usage class=light-text>Trademark Usage page</a></small>
+<br>
+<small class=text-white><a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></small>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src=/js/popper-1.14.3.min.js integrity=sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49 crossorigin=anonymous></script>
+<script src=/js/bootstrap-4.3.1.min.js integrity=sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM crossorigin=anonymous></script>
+<script src=/js/main.min.223905d4acc5f7b370e2af585c8a5b56ce39b2fddddd6dffb6f6c3428927fe2c.js integrity="sha256-IjkF1KzF97Nw4q9YXIpbVs45sv3d3W3/tvbDQokn/iw=" crossorigin=anonymous></script>
+</body>
+</html>
