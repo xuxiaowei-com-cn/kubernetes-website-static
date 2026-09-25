@@ -1,0 +1,493 @@
+<!doctype html><html itemscope itemtype=http://schema.org/WebPage dir=ltr lang=ko class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/ko/docs/contribute/new-content/><meta name=robots content="noindex, nofollow"><link rel="shortcut icon" type=image/png href=/images/kubernetes.png><link rel=icon type=image/png sizes=64x64 href=/icons/favicon-64.png><link rel=icon type=image/png sizes=32x32 href=/icons/favicon-32.png><link rel=icon type=image/png sizes=16x16 href=/icons/favicon-16.png><link rel=apple-touch-icon-256x256 href=/icons/apple-touch-icon-256x256.png><link rel=apple-touch-icon-196x196 href=/icons/apple-touch-icon-196x196.png><link rel=apple-touch-icon-192x192 href=/icons/apple-touch-icon-192x192.png><link rel=apple-touch-icon-180x180 href=/icons/apple-touch-icon-180x180.png><link rel=apple-touch-icon-167x167 href=/icons/apple-touch-icon-167x167.png><link rel=apple-touch-icon-160x160 href=/icons/apple-touch-icon-160x160.png><link rel=apple-touch-icon-152x152 href=/icons/apple-touch-icon-152x152.png><link rel=apple-touch-icon-120x120 href=/icons/apple-touch-icon-120x120.png><link rel=apple-touch-icon-76x76 href=/icons/apple-touch-icon-76x76.png><link rel=icon type=image/png href=/icons/icon-128x128.png sizes=128x128><meta name=theme-color content="#326de6"><title>새로운 콘텐츠 기여하기 | Kubernetes</title>
+<meta name=description content="이 섹션에는 새로운 콘텐츠를 기여하기 전에 알아야 할 정보가 있다.
+flowchart LR subgraph second[시작하기 전에] direction TB S[ ] -.- A[CNCF CLA 서명하기] --> B[Git 브랜치 선택하기] B --> C[한 PR에는 한 언어에 대한 변경사항만] C --> F[기여자 도구 확인하기] end subgraph first[기여 기초] direction TB T[ ] -.- D[문서를 마크다운으로 작성하고
+Hugo로 사이트 빌드] --- E[GitHub에 있는 소스] E --- G['/content/../docs' 폴더에
+각 언어 컨텐츠가 있음] G --- H[Hugo 페이지 컨텐츠 종류와
+shortcode 숙지하기] end first ----> second classDef grey fill:#dddddd,stroke:#ffffff,stroke-width:px,color:#000000, font-size:15px; classDef white fill:#ffffff,stroke:#000,stroke-width:px,color:#000,font-weight:bold classDef spacewhite fill:#ffffff,stroke:#fff,stroke-width:0px,color:#000 class A,B,C,D,E,F,G,H grey class S,T spacewhite class first,second white 그림 - 새로운 콘텐츠 기여를 위한 준비"><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/ko/docs/contribute/new-content/"><meta property="og:site_name" content="Kubernetes"><meta property="og:title" content="새로운 콘텐츠 기여하기"><meta property="og:description" content="이 섹션에는 새로운 콘텐츠를 기여하기 전에 알아야 할 정보가 있다.
+flowchart LR subgraph second[시작하기 전에] direction TB S[ ] -.- A[CNCF CLA 서명하기] --> B[Git 브랜치 선택하기] B --> C[한 PR에는 한 언어에 대한 변경사항만] C --> F[기여자 도구 확인하기] end subgraph first[기여 기초] direction TB T[ ] -.- D[문서를 마크다운으로 작성하고
+Hugo로 사이트 빌드] --- E[GitHub에 있는 소스] E --- G['/content/../docs' 폴더에
+각 언어 컨텐츠가 있음] G --- H[Hugo 페이지 컨텐츠 종류와
+shortcode 숙지하기] end first ----> second classDef grey fill:#dddddd,stroke:#ffffff,stroke-width:px,color:#000000, font-size:15px; classDef white fill:#ffffff,stroke:#000,stroke-width:px,color:#000,font-weight:bold classDef spacewhite fill:#ffffff,stroke:#fff,stroke-width:0px,color:#000 class A,B,C,D,E,F,G,H grey class S,T spacewhite class first,second white 그림 - 새로운 콘텐츠 기여를 위한 준비"><meta property="og:locale" content="ko"><meta property="og:type" content="website"><meta itemprop=name content="새로운 콘텐츠 기여하기"><meta itemprop=description content="이 섹션에는 새로운 콘텐츠를 기여하기 전에 알아야 할 정보가 있다.
+flowchart LR subgraph second[시작하기 전에] direction TB S[ ] -.- A[CNCF CLA 서명하기] --> B[Git 브랜치 선택하기] B --> C[한 PR에는 한 언어에 대한 변경사항만] C --> F[기여자 도구 확인하기] end subgraph first[기여 기초] direction TB T[ ] -.- D[문서를 마크다운으로 작성하고
+Hugo로 사이트 빌드] --- E[GitHub에 있는 소스] E --- G['/content/../docs' 폴더에
+각 언어 컨텐츠가 있음] G --- H[Hugo 페이지 컨텐츠 종류와
+shortcode 숙지하기] end first ----> second classDef grey fill:#dddddd,stroke:#ffffff,stroke-width:px,color:#000000, font-size:15px; classDef white fill:#ffffff,stroke:#000,stroke-width:px,color:#000,font-weight:bold classDef spacewhite fill:#ffffff,stroke:#fff,stroke-width:0px,color:#000 class A,B,C,D,E,F,G,H grey class S,T spacewhite class first,second white 그림 - 새로운 콘텐츠 기여를 위한 준비"><meta itemprop=dateModified content="2026-09-25T21:46:22+08:00"><meta itemprop=wordCount content="409"><meta name=twitter:card content="summary"><meta name=twitter:title content="새로운 콘텐츠 기여하기"><meta name=twitter:description content="이 섹션에는 새로운 콘텐츠를 기여하기 전에 알아야 할 정보가 있다.
+flowchart LR subgraph second[시작하기 전에] direction TB S[ ] -.- A[CNCF CLA 서명하기] --> B[Git 브랜치 선택하기] B --> C[한 PR에는 한 언어에 대한 변경사항만] C --> F[기여자 도구 확인하기] end subgraph first[기여 기초] direction TB T[ ] -.- D[문서를 마크다운으로 작성하고
+Hugo로 사이트 빌드] --- E[GitHub에 있는 소스] E --- G['/content/../docs' 폴더에
+각 언어 컨텐츠가 있음] G --- H[Hugo 페이지 컨텐츠 종류와
+shortcode 숙지하기] end first ----> second classDef grey fill:#dddddd,stroke:#ffffff,stroke-width:px,color:#000000, font-size:15px; classDef white fill:#ffffff,stroke:#000,stroke-width:px,color:#000,font-weight:bold classDef spacewhite fill:#ffffff,stroke:#fff,stroke-width:0px,color:#000 class A,B,C,D,E,F,G,H grey class S,T spacewhite class first,second white 그림 - 새로운 콘텐츠 기여를 위한 준비"><link href=/scss/main.css rel=stylesheet><script src=/js/jquery-3.7.1.min.js integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin=anonymous></script><meta property="og:image" content="/images/kubernetes-open-graph.png"><link rel=manifest href=/manifest.webmanifest><link rel=alternate hreflang=en href=https://kubernetes.xuxiaowei.com.cn/docs/contribute/new-content/><link rel=alternate hreflang=zh-cn href=https://kubernetes.xuxiaowei.com.cn/zh-cn/docs/contribute/new-content/><link rel=alternate hreflang=ja href=https://kubernetes.xuxiaowei.com.cn/ja/docs/contribute/new-content/><link rel=alternate hreflang=pl href=https://kubernetes.xuxiaowei.com.cn/pl/docs/contribute/new-content/><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png","potentialAction":{"@type":"SearchAction","target":"https://kubernetes.xuxiaowei.com.cn/search/?q={search_term_string}","query-input":"required name=search_term_string"}}</script><meta name=theme-color content="#326ce5"><script defer src=/js/banner-dismiss.js></script><script src=/js/legacy-script.js></script><script type=text/javascript>(function(e,t,n,s,o,i,a){e[n]=e[n]||function(){(e[n].q=e[n].q||[]).push(arguments)},i=t.createElement(s),i.async=1,i.src="https://www.clarity.ms/tag/"+o,a=t.getElementsByTagName(s)[0],a.parentNode.insertBefore(i,a)})(window,document,"clarity","script","yn9uifa2lv")</script></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand flex-md-column flex-xl-row td-navbar" data-bs-theme=dark data-auto-burger=primary><a class=navbar-brand href=/ko/><span class="navbar-brand__logo navbar-logo"><svg role="img" viewBox="-6.09 -6.09 446.94 115.94"><defs><style>.cls-1{fill:#fff}.cls-2{fill:#326ce5}</style></defs><g id="its-pronounced"><g id="kyoob-cuttle"><path id="kkkkkkk" d="M139.583 53.815c.823-.926 1.646-1.852 2.572-2.778q1.29-1.436 2.572-2.88c.823-1.03 1.646-1.956 2.367-2.78s1.44-1.645 1.954-2.262h9.98c-1.955 2.263-3.91 4.527-5.864 6.584q-2.778 3.087-6.173 6.482a41.554 41.554.0 013.498 3.704c1.234 1.44 2.366 2.88 3.498 4.32a43.93 43.93.0 013.086 4.528c.926 1.543 1.75 2.88 2.367 4.115h-9.67c-.619-1.03-1.339-2.058-2.059-3.19a37.46 37.46.0 00-2.47-3.6 29.584 29.584.0 00-2.777-3.498 17.678 17.678.0 00-2.778-2.778v12.963h-8.436v-42.49l8.436-1.338v24.898" class="cls-1"/><path id="uuuuuuu" d="M188.761 71.819a40.037 40.037.0 01-5.555 1.132 39.77 39.77.0 01-7.1.514 16.577 16.577.0 01-6.378-1.028 9.45 9.45.0 01-5.967-7.202 24.194 24.194.0 01-.618-5.556V43.115h8.437V58.65c0 2.675.31 4.63 1.03 5.865s2.056 1.852 4.011 1.852a13.117 13.117.0 001.955-.103c.72-.103 1.235-.103 1.852-.206V43.115h8.436l-.103 28.704" class="cls-1"/><path id="bbbbbbb" d="M215.82 57.724c0-5.452-1.955-8.127-5.968-8.127a10.99 10.99.0 00-2.572.308 7.775 7.775.0 00-2.057.823v15.33c.411.103.926.103 1.543.206.617.0 1.337.103 2.058.103A6.37 6.37.0 00214.071 64a10.55 10.55.0 001.75-6.276m8.538.206a18.63 18.63.0 01-1.029 6.482 13.242 13.242.0 01-2.983 4.938 15.823 15.823.0 01-4.836 3.19 18.829 18.829.0 01-6.585 1.028c-1.028.0-2.057-.103-3.189-.205s-2.16-.206-3.292-.31c-1.029-.102-2.058-.308-3.087-.514a13.002 13.002.0 01-2.572-.72V30.254l8.437-1.337v14.815a14.37 14.37.0 012.983-.926 17.028 17.028.0 013.293-.308 13.036 13.036.0 015.555 1.13 11.142 11.142.0 014.116 3.088 12.408 12.408.0 012.47 4.938 29.216 29.216.0 01.72 6.276" class="cls-1"/><path id="eeeeeee0" d="M229.401 58.239a17.557 17.557.0 011.234-6.893 15.744 15.744.0 013.19-4.94 11.991 11.991.0 014.526-2.982 13.75 13.75.0 015.35-1.03 13.168 13.168.0 019.98 3.91c2.47 2.572 3.703 6.38 3.703 11.317a9.413 9.413.0 01-.102 1.647c0 .514-.103 1.028-.103 1.543h-19.138a5.64 5.64.0 002.47 4.115 9.79 9.79.0 005.761 1.543 21.806 21.806.0 004.527-.411 18.455 18.455.0 003.704-1.03l1.131 6.894c-.41.206-1.028.412-1.85.72a10.37 10.37.0 01-2.574.515 23.221 23.221.0 01-2.983.41c-1.029.104-2.16.207-3.19.207a18.09 18.09.0 01-6.996-1.234 15.148 15.148.0 01-4.938-3.19 14.85 14.85.0 01-2.88-4.938 24.165 24.165.0 01-.824-6.173m19.857-3.292a6.652 6.652.0 00-.412-2.058 6.254 6.254.0 00-.926-1.852 4.915 4.915.0 00-4.115-1.852 6.216 6.216.0 00-2.47.514 4.092 4.092.0 00-1.645 1.235 5.395 5.395.0 00-1.03 1.852 15.044 15.044.0 00-.514 2.058h11.112" class="cls-1"/><path id="rrrrrrr" d="M281.768 50.523a15.46 15.46.0 00-2.675-.515 17.027 17.027.0 00-3.292-.31 18.138 18.138.0 00-1.955.207 16.165 16.165.0 00-1.646.309V72.95h-8.437V44.658a43.765 43.765.0 015.35-1.44 28.942 28.942.0 016.893-.72 10.015 10.015.0 011.646.102 14.058 14.058.0 011.955.206c.618.103 1.235.206 1.955.309.617.103 1.235.309 1.646.41l-1.44 6.998" class="cls-1"/><path id="nnnnnnn" d="M287.735 44.144a49.746 49.746.0 0112.655-1.646 15.693 15.693.0 016.276 1.028 8.813 8.813.0 014.012 2.778 12.018 12.018.0 012.058 4.32 22.95 22.95.0 01.617 5.557v16.77h-8.437V57.21c0-2.675-.308-4.63-1.028-5.762s-2.058-1.646-4.013-1.646a13.116 13.116.0 00-1.955.103 10.193 10.193.0 00-1.85.206v22.943h-8.335v-28.91" class="cls-1"/><path id="eeeeeee1" d="M319.63 58.239a17.556 17.556.0 011.233-6.893 15.745 15.745.0 013.19-4.94 11.99 11.99.0 014.527-2.982 13.75 13.75.0 015.35-1.03 13.168 13.168.0 019.98 3.91c2.468 2.572 3.703 6.38 3.703 11.317a9.412 9.412.0 01-.103 1.647c0 .514-.103 1.028-.103 1.543h-19.136a5.64 5.64.0 002.47 4.115 9.789 9.789.0 005.76 1.543 21.805 21.805.0 004.528-.411 18.455 18.455.0 003.703-1.03l1.132 6.894c-.41.206-1.029.412-1.852.72a10.37 10.37.0 01-2.572.515 23.226 23.226.0 01-2.984.41c-1.028.104-2.16.207-3.189.207a18.09 18.09.0 01-6.996-1.234 15.148 15.148.0 01-4.938-3.19 14.85 14.85.0 01-2.88-4.938 24.16 24.16.0 01-.824-6.173m19.856-3.292a6.653 6.653.0 00-.41-2.058 6.255 6.255.0 00-.927-1.852 4.915 4.915.0 00-4.116-1.852 6.216 6.216.0 00-2.469.514 4.092 4.092.0 00-1.646 1.235 5.396 5.396.0 00-1.029 1.852 15.037 15.037.0 00-.514 2.058h11.111" class="cls-1"/><path id="ttttttt" d="M353.89 35.707l8.435-1.337v8.745h10.083v6.995h-10.083v10.494a8.273 8.273.0 00.926 4.218c.618 1.03 1.955 1.544 3.807 1.544a25.227 25.227.0 002.778-.206 16.728 16.728.0 002.675-.72l1.234 6.584a16.386 16.386.0 01-3.395 1.029 19.779 19.779.0 01-4.63.41 15.723 15.723.0 01-5.76-.924 9.522 9.522.0 01-3.602-2.573 10.208 10.208.0 01-1.955-4.115 26.665 26.665.0 01-.514-5.247V35.707" class="cls-1"/><path id="eeeeeee2" d="M376.73 58.239a17.556 17.556.0 011.234-6.893 15.744 15.744.0 013.19-4.94 11.99 11.99.0 014.526-2.982 13.75 13.75.0 015.35-1.03 13.168 13.168.0 019.98 3.91c2.47 2.572 3.703 6.38 3.703 11.317a9.413 9.413.0 01-.103 1.647c0 .514-.103 1.028-.103 1.543h-19.136a5.64 5.64.0 002.47 4.115 9.789 9.789.0 005.76 1.543 21.805 21.805.0 004.528-.411 18.455 18.455.0 003.703-1.03l1.132 6.894c-.41.206-1.029.412-1.852.72a10.371 10.371.0 01-2.572.515 23.226 23.226.0 01-2.983.41c-1.03.104-2.16.207-3.19.207a18.09 18.09.0 01-6.996-1.234 15.147 15.147.0 01-4.938-3.19 14.85 14.85.0 01-2.88-4.938 20.343 20.343.0 01-.824-6.173m19.754-3.292a6.652 6.652.0 00-.412-2.058 6.254 6.254.0 00-.926-1.852 4.915 4.915.0 00-4.115-1.852 6.216 6.216.0 00-2.47.514 4.092 4.092.0 00-1.646 1.235 5.395 5.395.0 00-1.028 1.852 15.037 15.037.0 00-.515 2.058h11.112" class="cls-1"/><path id="sssssss" d="M419.631 66.778a8.454 8.454.0 003.293-.411 1.802 1.802.0 00.925-1.75c0-.72-.41-1.234-1.234-1.748a19.516 19.516.0 00-3.807-1.75c-1.337-.514-2.572-1.028-3.6-1.543a10.286 10.286.0 01-2.676-1.852 8.046 8.046.0 01-1.749-2.675 9.968 9.968.0 01-.617-3.703 7.828 7.828.0 013.086-6.585c2.058-1.646 4.94-2.47 8.54-2.47a29.267 29.267.0 015.247.515 19.02 19.02.0 013.91 1.03l-1.44 6.584a122.23 122.23.0 00-3.19-.926 14.394 14.394.0 00-3.807-.412c-2.675.0-3.91.72-3.91 2.16a3.004 3.004.0 00.206.927 1.728 1.728.0 00.72.823c.31.206.823.514 1.338.823.617.308 1.337.514 2.263.926a33.94 33.94.0 014.63 2.057 7.682 7.682.0 012.778 2.16 5.374 5.374.0 011.44 2.573 10.677 10.677.0 01.412 3.292 7.669 7.669.0 01-3.293 6.688c-2.16 1.543-5.247 2.263-9.362 2.263a23.783 23.783.0 01-6.584-.72 18.78 18.78.0 01-3.6-1.132l1.44-6.893a31.442 31.442.0 004.423 1.337 18.932 18.932.0 004.218.412" class="cls-1"/></g></g><path d="M4.233 60.98h4.881v3.877h-4.88z" class="cls-1"/><path d="M62.304 58.789a1.65 1.65.0 00-.393-.03 1.694 1.694.0 00-.655.17 1.712 1.712.0 00-.829 2.218l-.012.017 3.92 9.47a20.008 20.008.0 008.087-10.16l-10.1-1.705zm-15.717 1.34a1.71 1.71.0 00-1.64-1.33 1.68 1.68.0 00-.337.03l-.017-.02-10.013 1.7a20.084 20.084.0 008.062 10.087l3.88-9.376-.03-.037a1.693 1.693.0 00.095-1.053zm8.386 3.678a1.709 1.709.0 00-3.014.004h-.008l-4.924 8.904a20.057 20.057.0 0010.946.563q1.01-.23 1.973-.551l-4.936-8.92zm15.588-20.682-7.576 6.78.004.022a1.712 1.712.0 00.671 2.939l.01.04 9.813 2.828a20.352 20.352.0 00-2.922-12.61zm-14.075.759a1.712 1.712.0 002.718 1.305l.03.013 8.29-5.878A20.155 20.155.0 0055.901 33.72l.576 10.16zm-8.779 1.343a1.71 1.71.0 002.714-1.31l.042-.02.576-10.176a20.533 20.533.0 00-2.069.356 19.979 19.979.0 00-9.623 5.244l8.344 5.915zm-4.448 7.689a1.71 1.71.0 00.672-2.94l.008-.04-7.618-6.814a19.973 19.973.0 00-2.835 12.645l9.765-2.818zm7.4 2.993 2.81 1.35 2.801-1.347.696-3.025-1.939-2.425h-3.12l-1.946 2.42z" class="cls-2"/><path d="M99.925 61.869l-8.008-34.783a6.252 6.252.0 00-3.352-4.17L56.151 7.44a6.246 6.246.0 00-5.38.0L18.364 22.924a6.25 6.25.0 00-3.353 4.17L7.016 61.876a6.12 6.12.0 00-.002 2.67 6.206 6.206.0 00.226.79 6.022 6.022.0 00.617 1.253c.11.168.226.33.352.489l22.432 27.89c.098.12.206.232.313.345a6.17 6.17.0 001.183.98 6.4 6.4.0 001.773.77 6.112 6.112.0 001.576.218h.35l35.623-.008a5.976 5.976.0 00.648-.038 6.19 6.19.0 00.914-.174 6.372 6.372.0 00.635-.203q.244-.09.48-.2a6.407 6.407.0 00.68-.377 6.115 6.115.0 001.488-1.317l.684-.85 21.74-27.045a6.06 6.06.0 00.97-1.74 6.283 6.283.0 00.23-.792 6.105 6.105.0 00-.003-2.67zm-33.62 13.528a6.67 6.67.0 00.322.783 1.523 1.523.0 00-.15 1.144 18.097 18.097.0 001.72 3.08 16.123 16.123.0 011.04 1.546c.078.145.18.369.254.522a1.949 1.949.0 11-3.507 1.658c-.074-.152-.177-.354-.24-.497a16.21 16.21.0 01-.563-1.778 18.067 18.067.0 00-1.33-3.262 1.533 1.533.0 00-.99-.601c-.063-.107-.293-.528-.416-.746A25.104 25.104.0 0144.543 77.2l-.439.796a1.576 1.576.0 00-.836.407 13.567 13.567.0 00-1.502 3.485 16.04 16.04.0 01-.56 1.778c-.062.142-.166.342-.24.493v.004l-.003.004a1.948 1.948.0 11-3.502-1.662c.073-.154.171-.377.248-.522a16.168 16.168.0 011.04-1.55 18.95 18.95.0 001.756-3.156 1.925 1.925.0 00-.173-1.097l.353-.846A25.244 25.244.0 0129.498 61.367l-.845.144a2.151 2.151.0 00-1.116-.393 18.167 18.167.0 00-3.38.995 16.355 16.355.0 01-1.742.667c-.14.038-.342.077-.502.112-.013.004-.024.01-.037.013l-.03.003a1.947 1.947.0 11-.86-3.78l.027-.007.017-.005c.162-.038.37-.092.518-.12a16.212 16.212.0 011.861-.15 18.105 18.105.0 003.477-.571 2.682 2.682.0 00.834-.841l.812-.237a25.102 25.102.0 013.96-17.5l-.623-.554a2.155 2.155.0 00-.39-1.12 18.094 18.094.0 00-2.885-2.027 16.202 16.202.0 01-1.608-.94c-.118-.088-.274-.22-.402-.324l-.029-.02a2.056 2.056.0 01-.477-2.86 1.869 1.869.0 011.546-.684 2.312 2.312.0 011.352.51c.132.104.313.242.43.343a16.205 16.205.0 011.278 1.356A18.103 18.103.0 0033.3 35.74a1.532 1.532.0 001.152.112c.111.082.486.35.7.497a24.953 24.953.0 0112.675-7.241 25.302 25.302.0 013.507-.54l.046-.82a2.115 2.115.0 00.63-1.003 18.142 18.142.0 00-.216-3.518 16.306 16.306.0 01-.265-1.845c-.005-.141.003-.336.005-.497.0-.018-.005-.036-.005-.054a1.95 1.95.0 113.88-.002c0 .17.01.396.004.552a16.14 16.14.0 01-.266 1.844 18.169 18.169.0 00-.22 3.519 1.537 1.537.0 00.634.97c.007.14.03.608.047.866a25.422 25.422.0 0116.102 7.78l.738-.527a2.156 2.156.0 001.177-.128 18.17 18.17.0 002.615-2.366 16.095 16.095.0 011.281-1.356c.12-.102.3-.24.43-.343a1.95 1.95.0 112.417 3.033c-.13.105-.302.252-.427.345a16.133 16.133.0 01-1.612.94 18.153 18.153.0 00-2.885 2.027 1.534 1.534.0 00-.364 1.099c-.108.099-.487.435-.688.617a25.205 25.205.0 014.041 17.458l.783.228a2.181 2.181.0 00.837.842 18.14 18.14.0 003.478.572 16.384 16.384.0 011.86.149c.163.03.4.095.565.133a1.947 1.947.0 11-.863 3.78l-.028-.004c-.013-.003-.025-.01-.038-.013-.16-.035-.36-.07-.5-.107a16.154 16.154.0 01-1.74-.672 18.146 18.146.0 00-3.385-.995 1.534 1.534.0 00-1.086.403q-.413-.08-.829-.145A25.243 25.243.0 0166.305 75.397z" class="cls-2"/><path d="M104.153 62.76l-8.736-37.947a6.82 6.82.0 00-3.658-4.55L56.397 3.38a6.814 6.814.0 00-5.87.0L15.168 20.273a6.82 6.82.0 00-3.659 4.548L2.79 62.77a6.742 6.742.0 00.916 5.14 6.526 6.526.0 00.385.535l24.474 30.43a6.885 6.885.0 005.285 2.522l39.247-.01a6.888 6.888.0 005.286-2.518l24.465-30.433a6.766 6.766.0 001.306-5.675zm-4.227 1.778a6.285 6.285.0 01-.229.792 6.06 6.06.0 01-.97 1.74l-21.74 27.044-.683.85a6.115 6.115.0 01-1.489 1.318 6.41 6.41.0 01-.678.378q-.236.109-.48.198a6.373 6.373.0 01-.636.204 6.191 6.191.0 01-.914.174 5.973 5.973.0 01-.648.038l-35.624.008h-.349a6.113 6.113.0 01-1.576-.217 6.4 6.4.0 01-1.772-.771 6.17 6.17.0 01-1.184-.98c-.107-.113-.215-.224-.313-.345L8.21 67.079q-.188-.236-.352-.49a6.022 6.022.0 01-.617-1.253 6.207 6.207.0 01-.226-.79 6.12 6.12.0 01.002-2.67l7.995-34.783a6.25 6.25.0 013.353-4.17L50.772 7.442a6.246 6.246.0 015.38.0l32.413 15.476a6.252 6.252.0 013.352 4.17l8.008 34.783a6.105 6.105.0 01.001 2.669z" class="cls-1"/><path d="M85.955 59.083c-.166-.038-.402-.103-.564-.133a16.382 16.382.0 00-1.86-.15 18.14 18.14.0 01-3.479-.571 2.18 2.18.0 01-.837-.842l-.783-.228a25.205 25.205.0 00-4.04-17.458c.2-.182.58-.518.687-.617a1.534 1.534.0 01.364-1.1 18.154 18.154.0 012.885-2.026 16.127 16.127.0 001.612-.94c.125-.093.296-.24.427-.345a1.95 1.95.0 10-2.416-3.033c-.132.104-.312.24-.43.343a16.09 16.09.0 00-1.282 1.356 18.17 18.17.0 01-2.615 2.366 2.156 2.156.0 01-1.177.128l-.738.527a25.422 25.422.0 00-16.102-7.78c-.018-.258-.04-.725-.047-.866a1.537 1.537.0 01-.633-.97 18.172 18.172.0 01.22-3.52 16.137 16.137.0 00.264-1.843c.006-.156-.003-.383-.003-.552a1.95 1.95.0 10-3.88.002c0 .018.004.036.005.054-.002.16-.01.356-.005.497a16.308 16.308.0 00.265 1.845 18.143 18.143.0 01.216 3.518 2.115 2.115.0 01-.63 1.003l-.046.82a25.302 25.302.0 00-3.507.54 24.953 24.953.0 00-12.674 7.24q-.354-.243-.7-.496a1.532 1.532.0 01-1.153-.112 18.1 18.1.0 01-2.615-2.363 16.206 16.206.0 00-1.277-1.356c-.118-.101-.299-.24-.43-.344a2.312 2.312.0 00-1.353-.51 1.869 1.869.0 00-1.546.684 2.056 2.056.0 00.477 2.86l.03.02c.127.105.283.238.401.324a16.202 16.202.0 001.608.94 18.094 18.094.0 012.885 2.029 2.155 2.155.0 01.39 1.119l.621.555a25.102 25.102.0 00-3.958 17.5l-.812.236a2.682 2.682.0 01-.834.84 18.106 18.106.0 01-3.477.573 16.212 16.212.0 00-1.86.15c-.15.027-.357.08-.519.12l-.017.004-.028.008a1.947 1.947.0 10.862 3.78l.03-.004c.012-.003.023-.01.036-.012.16-.036.361-.075.502-.113a16.358 16.358.0 001.74-.667 18.167 18.167.0 013.382-.995 2.151 2.151.0 011.115.394l.846-.145a25.244 25.244.0 0011.187 13.967l-.353.846a1.925 1.925.0 01.173 1.097 18.949 18.949.0 01-1.756 3.155 16.173 16.173.0 00-1.04 1.55c-.077.146-.175.37-.249.523a1.948 1.948.0 103.503 1.662l.003-.004v-.004c.074-.152.178-.351.24-.493a16.04 16.04.0 00.56-1.778 13.567 13.567.0 011.502-3.485 1.576 1.576.0 01.836-.408l.44-.795a25.104 25.104.0 0017.901.045c.123.22.353.64.414.746a1.533 1.533.0 01.99.602 18.067 18.067.0 011.332 3.262 16.219 16.219.0 00.563 1.778c.063.143.166.345.24.497a1.949 1.949.0 103.507-1.658c-.074-.153-.176-.377-.253-.522a16.121 16.121.0 00-1.04-1.546 18.095 18.095.0 01-1.72-3.08 1.523 1.523.0 01.15-1.144 6.671 6.671.0 01-.324-.783A25.243 25.243.0 0077.486 61.33c.251.04.688.116.83.145a1.534 1.534.0 011.085-.403 18.144 18.144.0 013.383.995 16.149 16.149.0 001.741.672c.14.037.34.072.501.107.013.004.025.01.038.013l.028.004a1.947 1.947.0 10.863-3.78zM67.523 39.325l-8.29 5.877-.029-.013a1.711 1.711.0 01-2.718-1.305l-.009-.004-.576-10.16a20.155 20.155.0 0111.622 5.605zM51.906 50.46h3.12l1.94 2.425-.696 3.025-2.802 1.348-2.81-1.351-.697-3.026zM48.97 34.075a20.535 20.535.0 012.07-.356l-.577 10.175-.042.02a1.71 1.71.0 01-2.714 1.31l-.016.01-8.344-5.916a19.98 19.98.0 019.623-5.243zm-12.649 9.047 7.618 6.813-.008.042a1.71 1.71.0 01-.672 2.939l-.008.033-9.765 2.818a19.973 19.973.0 012.835-12.645zm10.2 18.1-3.88 9.375a20.084 20.084.0 01-8.06-10.088l10.012-1.7.017.022a1.68 1.68.0 01.336-.03 1.71 1.71.0 011.546 2.383zm11.452 12.057a20.057 20.057.0 01-10.946-.563l4.924-8.904h.008a1.712 1.712.0 013.014-.003h.037l4.936 8.919q-.96.32-1.973.55zm6.362-2.644-3.92-9.471.012-.017a1.712 1.712.0 01.83-2.217 1.694 1.694.0 01.654-.17 1.65 1.65.0 01.393.029l.017-.021 10.101 1.707a20.008 20.008.0 01-8.087 10.16zm9.148-14.901-9.814-2.827-.009-.041a1.712 1.712.0 01-.67-2.94l-.005-.02 7.576-6.78a20.352 20.352.0 012.922 12.608z" class="cls-1"/></svg></span><span class=navbar-brand__name>Kubernetes</span></a><div class="td-navbar-nav-scroll d-none d-md-block ms-xl-auto" id=main_navbar><ul class="navbar-nav mt-lg-0"><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/ko/docs/home/><span>문서</span></a></li><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/ko/training/><span>교육</span></a></li><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/ko/blog/><span>블로그</span></a></li><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/ko/partners/><span>파트너</span></a></li><li class="nav-item me-4 mb-2 mb-lg-0"><a class=nav-link href=/ko/community/><span>커뮤니티</span></a></li><li class="nav-item dropdown me-4 d-none d-lg-block"><div class=dropdown><a class="nav-link dropdown-toggle" href=# role=button data-bs-toggle=dropdown aria-haspopup=true aria-expanded=false>버전</a><ul class=dropdown-menu><li><a class=dropdown-item href=/ko/releases>릴리스 정보</a></li><li><a class=dropdown-item href=https://xuxiaowei.io/t/1320>Kubernetes 文档说明</a></li><li><a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn>v1.38</a></li><li><a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn>v1.37</a></li><li><a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn>v1.36</a></li><li><a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn>v1.35</a></li><li><a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn>v1.34</a></li><li><a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn>v1.33</a></li><li><a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn>v1.32</a></li><li><a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn>v1.31</a></li><li><a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn>v1.30</a></li><li><a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn>v1.29</a></li><li><a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn>v1.28</a></li><li><a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn>v1.27</a></li><li><a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn>v1.26</a></li><li><a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn>v1.25</a></li><li><a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn>v1.24</a></li><li><a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn>v1.23</a></li><li><a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn>v1.22</a></li><li><a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn>v1.21</a></li><li><a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn>v1.20</a></li></ul></div></li><li class="nav-item dropdown me-xl-4 d-none d-lg-block"><div class=dropdown><a class="nav-link dropdown-toggle" href=# role=button data-bs-toggle=dropdown aria-haspopup=true aria-expanded=false>한국어 (Korean)</a><ul class="dropdown-menu dropdown-menu-end"><li><a class=dropdown-item href=/docs/contribute/new-content/>English</a></li><li><a class=dropdown-item href=/zh-cn/docs/contribute/new-content/>中文 (Chinese)</a></li><li><a class=dropdown-item href=/ja/docs/contribute/new-content/>日本語 (Japanese)</a></li><li><a class=dropdown-item href=/pl/docs/contribute/new-content/>Polski (Polish)</a></li><li><span class="dropdown-item text-muted" title="This page is not available in বাংলা (Bengali)">বাংলা (Bengali)
+<a href=/bn/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Français (French)">Français (French)
+<a href=/fr/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Deutsch (German)">Deutsch (German)
+<a href=/de/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in हिन्दी (Hindi)">हिन्दी (Hindi)
+<a href=/hi/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Bahasa Indonesia (Indonesian)">Bahasa Indonesia (Indonesian)
+<a href=/id/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Italiano (Italian)">Italiano (Italian)
+<a href=/it/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in فارسی (Persian)">فارسی (Persian)
+<a href=/fa/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Português (Portuguese)">Português (Portuguese)
+<a href=/pt-br/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Русский (Russian)">Русский (Russian)
+<a href=/ru/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Español (Spanish)">Español (Spanish)
+<a href=/es/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Українська (Ukrainian)">Українська (Ukrainian)
+<a href=/uk/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li><li><span class="dropdown-item text-muted" title="This page is not available in Tiếng Việt (Vietnamese)">Tiếng Việt (Vietnamese)
+<a href=/vi/ class=ms-1 data-auto-burger-exclude><i class="fas fa-home fa-xs"></i></a></span></li></ul></div></li><li class="td-light-dark-menu nav-item dropdown"><svg class="d-none"><symbol id="check2" viewBox="0 0 16 16"><path d="M13.854 3.646a.5.5.0 010 .708l-7 7a.5.5.0 01-.708.0l-3.5-3.5a.5.5.0 11.708-.708L6.5 10.293l6.646-6.647a.5.5.0 01.708.0z"/></symbol><symbol id="circle-half" viewBox="0 0 16 16"><path d="M8 15A7 7 0 108 1v14zm0 1A8 8 0 118 0a8 8 0 010 16z"/></symbol><symbol id="moon-stars-fill" viewBox="0 0 16 16"><path d="M6 .278a.768.768.0 01.08.858 7.208 7.208.0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527.0 1.04-.055 1.533-.16a.787.787.0 01.81.316.733.733.0 01-.031.893A8.349 8.349.0 018.344 16C3.734 16 0 12.286.0 7.71.0 4.266 2.114 1.312 5.124.06A.752.752.0 016 .278z"/><path d="M10.794 3.148a.217.217.0 01.412.0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217.0 010 .412l-1.162.387A1.734 1.734.0 0011.593 7.69l-.387 1.162a.217.217.0 01-.412.0l-.387-1.162A1.734 1.734.0 009.31 6.593l-1.162-.387a.217.217.0 010-.412l1.162-.387a1.734 1.734.0 001.097-1.097l.387-1.162zM13.863.099a.145.145.0 01.274.0l.258.774c.115.346.386.617.732.732l.774.258a.145.145.0 010 .274l-.774.258a1.156 1.156.0 00-.732.732l-.258.774a.145.145.0 01-.274.0l-.258-.774a1.156 1.156.0 00-.732-.732l-.774-.258a.145.145.0 010-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/></symbol><symbol id="sun-fill" viewBox="0 0 16 16"><path d="M8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 0zm0 13a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 13zm8-5a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2a.5.5.0 01.5.5zM3 8a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2A.5.5.0 013 8zm10.657-5.657a.5.5.0 010 .707l-1.414 1.415a.5.5.0 11-.707-.708l1.414-1.414a.5.5.0 01.707.0zm-9.193 9.193a.5.5.0 010 .707L3.05 13.657a.5.5.0 01-.707-.707l1.414-1.414a.5.5.0 01.707.0zm9.193 2.121a.5.5.0 01-.707.0l-1.414-1.414a.5.5.0 01.707-.707l1.414 1.414a.5.5.0 010 .707zM4.464 4.465a.5.5.0 01-.707.0L2.343 3.05a.5.5.0 11.707-.707l1.414 1.414a.5.5.0 010 .708z"/></symbol></svg>
+<button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center" id=bd-theme type=button aria-expanded=false data-bs-toggle=dropdown data-bs-display=static aria-label="Toggle theme (auto)"><svg class="bi my-1 theme-icon-active"><use href="#circle-half"/></svg></button><ul class="dropdown-menu dropdown-menu-end" aria-labelledby=bd-theme-text><li><button type=button class="dropdown-item d-flex align-items-center" data-bs-theme-value=light aria-pressed=false>
+<svg class="bi me-2 opacity-50"><use href="#sun-fill"/></svg>
+Light<svg class="bi ms-auto d-none"><use href="#check2"/></svg></button></li><li><button type=button class="dropdown-item d-flex align-items-center" data-bs-theme-value=dark aria-pressed=false>
+<svg class="bi me-2 opacity-50"><use href="#moon-stars-fill"/></svg>
+Dark<svg class="bi ms-auto d-none"><use href="#check2"/></svg></button></li><li><button type=button class="dropdown-item d-flex align-items-center active" data-bs-theme-value=auto aria-pressed=true>
+<svg class="bi me-2 opacity-50"><use href="#circle-half"/></svg>
+Auto<svg class="bi ms-auto d-none"><use href="#check2"/></svg></button></li></ul></li></ul></div><div class="navbar-nav d-none k8s-1500-block"><div class=td-search><div class=td-search__icon></div><input type=search class="td-search__input form-control dark-theme-focus td-search-input" placeholder=검색하기 aria-label=검색하기 autocomplete=off data-search-page=/search></div></div><button id=hamburger class="btn fas fa-bars" onclick=kub.toggleMenu() data-auto-burger-exclude></button></nav></header><div class="container-fluid td-outer"><div class=td-main><div class="row flex-xl-nowrap"><main class="col-12 col-md-9 col-xl-8 ps-md-5" role=main><div class=td-content><div class="pageinfo pageinfo-primary d-print-none"><p>이 섹션의 다중 페이지 출력 화면임.
+<a href=# onclick="return print(),!1">여기를 클릭하여 프린트</a>.</p><p><a href=/ko/docs/contribute/new-content/>이 페이지의 일반 화면으로 돌아가기</a>.</p></div><h1 class=title>새로운 콘텐츠 기여하기</h1><ul><li>1: <a href=#pg-553b51f3b1991ff428a01644a7c20d90>풀 리퀘스트 열기</a></li><li>2: <a href=#pg-b90deb2107ecac38aafcac93b8701858>로컬에서 미리보기</a></li><li>3: <a href=#pg-10ed45584b496b99003f299b4614ff78>릴리스를 위한 기능 문서화</a></li><li>4: <a href=#pg-53a7b864b6db6875dc142ce8af243fbf>사례 연구 제출</a></li></ul><div class=content><p>이 섹션에는 새로운 콘텐츠를 기여하기 전에 알아야 할 정보가
+있다.</p><pre class=mermaid>
+flowchart LR 
+    subgraph second[시작하기 전에]
+    direction TB
+    S[ ] -.-
+    A[CNCF CLA 서명하기] --> B[Git 브랜치 선택하기]
+    B --> C[한 PR에는 한 언어에 대한 변경사항만]
+    C --> F[기여자 도구 확인하기]
+    end
+    subgraph first[기여 기초]
+    direction TB
+       T[ ] -.-
+       D[문서를 마크다운으로 작성하고<br>Hugo로 사이트 빌드] --- E[GitHub에 있는 소스]
+       E --- G['/content/../docs' 폴더에<br>각 언어 컨텐츠가 있음]
+       G --- H[Hugo 페이지 컨텐츠 종류와<br>shortcode 숙지하기]
+    end
+    
+
+    first ----> second
+     
+
+classDef grey fill:#dddddd,stroke:#ffffff,stroke-width:px,color:#000000, font-size:15px;
+classDef white fill:#ffffff,stroke:#000,stroke-width:px,color:#000,font-weight:bold
+classDef spacewhite fill:#ffffff,stroke:#fff,stroke-width:0px,color:#000
+class A,B,C,D,E,F,G,H grey
+class S,T spacewhite
+class first,second white
+</pre><p><em><strong>그림 - 새로운 콘텐츠 기여를 위한 준비</strong></em></p><p>위 그림은 새로운 콘텐츠를 제출하기 전에 알아야 할 정보를 설명한다.
+해당 정보에 대한 자세한 내용은 다음과 같다.</p><h2 id=기여에-대한-기본-사항>기여에 대한 기본 사항<a class=td-heading-self-link href=#%ea%b8%b0%ec%97%ac%ec%97%90-%eb%8c%80%ed%95%9c-%ea%b8%b0%eb%b3%b8-%ec%82%ac%ed%95%ad aria-label="Heading self-link"></a></h2><ul><li>마크다운(Markdown)으로 쿠버네티스 문서를 작성하고
+<a href=https://gohugo.io/>Hugo</a>를 사용하여 쿠버네티스 사이트를 구축한다.</li><li>쿠버네티스 문서는 마크다운 스펙으로 <a href=https://commonmark.org/>CommonMark</a>를 사용한다.</li><li>소스는 <a href=https://github.com/kubernetes/website>GitHub</a>에 있다.
+쿠버네티스 문서는 <code>/content/ko/docs/</code> 에서 찾을 수 있다.
+일부 참조 문서는 <code>update-imported-docs/</code> 디렉터리의 스크립트를 이용하여
+자동으로 생성된다.</li><li><a href=/ko/docs/contribute/style/page-content-types/>페이지 콘텐츠 타입</a>은
+Hugo에서 문서 콘텐츠가 표시되는 방식을 기술한다.</li><li>쿠버네티스 문서 기여 시 <a href=https://www.docsy.dev/docs/adding-content/shortcodes/>Docsy shortcodes</a> 또는 <a href=/docs/contribute/style/hugo-shortcodes/>custom Hugo shortcodes</a>를 사용할 수 있다.</li><li>표준 Hugo 단축코드(shortcode) 이외에도 설명서에서 여러
+<a href=/docs/contribute/style/hugo-shortcodes/>사용자 정의 Hugo 단축코드</a>를 사용하여
+콘텐츠 표시를 제어한다.</li><li>문서 소스는 <code>/content/</code> 에서 여러 언어로 제공된다. 각
+언어는 <a href=https://www.loc.gov/standards/iso639-2/php/code_list.php>ISO 639-1 표준</a>에
+의해 결정된 2문자 코드가 있는 자체 폴더가 있다. 예를 들어,
+한글 문서의 소스는 <code>/content/ko/docs/</code> 에 저장된다.</li><li>여러 언어로 문서화에 기여하거나
+새로운 번역을 시작하는 방법에 대한 자세한 내용은
+<a href=/ko/docs/contribute/localization_ko/>현지화</a>를 참고한다.</li></ul><h2 id=before-you-begin>시작하기 전에<a class=td-heading-self-link href=#before-you-begin aria-label="Heading self-link"></a></h2><h3 id=sign-the-cla>CNCF CLA 서명<a class=td-heading-self-link href=#sign-the-cla aria-label="Heading self-link"></a></h3><p>모든 쿠버네티스 기여자는 <strong>반드시</strong>
+<a href=https://github.com/kubernetes/community/blob/master/contributors/guide/README.md>기여자 가이드</a>를 읽고
+<a href=https://github.com/kubernetes/community/blob/master/CLA.md>기여자 라이선스 계약(CLA)에 서명</a>해야 한다
+.</p><p>CLA에 서명하지 않은 기여자의 풀 리퀘스트(pull request)는 자동 테스트에 실패한다.
+제공한 이름과 이메일은 <code>git config</code> 에 있는 것과 일치해야 하며,
+git 이름과 이메일은 CNCF CLA에 사용된 것과
+일치해야 한다.</p><h3 id=사용할-git-브랜치를-선택한다>사용할 Git 브랜치를 선택한다<a class=td-heading-self-link href=#%ec%82%ac%ec%9a%a9%ed%95%a0-git-%eb%b8%8c%eb%9e%9c%ec%b9%98%eb%a5%bc-%ec%84%a0%ed%83%9d%ed%95%9c%eb%8b%a4 aria-label="Heading self-link"></a></h3><p>풀 리퀘스트를 열 때는, 작업의 기반이 되는 브랜치를
+미리 알아야 한다.</p><table><thead><tr><th style=text-align:left>시나리오</th><th style=text-align:left>브랜치</th></tr></thead><tbody><tr><td style=text-align:left>현재 릴리스의 기존 또는 새로운 영어 콘텐츠</td><td style=text-align:left><code>main</code></td></tr><tr><td style=text-align:left>기능 변경 릴리스의 콘텐츠</td><td style=text-align:left><code>dev-&lt;version></code> 패턴을 사용하여 기능 변경이 있는 주 버전과 부 버전에 해당하는 브랜치. 예를 들어, <code>v1.39</code> 에서 기능이 변경된 경우, <code>dev-1.39</code> 에 문서 변경을 추가한다.</td></tr><tr><td style=text-align:left>다른 언어로된 콘텐츠(현지화)</td><td style=text-align:left>현지화 규칙을 사용. 자세한 내용은 <a href=/ko/docs/contribute/localization/#branching-strategy>현지화 브랜치 전략</a>을 참고한다.</td></tr></tbody></table><p>어떤 브랜치를 선택해야 할지 모르는 경우 슬랙의 <code>#sig-docs</code> 에 문의한다.</p><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>풀 리퀘스트를 이미 제출했는데 기본 브랜치가 잘못되었다는 것을 알게 되면,
+제출자 본인만 이를 변경할 수 있다.</div><h3 id=pr-당-언어>PR 당 언어<a class=td-heading-self-link href=#pr-%eb%8b%b9-%ec%96%b8%ec%96%b4 aria-label="Heading self-link"></a></h3><p>PR 당 하나의 언어로 풀 리퀘스트를 제한한다.
+여러 언어로 동일한 코드 샘플을 동일하게 변경해야 하는 경우
+각 언어마다 별도의 PR을 연다.</p><h2 id=기여자를-위한-도구들>기여자를 위한 도구들<a class=td-heading-self-link href=#%ea%b8%b0%ec%97%ac%ec%9e%90%eb%a5%bc-%ec%9c%84%ed%95%9c-%eb%8f%84%ea%b5%ac%eb%93%a4 aria-label="Heading self-link"></a></h2><p><code>kubernetes/website</code> 리포지터리의
+<a href=https://github.com/kubernetes/website/tree/main/content/en/docs/doc-contributor-tools>문서 기여자를 위한 도구</a>
+디렉터리에는 기여에 도움이 되는 도구들이 있다.</p></div></div><div class=td-content style=page-break-before:always><h1 id=pg-553b51f3b1991ff428a01644a7c20d90>1 - 풀 리퀘스트 열기</h1><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4><strong>코드 개발자</strong>: 향후 쿠버네티스 릴리스의
+새로운 기능을 문서화하는 경우,
+<a href=/ko/docs/contribute/new-content/new-features/>새 기능 문서화</a>를 참고한다.</div><p>새 콘텐츠 페이지를 기여하거나 기존 콘텐츠 페이지를 개선하려면, 풀 리퀘스트(PR)를 연다.
+<a href=/ko/docs/contribute/new-content/>시작하기 전에</a> 섹션의
+모든 요구 사항을 준수해야 한다.</p><p>변경 사항이 작거나, git에 익숙하지 않은 경우,
+<a href=#github%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EC%97%AC-%EB%B3%80%EA%B2%BD%ED%95%98%EA%B8%B0>GitHub를 사용하여 변경하기</a>를 읽고 페이지를 편집하는 방법을 알아보자.</p><p>변경 사항이 큰 경우에는 <a href=#fork-the-repo>로컬 포크에서 작업하기</a>를 읽고
+로컬 컴퓨터 환경에서 변경 사항을 만드는 방법을 배운다.</p><h2 id=github를-사용하여-변경하기>GitHub를 사용하여 변경하기<a class=td-heading-self-link href=#github%eb%a5%bc-%ec%82%ac%ec%9a%a9%ed%95%98%ec%97%ac-%eb%b3%80%ea%b2%bd%ed%95%98%ea%b8%b0 aria-label="Heading self-link"></a></h2><p>git 워크플로에 익숙하지 않은 경우, 풀 리퀘스트를
+여는 쉬운 방법이 있다. 그림 1은 각 단계를 보여주며, 상세사항은 그 아래에 나온다.</p><pre class=mermaid>
+flowchart LR
+A([fa:fa-user 신규<br>기여자]) --- id1[(kubernetes/website<br>GitHub)]
+subgraph tasks[GitHub 상에서 변경하기]
+direction TB
+    0[ ] -.-
+    1[1. '페이지 편집' 클릭] --> 2[2. GitHub 마크다운<br>에디터로 내용 변경]
+    2 --> 3[3. 'Commit changes...' 클릭]
+
+end
+subgraph tasks2[ ]
+direction TB
+4[4. 'Propose changes' 클릭] --> 5[5. 'Create pull request' 클릭] --> 6[6. 'Open a pull request'에<br>추가 내용 기재]
+6 --> 7[7. 'Create pull request' 클릭] 
+end
+
+id1 --> tasks --> tasks2
+
+classDef grey fill:#dddddd,stroke:#ffffff,stroke-width:px,color:#000000, font-size:15px;
+classDef white fill:#ffffff,stroke:#000,stroke-width:px,color:#000,font-weight:bold
+classDef k8s fill:#326ce5,stroke:#fff,stroke-width:1px,color:#fff;
+classDef spacewhite fill:#ffffff,stroke:#fff,stroke-width:0px,color:#000
+class A,1,2,3,4,5,6,7 grey
+class 0 spacewhite
+class tasks,tasks2 white
+class id1 k8s
+</pre><p>그림 1. GitHub를 사용하여 PR을 여는 단계</p><ol><li><p>이슈가 있는 페이지에서, 오른쪽 사이드 내비게이션 패널에 있는 <strong>페이지 편집</strong> 옵션을 선택한다.</p></li><li><p>GitHub 마크다운 에디터에서 내용을 수정한다.</p></li><li><p>에디터 오른쪽 상단에서 <strong>Commit changes</strong>를 선택한다.
+첫 번째 필드에는, 커밋 메시지 제목을 지정한다.
+두 번째 필드에는, 설명을 제공한다.</p><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>커밋 메시지에 어떤 <a href=https://help.github.com/en/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword>GitHub 키워드</a>
+도 사용하지 않는다. 이 키워드들은 나중에 풀 리퀘스트 설명에 추가할 수 있다.</div></li><li><p><strong>Propose changes</strong>를 선택한다.</p></li><li><p><strong>Create pull request</strong>를 선택한다.</p></li><li><p><strong>Open a pull request</strong> 화면이 나타나면 양식을 작성한다.</p><ul><li>풀 리퀘스트의 <strong>Add a title</strong> 필드는 기본적으로 커밋 내용을 요약하여 작성한다.
+이는 필요한 경우 변경할 수 있다.</li><li><strong>Add a description</strong>에는 작성할 확장 커밋 메시지가 있다면 그것을 포함하고,
+일부 템플릿 텍스트도 포함한다. 템플릿 텍스트에서
+요구하는 세부 정보를 추가한 다음, 남은 템플릿 텍스트는 삭제한다.</li><li><strong>Allow edits from maintainers</strong> 체크박스는 선택된 상태로 둔다.</li></ul><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>PR 설명은 리뷰어가 변경 사항을 이해하는 데 유용한 방법이다.
+자세한 내용은 <a href=#open-a-pr>PR 열기</a>를 참고한다.</div></li><li><p><strong>Create pull request</strong>를 선택한다.</p></li></ol><h3 id=github에서-피드백-반영하기>GitHub에서 피드백 반영하기<a class=td-heading-self-link href=#github%ec%97%90%ec%84%9c-%ed%94%bc%eb%93%9c%eb%b0%b1-%eb%b0%98%ec%98%81%ed%95%98%ea%b8%b0 aria-label="Heading self-link"></a></h3><p>풀 리퀘스트가 병합되기 전에, 쿠버네티스 커뮤니티 멤버가 이를 리뷰하고
+승인한다. <code>k8s-ci-robot</code>은 해당 페이지에 언급된 가장 가까운
+오너(owner)를 기준으로 리뷰어를 제안한다. 특정한 사람을 염두에 두고 있다면,
+GitHub 사용자 이름을 코멘트로 남긴다.</p><p>리뷰어가 변경을 요청하는 경우</p><ol><li><strong>Files changed</strong> 탭으로 이동한다.</li><li>풀 리퀘스트에 의해 변경된 파일에서 연필 (편집) 아이콘을 선택한다.</li><li>요청된 변경에 대한 수정을 한다.</li><li>변경 사항을 커밋한다.</li></ol><p>리뷰어를 기다리고 있는 경우, 7일마다 한 번씩 연락한다. 슬랙 채널 <code>#sig-docs</code> 에 메시지를
+게시할 수도 있다.</p><p>리뷰가 완료되면, 리뷰어가 PR을 병합하고 몇 분 후에 변경 사항이 적용된다.</p><h2 id=fork-the-repo>로컬 포크에서 작업하기<a class=td-heading-self-link href=#fork-the-repo aria-label="Heading self-link"></a></h2><p>git에 익숙하거나, 변경 사항이 몇 줄보다 클 경우,
+로컬 포크로 작업한다.</p><p>컴퓨터에 <a href=https://git-scm.com/book/en/v2/Getting-Started-Installing-Git>git</a>이
+설치되어 있는지 확인한다. 또는, git UI 애플리케이션을 사용할 수도 있다.</p><p>그림 2는 로컬 포크에서 작업할 때 따라야 할 단계를 보여준다. 각 단계에 대한 세부 내용은 뒤에서 설명한다.</p><pre class=mermaid>
+flowchart LR
+1[kubernetes/website<br>리포지터리 포크] --> 2[로컬 클론 생성<br>및 upstream 설정]
+subgraph changes[당신의 변경사항]
+direction TB
+S[ ] -.-
+3[브랜치 생성<br>예: my_new_branch] --> 3a[텍스트 에디터로<br>변경사항 기재] --> 4["Hugo (localhost:1313)<br>를 이용하거나<br>컨테이너 이미지를 빌드하여<br>변경사항 로컬에서 미리보기"]
+end
+subgraph changes2[커밋 / 푸시]
+direction TB
+T[ ] -.-
+5[변경 사항 커밋] --> 6[커밋을<br>origin/my_new_branch<br>로 푸시]
+end
+
+2 --> changes --> changes2
+
+classDef grey fill:#dddddd,stroke:#ffffff,stroke-width:px,color:#000000, font-size:15px;
+classDef white fill:#ffffff,stroke:#000,stroke-width:px,color:#000,font-weight:bold
+classDef k8s fill:#326ce5,stroke:#fff,stroke-width:1px,color:#fff;
+classDef spacewhite fill:#ffffff,stroke:#fff,stroke-width:0px,color:#000
+class 1,2,3,3a,4,5,6 grey
+class S,T spacewhite
+class changes,changes2 white
+</pre><p>그림 2. 로컬 포크에서 변경 사항 작업하기</p><h3 id=kubernetes-website-리포지터리-포크하기>kubernetes/website 리포지터리 포크하기<a class=td-heading-self-link href=#kubernetes-website-%eb%a6%ac%ed%8f%ac%ec%a7%80%ed%84%b0%eb%a6%ac-%ed%8f%ac%ed%81%ac%ed%95%98%ea%b8%b0 aria-label="Heading self-link"></a></h3><ol><li><a href=https://github.com/kubernetes/website/><code>kubernetes/website</code></a> 리포지터리로 이동한다.</li><li><strong>Fork</strong>를 선택한다.</li></ol><h3 id=로컬-클론-생성-및-upstream-설정>로컬 클론 생성 및 upstream 설정<a class=td-heading-self-link href=#%eb%a1%9c%ec%bb%ac-%ed%81%b4%eb%a1%a0-%ec%83%9d%ec%84%b1-%eb%b0%8f-upstream-%ec%84%a4%ec%a0%95 aria-label="Heading self-link"></a></h3><ol><li><p>터미널 창에서, 포크를 클론하고 <a href=https://github.com/google/docsy#readme>Docsy Hugo 테마</a>를 업데이트한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>git clone git@github.com/&lt;github_username&gt;/website
+</span></span><span class=line><span class=cl><span class=nb>cd</span> website
+</span></span></code></pre></div></li><li><p>새 <code>website</code> 디렉터리로 이동한다. <code>kubernetes/website</code> 리포지터리를 <code>upstream</code> 원격으로 설정한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=nb>cd</span> website
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>git remote add upstream https://github.com/kubernetes/website.git
+</span></span></code></pre></div></li><li><p><code>origin</code> 과 <code>upstream</code> 리포지터리를 확인한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>git remote -v
+</span></span></code></pre></div><p>출력은 다음과 비슷하다.</p><pre tabindex=0><code class=language-none data-lang=none>origin	git@github.com:&lt;github_username&gt;/website.git (fetch)
+origin	git@github.com:&lt;github_username&gt;/website.git (push)
+upstream	https://github.com/kubernetes/website.git (fetch)
+upstream	https://github.com/kubernetes/website.git (push)
+</code></pre></li><li><p>포크의 <code>origin/main</code> 과 <code>kubernetes/website</code> 의 <code>upstream/main</code> 에서 커밋을 가져온다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>git fetch origin
+</span></span><span class=line><span class=cl>git fetch upstream
+</span></span></code></pre></div><p>이를 통해 변경 작업을 시작하기 전에 로컬 리포지터리가 최신 상태인지 확인한다.</p><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>이 워크플로는
+<a href=https://github.com/kubernetes/community/blob/master/contributors/guide/github-workflow.md>쿠버네티스 커뮤니티 GitHub 워크플로</a>와 다르다.
+포크에 업데이트를 푸시하기 전에 로컬의 <code>main</code> 복사본을 <code>upstream/main</code> 과
+병합할 필요가 없다.</div></li></ol><h3 id=브랜치-만들기>브랜치 만들기<a class=td-heading-self-link href=#%eb%b8%8c%eb%9e%9c%ec%b9%98-%eb%a7%8c%eb%93%a4%ea%b8%b0 aria-label="Heading self-link"></a></h3><ol><li><p>작업할 브랜치 기반을 결정한다.</p><ul><li>기존 콘텐츠를 개선하려면, <code>upstream/main</code> 를 사용한다.</li><li>기존 기능에 대한 새로운 콘텐츠를 작성하려면, <code>upstream/main</code> 를 사용한다.</li><li>현지화된 콘텐츠의 경우, 현지화 규칙을 사용한다. 자세한 내용은
+<a href=/ko/docs/contribute/localization_ko/>쿠버네티스 문서 현지화</a>를 참고한다.</li><li>다가오는 쿠버네티스 릴리스의 새로운 기능에 대해서는 기능 브랜치(feature branch)를 사용한다. 자세한 정보는
+<a href=/ko/docs/contribute/new-content/new-features/>릴리스 문서화</a>를 참고한다.</li><li>콘텐츠 재구성과 같이 여러 SIG Docs 기여자들이 협업하는 장기적인 작업에는,
+해당 작업을 위해 생성된 특정 기능 브랜치를 사용한다.</li></ul><p>브랜치 선택에 도움이 필요하면, 슬랙 채널 <code>#sig-docs</code> 에 문의한다.</p></li><li><p>1단계에서 식별된 브랜치를 기반으로 새 브랜치를 작성한다. 이 예에서는 기본 브랜치가
+<code>upstream/main</code> 라고 가정한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>git checkout -b &lt;my_new_branch&gt; upstream/main
+</span></span></code></pre></div></li><li><p>텍스트 에디터를 사용하여 변경한다.</p></li></ol><p>언제든지, <code>git status</code> 명령을 사용하여 변경한 파일을 볼 수 있다.</p><h3 id=변경-사항-커밋>변경 사항 커밋<a class=td-heading-self-link href=#%eb%b3%80%ea%b2%bd-%ec%82%ac%ed%95%ad-%ec%bb%a4%eb%b0%8b aria-label="Heading self-link"></a></h3><p>풀 리퀘스트를 제출할 준비가 되면, 변경 사항을 커밋한다.</p><ol><li><p>로컬 리포지터리에서 커밋해야 할 파일을 확인한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>git status
+</span></span></code></pre></div><p>출력은 다음과 비슷하다.</p><pre tabindex=0><code class=language-none data-lang=none>On branch &lt;my_new_branch&gt;
+Your branch is up to date with &#39;origin/&lt;my_new_branch&gt;&#39;.
+
+Changes not staged for commit:
+(use &#34;git add &lt;file&gt;...&#34; to update what will be committed)
+(use &#34;git checkout -- &lt;file&gt;...&#34; to discard changes in working directory)
+
+modified:   content/en/docs/contribute/new-content/contributing-content.md
+
+no changes added to commit (use &#34;git add&#34; and/or &#34;git commit -a&#34;)
+</code></pre></li><li><p><strong>Changes not staged for commit</strong>에 나열된 파일을 커밋에 추가한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>git add &lt;your_file_name&gt;
+</span></span></code></pre></div><p>각 파일에 대해 이 작업을 반복한다.</p></li><li><p>모든 파일을 추가한 후, 커밋을 생성한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>git commit -m <span class=s2>&#34;Your commit message&#34;</span>
+</span></span></code></pre></div><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>커밋 메시지에 어떤 <a href=https://help.github.com/en/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword>GitHub 키워드</a>
+도 사용하지 않는다. 이 키워드들은 나중에 풀 리퀘스트 설명에
+추가할 수 있다.</div></li><li><p>로컬 브랜치와 새로운 커밋을 원격 포크로 푸시한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>git push origin &lt;my_new_branch&gt;
+</span></span></code></pre></div></li></ol><h3 id=preview-locally>로컬에서 변경 사항 미리보기<a class=td-heading-self-link href=#preview-locally aria-label="Heading self-link"></a></h3><p>푸시하거나 풀 리퀘스트를 열기 전에 변경 사항을 로컬에서 미리 보는 것이 좋다.
+미리보기를 사용하면 빌드 오류나 마크다운 형식 문제를 알아낼 수 있다.</p><p>website의 컨테이너 이미지를 빌드하거나 Hugo를 로컬에서 실행할 수 있다.
+도커 이미지 빌드는 느리지만 <a href=/docs/contribute/style/hugo-shortcodes/>Hugo 단축코드</a>를 표시하므로,
+디버깅에 유용할 수 있다.</p><ul class="nav nav-tabs" id=tabs-tab-with-hugo role=tablist><li class=nav-item><button class="nav-link active" id=tabs-tab-with-hugo-0-tab data-bs-toggle=tab data-bs-target=#tabs-tab-with-hugo-0 role=tab aria-controls=tabs-tab-with-hugo-0 aria-selected=true>
+Hugo 컨테이너</button><li class=nav-item><button class=nav-link id=tabs-tab-with-hugo-1-tab data-bs-toggle=tab data-bs-target=#tabs-tab-with-hugo-1 role=tab aria-controls=tabs-tab-with-hugo-1 aria-selected=false>
+Hugo 커맨드 라인</button></ul><div class=tab-content id=tabs-tab-with-hugo-content><div class="tab-body tab-pane fadeshow active" id=tabs-tab-with-hugo-0 role=tabpanel aria-labelledby=tabs-tab-with-hugo-0-tab tabindex=tab-with-hugo><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>아래 명령은 도커를 기본 컨테이너 엔진으로 사용한다. 이 동작을 무시하려면
+<code>CONTAINER_ENGINE</code> 환경 변수를 설정한다.</div><ol><li><p>로컬에서 이미지를 빌드한다.
+<em>Hugo 도구 자체에 대한 변경을 테스트하는 경우에만 이 단계가 필요하다.</em></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 터미널에서 실행 (필요에 따라)</span>
+</span></span><span class=line><span class=cl>make container-image
+</span></span></code></pre></div></li><li><p>로컬 리포지터리에서 서브모듈 의존성을 가져온다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 터미널에서 실행</span>
+</span></span><span class=line><span class=cl>make module-init
+</span></span></code></pre></div></li><li><p>컨테이너에서 Hugo를 시작한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 터미널에서 실행</span>
+</span></span><span class=line><span class=cl>make container-serve
+</span></span></code></pre></div></li><li><p>웹 브라우저에서 <code>http://localhost:1313</code> 으로 이동한다. Hugo는
+변경 사항을 보고 필요에 따라 사이트를 다시 빌드한다.</p></li><li><p>로컬의 Hugo 인스턴스를 중지하려면, 터미널로 돌아가서 <code>Ctrl+C</code> 를 입력하거나,
+터미널 창을 닫는다.</p></li></ol></div><div class="tab-body tab-pane fade" id=tabs-tab-with-hugo-1 role=tabpanel aria-labelledby=tabs-tab-with-hugo-1-tab tabindex=tab-with-hugo><p>또는, 컴퓨터에 <code>hugo</code> 명령을 설치하여 사용한다.</p><ol><li><p><a href=https://raw.githubusercontent.com/kubernetes/website/main/netlify.toml><code>website/netlify.toml</code></a>에 지정된 <a href=https://gohugo.io/getting-started/installing/>Hugo (확장 에디션)</a>과
+<a href=https://nodejs.org/en>Node</a> 버전을 설치한다.</p></li><li><p>모든 의존성을 설치한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>npm ci
+</span></span></code></pre></div></li><li><p>터미널에서, 쿠버네티스 website 리포지터리로 이동한 뒤 Hugo 서버를 실행한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=nb>cd</span> &lt;path_to_your_repo&gt;/website
+</span></span><span class=line><span class=cl>make serve
+</span></span></code></pre></div><p>만약 윈도우 환경을 사용하거나 <code>make</code> 명령어를 실행할 수 없는 경우, 다음 명령을 대신 사용한다.</p><pre tabindex=0><code>hugo server --buildFuture
+</code></pre></li><li><p>웹 브라우저에서 <code>http://localhost:1313</code> 으로 이동한다. Hugo는
+변경 사항을 보고 필요에 따라 사이트를 다시 빌드한다.</p></li><li><p>로컬의 Hugo 인스턴스를 중지하려면, 터미널로 돌아가서 <code>Ctrl+C</code> 를 입력하거나,
+   터미널 창을 닫는다.</p></li></ol></div></div><h3 id=open-a-pr>포크한 리포지터리에서 kubernetes/website로 풀 리퀘스트 열기<a class=td-heading-self-link href=#open-a-pr aria-label="Heading self-link"></a></h3><p>그림 3은 포크에서 <a href=https://github.com/kubernetes/website>kubernetes/website</a>로 PR을 여는 단계를 보여 준다. 세부 단계는 아래와 같다.</p><p>참고로, 기여자들은 <code>kubernetes/website</code> 를 <code>k/website</code> 로 언급할 수 있다.</p><pre class=mermaid>
+flowchart LR
+subgraph first[ ]
+direction TB
+1[1. kubernetes/website 리포지터리로 이동] --> 2[2. 'New Pull Request' 클릭]
+2 --> 3[3. 'compare across forks' 클릭]
+3 --> 4[4. 'head repository' 드롭다운 메뉴에서<br>당신의 포크 선택]
+end
+subgraph second [ ]
+direction TB
+5[5. 'compare' 드롭다운 메뉴에서<br>당신의 브랜치 선택] --> 6[6. 'Create Pull Request' 클릭]
+6 --> 7[7. PR 본문에 상세 설명 기재]
+7 --> 8[8. 'Create pull request' 클릭]
+end
+
+first --> second
+
+classDef grey fill:#dddddd,stroke:#ffffff,stroke-width:px,color:#000000, font-size:15px;
+classDef white fill:#ffffff,stroke:#000,stroke-width:px,color:#000,font-weight:bold
+class 1,2,3,4,5,6,7,8 grey
+class first,second white
+</pre><p>그림 3. 포크한 리포지터리에서 <a href=https://github.com/kubernetes/website>kubernetes/website</a>로 PR을 여는 단계</p><ol><li><p>웹 브라우저에서 <a href=https://github.com/kubernetes/website/><code>kubernetes/website</code></a> 리포지터리로 이동한다.</p></li><li><p><strong>New Pull Request</strong>를 선택한다.</p></li><li><p><strong>compare across forks</strong>를 선택한다.</p></li><li><p><strong>head repository</strong> 드롭다운 메뉴에서, 포크를 선택한다.</p></li><li><p><strong>compare</strong> 드롭다운 메뉴에서, 브랜치를 선택한다.</p></li><li><p><strong>Create Pull Request</strong>를 선택한다.</p></li><li><p>풀 리퀘스트에 대한 설명을 추가한다.</p><ul><li><p><strong>Title</strong>(50자 이하): 변경 사항에 대한 의도를 요약한다.</p></li><li><p><strong>Description</strong>: 변경 사항을 자세히 설명한다.</p><ul><li>관련된 GitHub 이슈가 있는 경우, <code>Fixes #12345</code> 또는 <code>Closes #12345</code> 를
+설명에 포함한다. 이렇게 하면 GitHub의 자동화 기능이 PR을 병합한 후 언급된 이슈를 닫는다.
+다른 관련된 PR이 있는 경우, 해당 링크도 함께 추가한다.</li><li>구체적인 내용에 대한 조언이 필요한 경우, 원하는 질문을 리뷰어가
+생각해볼 수 있도록 설명에 포함한다.</li></ul></li></ul></li><li><p><strong>Create pull request</strong> 버튼을 선택한다.</p></li></ol><p>축하한다! 당신의 풀 리퀘스트가 <a href=https://github.com/kubernetes/website/pulls>풀 리퀘스트</a>에 등록되었다.</p><p>PR을 연 후, GitHub는 자동화된 테스트를 실행하고
+<a href=https://www.netlify.com/>Netlify</a>를 사용하여 미리보기를 배포하려고 시도한다.</p><ul><li>Netlify 빌드가 실패하면, 자세한 정보를 위해 <strong>Details</strong>를 선택한다.</li><li>Netlify 빌드가 성공하면, <strong>Details</strong>를 선택하면 변경 사항이 적용된 쿠버네티스 website의 커밋하기
+직전의 버전(staged version)이 열린다. 이는 리뷰어가 변경 사항을 확인하는 방법이다.</li></ul><p>또한 GitHub는 리뷰어에게 도움을 주기 위해 PR에 레이블을 자동으로 할당한다. 필요한 경우 직접 추가할 수도 있다.
+자세한 내용은 <a href=/ko/docs/contribute/review/for-approvers/#이슈-레이블-추가와-제거>이슈 레이블 추가와 제거</a>를 참고한다.</p><h3 id=로컬에서-피드백-해결하기>로컬에서 피드백 해결하기<a class=td-heading-self-link href=#%eb%a1%9c%ec%bb%ac%ec%97%90%ec%84%9c-%ed%94%bc%eb%93%9c%eb%b0%b1-%ed%95%b4%ea%b2%b0%ed%95%98%ea%b8%b0 aria-label="Heading self-link"></a></h3><ol><li><p>변경을 완료한 후, 이전 커밋을 수정한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>git commit -a --amend
+</span></span></code></pre></div><ul><li><code>-a</code>: 모든 변경 사항을 커밋</li><li><code>--amend</code>: 새로운 커밋을 만들지 않고, 이전 커밋을 수정한다.</li></ul></li><li><p>필요한 경우 커밋 메시지를 업데이트한다.</p></li><li><p><code>git push origin &lt;my_new_branch></code>를 사용해서 변경 사항을 푸시하고 Netlify 테스트를 다시 실행한다.</p><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>수정하는 대신 <code>git commit -m</code> 을 사용하는 경우, 병합하기 전에 <a href=#%EC%BB%A4%EB%B0%8B-%EC%8A%A4%EC%BF%BC%EC%8B%9C%ED%95%98%EA%B8%B0>커밋을 스쿼시</a>해야
+한다.</div></li></ol><h4 id=리뷰어의-변경>리뷰어의 변경<a class=td-heading-self-link href=#%eb%a6%ac%eb%b7%b0%ec%96%b4%ec%9d%98-%eb%b3%80%ea%b2%bd aria-label="Heading self-link"></a></h4><p>때때로 리뷰어가 당신의 풀 리퀘스트에 직접 커밋하기도 한다. 따라서 다른 변경을 적용하기 전에, 해당 커밋 내역을 가져오자.</p><ol><li><p>원격 포크에서 커밋을 가져오고 작업 브랜치를 리베이스한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>git fetch origin
+</span></span><span class=line><span class=cl>git rebase origin/&lt;your-branch-name&gt;
+</span></span></code></pre></div></li><li><p>리베이스한 후, 포크에 새로운 변경 사항을 강제로 푸시한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>git push --force-with-lease origin &lt;your-branch-name&gt;
+</span></span></code></pre></div></li></ol><h4 id=충돌-병합-및-리베이스>충돌 병합 및 리베이스<a class=td-heading-self-link href=#%ec%b6%a9%eb%8f%8c-%eb%b3%91%ed%95%a9-%eb%b0%8f-%eb%a6%ac%eb%b2%a0%ec%9d%b4%ec%8a%a4 aria-label="Heading self-link"></a></h4><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>자세한 내용은 <a href=https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging#_basic_merge_conflicts>Git 브랜치 - 기본 브랜치와 병합</a>,
+<a href=https://git-scm.com/book/en/v2/Git-Tools-Advanced-Merging>고급 병합</a>을 참조하거나,
+슬랙 채널 <code>#sig-docs</code> 에서 도움을 요청한다.</div><p>다른 기여자가 다른 PR에서 동일한 파일에 대한 변경 사항을 커밋하면, 병합 충돌이 발생할 수 있다.
+PR의 모든 병합 충돌을 해결해야 한다.</p><ol><li><p>포크를 업데이트하고 로컬 브랜치를 리베이스한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>git fetch origin
+</span></span><span class=line><span class=cl>git rebase origin/&lt;your-branch-name&gt;
+</span></span></code></pre></div><p>그런 다음 포크에 변경 사항을 강제로 푸시한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>git push --force-with-lease origin &lt;your-branch-name&gt;
+</span></span></code></pre></div></li><li><p><code>kubernetes/website</code>의 <code>upstream/main</code>에 대한 변경 사항을 가져오고 브랜치를 리베이스한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>git fetch upstream
+</span></span><span class=line><span class=cl>git rebase upstream/main
+</span></span></code></pre></div></li><li><p>리베이스의 결과를 검사한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>git status
+</span></span></code></pre></div><p>이 명령의 결과에 여러 파일이 충돌된 것으로 표시된다.</p></li><li><p>각 충돌 파일을 열고 <code>>>></code>, <code>&lt;&lt;&lt;</code>, <code>===</code>와 같은 충돌 마커를 찾는다.
+충돌을 해결하고 충돌 마커를 삭제한다.</p><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>자세한 내용은 <a href=https://git-scm.com/docs/git-merge#_how_conflicts_are_presented>충돌이 표시되는 방법</a>을 참고한다.</div></li><li><p>변경 세트에 파일을 추가한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>git add &lt;filename&gt;
+</span></span></code></pre></div></li><li><p>리베이스를 계속한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>git rebase --continue
+</span></span></code></pre></div></li><li><p>필요에 따라 2단계에서 5단계를 반복한다.</p><p>모든 커밋을 적용한 후, <code>git status</code> 명령어는 리베이스가 완료되었음을 보여준다.</p></li><li><p>브랜치를 포크에 강제로 푸시한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>git push --force-with-lease origin &lt;your-branch-name&gt;
+</span></span></code></pre></div><p>풀 리퀘스트에 더 이상 충돌이 표시되지 않는다.</p></li></ol><h3 id=커밋-스쿼시하기>커밋 스쿼시하기<a class=td-heading-self-link href=#%ec%bb%a4%eb%b0%8b-%ec%8a%a4%ec%bf%bc%ec%8b%9c%ed%95%98%ea%b8%b0 aria-label="Heading self-link"></a></h3><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>자세한 내용은 <a href=https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History>Git 도구 - 히스토리 다시 쓰기</a>를 참고하거나,
+슬랙 채널 <code>#sig-docs</code> 에서 도움을 요청한다.</div><p>PR에 여러 커밋이 있는 경우, PR을 병합하기 전에 해당 커밋을 단일 커밋으로 스쿼시해야 한다.
+PR의 <strong>Commits</strong> 탭에서 또는 로컬에서 <code>git log</code> 명령을 실행하여
+커밋 수를 확인할 수 있다.</p><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>여기서는 <code>vim</code> 을 커맨드 라인 텍스트 에디터로 사용하는 것을 가정한다.</div><ol><li><p>대화식 리베이스를 시작한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>git rebase -i HEAD~&lt;number_of_commits_in_branch&gt;
+</span></span></code></pre></div><p>커밋을 스쿼시하는 것은 일종의 리베이스이다. git의 <code>-i</code> 스위치는 리베이스를 대화형으로 할 수 있게 한다.
+<code>HEAD~&lt;number_of_commits_in_branch></code> 는 리베이스를 위해 살펴볼 커밋 수를 나타낸다.</p><p>출력은 다음과 비슷하다.</p><pre tabindex=0><code class=language-none data-lang=none>pick d875112ca Original commit
+pick 4fa167b80 Address feedback 1
+pick 7d54e15ee Address feedback 2
+
+# 3d18sf680..7d54e15ee 를 3d183f680 으로 리베이스한다 (3개 명령)
+
+...
+
+ # 이 행들은 재정렬할 수 있으며, 위에서 아래로 순차적으로 실행된다.
+</code></pre><p>출력의 첫 번째 섹션에는 리베이스의 커밋이 나열된다. 두 번째 섹션에는
+각 커밋에 대한 옵션이 나열되어 있다. <code>pick</code> 단어를 바꾸면 리베이스가 완료되었을 때
+커밋 상태가 변경된다.</p><p>리베이스에서는 <code>squash</code> 와 <code>pick</code> 에 집중한다.</p><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>자세한 내용은 <a href=https://git-scm.com/docs/git-rebase#_interactive_mode>대화식 모드</a>를 참고한다.</div></li><li><p>파일 편집을 시작한다.</p><p>다음의 원본 텍스트를 변경한다.</p><pre tabindex=0><code class=language-none data-lang=none>pick d875112ca Original commit
+pick 4fa167b80 Address feedback 1
+pick 7d54e15ee Address feedback 2
+</code></pre><p>아래와 같이 변경한다.</p><pre tabindex=0><code class=language-none data-lang=none>pick d875112ca Original commit
+squash 4fa167b80 Address feedback 1
+squash 7d54e15ee Address feedback 2
+</code></pre><p>이것은 커밋 <code>4fa167b80 Address feedback 1</code> 과 <code>7d54e15ee Address feedback 2</code> 를 <code>d875112ca Original commit</code> 으로 스쿼시하며,
+타임라인의 일부로 <code>d875112ca Original commit</code> 만 남긴다.</p></li><li><p>파일을 저장하고 종료한다.</p></li><li><p>스쿼시된 커밋을 푸시한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>git push --force-with-lease origin &lt;branch_name&gt;
+</span></span></code></pre></div></li></ol><h2 id=다른-리포지터리에-기여하기>다른 리포지터리에 기여하기<a class=td-heading-self-link href=#%eb%8b%a4%eb%a5%b8-%eb%a6%ac%ed%8f%ac%ec%a7%80%ed%84%b0%eb%a6%ac%ec%97%90-%ea%b8%b0%ec%97%ac%ed%95%98%ea%b8%b0 aria-label="Heading self-link"></a></h2><p><a href=https://github.com/kubernetes>쿠버네티스 프로젝트</a>에는 50개 이상의 리포지터리가 포함되어 있다. 이러한
+리포지터리에는 사용자용 도움말 텍스트, 오류 메시지, API 레퍼런스 또는 코드 주석과
+같은 문서가 포함되어 있다.</p><p>개선하고 싶은 텍스트가 보이면, GitHub를 사용하여 쿠버네티스 조직의 모든
+리포지터리를 검색한다. 이를 통해 어디에 이슈나 PR을 제출할지를 파악할 수 있다.</p><p>각 리포지터리에는 고유한 프로세스와 절차가 있다. 이슈를 등록하거나 PR을 제출하기 전에,
+해당 리포지터리에 <code>README.md</code>, <code>CONTRIBUTING.md</code> 그리고 <code>code-of-conduct.md</code> 파일이 있다면 읽어본다.</p><p>대부분의 리포지터리에는 이슈와 PR 템플릿을 사용한다. 해당 팀의 프로세스를 파악하기 위해
+공개된 이슈와 PR을 살펴보자. 이슈나 PR을 제출할 때는
+가능한 한 상세하게 템플릿의 내용을 작성한다.</p><h2 id=다음-내용>다음 내용<a class=td-heading-self-link href=#%eb%8b%a4%ec%9d%8c-%eb%82%b4%ec%9a%a9 aria-label="Heading self-link"></a></h2><ul><li>리뷰 프로세스에 대한 자세한 내용은 <a href=/ko/docs/contribute/review/reviewing-prs/>리뷰하기</a>를 읽어본다.</li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-b90deb2107ecac38aafcac93b8701858>2 - 로컬에서 미리보기</h1><p><a href=/ko/docs/contribute/new-content/open-a-pr/>새 PR을 열기</a> 전에,
+변경 사항을 미리 보는 것이 좋다.
+미리보기를 사용하면 빌드 오류나 마크다운 형식 문제를 알아낼 수 있다.</p><h2 id=preview-locally>로컬에서 변경 사항 미리보기<a class=td-heading-self-link href=#preview-locally aria-label="Heading self-link"></a></h2><p>website의 컨테이너 이미지를 빌드하거나 Hugo를 로컬에서 실행할 수 있다.
+컨테이너 이미지 빌드는 느리지만 <a href=/docs/contribute/style/hugo-shortcodes/>Hugo 단축코드</a>를 표시하므로,
+디버깅에 유용할 수 있다.</p><ul class="nav nav-tabs" id=tabs-tab-with-hugo role=tablist><li class=nav-item><button class="nav-link active" id=tabs-tab-with-hugo-0-tab data-bs-toggle=tab data-bs-target=#tabs-tab-with-hugo-0 role=tab aria-controls=tabs-tab-with-hugo-0 aria-selected=true>
+Hugo 컨테이너</button><li class=nav-item><button class=nav-link id=tabs-tab-with-hugo-1-tab data-bs-toggle=tab data-bs-target=#tabs-tab-with-hugo-1 role=tab aria-controls=tabs-tab-with-hugo-1 aria-selected=false>
+Hugo 커맨드 라인</button></ul><div class=tab-content id=tabs-tab-with-hugo-content><div class="tab-body tab-pane fadeshow active" id=tabs-tab-with-hugo-0 role=tabpanel aria-labelledby=tabs-tab-with-hugo-0-tab tabindex=tab-with-hugo><div class="alert alert-info" role=note><h4 class=alert-heading>참고:</h4>아래 명령은 도커를 기본 컨테이너 엔진으로 사용한다. 이 동작을 무시하려면
+<code>CONTAINER_ENGINE</code> 환경 변수를 설정한다.</div><ol><li><p>로컬에서 이미지를 빌드한다.<br><em>Hugo 도구 자체에 대한 변경을 테스트하는 경우에만 이 단계가 필요하다.</em></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 터미널에서 실행 (필요에 따라)</span>
+</span></span><span class=line><span class=cl>make container-image
+</span></span></code></pre></div></li><li><p>로컬 리포지터리에서 서브모듈 의존성을 가져온다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 터미널에서 실행</span>
+</span></span><span class=line><span class=cl>make module-init
+</span></span></code></pre></div></li><li><p>컨테이너에서 Hugo를 시작한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 터미널에서 실행</span>
+</span></span><span class=line><span class=cl>make container-serve
+</span></span></code></pre></div></li><li><p>웹 브라우저에서 <code>http://localhost:1313</code> 으로 이동한다. Hugo는
+변경 사항을 보고 필요에 따라 사이트를 다시 빌드한다.</p></li><li><p>로컬의 Hugo 인스턴스를 중지하려면, 터미널로 돌아가서 <code>Ctrl+C</code> 를 입력하거나,
+터미널 창을 닫는다.</p></li></ol></div><div class="tab-body tab-pane fade" id=tabs-tab-with-hugo-1 role=tabpanel aria-labelledby=tabs-tab-with-hugo-1-tab tabindex=tab-with-hugo><p>또는, 컴퓨터에 <code>hugo</code> 명령을 설치하여 사용한다.</p><ol><li><p><a href=https://raw.githubusercontent.com/kubernetes/website/main/netlify.toml><code>website/netlify.toml</code></a>에 지정된 <a href=https://gohugo.io/getting-started/installing/>Hugo (확장 에디션)</a>과
+<a href=https://nodejs.org/en>Node</a> 버전을 설치한다.</p></li><li><p>모든 의존성을 설치한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>npm ci
+</span></span></code></pre></div></li><li><p>터미널에서, 쿠버네티스 website 리포지터리로 이동한 뒤 Hugo 서버를 실행한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=nb>cd</span> &lt;path_to_your_repo&gt;/website
+</span></span><span class=line><span class=cl>make serve
+</span></span></code></pre></div><p>만약 윈도우 환경을 사용하거나 <code>make</code> 명령어를 실행할 수 없는 경우, 다음 명령을 대신 사용한다.</p><pre tabindex=0><code>hugo server --buildFuture
+</code></pre></li><li><p>웹 브라우저에서 <code>http://localhost:1313</code> 으로 이동한다. Hugo는
+변경 사항을 보고 필요에 따라 사이트를 다시 빌드한다.</p></li><li><p>로컬의 Hugo 인스턴스를 중지하려면, 터미널로 돌아가서 <code>Ctrl+C</code> 를 입력하거나,
+터미널 창을 닫는다.</p></li></ol></div></div><h2 id=troubleshooting>트러블슈팅<a class=td-heading-self-link href=#troubleshooting aria-label="Heading self-link"></a></h2><h3 id=오류-메시지-failed-to-transform-resource-tocss-failed-to-transform-scss-main-scss-text-x-scss-this-feature-is-not-available-in-your-current-hugo-version>오류 메시지: failed to transform resource: TOCSS: failed to transform "scss/main.scss" (text/x-scss): this feature is not available in your current Hugo version<a class=td-heading-self-link href=#%ec%98%a4%eb%a5%98-%eb%a9%94%ec%8b%9c%ec%a7%80-failed-to-transform-resource-tocss-failed-to-transform-scss-main-scss-text-x-scss-this-feature-is-not-available-in-your-current-hugo-version aria-label="Heading self-link"></a></h3><p>기술적인 이유로 Hugo는 두 가지 바이너리로 제공된다. 현재
+웹사이트는 <strong>Hugo Extended</strong> 버전만을 기반으로 실행된다. <a href=https://github.com/gohugoio/hugo/releases>릴리스 페이지</a>에서
+이름에 <code>extended</code>가 포함된 아카이브를 찾는다. 확인하려면 <code>hugo version</code>을 실행하여
+<code>extended</code>라는 단어가 있는지 확인한다.</p><h3 id=macos에서-too-many-open-files-오류-문제-해결>macOS에서 "too many open files" 오류 문제 해결<a class=td-heading-self-link href=#macos%ec%97%90%ec%84%9c-too-many-open-files-%ec%98%a4%eb%a5%98-%eb%ac%b8%ec%a0%9c-%ed%95%b4%ea%b2%b0 aria-label="Heading self-link"></a></h3><p>macOS에서 <code>make serve</code>를 실행했을 때 다음과 같은 오류가 발생하는 경우,</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>ERROR 2020/08/01 19:09:18 Error: listen tcp 127.0.0.1:1313: socket: too many open files
+</span></span><span class=line><span class=cl>make: *** <span class=o>[</span>serve<span class=o>]</span> Error <span class=m>1</span>
+</span></span></code></pre></div><p>열린 파일에 대한 현재 제한값을 확인한다.</p><p><code>launchctl limit maxfiles</code></p><p>그 다음, 아래 명령을 실행한다(<a href=https://gist.github.com/tombigel/d503800a282fcadbee14b537735d202c>https://gist.github.com/tombigel/d503800a282fcadbee14b537735d202c</a>에서 가져옴).</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=cp>#!/bin/sh
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=c1># These are the original gist links, linking to my gists now.</span>
+</span></span><span class=line><span class=cl><span class=c1># curl -O https://gist.githubusercontent.com/a2ikm/761c2ab02b7b3935679e55af5d81786a/raw/ab644cb92f216c019a2f032bbf25e258b01d87f9/limit.maxfiles.plist</span>
+</span></span><span class=line><span class=cl><span class=c1># curl -O https://gist.githubusercontent.com/a2ikm/761c2ab02b7b3935679e55af5d81786a/raw/ab644cb92f216c019a2f032bbf25e258b01d87f9/limit.maxproc.plist</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>curl -O https://gist.githubusercontent.com/tombigel/d503800a282fcadbee14b537735d202c/raw/ed73cacf82906fdde59976a0c8248cce8b44f906/limit.maxfiles.plist
+</span></span><span class=line><span class=cl>curl -O https://gist.githubusercontent.com/tombigel/d503800a282fcadbee14b537735d202c/raw/ed73cacf82906fdde59976a0c8248cce8b44f906/limit.maxproc.plist
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo mv limit.maxfiles.plist /Library/LaunchDaemons
+</span></span><span class=line><span class=cl>sudo mv limit.maxproc.plist /Library/LaunchDaemons
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo chown root:wheel /Library/LaunchDaemons/limit.maxfiles.plist
+</span></span><span class=line><span class=cl>sudo chown root:wheel /Library/LaunchDaemons/limit.maxproc.plist
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo launchctl load -w /Library/LaunchDaemons/limit.maxfiles.plist
+</span></span></code></pre></div><p>이 방법은 Catalina와 Mojave macOS 모두에서 동작한다.</p><h3 id=unable-to-find-image-gcr-io-k8s-staging-sig-docs-k8s-website-hugo-version-locally>Unable to find image 'gcr.io/k8s-staging-sig-docs/k8s-website-hugo:VERSION' locally<a class=td-heading-self-link href=#unable-to-find-image-gcr-io-k8s-staging-sig-docs-k8s-website-hugo-version-locally aria-label="Heading self-link"></a></h3><p><code>make container-serve</code>를 실행했을 때 이 오류가 발생한다면, <code>Makefile</code>의
+<code>$IMAGE_VERSION</code>에 <a href=https://github.com/kubernetes/website/blob/main/Makefile#L10>정의된</a>
+특정 파일에 로컬 변경이 이루어졌기 때문일 수 있다.</p><p>웹사이트 이미지 버전에는 해시가 포함되며, 이 해시는
+해당 파일의 내용을 기반으로 생성된다. 예를 들어, 이러한 파일에 대한 해시가 <code>1b9242684415</code>이면
+웹사이트 이미지는 <code>k8s-website-hugo:v0.133.0-1b9242684415</code>라는 이름을 갖는다.
+<code>make container-serve</code>를 실행하면 쿠버네티스 웹사이트의 GCR에서
+해당 이미지를 가져오려고 시도한다. 현재 버전이 아닌 경우, 이 이미지가
+존재하지 않는다는 오류가 표시된다.</p><p>이러한 파일을 변경하고 웹사이트를 미리 봐야 한다면,
+미리 빌드된 이미지를 가져오는 대신 로컬 이미지를 빌드해야 한다.
+이를 위해 <code>make container-image</code>를 실행한다.</p><h3 id=기타-문제>기타 문제<a class=td-heading-self-link href=#%ea%b8%b0%ed%83%80-%eb%ac%b8%ec%a0%9c aria-label="Heading self-link"></a></h3><p>로컬에서 웹사이트를 실행하거나 변경 사항을 미리 보는 과정에서 다른 문제가 발생하면,
+<code>kubernetes/website</code> GitHub 리포지터리에 자유롭게
+<a href=https://github.com/kubernetes/website/issues/new/choose>이슈를 생성한다</a>.</p></div><div class=td-content style=page-break-before:always><h1 id=pg-10ed45584b496b99003f299b4614ff78>3 - 릴리스를 위한 기능 문서화</h1><p>쿠버네티스의 각 주요 릴리스에는 문서화가 필요한 새로운 기능이 도입된다.
+새로운 릴리스는 기존 기능 및 문서의 업데이트도 포함한다.
+(예: alpha에서 beta로의 기능 업그레이드)</p><p>일반적으로, 해당 기능을 담당하는 SIG는
+해당 기능에 대한 초안 문서를 <code>kubernetes/website</code> 저장소의
+적절한 개발 브랜치에 풀 리퀘스트로 제출하며,
+SIG Docs 팀의 누군가가 피드백을 제공하거나 초안을 직접 편집한다.
+이 섹션은 두 그룹이 릴리스 과정에서 사용하는 브랜치 컨벤션과 프로세스를 다룬다.</p><p>블로그를 통해 기능을 발표하는 방법에 대해 알아보려면,
+<a href=/docs/contribute/blog/release-comms/>릴리스 후 커뮤니케이션</a>을 읽어본다.</p><h2 id=문서-기여자를-위한-안내>문서 기여자를 위한 안내<a class=td-heading-self-link href=#%eb%ac%b8%ec%84%9c-%ea%b8%b0%ec%97%ac%ec%9e%90%eb%a5%bc-%ec%9c%84%ed%95%9c-%ec%95%88%eb%82%b4 aria-label="Heading self-link"></a></h2><p>일반적으로, 문서 기여자는 릴리스를 위한 콘텐츠를 처음부터 작성하지는 않는다.
+대신, 새로운 기능을 개발하는 SIG와 협업하여 초안 문서를 다듬고
+릴리스 준비가 완료되도록 한다.</p><p>문서화하거나 협력하고 싶은 기능을 선택한 후, <code>#sig-docs</code>
+슬랙 채널, 주간 SIG Docs 회의, 또는 해당 기능 SIG가 올린 PR에서 직접 문의한다.
+승인을 받으면, <a href=/ko/docs/contribute/review/for-approvers/#%EB%8B%A4%EB%A5%B8-%EC%82%AC%EB%9E%8C%EC%9D%98-pr%EC%97%90-%EC%BB%A4%EB%B0%8B>다른 사람의 PR에 커밋</a>에서
+설명한 방법 중 하나를 사용해
+PR을 편집할 수 있다.</p><h3 id=향후-기능-알아보기>향후 기능 알아보기<a class=td-heading-self-link href=#%ed%96%a5%ed%9b%84-%ea%b8%b0%eb%8a%a5-%ec%95%8c%ec%95%84%eb%b3%b4%ea%b8%b0 aria-label="Heading self-link"></a></h3><p>향후 기능에 대해 알아보려면, 주간 SIG Release 회의에 참석한다. (다가오는 회의
+일정은 <a href=/ko/community/>커뮤니티</a> 페이지에서 확인할 수 있다)
+또한 <a href=https://github.com/kubernetes/sig-release/>kubernetes/sig-release</a>
+리포지토리의 릴리스별 문서를
+모니터링 하면 된다. 각 릴리스는
+<a href=https://github.com/kubernetes/sig-release/tree/master/releases>/sig-release/tree/master/releases/</a>
+디렉토리 아래에 하위 디렉토리를 가지고 있다. 이 하위 디렉토리에는 릴리스 일정, 릴리스 노트 초안
+그리고 릴리스 팀 구성원 명단이 담긴 문서가 포함되어 있다.</p><p>릴리스 일정 문서에는
+해당 릴리스와 관련된 다른 모든 문서, 회의, 회의록,
+그리고 마일스톤에 대한 링크가 포함되어 있다. 또한, 릴리스의 목표와 일정,
+이 릴리스에 적용되는 특수 프로세스에 대한 정보도 포함되어 포함되어 있다. 문서 하단에는
+릴리스 관련 용어들이 정의되어 있다.</p><p>이 문서에는 <strong>기능 추적 시트</strong>에 대한 링크 또한 포함되어 있으며, 이는
+이번 릴리스에 포함될 예정인 모든 신규 기능을
+공식적으로 확인할 수 있는 방법이다.</p><p>릴리스 팀 문서는 각 릴리스 역할에 대한 책임자를 명시한다. 만약
+특정 기능이나 질문에 대해 누구와 논의해야 할지 명확하지 않다면,
+릴리스 회의에 참석하여 질문하거나, 릴리스 리드에게 연락하면
+그들이 적절한 담당자에게 연결해 줄 수 있다.</p><p>릴리스 노트 초안은 특정 기능, 변경 사항, 사용 중단 예정 항목 등
+이번 릴리스에 대한 내용을 파악하기에 좋은 자료이다. 다만,
+이 내용은 릴리스 주기의 후반까지 확정되지 않으므로 참고 시 주의가 필요하다.</p><h3 id=기능-추적-시트>기능 추적 시트<a class=td-heading-self-link href=#%ea%b8%b0%eb%8a%a5-%ec%b6%94%ec%a0%81-%ec%8b%9c%ed%8a%b8 aria-label="Heading self-link"></a></h3><p><a href=https://github.com/kubernetes/sig-release/tree/master/releases>쿠버네티스 릴리스</a> 기능 추적 시트는
+해당 릴리스에 포함될 예정인 각 기능을 나열한다.
+각 항목에는 기능 이름, 해당 기능의 메인 GitHub 이슈 링크,
+안정성 단계(알파, 베타, 스테이블),
+SIG 및 해당 기능을 구현하는 담당자,
+문서화가 필요한지 여부, 기능의 릴리스 노트 초안,
+그리고 해당 기능이 병합되었는지 여부가 포함된다. 다음 사항을 유의한다.</p><ul><li>베타 및 스테이블 기능은 일반적으로 알파 기능보다 문서화
+우선순위가 높다.</li><li>아직 병합되지 않았거나, PR 상에서 최소한 기능이 완성된 것으로 간주되지 않은 기능은 테스트하기 어렵고,
+따라서 문서화도 어렵다.</li><li>기능이 문서화가 필요한지 여부는 수동으로 판단해야 한다. 문서화 필요 여부로 표시되지 않은 기능이라
+하더라도 문서화가 필요할 수 있다.</li></ul><h2 id=개발자-또는-다른-sig-구성원을-위한-안내>개발자 또는 다른 SIG 구성원을 위한 안내<a class=td-heading-self-link href=#%ea%b0%9c%eb%b0%9c%ec%9e%90-%eb%98%90%eb%8a%94-%eb%8b%a4%eb%a5%b8-sig-%ea%b5%ac%ec%84%b1%ec%9b%90%ec%9d%84-%ec%9c%84%ed%95%9c-%ec%95%88%eb%82%b4 aria-label="Heading self-link"></a></h2><p>이 섹션은 쿠버네티스의 다른 SIG 구성원들이 릴리스를 위해
+새로운 기능을 문서화하는 데 관련된 정보를 제공한다.</p><p>쿠버네티스의 새로운 기능을 개발 중인 SIG의 구성원이라면,
+해당 기능이 릴리스 시점에 적시에 문서화되도록
+SIG Docs와 협력해야 한다.
+<a href=https://github.com/kubernetes/sig-release/tree/master/releases>기능 추적 스프레드시트</a>를 확인하거나,
+쿠버네티스 Slack의 <code>#sig-release</code> 채널에서
+일정 세부 사항과 마감일을 확인한다.</p><h3 id=임시-pr-열기>임시 PR 열기<a class=td-heading-self-link href=#%ec%9e%84%ec%8b%9c-pr-%ec%97%b4%ea%b8%b0 aria-label="Heading self-link"></a></h3><ol><li><code>kubernetes/website</code> 저장소의
+<code>dev-1.39</code> 브랜치를 대상으로
+나중에 수정할 예정인 간단한 커밋을 포함한 초안 PR을 연다. 초안 PR을 생성하려면,
+<strong>Create Pull Request</strong> 드롭다운 메뉴에서 <strong>Create Draft Pull Request</strong>를 선택한 다음,
+<strong>Draft Pull Request</strong> 버튼을 클릭한다.</li><li>PR 설명란에 <a href=https://github.com/kubernetes/kubernetes>kubernetes/kubernetes</a>
+PR과 <a href=https://github.com/kubernetes/enhancements>kubernetes/enhancements</a> 이슈에 대한 링크를 추가한다.</li><li>관련 <a href=https://github.com/kubernetes/enhancements>kubernetes/enhancements</a>
+이슈에 해당 PR 링크를 포함한 댓글을 남겨, 이 릴리스를 관리하는
+문서 담당자에게 기능 문서가 준비 중이며 릴리스에 반영해야 함을 알린다.</li></ol><p>기능에 대해 문서 변경이 필요하지 않다면, <code>#sig-release</code> 슬랙 채널에 해당 내용을 알려
+sig-release 팀이 이를 인지할 수 있도록 한다. 기능에 문서화가
+필요하지만 PR이 생성되지 않은 경우, 해당 기능은 마일스톤에서 제외될 수 있다.</p><h3 id=리뷰를-위한-pr-준비>리뷰를 위한 PR 준비<a class=td-heading-self-link href=#%eb%a6%ac%eb%b7%b0%eb%a5%bc-%ec%9c%84%ed%95%9c-pr-%ec%a4%80%eb%b9%84 aria-label="Heading self-link"></a></h3><p>준비가 되면, 기능 문서와 변경 사항을 임시 PR에 입력하고 PR의 상태를
+초안(draft)에서 <strong>ready for review</strong> 상태로 변경한다. 풀 리퀘스트를
+검토 가능 상태로 표시하려면, 머지 박스로 이동한 후 <strong>Ready for review</strong> 버튼을 클릭한다.</p><p>기능을 설명하고 사용 방법을 설명하는 데 최선을 다한다.
+문서 구조화에 도움이 필요하면 <code>#sig-docs</code> 슬랙 채널에 문의한다.</p><p>콘텐츠 작성을 마치면, 해당 기능에 배정된 문서 담당자가 이를 검토한다.
+기술적인 정확성을 보장하기 위해, 해당 기능을 담당하는 SIG에서 기술 검토가 필요할 수 있다.
+담당자의 제안을 활용하여 콘텐츠를 릴리스가 가능한 상태로 만든다.</p><p>기능에 문서화가 필요한지만 첫 번째 초안 콘텐츠가
+제출되지 않은 경우, 해당 기능은 마일스톤에서 제외될 수 있다.</p><h4 id=ready-for-review-feature-gates>기능 게이트<a class=td-heading-self-link href=#ready-for-review-feature-gates aria-label="Heading self-link"></a></h4><p>기능이 알파 또는 베타 단계이며 기능 게이트를 통해 활성화되는 경우,
+해당 기능에 대한 기능 게이트 파일을
+<code>content/en/docs/reference/command-line-tools-reference/feature-gates/</code> 디렉토리 안에 추가해야 한다.
+파일 이름은 해당 기능 게이트의 이름에 <code>.md</code> 확장자를 추가한 형태로 지정해야 한다.
+동일한 디렉토리에 이미 존재하는 다른 파일을 참고하여 당신의 파일 구조를 결정할 수 있다.
+일반적으로 단락 하나만으로도 충분하며, 더 긴 설명이 필요한 경우
+다른 곳에 문서를 추가하고 해당 링크를 포함한다.</p><p>또한, 당신의 기능 게이트가
+<a href=/ko/docs/reference/command-line-tools-reference/feature-gates/#feature-gates-for-alpha-or-beta-features>알파 또는 베타 기능을 위한 기능 게이트</a>
+표에 표시되도록 하려면, 당신의 마크다운 설명 파일의
+<a href=https://gohugo.io/content-management/front-matter/>프론트 매터(front matter)</a>에
+다음 정보를 포함해야 한다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>stages</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>stage</span><span class=p>:</span><span class=w> </span><span class=l>&lt;alpha/beta/stable/deprecated&gt; </span><span class=w> </span><span class=c># 기능 게이트의 개발 단계를 지정한다</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>defaultValue</span><span class=p>:</span><span class=w> </span><span class=l>&lt;true or false&gt;         </span><span class=w> </span><span class=c># 기본적으로 활성화되어 있다면 true, 아니라면 false로 설정한다</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>fromVersion</span><span class=p>:</span><span class=w> </span><span class=l>&lt;Version&gt;                </span><span class=w> </span><span class=c># 기능 게이트가 사용 가능한 최소 버전을 입력한다</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>toVersion</span><span class=p>:</span><span class=w> </span><span class=l>&lt;Version&gt;                  </span><span class=w> </span><span class=c># (선택 사항) 기능 게이트가 사용 가능한 마지막 버전을 입력한다</span><span class=w>
+</span></span></span></code></pre></div><p>새로운 기능 게이트를 추가하는 경우, 해당 기능 게이트에 대한 별도의 설명도 필요하다.
+<code>content/en/docs/reference/command-line-tools-reference/feature-gates/</code> 디렉토리 안에 새로운 마크다운 파일을 생성한다
+(다른 파일들의 템플릿을 참고하면 된다).</p><p>기능 게이트를 비활성화 상태에서 활성화 상태로 변경하는 경우,
+(기능 게이트 목록 외에도) 다른 문서도
+수정해야 할 수 있다. "<code>exampleSetting</code> 필드는 베타 단계이며 기본적으로 비활성화되어 있다." 와 같은 문구가 문서에 남아 있는지 주의 깊게 살펴본다.
+이 기능은 <code>ProcessExampleThings</code> 기능 게이트를
+활성화하면 사용할 수 있다.</p><p>기능이 일반 공개(GA) 되었거나 사용 중단(deprecated)된 경우, 설명 파일의
+<code>stages</code> 블록에 추가적인 <code>stage</code> 항목을 포함힌다.
+알파 및 베타 단계는 그대로 유지되어야 한다. 이 단계는
+해당 기능 게이트를
+<a href=/ko/docs/reference/command-line-tools-reference/feature-gates/#feature-gates-for-alpha-or-beta-features>알파 또는 베타 기능 게이트</a> 표에서
+<a href=/ko/docs/reference/command-line-tools-reference/feature-gates/#%EC%8A%B9%EA%B8%89-%EB%98%90%EB%8A%94-%EC%82%AC%EC%9A%A9-%EC%A4%91%EB%8B%A8%EB%90%9C-%EA%B8%B0%EB%8A%A5%EC%9D%84-%EC%9C%84%ED%95%9C-%EA%B8%B0%EB%8A%A5-%EA%B2%8C%EC%9D%B4%ED%8A%B8>승급 또는 사용 중단된 기능 게이트</a> 표로
+전환 한다. 예를 들면 다음과 같다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>stages</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>stage</span><span class=p>:</span><span class=w> </span><span class=l>alpha </span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>defaultValue</span><span class=p>:</span><span class=w> </span><span class=kc>false</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>fromVersion</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;1.12&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>toVersion</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;1.12&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>stage</span><span class=p>:</span><span class=w> </span><span class=l>beta </span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>defaultValue</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>fromVersion</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;1.13&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># 이전 단계에 `toVersion` 항목을 추가한다</span><span class=w>
+</span></span></span><span class="line hl"><span class=cl><span class=w>    </span><span class=nt>toVersion</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;1.18&#34;</span><span class=w>
+</span></span></span><span class="line hl"><span class=cl><span class=w>  </span><span class=c># 기존 단계에 &#39;stable&#39; 단계 블록을 추가한다</span><span class=w>
+</span></span></span><span class="line hl"><span class=cl><span class=w>  </span>- <span class=nt>stage</span><span class=p>:</span><span class=w> </span><span class=l>stable</span><span class=w>
+</span></span></span><span class="line hl"><span class=cl><span class=w>    </span><span class=nt>defaultValue</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class="line hl"><span class=cl><span class=w>    </span><span class=nt>fromVersion</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;1.19&#34;</span><span class=w>
+</span></span></span><span class="line hl"><span class=cl><span class=w>    </span><span class=nt>toVersion</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;1.27&#34;</span></span></span></code></pre></div><p>결국 쿠버네티스는 해당 기능 게이트를 아예 포함하지 않게 될 것이다.
+기능 게이트가 제거되었음을 명시하려면, 해당 설명 파일의
+프론트 매터에 <code>removed: true</code>를 추가한다.
+이렇게 변경하면 해당 기능 게이트 정보는
+<a href=/ko/docs/reference/command-line-tools-reference/feature-gates/#%EC%8A%B9%EA%B8%89-%EB%98%90%EB%8A%94-%EC%82%AC%EC%9A%A9-%EC%A4%91%EB%8B%A8%EB%90%9C-%EA%B8%B0%EB%8A%A5%EC%9D%84-%EC%9C%84%ED%95%9C-%EA%B8%B0%EB%8A%A5-%EA%B2%8C%EC%9D%B4%ED%8A%B8>승급 또는 사용 중단된 기능 게이트</a>
+섹션에서
+<a href=/ko/docs/reference/command-line-tools-reference/feature-gates-removed/>제거된 기능 게이트</a>라는
+별도의 페이지로 이동하며, 그 설명도 함께 포함된다.</p><h3 id=모든-pr이-검토되고-병합-준비-완료>모든 PR이 검토되고 병합 준비 완료<a class=td-heading-self-link href=#%eb%aa%a8%eb%93%a0-pr%ec%9d%b4-%ea%b2%80%ed%86%a0%eb%90%98%ea%b3%a0-%eb%b3%91%ed%95%a9-%ec%a4%80%eb%b9%84-%ec%99%84%eb%a3%8c aria-label="Heading self-link"></a></h3><p>릴리스 마감 기한까지 당신의 PR이 아직 <code>dev-1.39</code>
+브랜치에 병합되지 않았다면, 이번 릴리스를 관리하는 문서 담당자와 협력하여
+마감 기한 내에 병합될 수 있도록 한다. 기능에 문서화가 필요하지만
+문서가 준비되지 않았다면 해당 기능은 마일스톤에서 제외될 수 있다.</p></div><div class=td-content style=page-break-before:always><h1 id=pg-53a7b864b6db6875dc142ce8af243fbf>4 - 사례 연구 제출</h1><p>사례 연구는 조직들이 쿠버네티스를 활용해 실제 문제를 해결하는 방법을 보여준다.
+쿠버네티스 마케팅 팀과 <a class=glossary-tooltip title='클라우드 네이티브 컴퓨팅 재단' data-bs-toggle=tooltip data-bs-placement=top href=https://cncf.io/ target=_blank aria-label=CNCF>CNCF</a>
+구성원들은 모든 사례 연구에 대해 여러분과 협력한다.</p><p>사례 연구는 승인되기 전에 철저한 검토가 필요하다.</p><h2 id=사례-연구-제출하기>사례 연구 제출하기<a class=td-heading-self-link href=#%ec%82%ac%eb%a1%80-%ec%97%b0%ea%b5%ac-%ec%a0%9c%ec%b6%9c%ed%95%98%ea%b8%b0 aria-label="Heading self-link"></a></h2><p><a href=https://github.com/kubernetes/website/tree/main/content/en/case-studies>기존 사례 연구</a>의
+소스를 살펴본다.</p><p><a href=https://github.com/cncf/foundation/blob/main/policies-guidance/case-study-guidelines.md>사례 연구 가이드라인</a>을 참조하고
+가이드라인에 명시된 대로 요청을 제출한다.</p></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col col-sm-3 text-xs-center order-1"><ul class="list-inline mb-0 footer-icons"><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=YouTube><a class=text-white target=_blank rel=noopener href=https://youtube.com/kubernetescommunity aria-label=YouTube><i class="fa-brands fa-youtube"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Forum><a class=text-white target=_blank rel=noopener href=https://discuss.kubernetes.io aria-label=Forum><i class="fa-solid fa-envelope"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title="Server Fault"><a class=text-white target=_blank rel=noopener href=https://serverfault.com/questions/tagged/kubernetes aria-label="Server Fault"><i class="fa-brands fa-stack-overflow"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=LinkedIn><a class=text-white target=_blank rel=noopener href=https://www.linkedin.com/company/kubernetes/ aria-label=LinkedIn><i class="fa-brands fa-linkedin"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Bluesky><a class=text-white target=_blank rel=noopener href=https://bsky.app/profile/kubernetes.io aria-label=Bluesky><i class="fa-brands fa-bluesky"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title="X (formerly Twitter)"><a class=text-white target=_blank rel=noopener href=https://x.com/kubernetesio aria-label="X (formerly Twitter)"><i class="fa-brands fa-x-twitter"></i></a></li></ul></div><div class="col-5 col-sm-6 text-center order-2 footer-main"><p><span class=copyright-notice>&copy; 2026 The Kubernetes Authors | Documentation Distributed under <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a></span></p><p><span class=copyright-notice>&copy; 2026 The Linux Foundation &reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href=https://www.linuxfoundation.org/trademark-usage class=light-text>Trademark Usage page</a></span></p><p><span class=certification-notice>ICP license: <a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></span></p></div><div class="col col-sm-3 text-end text-xs-center order-3"><ul class="list-inline mb-0 footer-icons"><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title="Contributor website"><a class=text-white target=_blank rel=noopener href=https://k8s.dev/ aria-label="Contributor website"><i class="fa-solid fa-laptop-code"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/kubernetes/kubernetes aria-label=GitHub><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title=Slack><a class=text-white target=_blank rel=noopener href=https://slack.k8s.io aria-label=Slack><i class="fa-brands fa-slack"></i></a></li><li class="list-inline-item mx-2 h3" data-bs-toggle=tooltip data-bs-placement=top title="Events Calendar"><a class=text-white target=_blank rel=noopener href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io" aria-label="Events Calendar"><i class="fa-solid fa-calendar-days"></i></a></li></ul></div></div></div></footer></div><script src=/js/mermaid-9.3.0.min.js integrity="sha512-ku2nmBrzAXY5YwohzTqLYH1/lvyMrpTVxgQKrvTabd/b/uesqltLORdmpVapYv6QhZVCLUX6wkvFaKOAY4xpUA==" crossorigin=anonymous></script><script type=module async>
+
+  (function ($) {
+    if (document.querySelectorAll('.mermaid').length == 0) {
+      mermaid.initialize({ startOnLoad: false });
+      return;
+    }
+
+    const isDark = $('html[data-bs-theme="dark"]').length;
+    var theme = isDark ? "dark" : "neutral";
+    mermaid.initialize({ startOnLoad: true, theme: theme });
+
+
+    const lightDarkModeThemeChangeHandler = function (mutationsList, observer) {
+      for (const mutation of mutationsList) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'data-bs-theme') {
+          
+          
+          
+          location.reload();
+        }
+      }
+    };
+
+    const observer = new MutationObserver(lightDarkModeThemeChangeHandler);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-bs-theme']
+    });
+  })(jQuery);
+</script><script src=/js/main.js></script><script src=/js/tabpane-persist.js></script><script src=/js/theme-image-swap.js></script><script defer src=/js/detect-js.js></script></body></html>
