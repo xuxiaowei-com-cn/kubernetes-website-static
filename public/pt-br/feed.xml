@@ -1,0 +1,365 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kubernetes Blog</title><link>https://kubernetes.xuxiaowei.com.cn/pt-br/</link><description>The Kubernetes blog is used by the project to communicate new features, community reports, and any news that might be relevant to the Kubernetes community.</description><generator>Hugo -- gohugo.io</generator><language>pt-br</language><image><url>https://raw.githubusercontent.com/kubernetes/kubernetes/master/logo/logo.png</url><title>The Kubernetes project logo</title><link>https://kubernetes.xuxiaowei.com.cn/pt-br/</link></image><atom:link href="https://kubernetes.xuxiaowei.com.cn/pt-br/feed.xml" rel="self" type="application/rss+xml"/><item><title>Redirecionamento do registro de imagens k8s.gcr.io para registry.k8s.io - O que você precisa saber</title><link>https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2023/03/10/image-registry-redirect/</link><pubDate>Fri, 10 Mar 2023 17:00:00 +0000</pubDate><guid>https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2023/03/10/image-registry-redirect/</guid><description>
+&lt;p>&lt;strong>Autores&lt;/strong>: Bob Killen (Google), Davanum Srinivas (AWS), Chris Short (AWS), Frederico Muñoz (SAS
+Institute), Tim Bannister (The Scale Factory), Ricky Sadowski (AWS), Grace Nguyen (Expo), Mahamed
+Ali (Rackspace Technology), Mars Toktonaliev (independent), Laura Santamaria (Dell), Kat Cosgrove
+(Dell)&lt;/p>
+&lt;p>Na segunda-feira, dia 20 de março, o registro de imagens k8s.gcr.io &lt;a href="https://kubernetes.io/blog/2022/11/28/registry-k8s-io-faster-cheaper-ga/">vai ser redirecionado para o registro de imagens da comunidade&lt;/a>, &lt;strong>registry.k8s.io&lt;/strong>.&lt;/p>
+&lt;h2 id="o-que-você-precisa-saber-sobre-essa-mudança">O que você precisa saber sobre essa mudança&lt;/h2>
+&lt;ul>
+&lt;li>Na segunda-feira, dia 20 de março, o tráfego do registro de imagens antigo k8s.gcr.io vai ser redirecionado para
+registry.k8s.io com o objetivo final de encerramento do k8s.gcr.io.&lt;/li>
+&lt;li>Se você está executando em um ambiente restrito, e aplica políticas rígidas de acesso a nomes de domínios
+ou endereços IPs limitado a k8s.gcr.io, &lt;strong>o &lt;em>pull&lt;/em> de imagens não vai funcionar&lt;/strong> depois que o k8s.gcr.io começar
+a redirecionar para o novo registro de imagens.&lt;/li>
+&lt;li>Um pequeno subconjunto de clientes que não seguem o padrão não lidam com redirecionamentos HTTP, e neste caso eles
+precisam ser apontados diretamente para registry.k8s.io.&lt;/li>
+&lt;li>O redirecionamento é um paliativo para ajudar os usuários a fazer essa troca. O registro obsoleto k8s.gcr.io será desativado em algum momento. &lt;strong>Por isso, atualize seus manifestos o mais rápido possível para apontar para registry.k8s.io&lt;/strong>.&lt;/li>
+&lt;li>Se você mantém seu próprio registro de imagens, você pode copiar as imagens que você precisa para reduzir o tráfego
+ao registro de imagens da comunidade.&lt;/li>
+&lt;/ul>
+&lt;p>Se você acha que vai ser impactado, ou gostaria de saber mais sobre essa mudança, leia mais abaixo.&lt;/p>
+&lt;h2 id="como-eu-posso-checar-se-eu-vou-ser-afetado">Como eu posso checar se eu vou ser afetado?&lt;/h2>
+&lt;p>Para testar a conectividade ao registry.k8s.io (e saber se consegue baixar as imagens), pode executar o
+comando abaixo em um namespace da sua escolha:&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl run hello-world -ti --rm --image=registry.k8s.io/busybox:latest --restart=Never -- date
+&lt;/code>&lt;/pre>&lt;p>Quando executar o comando acima, é esperada a seguinte saída caso tudo esteja funcionando corretamente:&lt;/p>
+&lt;pre tabindex="0">&lt;code>$ kubectl run hello-world -ti --rm --image=registry.k8s.io/busybox:latest --restart=Never -- date
+Fri Feb 31 07:07:07 UTC 2023
+pod &amp;#34;hello-world&amp;#34; deleted
+&lt;/code>&lt;/pre>&lt;h2 id="quais-erros-são-esperados-caso-eu-seja-afetado">Quais erros são esperados caso eu seja afetado?&lt;/h2>
+&lt;p>Os erros podem depender do tipo de agente de execução de contêiner que você está usando, e para qual endpoint você está
+sendo direcionado, mas devem ser erros como &lt;code>ErrImagePull&lt;/code>, &lt;code>ImagePullBackOff&lt;/code>, ou falha na criação do
+container com o aviso &lt;code>FailedCreatePodSandBox&lt;/code>.&lt;/p>
+&lt;p>Abaixo um exemplo de uma mensagem de erro mostrando uma instalação por trás de um proxy falhando devido a um certificado desconhecido:&lt;/p>
+&lt;pre tabindex="0">&lt;code>FailedCreatePodSandBox: Failed to create pod sandbox: rpc error: code = Unknown desc = Error response from daemon: Head “https://us-west1-docker.pkg.dev/v2/k8s-artifacts-prod/images/pause/manifests/3.8”: x509: certificate signed by unknown authority
+&lt;/code>&lt;/pre>&lt;h2 id="quais-imagens-serão-afetadas">Quais imagens serão afetadas?&lt;/h2>
+&lt;p>&lt;strong>TODAS&lt;/strong> as imagens no k8s.gcr.io serão afetadas por essa mudança. O k8s.gcr.io hospeda muitas imagens além das releases do Kubernetes. Um grande número de subprojetos do Kubernetes hospedam seus projetos nele também. Alguns exemplos incluem
+as imagens &lt;code>dns/k8s-dns-node-cache&lt;/code>, &lt;code>ingress-nginx/controller&lt;/code>, e
+&lt;code>node-problem-detector/node-problem-detector&lt;/code>.&lt;/p>
+&lt;h2 id="eu-fui-afetado-o-que-devo-fazer">Eu fui afetado, o que devo fazer?&lt;/h2>
+&lt;p>Para usuários afetados que usam um ambiente restrito, a melhor opção é copiar as imagens necessárias
+para um registro privado ou configurar um cache de &lt;em>pull-through&lt;/em> no seu registro de imagens.&lt;/p>
+&lt;p>Existem várias ferramentas para copiar imagens entre registros de imagens. &lt;a href="https://github.com/google/go-containerregistry/blob/main/cmd/crane/doc/crane_copy.md">Crane&lt;/a> é uma dessas ferramentas, as imagens podem ser copiadas para um registro de imagens privado com &lt;code>crane copy SRC DST&lt;/code>. Também existem ferramentas específicas de fornecedores, como o &lt;a href="https://cloud.google.com/container-registry/docs/migrate-external-containers#copy">gcrane&lt;/a> que faz uma função similar mas simplificada para a plataforma da Google.&lt;/p>
+&lt;h2 id="como-eu-posso-encontrar-quais-imagens-estão-usando-o-registro-de-imagens-antigo-e-corrigir-elas">Como eu posso encontrar quais imagens estão usando o registro de imagens antigo, e corrigir elas?&lt;/h2>
+&lt;p>&lt;strong>Opção 1&lt;/strong>: Veja esse comando do kubectl no &lt;a href="https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2023/02/06/k8s-gcr-io-freeze-announcement/#pr%C3%B3ximos-passos">blog post anterior&lt;/a>:&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl get pods --all-namespaces -o jsonpath=&amp;#34;{.items[*].spec.containers[*].image}&amp;#34; |\
+tr -s &amp;#39;[[:space:]]&amp;#39; &amp;#39;\n&amp;#39; |\
+sort |\
+uniq -c
+&lt;/code>&lt;/pre>&lt;p>&lt;strong>Opção 2&lt;/strong>: Um plugin do &lt;code>kubectl&lt;/code> &lt;a href="https://krew.sigs.k8s.io/">krew&lt;/a> chamado &lt;a href="https://github.com/kubernetes-sigs/community-images#kubectl-community-images">&lt;code>community-images&lt;/code>&lt;/a> foi desenvolvido para escanear e reportar qualquer
+imagem usando o endpoint k8s.gcr.io.&lt;/p>
+&lt;p>Se você tem o krew instalado, pode instalar o plugin com:&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl krew install community-images
+&lt;/code>&lt;/pre>&lt;p>E gerar um relatório com:&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl community-images
+&lt;/code>&lt;/pre>&lt;p>Para métodos alternativos de instalação ou exemplos de saída, veja o repositório &lt;a href="https://github.com/kubernetes-sigs/community-images">kubernetes-sigs/community-images&lt;/a>.&lt;/p>
+&lt;p>&lt;strong>Opção 3&lt;/strong>: Se você não tem acesso diretamente ao cluster, ou gerencia muitos clusters - o melhor
+caminho é executar uma busca sobre seus manifestos e charts por &lt;em>&amp;quot;k8s.gcr.io&amp;quot;&lt;/em>.&lt;/p>
+&lt;p>&lt;strong>Opção 4&lt;/strong>: Se você quer prevenir a execução de imagens a partir do k8s.gcr.io no seu cluster, existem políticas
+para &lt;a href="https://open-policy-agent.github.io/gatekeeper-library/website/">Gatekeeper&lt;/a> e
+&lt;a href="https://kyverno.io/">Kyverno&lt;/a> disponíveis no &lt;a href="https://github.com/aws/aws-eks-best-practices/tree/master/policies/k8s-registry-deprecation">repositório de melhores práticas para AWS EKS&lt;/a> que vão bloquear o pull das imagens. Você
+pode usar essas políticas de terceiros com qualquer cluster Kubernetes.&lt;/p>
+&lt;p>&lt;strong>Opção 5&lt;/strong>: Como a &lt;strong>ÚLTIMA&lt;/strong> opção, você pode usar um &lt;a href="https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#what-are-admission-webhooks">webhook de admissão&lt;/a> para alterar o
+endereço da imagem dinamicamente. Isso deve ser feito apenas como uma medida paliativa enquanto os
+seus manifestos são atualizados. Você pode encontrar um webhook de admissão e uma política do
+Kyverno (de terceiros) em &lt;a href="https://github.com/abstractinfrastructure/k8s-gcr-quickfix">k8s-gcr-quickfix&lt;/a>.&lt;/p>
+&lt;h2 id="por-que-o-kubernetes-mudou-para-um-registro-de-imagem-diferente">Por que o Kubernetes mudou para um registro de imagem diferente?&lt;/h2>
+&lt;p>O k8s.gcr.io é hospedado em um domínio customizado no &lt;a href="https://cloud.google.com/container-registry?hl=pt-br">Google Cloud Registry (GCR)&lt;/a>
+que foi configurado exclusivamente para o projeto do Kubernetes. Isso funcionou desde o nascimento do projeto,
+e nós agradecemos ao Google por prover esses recursos, mas atualmente, existem outros provedores de nuvem e fornecedores
+que gostariam de hospedar imagens para fornecer uma melhor experiência para as pessoas nas suas plataformas.
+Além do Google ter &lt;a href="https://www.cncf.io/google-cloud-recommits-3m-to-kubernetes/">renovado o compromisso de doar $3 milhões&lt;/a> para manter a infraestrutura do projeto ano passado, a Amazon Web Services anunciou uma doação correspondente
+&lt;a href="https://youtu.be/PPdimejomWo?t=236">durante o seu keynote na Kubecon NA 2022 em Detroit&lt;/a>. Isso proporcionará
+uma melhor experiência para os usuários (servidores mais pertos = downloads mais rápidos) e vai reduzir
+a largura de banda de saída e os custos do GCR ao mesmo tempo.&lt;/p>
+&lt;p>Para mais detalhes sobre essa mudança, leia mais em &lt;a href="https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2022/11/28/registry-k8s-io-faster-cheaper-ga/">registry.k8s.io: rápido, barato e em disponibilidade geral (GA)&lt;/a>.&lt;/p>
+&lt;h2 id="por-que-está-sendo-feito-um-redirecionamento">Por que está sendo feito um redirecionamento?&lt;/h2>
+&lt;p>O projeto mudou para o &lt;a href="https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2022/11/28/registry-k8s-io-faster-cheaper-ga/">registry.k8s.io ano passado na versão 1.25&lt;/a>; entretanto, a maioria do tráfego de pull de imagens ainda continua sendo
+feito para o antigo endpoint k8s.gcr.io. Isso não foi sustentável para nós como um projeto pois não estamos
+usando os recursos que foram doados para o projeto por outros provedores e estamos correndo o risco de ficar
+sem recursos dado o custo de servir esse tráfego.&lt;/p>
+&lt;p>O redirecionamento vai permitir que o projeto aproveite as vantagens desses novos recursos, reduzindo
+significantemente os cursos da largura de banda de saída. Nós esperamos que apenas um pequeno subconjunto
+de usuários executando em ambientes restritos ou clientes antigos que não consigam fazer o redirecionamento
+apropriadamente sejam impactados.&lt;/p>
+&lt;h2 id="o-que-vai-acontecer-com-o-k8s-gcr-io">O que vai acontecer com o k8s.gcr.io?&lt;/h2>
+&lt;p>Para além do redirecionamento, o k8s.gcr.io vai ser congelado &lt;a href="https://kubernetes.io/blog/2023/02/06/k8s-gcr-io-freeze-announcement/">e não vai ser atualizado com novas imagens
+depois do dia 03 de abril de 2023&lt;/a>.
+O &lt;code>k8s.gcr.io&lt;/code> não vai receber nenhuma nova release, patch ou atualização de segurança. Ele continuará
+disponível para ajudar as pessoas na migração, mas &lt;strong>SERÁ&lt;/strong> removido totalmente no futuro.&lt;/p>
+&lt;h2 id="ainda-tenho-perguntas-onde-devo-ir">Ainda tenho perguntas, onde devo ir?&lt;/h2>
+&lt;p>Para mais informações sobre o registry.k8s.io e porque foi desenvolvido, leia em &lt;a href="https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2022/11/28/registry-k8s-io-faster-cheaper-ga/">registry.k8s.io: rápido, barato e em disponibilidade geral (GA)&lt;/a>.&lt;/p>
+&lt;p>Se você quer saber mais sobre o congelamento das imagens e as últimas imagens que vão ficar disponíveis lá,
+leia o blog post: &lt;a href="https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2023/02/06/k8s-gcr-io-freeze-announcement/">k8s.gcr.io O registro de imagens será congelado a partir de 3 de abril de 2023&lt;/a>.&lt;/p>
+&lt;p>Informações sobre a arquitetura do registry.k8s.io e sobre sua &lt;a href="https://github.com/kubernetes/registry.k8s.io/blob/8408d0501a88b3d2531ff54b14eeb0e3c900a4f3/cmd/archeio/docs/request-handling.md">árvore de decisão de tratamento das requisições&lt;/a>
+pode ser encontradas no repositório &lt;a href="https://github.com/kubernetes/registry.k8s.io">kubernetes/registry.k8s.io&lt;/a>.&lt;/p>
+&lt;p>Se você encontrar um bug no novo registro de imagens ou no redirecionamento, por favor abra uma issue no repositório &lt;a href="https://github.com/kubernetes/registry.k8s.io/issues/new/choose">kubernetes/registry.k8s.io&lt;/a>.
+&lt;strong>Por favor verifique se já não existe uma issue aberta parecida antes de abrir uma nova&lt;/strong>.&lt;/p></description></item><item><title>Os tutoriais gratuitos do Katacoda Kubernetes estão sendo encerrados</title><link>https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2023/02/14/kubernetes-katacoda-tutorials-stop-from-2023-03-31/</link><pubDate>Tue, 14 Feb 2023 00:00:00 +0000</pubDate><guid>https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2023/02/14/kubernetes-katacoda-tutorials-stop-from-2023-03-31/</guid><description>
+&lt;p>&lt;strong>Autor&lt;/strong>: Natali Vlatko, Co-presidente do SIG Docs do Kubernetes&lt;/p>
+&lt;p>&lt;a href="https://katacoda.com/kubernetes">Katacoda&lt;/a>, a popular plataforma de aprendizagem da O'Reilly que tem ajudado as pessoas a aprender tudo sobre Java, Docker, Kubernetes, Python, Go, C++ e mais, &lt;a href="https://www.oreilly.com/online-learning/leveraging-katacoda-technology.html">foi desativada para uso público em junho de 2022&lt;/a>. No entanto, os tutoriais específicos para Kubernetes, vinculados no website do Kubernetes para os usuários e contribuidores de nossos projetos, permaneceram disponíveis e ativos após esta mudança. Infelizmente, isso não será mais o caso, e os tutoriais do Katacoda para aprender o Kubernetes deixarão de funcionar após 31 de março de 2023.&lt;/p>
+&lt;p>O Projeto Kubernetes agradece à O'Reilly Media pelos muitos anos em que apoia a comunidade por meio da plataforma de aprendizado Katacoda. Você pode ler mais sobre &lt;a href="https://www.oreilly.com/online-learning/leveraging-katacoda-technology.html">a decisão de fechar o katacoda.com&lt;/a> no próprio website da O'Reilly. Com essa mudança, focaremos no trabalho necessário para remover os links para seus vários tutoriais. Temos uma &lt;em>issue&lt;/em> geral do GitHub para rastrear este tópico em &lt;a href="https://github.com/kubernetes/website/issues/33936">#33936&lt;/a> e uma &lt;a href="https://github.com/kubernetes/website/discussions/38878">discussão no GitHub&lt;/a>. Também estamos interessados em pesquisar quais outras plataformas de aprendizado podem ser benéficas para a comunidade do Kubernetes, substituindo o Katacoda por uma plataforma ou um serviço que tenha uma experiência de usuário semelhante. No entanto, esta pesquisa levará tempo, por isso estamos procurando ativamente por voluntários para ajudarem neste trabalho. Se uma substituição for encontrada, ela precisará ser suportada pela liderança do Kubernetes, especificamente, SIG Contributor Experience, SIG Docs, e Comitê de Gestão do Kubernetes.&lt;/p>
+&lt;p>O desligamento do Katacoda afeta 25 páginas de tutorial, suas localizações, bem como o repositório de cenários do Katacoda: &lt;a href="https://github.com/katacoda-scenarios/kubernetes-bootcamp-scenarios">github.com/katacoda-scenarios/kubernetes-bootcamp-scenarios&lt;/a>. Recomendamos que quaisquer links, guias ou documentações que apontem para a plataforma de aprendizado Katacoda sejam atualizados imediatamente para refletir essa alteração. Embora ainda não tenhamos encontrado uma solução de aprendizado substituta, o website do Kubernetes contém muita documentação útil para dar suporte ao seu aprendizado e crescimento contínuos. Você pode encontrar toda a documentação dos nossos tutoriais disponível para o Kubernetes em &lt;a href="https://k8s.io/pt-br/docs/tutorials/">https://k8s.io/pt-br/docs/tutorials/&lt;/a>.&lt;/p>
+&lt;p>Se você tiver alguma dúvida sobre o desligamento do Katacoda ou a remoção subsequente do link das páginas de tutorial do Kubernetes, sinta-se à vontade para comentar na &lt;a href="https://github.com/kubernetes/website/issues/33936">issue geral que acompanha o desligamento&lt;/a>, ou visite o canal #sig-docs no Slack do Kubernetes.&lt;/p></description></item><item><title>k8s.gcr.io O registro de imagens será congelado a partir de 3 de abril de 2023</title><link>https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2023/02/06/k8s-gcr-io-freeze-announcement/</link><pubDate>Mon, 06 Feb 2023 00:00:00 +0000</pubDate><guid>https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2023/02/06/k8s-gcr-io-freeze-announcement/</guid><description>
+&lt;p>&lt;strong>Autor&lt;/strong>: Mahamed Ali (Rackspace Technology)&lt;/p>
+&lt;p>O projeto Kubernetes executa um registro de imagens de propriedade da comunidade chamado &lt;code>registry.k8s.io&lt;/code> para hospedar suas imagens de contêiner.
+No dia 3 de abril de 2023, o antigo registro k8s.gcr.io será congelado e nenhuma nova imagem para o Kubernetes e subprojetos relacionados será enviada para o registro antigo.&lt;/p>
+&lt;p>Este registro &lt;code>registry.k8s.io&lt;/code> substituiu o antigo e está disponível há vários meses. Publicamos uma &lt;a href="https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2022/11/28/registry-k8s-io-faster-cheaper-ga/">postagem no blog&lt;/a> sobre seus benefícios para a comunidade e o projeto Kubernetes.
+Este post também anunciou que versões futuras do Kubernetes não estarão disponíveis no registro antigo. Agora chegou essa hora.&lt;/p>
+&lt;p>O que essa mudança significa para os colaboradores:&lt;/p>
+&lt;ul>
+&lt;li>Se você é um mantenedor de um subprojeto, precisará atualizar seus manifestos e Helm charts para usar o novo registro.&lt;/li>
+&lt;/ul>
+&lt;p>O que essa mudança significa para os usuários finais:&lt;/p>
+&lt;ul>
+&lt;li>A versão 1.27 do Kubernetes não será publicada no registro antigo.&lt;/li>
+&lt;li>As versões de patch para 1.24, 1.25 e 1.26 não serão mais publicadas no registro antigo a partir de abril. Leia a linha do tempo abaixo para obter detalhes sobre os lançamentos finais de patches no registro antigo.&lt;/li>
+&lt;li>A partir da versão 1.25, o registro de imagem padrão foi definido como &lt;code>registry.k8s.io&lt;/code>. Este valor é substituível nos programas &lt;code>kubeadm&lt;/code> e &lt;code>kubelet&lt;/code>, mas defini-lo como &lt;code>k8s.gcr.io&lt;/code> falhará para novas versões após abril, pois as imagens dessas novas versões não estarão disponíveis no registro antigo.&lt;/li>
+&lt;li>Se você quiser aumentar a confiabilidade do seu cluster e remover a dependência do registro de propriedade da comunidade ou se estiver executando o Kubernetes em redes onde o tráfego externo é restrito, considere hospedar uma cópia local do registro de imagens. Alguns fornecedores de nuvem podem oferecer soluções para isso.&lt;/li>
+&lt;/ul>
+&lt;h2 id="linha-do-tempo-das-mudanças">Linha do tempo das mudanças&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>k8s.gcr.io&lt;/code> será congelado no dia 3 de abril de 2023&lt;/li>
+&lt;li>Espera-se que a versão 1.27 seja lançada em 12 de abril de 2023&lt;/li>
+&lt;li>A última versão da 1.23 no &lt;code>k8s.gcr.io&lt;/code> será 1.23.18 (a versão 1.23 deixará de ser suportada antes do congelamento do k8s.gcr.io)&lt;/li>
+&lt;li>A última versão 1.24 no &lt;code>k8s.gcr.io&lt;/code> será 1.24.12&lt;/li>
+&lt;li>A última versão 1.25 no &lt;code>k8s.gcr.io&lt;/code> será 1.25.8&lt;/li>
+&lt;li>A última versão 1.26 no &lt;code>k8s.gcr.io&lt;/code> será 1.26.3&lt;/li>
+&lt;/ul>
+&lt;h2 id="próximos-passos">Próximos passos&lt;/h2>
+&lt;p>Certifique-se de que o seu cluster não tenha dependências no registro de imagens antigo. Por exemplo, você pode executar este comando para listar as imagens usadas pelos Pods:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>kubectl get pods --all-namespaces -o &lt;span style="color:#b8860b">jsonpath&lt;/span>&lt;span style="color:#666">=&lt;/span>&lt;span style="color:#b44">&amp;#34;{.items[*].spec.containers[*].image}&amp;#34;&lt;/span> |&lt;span style="color:#b62;font-weight:bold">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#b62;font-weight:bold">&lt;/span>tr -s &lt;span style="color:#b44">&amp;#39;[[:space:]]&amp;#39;&lt;/span> &lt;span style="color:#b44">&amp;#39;\n&amp;#39;&lt;/span> |&lt;span style="color:#b62;font-weight:bold">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#b62;font-weight:bold">&lt;/span>sort |&lt;span style="color:#b62;font-weight:bold">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#b62;font-weight:bold">&lt;/span>uniq -c
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Pode haver outras dependências no antigo registro de imagens.
+Certifique-se de revisar quaisquer dependências potenciais para manter seu cluster saudável e atualizado.&lt;/p>
+&lt;h2 id="agradecimentos">Agradecimentos&lt;/h2>
+&lt;p>&lt;strong>A mudança é difícil&lt;/strong>, e a evolução de nossa plataforma de serviço de imagem é necessária para garantir um futuro sustentável para o projeto. Nós nos esforçamos para melhorar as coisas para todos que utilizam o Kubernetes. Muitos colaboradores de todos os cantos da nossa comunidade têm trabalhado muito e com dedicação para garantir que estamos tomando as melhores decisões possíveis, executando planos e fazendo o nosso melhor para comunicar esses planos.&lt;/p>
+&lt;p>Obrigado a Aaron Crickenberger, Arnaud Meukam, Benjamin Elder, Caleb Woodbine, Davanum Srinivas, Mahamed Ali, e Tim Hockin do grupo de interesse especial (SIG) K8s Infra, Brian McQueen, e Sergey Kanzhelev do SIG Node, Lubomir Ivanov do SIG Cluster Lifecycle, Adolfo García Veytia, Jeremy Rickard, Sascha Grunert, e Stephen Augustus do SIG Release, Bob Killen and Kaslin Fields do SIG Contribex, Tim Allclair do Comitê de Resposta de Segurança. Um grande obrigado também aos nossos amigos que atuam como pontos de contato com nossos provedores de nuvem parceiros: Jay Pipes da Amazon e Jon Johnson Jr. do Google.&lt;/p></description></item><item><title>registry.k8s.io: rápido, barato e em disponibilidade geral (GA)</title><link>https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2022/11/28/registry-k8s-io-faster-cheaper-ga/</link><pubDate>Mon, 28 Nov 2022 00:00:00 +0000</pubDate><guid>https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2022/11/28/registry-k8s-io-faster-cheaper-ga/</guid><description>
+&lt;p>&lt;strong>Autores&lt;/strong>: Adolfo García Veytia (Chainguard), Bob Killen (Google)&lt;/p>
+&lt;p>A partir do Kubernetes 1.25, o nosso repositório de imagens de contêiner mudou de k8s.gcr.io para &lt;a href="https://registry.k8s.io">registry.k8s.io&lt;/a>.
+Este novo repositório distribui a carga por várias regiões e Provedores de Nuvem, funcionando como uma espécie de rede de entrega de conteúdo (CDN) para imagens de contêiner do Kubernetes.
+Essa mudança reduz a dependência do projeto em uma única entidade e fornece uma experiência mais rápida de download para um grande número de usuários.&lt;/p>
+&lt;h2 id="sumário-o-que-você-precisa-saber-sobre-essa-mudança">Sumário: O que você precisa saber sobre essa mudança&lt;/h2>
+&lt;ul>
+&lt;li>As imagens de contêiner para versões do Kubernetes a partir de 1.25 não serão mais publicadas no k8s.gcr.io, apenas no registry.k8s.io&lt;/li>
+&lt;li>Em dezembro, nas próximas versões de patch, o novo padrão de domínio do registro será portado retroativamente para todas as branches ainda com suporte (1.22, 1.23, 1.24).&lt;/li>
+&lt;li>Em um ambiente restrito, se você aplicar políticas rígidas de acesso aos endereços de domínio/IP limitados ao k8s.gcr.io, &lt;strong>as imagens não serão baixadas&lt;/strong> após a migração para este novo repositório. Para esses usuários, o método recomendado é espelhar o lançamento das imagens em um repositório privado.&lt;/li>
+&lt;/ul>
+&lt;p>Se você quiser saber mais sobre o motivo que fizemos essa mudança, ou alguns dos possíveis problemas que você pode encontrar, continue lendo.&lt;/p>
+&lt;h2 id="por-que-o-kubernetes-mudou-para-um-registro-de-imagens-diferente">Por que o Kubernetes mudou para um registro de imagens diferente?&lt;/h2>
+&lt;p>O k8s.gcr.io está hospedado em um domínio personalizado do &lt;a href="https://cloud.google.com/container-registry">Google Container Registry&lt;/a> (GCR) que foi configurado exclusivamente para o projeto Kubernetes.
+Isso funcionou bem desde o início do projeto, e agradecemos ao Google por fornecer esses recursos, mas hoje existem outros fornecedores e provedores de nuvem que gostariam de hospedar as imagens para fornecer uma melhor experiência para as pessoas em suas plataformas.
+Além do compromisso renovado do Google de &lt;a href="https://www.cncf.io/google-cloud-recommits-3m-to-kubernetes/">doar US$ 3 milhões para apoiar&lt;/a> a infraestrutura do projeto, a Amazon anunciou uma doação correspondente durante sua palestra na Kubecon NA 2022 em Detroit.
+Isso fornecerá uma melhor experiência para os usuários (servidores mais próximos = downloads mais rápidos) e reduzirá a largura de banda de saída e os custos do GCR ao mesmo tempo. O registry.k8s.io distribuirá a carga entre o Google e a Amazon, com outros provedores no futuro.&lt;/p>
+&lt;h2 id="por-que-não-há-uma-lista-estável-de-domínios-ips-por-que-não-posso-restringir-o-pull-de-imagens">Por que não há uma lista estável de domínios/IPs? Por que não posso restringir o pull de imagens?&lt;/h2>
+&lt;p>O registry.k8s.io é um &lt;a href="https://github.com/kubernetes/registry.k8s.io/blob/main/cmd/archeio/docs/request-handling.md">redirecionador seguro de blob&lt;/a> que conecta os clientes ao provedor de nuvem mais próximo.
+A natureza dessa mudança significa que o pull de uma imagem cliente pode ser redirecionado para qualquer um dos vários backends.
+Esperamos que o conjunto de backends continue mudando e aumente à medida que mais e mais provedores de nuvem e fornecedores se juntem para ajudar a espelhar as atualizações das imagens.&lt;/p>
+&lt;p>Os mecanismos de controle mais restritos como proxies de man-in-the-middle ou políticas de rede que restringem o acesso a uma lista específica de domínios/IPs quebrarão com essa mudança.
+Para esses cenários, encorajamos você a espelhar as atualizações das imagens em um repositório local sobre o qual você tenha um controle rigoroso.&lt;/p>
+&lt;p>Para mais informações sobre esta política, consulte a &lt;a href="https://github.com/kubernetes/registry.k8s.io#stability">seção de estabilidade da documentação do registry.k8s.io&lt;/a>.&lt;/p>
+&lt;h2 id="que-tipo-de-erros-eu-verei-como-saberei-se-ainda-estou-usando-o-endereço-antigo">Que tipo de erros eu verei? Como saberei se ainda estou usando o endereço antigo?&lt;/h2>
+&lt;p>Os erros dependem do tipo do agente de execução de contêiner que você está usando e para qual o endpoint você está roteado, mas ele deve se apresentar como um contêiner que não pode ser criado com o aviso &lt;code>FailedCreatePodSandBox&lt;/code>.&lt;/p>
+&lt;p>Abaixo temos um exemplo de mensagem de erro mostrando uma instalação por trás de um proxy em que não pode ser feito o pull devido a um certificado desconhecido:&lt;/p>
+&lt;pre tabindex="0">&lt;code>FailedCreatePodSandBox: Failed to create pod sandbox: rpc error: code = Unknown desc = Error response from daemon: Head “https://us-west1-docker.pkg.dev/v2/k8s-artifacts-prod/images/pause/manifests/3.8”: x509: certificate signed by unknown authority
+&lt;/code>&lt;/pre>&lt;h2 id="fui-impactado-por-essa-mudança-como-faço-para-reverter-para-o-endereço-de-registro-antigo">Fui impactado por essa mudança, como faço para reverter para o endereço de registro antigo?&lt;/h2>
+&lt;p>Se usar o novo nome de domínio do registro não for uma opção, você pode reverter para o nome de domínio antigo para versões de cluster menores de 1.25. Tenha em mente que, eventualmente, você terá que mudar para o novo registro, pois as novas tags de imagem não serão mais enviadas para o GCR.&lt;/p>
+&lt;h3 id="revertendo-o-nome-do-registro-no-kubeadm">Revertendo o nome do registro no kubeadm&lt;/h3>
+&lt;p>O registro usado pelo kubeadm para realizar o pull das suas imagens pode ser controlado por dois métodos:&lt;/p>
+&lt;p>Definindo a flag &lt;code>--image-repository&lt;/code>.&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubeadm init --image-repository=k8s.gcr.io
+&lt;/code>&lt;/pre>&lt;p>Ou em &lt;a href="https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta3/">kubeadm config&lt;/a> &lt;code>ClusterConfiguration&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#008000;font-weight:bold">apiVersion&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>kubeadm.k8s.io/v1beta3&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#008000;font-weight:bold">kind&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>ClusterConfiguration&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#008000;font-weight:bold">imageRepository&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#b44">&amp;#34;k8s.gcr.io&amp;#34;&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="revertendo-o-nome-do-registro-no-kubelet">Revertendo o Nome do Registro no kubelet&lt;/h3>
+&lt;p>A imagem usada pelo kubelet para o pod sandbox (&lt;code>pause&lt;/code>) pode ser substituída pela flag &lt;code>--pod-infra-container-image&lt;/code>.
+Por exemplo:&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubelet --pod-infra-container-image=k8s.gcr.io/pause:3.5
+&lt;/code>&lt;/pre>&lt;h2 id="agradecimentos">Agradecimentos&lt;/h2>
+&lt;p>&lt;strong>A mudança é difícil&lt;/strong>, e a evolução de nossa plataforma de serviço de imagem é necessária para garantir um futuro sustentável para o projeto.
+Nós nos esforçamos para melhorar as coisas para todos que utilizam o Kubernetes.
+Muitos colaboradores de todos os cantos da nossa comunidade têm trabalhado muito e com dedicação para garantir que estamos tomando as melhores decisões possíveis, executando planos e fazendo o nosso melhor para comunicar esses planos.&lt;/p>
+&lt;p>Obrigado a Aaron Crickenberger, Arnaud Meukam, Benjamin Elder, Caleb Woodbine, Davanum Srinivas, Mahamed Ali, e Tim Hockin do grupo de interesse especial (SIG) K8s Infra, Brian McQueen, e Sergey Kanzhelev do SIG Node, Lubomir Ivanov do SIG Cluster Lifecycle, Adolfo García Veytia, Jeremy Rickard, Sascha Grunert, e Stephen Augustus do SIG Release, Bob Killen and Kaslin Fields do SIG Contribex, Tim Allclair do Comitê de Resposta de Segurança.
+Um grande obrigado também aos nossos amigos que atuam como pontos de contato com nossos provedores de nuvem parceiros: Jay Pipes da Amazon e Jon Johnson Jr. do Google.&lt;/p></description></item><item><title>Atualizado: Perguntas frequentes (FAQ) sobre a remoção do Dockershim</title><link>https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2022/02/17/dockershim-faq/</link><pubDate>Thu, 17 Feb 2022 00:00:00 +0000</pubDate><guid>https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2022/02/17/dockershim-faq/</guid><description>
+&lt;p>&lt;strong>Esta é uma atualização do artigo original &lt;a href="https://kubernetes.xuxiaowei.com.cn/blog/2020/12/02/dockershim-faq/">FAQ sobre a depreciação do Dockershim&lt;/a>,
+publicado no final de 2020.&lt;/strong>&lt;/p>
+&lt;p>Este documento aborda algumas perguntas frequentes sobre a
+descontinuação e remoção do &lt;em>dockershim&lt;/em>, que foi
+&lt;a href="https://kubernetes.xuxiaowei.com.cn/blog/2020/12/08/kubernetes-1-20-release-announcement/">anunciado&lt;/a>
+como parte do lançamento do Kubernetes v1.20. Para obter mais detalhes sobre
+o que isso significa, confira a postagem do blog
+&lt;a href="https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2020/12/02/dont-panic-kubernetes-and-docker/">Não entre em pânico: Kubernetes e Docker&lt;/a>.&lt;/p>
+&lt;p>Além disso, você pode ler &lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/tasks/administer-cluster/migrating-from-dockershim/check-if-dockershim-removal-affects-you/">verifique se a remoção do dockershim afeta você&lt;/a>
+para determinar qual impacto a remoção do &lt;em>dockershim&lt;/em> teria para você
+ou para sua organização.&lt;/p>
+&lt;p>Como o lançamento do Kubernetes 1.24 se tornou iminente, estamos trabalhando bastante para tentar fazer uma transição suave.&lt;/p>
+&lt;ul>
+&lt;li>Escrevemos uma postagem no blog detalhando nosso &lt;a href="https://kubernetes.xuxiaowei.com.cn/blog/2022/01/07/kubernetes-is-moving-on-from-dockershim/">compromisso e os próximos passos&lt;/a>.&lt;/li>
+&lt;li>Acreditamos que não há grandes obstáculos para a migração para &lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/setup/production-environment/container-runtimes/#container-runtimes">outros agentes de execução de contêiner&lt;/a>.&lt;/li>
+&lt;li>Há também um guia &lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/tasks/administer-cluster/migrating-from-dockershim/">Migrando do dockershim&lt;/a> disponível.&lt;/li>
+&lt;li>Também criamos uma página para listar
+&lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/reference/node/topics-on-dockershim-and-cri-compatible-runtimes/">artigos sobre a remoção do dockershim e sobre o uso de agentes de execução compatíveis com CRI&lt;/a>. Essa lista inclui alguns dos documentos já mencionados e também
+abrange fontes externas selecionadas (incluindo guias de fornecedores).&lt;/li>
+&lt;/ul>
+&lt;h3 id="por-que-o-dockershim-está-sendo-removido-do-kubernetes">Por que o &lt;em>dockershim&lt;/em> está sendo removido do Kubernetes?&lt;/h3>
+&lt;p>As primeiras versões do Kubernetes funcionavam apenas com um ambiente de execução de contêiner específico:
+Docker Engine. Mais tarde, o Kubernetes adicionou suporte para trabalhar com outros agentes de execução de contêiner.
+O padrão CRI (&lt;em>Container Runtime Interface&lt;/em> ou Interface de Agente de Execução de Containers) foi &lt;a href="https://kubernetes.xuxiaowei.com.cn/blog/2016/12/container-runtime-interface-cri-in-kubernetes/">criado&lt;/a> para
+habilitar a interoperabilidade entre orquestradores (como Kubernetes) e diferentes agentes
+de execução de contêiner.
+O Docker Engine não implementa essa interface (CRI), então o projeto Kubernetes criou um
+código especial para ajudar na transição, e tornou esse código &lt;em>dockershim&lt;/em> parte do projeto
+Kubernetes.&lt;/p>
+&lt;p>O código &lt;em>dockershim&lt;/em> sempre foi destinado a ser uma solução temporária (daí o nome: &lt;em>shim&lt;/em>).
+Você pode ler mais sobre a discussão e o planejamento da comunidade na
+&lt;a href="https://github.com/kubernetes/enhancements/tree/master/keps/sig-node/2221-remove-dockershim">Proposta de remoção do Dockershim para aprimoramento do Kubernetes&lt;/a>.
+Na verdade, manter o &lt;em>dockershim&lt;/em> se tornou um fardo pesado para os mantenedores do Kubernetes.&lt;/p>
+&lt;p>Além disso, recursos que são amplamente incompatíveis com o &lt;em>dockershim&lt;/em>, como
+&lt;em>cgroups v2&lt;/em> e &lt;em>namespaces&lt;/em> de usuário estão sendo implementados nos agentes de execução de CRI
+mais recentes. A remoção do suporte para o &lt;em>dockershim&lt;/em> permitirá um maior
+desenvolvimento nessas áreas.&lt;/p>
+&lt;h3 id="ainda-posso-usar-o-docker-engine-no-kubernetes-1-23">Ainda posso usar o Docker Engine no Kubernetes 1.23?&lt;/h3>
+&lt;p>Sim, a única coisa que mudou na versão 1.20 é a presença de um aviso no log de inicialização
+do &lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/reference/command-line-tools-reference/kubelet/">kubelet&lt;/a> se estiver usando o Docker Engine como agente de execução de contêiner.
+Você verá este aviso em todas as versões até 1.23. A remoção do &lt;em>dockershim&lt;/em> ocorre no Kubernetes 1.24.&lt;/p>
+&lt;h3 id="quando-o-dockershim-será-removido">Quando o &lt;em>dockershim&lt;/em> será removido?&lt;/h3>
+&lt;p>Dado o impacto dessa mudança, estamos definindo um cronograma de depreciação mais longo.
+A remoção do &lt;em>dockershim&lt;/em> está agendada para o Kubernetes v1.24, consulte a
+&lt;a href="https://github.com/kubernetes/enhancements/tree/master/keps/sig-node/2221-remove-dockershim">Proposta de remoção do Dockershim para aprimoramento do Kubernetes&lt;/a>.
+O projeto Kubernetes trabalhará em estreita colaboração com fornecedores e outros ecossistemas para garantir
+uma transição suave e avaliará os acontecimentos à medida que a situação for evoluindo.&lt;/p>
+&lt;h3 id="ainda-posso-usar-o-docker-engine-como-meu-agente-de-execução-do-contêiner">Ainda posso usar o Docker Engine como meu agente de execução do contêiner?&lt;/h3>
+&lt;p>Primeiro, se você usa o Docker em seu próprio PC para desenvolver ou testar contêineres: nada muda.
+Você ainda pode usar o Docker localmente, independentemente dos agentes de execução de contêiner que
+você usa em seus Clusters Kubernetes. Os contêineres tornam esse tipo de interoperabilidade possível.&lt;/p>
+&lt;p>Mirantis e Docker &lt;a href="https://www.mirantis.com/blog/mirantis-to-take-over-support-of-kubernetes-dockershim-2/">comprometeram-se&lt;/a> a manter um adaptador substituto para o
+Docker Engine, e a manter este adaptador mesmo após o &lt;em>dockershim&lt;/em> ser removido
+do Kubernetes. O adaptador substituto é chamado &lt;a href="https://github.com/Mirantis/cri-dockerd">&lt;code>cri-dockerd&lt;/code>&lt;/a>.&lt;/p>
+&lt;h3 id="minhas-imagens-de-contêiner-existentes-ainda-funcionarão">Minhas imagens de contêiner existentes ainda funcionarão?&lt;/h3>
+&lt;p>Sim, as imagens produzidas a partir do &lt;code>docker build&lt;/code> funcionarão com todas as implementações do CRI.
+Todas as suas imagens existentes ainda funcionarão exatamente da mesma forma.&lt;/p>
+&lt;h4 id="e-as-imagens-privadas">E as imagens privadas?&lt;/h4>
+&lt;p>Sim. Todos os agentes de execução de CRI são compatíveis com as mesmas configurações de segredos usadas no
+Kubernetes, seja por meio do PodSpec ou ServiceAccount.&lt;/p>
+&lt;h3 id="docker-e-contêineres-são-a-mesma-coisa">Docker e contêineres são a mesma coisa?&lt;/h3>
+&lt;p>Docker popularizou o padrão de contêineres Linux e tem sido fundamental no
+desenvolvimento desta tecnologia. No entanto, os contêineres já existiam
+no Linux há muito tempo. O ecossistema de contêineres cresceu para ser muito
+mais abrangente do que apenas Docker. Padrões como o OCI e o CRI ajudaram muitas
+ferramentas a crescer e prosperar no nosso ecossistema, alguns substituindo
+aspectos do Docker, enquanto outros aprimoram funcionalidades já existentes.&lt;/p>
+&lt;h3 id="existem-exemplos-de-pessoas-que-usam-outros-agentes-de-execução-de-contêineres-em-produção-hoje">Existem exemplos de pessoas que usam outros agentes de execução de contêineres em produção hoje?&lt;/h3>
+&lt;p>Todos os artefatos produzidos pelo projeto Kubernetes (binários Kubernetes) são validados
+a cada lançamento de versão.&lt;/p>
+&lt;p>Além disso, o projeto &lt;a href="https://kind.sigs.k8s.io/">kind&lt;/a> vem usando containerd há algum tempo e tem
+visto uma melhoria na estabilidade para seu caso de uso. Kind e containerd são executados
+várias vezes todos os dias para validar quaisquer alterações na base de código do Kubernetes.
+Outros projetos relacionados seguem um padrão semelhante, demonstrando a estabilidade e
+usabilidade de outros agentes de execução de contêiner. Como exemplo, o OpenShift 4.x utiliza
+o agente de execução &lt;a href="https://cri-o.io/">CRI-O&lt;/a> em produção desde junho de 2019.&lt;/p>
+&lt;p>Para outros exemplos e referências, dê uma olhada em projetos adeptos do containerd e
+CRI-O, dois agentes de execução de contêineres sob o controle da &lt;em>Cloud Native Computing Foundation&lt;/em>
+(&lt;a href="https://cncf.io">CNCF&lt;/a>).&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/containerd/containerd/blob/master/ADOPTERS.md">containerd&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/cri-o/cri-o/blob/master/ADOPTERS.md">CRI-O&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="as-pessoas-continuam-referenciando-oci-o-que-é-isso">As pessoas continuam referenciando OCI, o que é isso?&lt;/h3>
+&lt;p>OCI significa &lt;em>&lt;a href="https://opencontainers.org/about/overview/">Open Container Initiative&lt;/a>&lt;/em> (ou Iniciativa Open Source de Contêineres), que padronizou muitas das
+interfaces entre ferramentas e tecnologias de contêiner. Eles mantêm uma
+especificação padrão para imagens de contêiner (OCI image-spec) e para
+contêineres em execução (OCI runtime-spec). Eles também mantêm uma implementação real
+da especificação do agente de execução na forma de &lt;a href="https://github.com/opencontainers/runc">runc&lt;/a>, que é o agente de execução padrão
+para ambos &lt;a href="https://containerd.io/">containerd&lt;/a> e &lt;a href="https://cri-o.io/">CRI-O&lt;/a>. O CRI baseia-se nessas especificações de baixo nível para
+fornecer um padrão de ponta a ponta para gerenciar contêineres.&lt;/p>
+&lt;h3 id="qual-implementação-de-cri-devo-usar">Qual implementação de CRI devo usar?&lt;/h3>
+&lt;p>Essa é uma pergunta complexa e depende de muitos fatores. Se você estiver
+trabalhando com Docker, mudar para containerd deve ser uma troca relativamente fácil e
+terá um desempenho estritamente melhor e menos sobrecarga. No entanto, nós encorajamos você a
+explorar todas as opções do &lt;a href="https://landscape.cncf.io/?group=projects-and-products&amp;view-mode=card#runtime--container-runtime">cenário CNCF&lt;/a>, pois outro agente de execução de contêiner
+pode funcionar ainda melhor para o seu ambiente.&lt;/p>
+&lt;h3 id="o-que-devo-ficar-atento-ao-mudar-a-minha-implementação-de-cri-utilizada">O que devo ficar atento ao mudar a minha implementação de CRI utilizada?&lt;/h3>
+&lt;p>Embora o código de conteinerização base seja o mesmo entre o Docker e a maioria dos
+CRIs (incluindo containerd), existem algumas poucas diferenças. Alguns
+pontos a se considerar ao migrar são:&lt;/p>
+&lt;ul>
+&lt;li>Configuração de &lt;em>log&lt;/em>&lt;/li>
+&lt;li>Limitações de recursos de agentes de execução&lt;/li>
+&lt;li>Scripts de provisionamento que chamam o docker ou usam o docker por meio de seu soquete de controle&lt;/li>
+&lt;li>Plugins kubectl que exigem CLI do docker ou o soquete de controle&lt;/li>
+&lt;li>Ferramentas do projeto Kubernetes que requerem acesso direto ao Docker Engine
+(por exemplo: a ferramenta depreciada &lt;code>kube-imagepuller&lt;/code>)&lt;/li>
+&lt;li>Configuração de funcionalidades como &lt;code>registry-mirrors&lt;/code> e &lt;em>registries&lt;/em> inseguros&lt;/li>
+&lt;li>Outros scripts de suporte ou &lt;em>daemons&lt;/em> que esperam que o Docker Engine esteja disponível e seja executado
+fora do Kubernetes (por exemplo, agentes de monitoramento ou segurança)&lt;/li>
+&lt;li>GPUs ou hardware especial e como eles se integram ao seu agente de execução e ao Kubernetes&lt;/li>
+&lt;/ul>
+&lt;p>Se você usa solicitações ou limites de recursos do Kubernetes ou usa DaemonSets para coleta de logs
+em arquivos, eles continuarão a funcionar da mesma forma. Mas se você personalizou
+sua configuração &lt;code>dockerd&lt;/code>, você precisará adaptá-la para seu novo agente de execução de
+contêiner assim que possível.&lt;/p>
+&lt;p>Outro aspecto a ser observado é que ferramentas para manutenção do sistema ou execuções dentro de um
+contêiner no momento da criação de imagens podem não funcionar mais. Para o primeiro, a ferramenta
+&lt;a href="https://github.com/kubernetes-sigs/cri-tools">&lt;code>crictl&lt;/code>&lt;/a> pode ser utilizada como um substituto natural (veja
+&lt;a href="https://kubernetes.io/docs/tasks/debug/debug-cluster/crictl/#mapping-from-docker-cli-to-crictl">migrando do docker cli para o crictl&lt;/a>)
+e para o último, você pode usar novas opções de construções de contêiner, como &lt;a href="https://github.com/genuinetools/img">img&lt;/a>, &lt;a href="https://github.com/containers/buildah">buildah&lt;/a>,
+&lt;a href="https://github.com/GoogleContainerTools/kaniko">kaniko&lt;/a>, ou &lt;a href="https://github.com/vmware-tanzu/buildkit-cli-for-kubectl">buildkit-cli-for-kubectl&lt;/a> que não requerem Docker.&lt;/p>
+&lt;p>Para containerd, você pode começar com sua &lt;a href="https://github.com/containerd/cri/blob/master/docs/registry.md">documentação&lt;/a> para ver quais opções de configuração
+estão disponíveis à medida que você vá realizando a migração.&lt;/p>
+&lt;p>Para obter instruções sobre como usar containerd e CRI-O com Kubernetes, consulte o
+documentação do Kubernetes em &lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/setup/production-environment/container-runtimes/">Agentes de execução de contêineres&lt;/a>&lt;/p>
+&lt;h3 id="e-se-eu-tiver-mais-perguntas">E se eu tiver mais perguntas?&lt;/h3>
+&lt;p>Se você usa uma distribuição do Kubernetes com suporte do fornecedor, pode perguntar a eles sobre
+planos de atualização para seus produtos. Para perguntas de usuário final, poste-as
+no nosso fórum da comunidade de usuários: &lt;a href="https://discuss.kubernetes.io/">https://discuss.kubernetes.io/&lt;/a>.&lt;/p>
+&lt;p>Você também pode conferir a excelente postagem do blog
+&lt;a href="https://dev.to/inductor/wait-docker-is-deprecated-in-kubernetes-now-what-do-i-do-e4m">Espere, o Docker está depreciado no Kubernetes agora?&lt;/a>, uma discussão técnica mais aprofundada
+sobre as mudanças.&lt;/p>
+&lt;h3 id="posso-ganhar-um-abraço">Posso ganhar um abraço?&lt;/h3>
+&lt;p>Sim, ainda estamos dando abraços se solicitado. 🤗🤗🤗&lt;/p></description></item><item><title>Não entre em pânico: Kubernetes e Docker</title><link>https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2020/12/02/dont-panic-kubernetes-and-docker/</link><pubDate>Wed, 02 Dec 2020 00:00:00 +0000</pubDate><guid>https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2020/12/02/dont-panic-kubernetes-and-docker/</guid><description>
+&lt;p>&lt;strong>Autores / Autoras&lt;/strong>: Jorge Castro, Duffie Cooley, Kat Cosgrove, Justin Garrison, Noah Kantrowitz, Bob Killen, Rey Lejano, Dan “POP” Papandrea, Jeffrey Sica, Davanum “Dims” Srinivas&lt;/p>
+&lt;p>&lt;strong>Tradução:&lt;/strong> João Brito&lt;/p>
+&lt;p>Kubernetes está &lt;a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.20.md#deprecation">deixando de usar Docker&lt;/a> como seu agente de execução após a versão v1.20.&lt;/p>
+&lt;p>&lt;strong>Não entre em pânico. Não é tão dramático quanto parece.&lt;/strong>&lt;/p>
+&lt;p>TL;DR Docker como um agente de execução primário está sendo deixado de lado em favor de agentes de execução que utilizam a Interface de Agente de Execução de Containers (Container Runtime Interface &amp;quot;CRI&amp;quot;) criada para o Kubernetes. As imagens criadas com o Docker continuarão a funcionar em seu cluster com os agentes atuais, como sempre estiveram.&lt;/p>
+&lt;p>Se você é um usuário final de Kubernetes, quase nada mudará para você. Isso não significa a morte do Docker, e isso não significa que você não pode, ou não deva, usar ferramentas Docker em desenvolvimento mais. Docker ainda é uma ferramenta útil para a construção de containers, e as imagens resultantes de executar &lt;code>docker build&lt;/code> ainda rodarão em seu cluster Kubernetes.&lt;/p>
+&lt;p>Se você está usando um Kubernetes gerenciado como GKE, EKS, ou AKS (que usa como &lt;a href="https://github.com/Azure/AKS/releases/tag/2020-11-16">padrão containerd&lt;/a>) você precisará ter certeza que seus nós estão usando um agente de execução de container suportado antes que o suporte ao Docker seja removido nas versões futuras do Kubernetes. Se você tem mudanças em seus nós, talvez você precise atualizá-los baseado em seu ambiente e necessidades do agente de execução.&lt;/p>
+&lt;p>Se você está rodando seus próprios clusters, você também precisa fazer mudanças para evitar quebras em seu cluster. Na versão v1.20, você terá o aviso de alerta da perda de suporte ao Docker. Quando o suporte ao agente de execução do Docker for removido em uma versão futura (atualmente planejado para a versão 1.22 no final de 2021) do Kubernetes ele não será mais suportado e você precisará trocar para um dos outros agentes de execução de container compatível, como o containerd ou CRI-O. Mas tenha certeza que esse agente de execução escolhido tenha suporte às configurações do daemon do Docker usadas atualmente (Ex.: logs)&lt;/p>
+&lt;h2 id="então-porque-a-confusão-e-toda-essa-turma-surtando">Então porque a confusão e toda essa turma surtando?&lt;/h2>
+&lt;p>Estamos falando aqui de dois ambientes diferentes, e isso está criando essa confusão. Dentro do seu cluster Kubernetes, existe uma coisa chamada de agente de execução de container que é responsável por baixar e executar as imagens de seu container. Docker é a escolha popular para esse agente de execução (outras escolhas comuns incluem containerd e CRI-O), mas Docker não foi projetado para ser embutido no Kubernetes, e isso causa problemas.&lt;/p>
+&lt;p>Se liga, o que chamamos de &amp;quot;Docker&amp;quot; não é exatamente uma coisa - é uma stack tecnológica inteira, e uma parte disso é chamado de &amp;quot;containerd&amp;quot;, que é o agente de execução de container de alto-nível por si só. Docker é legal e útil porque ele possui muitas melhorias de experiência do usuário e isso o torna realmente fácil para humanos interagirem com ele enquanto estão desenvolvendo, mas essas melhorias para o usuário não são necessárias para o Kubernetes, pois ele não é humano.&lt;/p>
+&lt;p>Como resultado dessa camada de abstração amigável aos humanos, seu cluster Kubernetes precisa usar outra ferramenta chamada Dockershim para ter o que ele realmente precisa, que é o containerd. Isso não é muito bom, porque adiciona outra coisa a ser mantida e que pode quebrar. O que está atualmente acontecendo aqui é que o Dockershim está sendo removido do Kubelet assim que que a versão v1.23 for lançada, que remove o suporte ao Docker como agente de execução de container como resultado. Você deve estar pensando, mas se o containerd está incluso na stack do Docker, porque o Kubernetes precisa do Dockershim?&lt;/p>
+&lt;p>Docker não é compatível com CRI, a &lt;a href="https://kubernetes.io/blog/2016/12/container-runtime-interface-cri-in-kubernetes/">Container Runtime Interface&lt;/a> (interface do agente de execução de container). Se fosse, nós não precisaríamos do shim, e isso não seria nenhum problema. Mas isso não é o fim do mundo, e você não precisa entrar em pânico - você só precisa mudar seu agente de execução de container do Docker para um outro suportado.&lt;/p>
+&lt;p>Uma coisa a ser notada: Se você está contando com o socket do Docker (&lt;code>/var/run/docker.sock&lt;/code>) como parte do seu fluxo de trabalho em seu cluster hoje, mover para um agente de execução diferente acaba com sua habilidade de usá-lo. Esse modelo é conhecido como Docker em Docker. Existem diversas opções por aí para esse caso específico como o &lt;a href="https://github.com/GoogleContainerTools/kaniko">kaniko&lt;/a>, &lt;a href="https://github.com/genuinetools/img">img&lt;/a>, e &lt;a href="https://github.com/containers/buildah">buildah&lt;/a>.&lt;/p>
+&lt;h2 id="o-que-essa-mudança-representa-para-os-desenvolvedores-ainda-escrevemos-dockerfiles-ainda-vamos-fazer-build-com-docker">O que essa mudança representa para os desenvolvedores? Ainda escrevemos Dockerfiles? Ainda vamos fazer build com Docker?&lt;/h2>
+&lt;p>Essa mudança aborda um ambiente diferente do que a maioria das pessoas usa para interagir com Docker. A instalação do Docker que você está usando em desenvolvimento não tem relação com o agente de execução de Docker dentro de seu cluster Kubernetes. É confuso, dá pra entender.
+Como desenvolvedor, Docker ainda é útil para você em todas as formas que era antes dessa mudança ser anunciada. A imagem que o Docker cria não é uma imagem específica para Docker e sim uma imagem que segue o padrão OCI (&lt;a href="https://opencontainers.org/">Open Container Initiative&lt;/a>).&lt;/p>
+&lt;p>Qualquer imagem compatível com OCI, independente da ferramenta usada para construí-la será vista da mesma forma pelo Kubernetes. Ambos &lt;a href="https://containerd.io/">containerd&lt;/a> e &lt;a href="https://cri-o.io/">CRI-O&lt;/a> sabem como baixar e executá-las. Esse é o porque temos um padrão para containers.&lt;/p>
+&lt;p>Então, essa mudança está chegando. Isso irá causar problemas para alguns, mas nada catastrófico, no geral é uma boa coisa. Dependendo de como você interage com o Kubernetes, isso tornará as coisas mais fáceis. Se isso ainda é confuso para você, tudo bem, tem muita coisa rolando aqui; Kubernetes tem um monte de partes móveis, e ninguém é 100% especialista nisso. Nós encorajamos toda e qualquer tipo de questão independente do nível de experiência ou de complexidade! Nosso objetivo é ter certeza que todos estão entendendo o máximo possível as mudanças que estão chegando. Esperamos que isso tenha respondido a maioria de suas questões e acalmado algumas ansiedades! ❤️&lt;/p>
+&lt;p>Procurando mais respostas? Dê uma olhada em nosso apanhado de &lt;a href="https://kubernetes.xuxiaowei.com.cn/blog/2020/12/02/dockershim-faq/">questões quanto ao desuso do Dockershim&lt;/a>.&lt;/p></description></item><item><title>Escalando a rede do Kubernetes com EndpointSlices</title><link>https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2020/09/02/scaling-kubernetes-networking-with-endpointslices/</link><pubDate>Wed, 02 Sep 2020 00:00:00 +0000</pubDate><guid>https://kubernetes.xuxiaowei.com.cn/pt-br/blog/2020/09/02/scaling-kubernetes-networking-with-endpointslices/</guid><description>
+&lt;p>&lt;strong>Autor:&lt;/strong> Rob Scott (Google)&lt;/p>
+&lt;p>EndpointSlices é um novo tipo de API que provê uma alternativa escalável e extensível à API de Endpoints. EndpointSlices mantém o rastreio dos endereços IP, portas, informações de topologia e prontidão de Pods que compõem um serviço.&lt;/p>
+&lt;p>No Kubernetes 1.19 essa funcionalidade está habilitada por padrão, com o kube-proxy lendo os &lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/concepts/services-networking/endpoint-slices/">EndpointSlices&lt;/a> ao invés de Endpoints. Apesar de isso ser uma mudança praticamente transparente, resulta numa melhoria notável de escalabilidade em grandes clusters. Também permite a adição de novas funcionalidades em releases futuras do Kubernetes, como o &lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/concepts/services-networking/service-topology/">Roteamento baseado em topologia.&lt;/a>.&lt;/p>
+&lt;h2 id="limitações-de-escalabilidade-da-api-de-endpoints">Limitações de escalabilidade da API de Endpoints&lt;/h2>
+&lt;p>Na API de Endpoints, existia apenas um recurso de Endpoint por serviço (Service). Isso significa que
+era necessário ser possível armazenar endereços IPs e portas para cada Pod que compunha o serviço correspondente. Isso resultava em recursos imensos de API. Para piorar, o kube-proxy rodava em cada um dos nós e observava qualquer alteração nos recursos de Endpoint. Mesmo que fosse uma simples mudança em um Endpoint, todo o objeto precisava ser enviado para cada uma das instâncias do kube-proxy.&lt;/p>
+&lt;p>Outra limitação da API de Endpoints era que ela limitava o número de objetos que podiam ser associados a um &lt;em>Service&lt;/em>. O tamanho padrão de um objeto armazenado no etcd é 1.5MB. Em alguns casos, isso poderia limitar um Endpoint a 5,000 IPs de Pod. Isso não chega a ser um problema para a maioria dos usuários, mas torna-se um problema significativo para serviços que se aproximem desse tamanho.&lt;/p>
+&lt;p>Para demonstrar o quão significante se torna esse problema em grande escala, vamos usar de um simples exemplo: Imagine um &lt;em>Service&lt;/em> que possua 5,000 Pods, e que possa causar o Endpoint a ter 1.5Mb . Se apenas um Endpoint nessa lista sofra uma alteração, todo o objeto de Endpoint precisará ser redistribuído para cada um dos nós do cluster. Em um cluster com 3.000 nós, essa atualização causará o envio de 4.5Gb de dados (1.5Mb de Endpoints * 3,000 nós) para todo o cluster. Isso é quase que o suficiente para encher um DVD, e acontecerá para cada mudança de Endpoint. Agora imagine uma atualização gradual em um &lt;em>Deployment&lt;/em> que resulte nos 5,000 Pods serem substituídos - isso é mais que 22Tb (ou 5,000 DVDs) de dados transferidos.&lt;/p>
+&lt;h2 id="dividindo-os-endpoints-com-a-api-de-endpointslice">Dividindo os endpoints com a API de EndpointSlice&lt;/h2>
+&lt;p>A API de EndpointSlice foi desenhada para resolver esse problema com um modelo similar de &lt;em>sharding&lt;/em>. Ao invés de rastrar todos os IPs dos Pods para um &lt;em>Service&lt;/em>, com um único recurso de Endpoint, nós dividimos eles em múltiplos EndpointSlices menores.&lt;/p>
+&lt;p>Usemos por exemplo um serviço com 15 pods. Nós teríamos um único recurso de Endpoints referente a todos eles. Se o EndpointSlices for configurado para armazenar 5 &lt;em>endpoints&lt;/em> cada, nós teríamos 3 EndpointSlices diferentes:
+&lt;img alt="EndpointSlices" src="https://kubernetes.xuxiaowei.com.cn/images/blog/2020-09-02-scaling-kubernetes-networking-endpointslices/endpoint-slices.png">&lt;/p>
+&lt;p>Por padrão, o EndpointSlices armazena um máximo de 100 &lt;em>endpoints&lt;/em> cada, podendo isso ser configurado com a flag &lt;code>--max-endpoints-per-slice&lt;/code> no kube-controller-manager.&lt;/p>
+&lt;h2 id="endpointslices-provê-uma-melhoria-de-escalabilidade-em-10x">EndpointSlices provê uma melhoria de escalabilidade em 10x&lt;/h2>
+&lt;p>Essa API melhora dramaticamente a escalabilidade da rede. Agora quando um Pod é adicionado ou removido, apenas 1 pequeno EndpointSlice necessita ser atualizado. Essa diferença começa a ser notada quando centenas ou milhares de Pods compõem um único &lt;em>Service&lt;/em>.&lt;/p>
+&lt;p>Mais significativo, agora que todos os IPs de Pods para um &lt;em>Service&lt;/em> não precisam ser armazenados em um único recurso, nós não precisamos nos preocupar com o limite de tamanho para objetos armazendos no etcd. EndpointSlices já foram utilizados para escalar um serviço além de 100,000 endpoints de rede.&lt;/p>
+&lt;p>Tudo isso é possível com uma melhoria significativa de performance feita no kube-proxy. Quando o EndpointSlices é usado em grande escala, muito menos dados serão transferidos para as atualizações de endpoints e o kube-proxy torna-se mais rápido para atualizar regras do iptables ou do ipvs. Além disso, os &lt;em>Services&lt;/em> podem escalar agora para pelo menos 10x mais além dos limites anteriores.&lt;/p>
+&lt;h2 id="endpointslices-permitem-novas-funcionalidades">EndpointSlices permitem novas funcionalidades&lt;/h2>
+&lt;p>Introduzido como uma funcionalidade alpha no Kubernetes v1.16, os EndpointSlices foram construídos para permitir algumas novas funcionalidades arrebatadoras em futuras versões do Kubernetes. Isso inclui serviços dual-stack, roteamento baseado em topologia e subconjuntos de &lt;em>endpoints&lt;/em>.&lt;/p>
+&lt;p>Serviços Dual-stack são uma nova funcionalidade que foi desenvolvida juntamente com o EndpointSlices. Eles irão utilizar simultâneamente endereços IPv4 e IPv6 para serviços, e dependem do campo addressType do Endpointslices para conter esses novos tipos de endereço por família de IP.&lt;/p>
+&lt;p>O roteamento baseado por topologia irá atualizar o kube-proxy para dar preferência no roteamento de requisições para a mesma região ou zona, utilizando-se de campos de topologia armazenados em cada endpoint dentro de um EndpointSlice. Como uma melhoria futura disso, estamos explorando o potencial de subconjuntos de endpoint. Isso irá permitir o kube-proxy apenas observar um subconjunto de EndpointSlices. Por exemplo, isso pode ser combinado com o roteamento baseado em topologia e assim, o kube-proxy precisará observar apenas EndpointSlices contendo &lt;em>endpoints&lt;/em> na mesma zona. Isso irá permitir uma outra melhoria significativa de escalabilidade.&lt;/p>
+&lt;h2 id="o-que-isso-significa-para-a-api-de-endpoints">O que isso significa para a API de Endpoints?&lt;/h2>
+&lt;p>Apesar da API de EndpointSlice prover uma alternativa nova e escalável à API de Endpoints, a API de Endpoints continuará a ser considerada uma funcionalidade estável. A mudança mais significativa para a API de Endpoints envolve começar a truncar Endpoints que podem causar problemas de escalabilidade.&lt;/p>
+&lt;p>A API de Endpoints não será removida, mas muitas novas funcionalidades irão depender da nova API EndpointSlice. Para obter vantágem da funcionalidade e escalabilidade que os EndpointSlices provém, aplicações que hoje consomem a API de Endpoints devem considerar suportar EndpointSlices no futuro.&lt;/p></description></item></channel></rss>
