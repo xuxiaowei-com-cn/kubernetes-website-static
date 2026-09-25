@@ -1,0 +1,547 @@
+<!doctype html><html lang=pt-br class=no-js><head><meta name=robots content="noindex, nofollow"><link rel=alternate hreflang=en href=https://kubernetes.xuxiaowei.com.cn/docs/tutorials/><link rel=alternate hreflang=zh-cn href=https://kubernetes.xuxiaowei.com.cn/zh-cn/docs/tutorials/><link rel=alternate hreflang=ko href=https://kubernetes.xuxiaowei.com.cn/ko/docs/tutorials/><link rel=alternate hreflang=ja href=https://kubernetes.xuxiaowei.com.cn/ja/docs/tutorials/><link rel=alternate hreflang=fr href=https://kubernetes.xuxiaowei.com.cn/fr/docs/tutorials/><link rel=alternate hreflang=it href=https://kubernetes.xuxiaowei.com.cn/it/docs/tutorials/><link rel=alternate hreflang=de href=https://kubernetes.xuxiaowei.com.cn/de/docs/tutorials/><link rel=alternate hreflang=es href=https://kubernetes.xuxiaowei.com.cn/es/docs/tutorials/><link rel=alternate hreflang=id href=https://kubernetes.xuxiaowei.com.cn/id/docs/tutorials/><link rel=alternate hreflang=hi href=https://kubernetes.xuxiaowei.com.cn/hi/docs/tutorials/><link rel=alternate hreflang=ru href=https://kubernetes.xuxiaowei.com.cn/ru/docs/tutorials/><link rel=alternate hreflang=pl href=https://kubernetes.xuxiaowei.com.cn/pl/docs/tutorials/><link rel=alternate hreflang=uk href=https://kubernetes.xuxiaowei.com.cn/uk/docs/tutorials/><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.111.3"><link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/pt-br/docs/tutorials/><link rel="shortcut icon" type=image/png href=/images/favicon.png><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=manifest href=/manifest.webmanifest><link rel=apple-touch-icon href=/images/kubernetes-192x192.png><title>Tutoriais | Kubernetes</title><meta property="og:title" content="Tutoriais"><meta property="og:description" content="Orquestração de contêineres em nível de produção"><meta property="og:type" content="website"><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/pt-br/docs/tutorials/"><meta property="og:site_name" content="Kubernetes"><meta itemprop=name content="Tutoriais"><meta itemprop=description content="Orquestração de contêineres em nível de produção"><meta name=twitter:card content="summary"><meta name=twitter:title content="Tutoriais"><meta name=twitter:description content="Orquestração de contêineres em nível de produção"><link href=/scss/main.css rel=stylesheet><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png"}</script><meta name=theme-color content="#326ce5"><style>.gutter{background-color:#eee;background-repeat:no-repeat;background-position:50%}.gutter.gutter-horizontal{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==);cursor:col-resize}#sidebarnav,#maindoc{max-width:100%}#maindoc{overflow-wrap:break-word}@media(max-width:768px){#sidebarnav{padding-left:15px;padding-right:15px}}</style><link rel=stylesheet href=/css/feature-states.css><meta name=description content="Essa seção da documentação contém tutoriais. Um tutorial demonstra como realizar um objetivo mais complexo que uma simples tarefa. Tipicamente, um tutorial é dividido em várias seções, em que cada seção tem uma sequência de passos. Antes de iniciar um tutorial, é interessante que você salve a página do Glossário Padronizado para futuras referências.
+Noções Básicas Noções Básicas do Kubernetes é um tutorial interativo que auxilia no entendimento do ecossistema Kubernetes, bem como permite testar algumas funcionalidades básicas do Kubernetes."><meta property="og:description" content="Essa seção da documentação contém tutoriais. Um tutorial demonstra como realizar um objetivo mais complexo que uma simples tarefa. Tipicamente, um tutorial é dividido em várias seções, em que cada seção tem uma sequência de passos. Antes de iniciar um tutorial, é interessante que você salve a página do Glossário Padronizado para futuras referências.
+Noções Básicas Noções Básicas do Kubernetes é um tutorial interativo que auxilia no entendimento do ecossistema Kubernetes, bem como permite testar algumas funcionalidades básicas do Kubernetes."><meta name=twitter:description content="Essa seção da documentação contém tutoriais. Um tutorial demonstra como realizar um objetivo mais complexo que uma simples tarefa. Tipicamente, um tutorial é dividido em várias seções, em que cada seção tem uma sequência de passos. Antes de iniciar um tutorial, é interessante que você salve a página do Glossário Padronizado para futuras referências.
+Noções Básicas Noções Básicas do Kubernetes é um tutorial interativo que auxilia no entendimento do ecossistema Kubernetes, bem como permite testar algumas funcionalidades básicas do Kubernetes."><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/pt-br/docs/tutorials/"><meta property="og:title" content="Tutoriais"><meta name=twitter:title content="Tutoriais"><meta name=twitter:image content="https://kubernetes.io/images/favicon.png"><meta name=twitter:image:alt content="Kubernetes"><meta property="og:image" content="/images/kubernetes-horizontal-color.png"><meta property="og:type" content="article"><script src=/js/jquery-3.6.0.min.js intregrity=sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK crossorigin=anonymous></script>
+<script src=/js/split-1.6.0.js intregrity=sha384-0blL3GqHy6+9fw0cyY2Aoiwg4onHAtslAs4OkqZY7UQBrR65/K4gI+hxLdWDrjpz></script>
+<script type=text/javascript>(function(e,t,n,s,o,i,a){e[n]=e[n]||function(){(e[n].q=e[n].q||[]).push(arguments)},i=t.createElement(s),i.async=1,i.src="https://www.clarity.ms/tag/"+o,a=t.getElementsByTagName(s)[0],a.parentNode.insertBefore(i,a)})(window,document,"clarity","script","ym5ug84i60")</script></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-column flex-md-row td-navbar" data-auto-burger=primary><a class="navbar-brand img-fluid" href=/pt-br/></a><div class="td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0"><li class="nav-item mr-2 mb-lg-0"><a class="nav-link active" href=/pt-br/docs/>Documentação</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/pt-br/blog/>Kubernetes Blog</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/pt-br/partners/>Parceiros</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/pt-br/community/>Comunidade</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/pt-br/case-studies/>Casos de estudo</a></li><li class="nav-item mr-n3 mr-lg-0 dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>Versões</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/pt-br/releases>Informações de Versões</a>
+<a class=dropdown-item href=https://xuxiaowei.io/t/1320/pt-br/docs/tutorials/>Kubernetes 文档说明</a>
+<a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn/pt-br/docs/tutorials/>v1.38</a>
+<a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn/pt-br/docs/tutorials/>v1.37</a>
+<a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn/pt-br/docs/tutorials/>v1.36</a>
+<a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn/pt-br/docs/tutorials/>v1.35</a>
+<a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn/pt-br/docs/tutorials/>v1.34</a>
+<a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn/pt-br/docs/tutorials/>v1.33</a>
+<a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn/pt-br/docs/tutorials/>v1.32</a>
+<a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn/pt-br/docs/tutorials/>v1.31</a>
+<a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn/pt-br/docs/tutorials/>v1.30</a>
+<a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn/pt-br/docs/tutorials/>v1.29</a>
+<a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn/pt-br/docs/tutorials/>v1.28</a>
+<a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn/pt-br/docs/tutorials/>v1.27</a>
+<a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn/pt-br/docs/tutorials/>v1.26</a>
+<a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn/pt-br/docs/tutorials/>v1.25</a>
+<a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn/pt-br/docs/tutorials/>v1.24</a>
+<a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn/pt-br/docs/tutorials/>v1.23</a>
+<a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn/pt-br/docs/tutorials/>v1.22</a>
+<a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn/pt-br/docs/tutorials/>v1.21</a>
+<a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn/pt-br/docs/tutorials/>v1.20</a></div></li><li class="nav-item mr-n4 mr-lg-0 dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdownMenuLink role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>Português (Portuguese)</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/tutorials/>English</a>
+<a class=dropdown-item href=/zh-cn/docs/tutorials/>中文 (Chinese)</a>
+<a class=dropdown-item href=/ko/docs/tutorials/>한국어 (Korean)</a>
+<a class=dropdown-item href=/ja/docs/tutorials/>日本語 (Japanese)</a>
+<a class=dropdown-item href=/fr/docs/tutorials/>Français (French)</a>
+<a class=dropdown-item href=/it/docs/tutorials/>Italiano (Italian)</a>
+<a class=dropdown-item href=/de/docs/tutorials/>Deutsch (German)</a>
+<a class=dropdown-item href=/es/docs/tutorials/>Español (Spanish)</a>
+<a class=dropdown-item href=/id/docs/tutorials/>Bahasa Indonesia</a>
+<a class=dropdown-item href=/hi/docs/tutorials/>हिन्दी (Hindi)</a>
+<a class=dropdown-item href=/ru/docs/tutorials/>Русский (Russian)</a>
+<a class=dropdown-item href=/pl/docs/tutorials/>Polski (Polish)</a>
+<a class=dropdown-item href=/uk/docs/tutorials/>Українська (Ukrainian)</a></div></li></ul></div><button id=hamburger onclick=kub.toggleMenu() data-auto-burger-exclude><div></div></button></nav></header><div class="container-fluid td-outer"><div class=td-main><div class="row flex-xl-nowrap"><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><div class=td-content><div class="pageinfo pageinfo-primary d-print-none"><p>Essa é a versão completa de impressão dessa seção
+<a href=# onclick="return print(),!1">Clique aqui para imprimir</a>.</p><p><a href=/pt-br/docs/tutorials/>Retornar à visualização normal</a>.</p></div><h1 class=title>Tutoriais</h1><ul><li>1: <a href=#pg-5e3051fff9e84735871d9fb5e7b93f33>Olá, Minikube!</a></li><li>2: <a href=#pg-3c83f53a74233ace9b289ac5e24c3e62>Aprenda as noções básicas do Kubernetes</a></li><ul><li>2.1: <a href=#pg-7df66040311338d6098ebeab43ba9afb>Crie um Cluster</a></li><ul><li>2.1.1: <a href=#pg-de49316920e97a82e36763cb66781ada>Usando Minikube para criar um cluster</a></li></ul><li>2.2: <a href=#pg-76d78b3fba507f7ed33cef14a35b631d>Implantar um aplicativo</a></li><ul><li>2.2.1: <a href=#pg-2b1bba431989008c7493109a0f049ece>Usando kubectl para criar um Deployment</a></li></ul><li>2.3: <a href=#pg-250d620a73ec8be7e1f7d835574c4596>Explore seu aplicativo</a></li><ul><li>2.3.1: <a href=#pg-2771f4e8c45321b17cb0114a2d266453>Visualizando Pods e Nós</a></li></ul><li>2.4: <a href=#pg-4b0e31c9e0eae68bbb0a358b4042ada9>Exponha publicamente seu aplicativo</a></li><ul><li>2.4.1: <a href=#pg-8ef4dad8f743b191a9e8c6f891cb191a>Utilizando um serviço para expor seu aplicativo</a></li></ul><li>2.5: <a href=#pg-be4996c93fb39c459a30b6669569d423>Escale seu aplicativo</a></li><ul><li>2.5.1: <a href=#pg-d1c15c9bd4f625adbc13149b1475287c>Executando Múltiplas Instâncias da sua Aplicação</a></li><li>2.5.2: <a href=#pg-7bdb3fbaa1177ff5dfa3fe86bd35ef59>Tutorial Interativo - Escalando seu aplicativo</a></li></ul></ul></ul><div class=content><p>Essa seção da documentação contém tutoriais. Um tutorial demonstra como realizar
+um objetivo mais complexo que uma simples <a href=/pt-br/docs/tasks/>tarefa</a>. Tipicamente,
+um tutorial é dividido em várias seções, em que cada seção tem uma sequência de
+passos.
+Antes de iniciar um tutorial, é interessante que você salve a página do
+<a href=/pt-br/docs/reference/glossary/>Glossário Padronizado</a> para futuras referências.</p><h2 id=noções-básicas>Noções Básicas</h2><ul><li><p><a href=/pt-br/docs/tutorials/kubernetes-basics/>Noções Básicas do Kubernetes</a> é um
+tutorial interativo que auxilia no entendimento do ecossistema Kubernetes, bem
+como permite testar algumas funcionalidades básicas do Kubernetes.</p></li><li><p><a href=https://www.edx.org/course/introduction-kubernetes-linuxfoundationx-lfs158x#>Introdução ao Kubernetes (edX)</a></p></li><li><p><a href=/pt-br/docs/tutorials/hello-minikube/>Olá, Minikube!</a></p></li></ul><h2 id=configuração>Configuração</h2><ul><li><p><a href=/docs/tutorials/configuration/configure-java-microservice/>Exemplo: Configurando um Microsserviço Java</a></p></li><li><p><a href=/docs/tutorials/configuration/configure-redis-using-configmap/>Configurando o Redis usando um ConfigMap</a></p></li></ul><h2 id=aplicações-sem-estado-stateless>Aplicações sem estado (<em>stateless</em>)</h2><ul><li><p><a href=/docs/tutorials/stateless-application/expose-external-ip-address/>Expondo um Endereço de IP externo para acessar uma aplicação no Cluster</a></p></li><li><p><a href=/docs/tutorials/stateless-application/guestbook/>Exemplo: Implantando a aplicação de Livro de Visitas (Guestbook) em PHP com Redis</a></p></li></ul><h2 id=aplicações-com-estado-stateful>Aplicações com estado (<em>stateful</em>)</h2><ul><li><p><a href=/docs/tutorials/stateful-application/basic-stateful-set/>Noções Básicas sobre StatefulSet</a></p></li><li><p><a href=/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/>Exemplo: WordPress e MySQL com Volumes Persistentes</a></p></li><li><p><a href=/docs/tutorials/stateful-application/cassandra/>Exemplo: Implantando Cassandra com Stateful Sets</a></p></li><li><p><a href=/docs/tutorials/stateful-application/zookeeper/>Executando ZooKeeper no Kubernetes</a></p></li></ul><h2 id=services>Services</h2><ul><li><p><a href=/docs/tutorials/services/connect-applications-service/>Conectando aplicações com Services</a></p></li><li><p><a href=/docs/tutorials/services/source-ip/>Usando IP de origem</a></p></li></ul><h2 id=segurança>Segurança</h2><ul><li><p><a href=/docs/tutorials/security/cluster-level-pss/>Aplique os Padrões de Segurança do Pod a nível de cluster</a></p></li><li><p><a href=/docs/tutorials/security/cluster-level-pss/>Aplique os Padrões de Segurança do Pod a nível de namespace</a></p></li><li><p><a href=/docs/tutorials/security/apparmor/>AppArmor</a></p></li><li><p><a href=/docs/tutorials/security/seccomp/>Seccomp</a></p></li></ul><h2 id=próximos-passos>Próximos passos</h2><p>Se você desejar escrever um tutorial, consulte a documentação de
+<a href=/docs/contribute/style/page-content-types/>Tipos de Página de Conteúdo</a>
+para informações sobre o tipo de página de tutorial.</p></div></div><div class=td-content style=page-break-before:always><h1 id=pg-5e3051fff9e84735871d9fb5e7b93f33>1 - Olá, Minikube!</h1><p>Este tutorial demonstra como executar uma aplicação exemplo no Kubernetes utilizando
+o minikube.
+O tutorial fornece uma imagem de contêiner que utiliza o NGINX para repetir todas
+as requisições.</p><h2 id=objetivos>Objetivos</h2><ul><li>Instalar uma aplicação exemplo no minikube.</li><li>Executar a aplicação.</li><li>Visualizar os logs da aplicação.</li></ul><h2 id=antes-de-você-começar>Antes de você começar</h2><p>Este tutorial assume que você já tem uma instância do <code>minikube</code> configurada.
+Veja <a href=https://minikube.sigs.k8s.io/docs/start/>minikube start</a> para instruções
+de como instalar.</p><p>Você também irá precisar instalar o <code>kubectl</code>.
+Veja <a href=/pt-br/docs/tasks/tools/#kubectl>instalando ferramentas</a> para instruções de como
+instalar.</p><h2 id=criando-um-cluster-do-minikube>Criando um cluster do minikube</h2><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>minikube start
+</span></span></code></pre></div><h2 id=abra-o-painel-dashboard>Abra o painel (<em>dashboard</em>)</h2><p>Abra o painel (<em>dashboard</em>) do Kubernetes. Você pode fazer isso de duas formas
+distintas:</p><ul class="nav nav-tabs" id=dashboard role=tablist><li class=nav-item><a data-toggle=tab class="nav-link active" href=#dashboard-0 role=tab aria-controls=dashboard-0 aria-selected=true>Abra um navegador</a></li><li class=nav-item><a data-toggle=tab class=nav-link href=#dashboard-1 role=tab aria-controls=dashboard-1>Copie e cole a URL</a></li></ul><div class=tab-content id=dashboard><div id=dashboard-0 class="tab-pane show active" role=tabpanel aria-labelledby=dashboard-0><p><p>Abra um <strong>novo</strong> terminal e rode o comando:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># Inicie um novo terminal e deixe este comando rodando.</span>
+</span></span><span style=display:flex><span>minikube dashboard
+</span></span></code></pre></div><p>Agora, retorne para o terminal onde você executou o comando <code>minikube start</code>.</p><div class="alert alert-info note callout" role=alert><strong>Nota:</strong><p>O comando <code>dashboard</code> habilita o complemento do painel e abre o proxy no navegador
+padrão. Você pode criar recursos do Kubernetes no painel, como Deployment e
+Service.</p><p>Se você estiver executando num ambiente com o usuário <em>root</em>, veja
+<a href=#open-dashboard-with-url>Abrir o Painel com URL</a>.</p><p>Por padrão, o painel só é acessível pela rede virtual interna do Kubernetes. O
+comando <code>dashboard</code> cria um proxy temporário para tornar o painel acessível por
+fora da rede virtual do Kubernetes.</p><p>Para parar o proxy, utilize o comando <code>Ctrl+C</code> para encerrar o processo.
+Após o término do comando, o painel permanece executando no cluster do Kubernetes.
+Você pode executar o comando <code>dashboard</code> novamente para criar outro proxy para
+acessar o painel.</p></div></div><div id=dashboard-1 class=tab-pane role=tabpanel aria-labelledby=dashboard-1><p><p>Se você não deseja que o minikube abra um navegador para você, rode o comando
+<code>dashboard</code> com a opção de linha de comando <code>--url</code>. O minikube irá imprimir
+uma URL que você poderá abrir no navegador de sua preferência.</p><p>Abra um <strong>novo</strong> terminal e rode o comando:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># Inicie um novo terminal e deixe este comando rodando.</span>
+</span></span><span style=display:flex><span>minikube dashboard --url
+</span></span></code></pre></div><p>Agora, retorne para o terminal onde você executou o comando <code>minikube start</code>.</p></div></div><h2 id=criando-um-deployment>Criando um Deployment</h2><p>Um <a href=/docs/concepts/workloads/pods/><em>Pod</em></a> do Kubernetes consiste em um ou mais
+contêineres agrupados para fins de administração e gerenciamento de rede. O Pod
+deste tutorial possui apenas um contêiner. Um
+<a href=/docs/concepts/workloads/controllers/deployment/><em>Deployment</em></a> do Kubernetes
+verifica a integridade do seu Pod e reinicia o contêiner do Pod caso este seja
+finalizado. Deployments são a maneira recomendada de gerenciar a criação e
+escalonamento dos Pods.</p><ol><li><p>Usando o comando <code>kubectl create</code> para criar um Deployment que gerencia um Pod.
+O Pod executa um contêiner baseado na imagem do Docker disponibilizada.</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl create deployment hello-node --image<span style=color:#666>=</span>registry.k8s.io/echoserver:1.4
+</span></span></code></pre></div></li><li><p>Visualize o Deployment:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get deployments
+</span></span></code></pre></div><p>A saída será semelhante a:</p><pre tabindex=0><code>NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+hello-node   1/1     1            1           1m
+</code></pre></li><li><p>Visualize o Pod:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get pods
+</span></span></code></pre></div><p>A saída será semelhante a:</p><pre tabindex=0><code>NAME                          READY     STATUS    RESTARTS   AGE
+hello-node-5f76cf6ccf-br9b5   1/1       Running   0          1m
+</code></pre></li><li><p>Visualize os eventos do cluster:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get events
+</span></span></code></pre></div></li><li><p>Visualize a configuração do <code>kubectl</code>:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl config view
+</span></span></code></pre></div></li></ol><div class="alert alert-info note callout" role=alert><strong>Nota:</strong> Para mais informações sobre o comando <code>kubectl</code>, consulte
+<a href=/docs/reference/kubectl/>visão geral do kubectl</a>.</div><h2 id=criando-um-serviço>Criando um Serviço</h2><p>Por padrão, um Pod só é acessível utilizando o seu endereço IP interno no cluster
+Kubernetes. Para dispobiblilizar o contêiner <code>hello-node</code> fora da rede virtual do
+Kubernetes, você deve expor o Pod como um
+<a href=/docs/concepts/services-networking/service/><em>Service</em></a> do Kubernetes.</p><ol><li><p>Exponha o Pod usando o comando <code>kubectl expose</code>:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl expose deployment hello-node --type<span style=color:#666>=</span>LoadBalancer --port<span style=color:#666>=</span><span style=color:#666>8080</span>
+</span></span></code></pre></div><p>O parâmetro <code>--type=LoadBalancer</code> indica que você deseja expor o seu serviço
+fora do cluster Kubernetes.</p><p>A aplicação dentro da imagem de teste escuta apenas na porta TCP 8080. Se
+você usou <code>kubectl expose</code> para expor uma porta diferente, os clientes não
+conseguirão se conectar a essa outra porta.</p></li><li><p>Visualize o serviço que você acabou de criar:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get services
+</span></span></code></pre></div><p>A saída será semelhante a:</p><pre tabindex=0><code>NAME         TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+hello-node   LoadBalancer   10.108.144.78   &lt;pending&gt;     8080:30369/TCP   21s
+kubernetes   ClusterIP      10.96.0.1       &lt;none&gt;        443/TCP          23m
+</code></pre><p>Em provedores de nuvem que fornecem serviços de balanceamento de carga para
+o Kubernetes, um IP externo seria provisionado para acessar o serviço. No
+minikube, o tipo <code>LoadBalancer</code> torna o serviço acessível por meio do comando
+<code>minikube service</code>.</p></li><li><p>Execute o comando a seguir:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>minikube service hello-node
+</span></span></code></pre></div><p>Este comando abre uma janela do navegador que serve o seu aplicativo e exibe
+o retorno da requisição ao aplicativo.</p></li></ol><h2 id=habilitando-complementos-addons>Habilitando Complementos (addons)</h2><p>A ferramenta minikube inclui um conjunto integrado de <a class=glossary-tooltip title='Recursos que estendem a funcionalidade do Kubernetes.' data-toggle=tooltip data-placement=top href=/pt-br/docs/concepts/cluster-administration/addons/ target=_blank aria-label=complementos>complementos</a>
+que podem ser habilitados, desabilitados e executados no ambiente Kubernetes local.</p><ol><li><p>Liste os complementos suportados atualmente:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>minikube addons list
+</span></span></code></pre></div><p>A saída será semelhante a:</p><pre tabindex=0><code>addon-manager: enabled
+dashboard: enabled
+default-storageclass: enabled
+efk: disabled
+freshpod: disabled
+gvisor: disabled
+helm-tiller: disabled
+ingress: disabled
+ingress-dns: disabled
+logviewer: disabled
+metrics-server: disabled
+nvidia-driver-installer: disabled
+nvidia-gpu-device-plugin: disabled
+registry: disabled
+registry-creds: disabled
+storage-provisioner: enabled
+storage-provisioner-gluster: disabled
+</code></pre></li><li><p>Habilite um complemento, por exemplo, <code>metrics-server</code>:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>minikube addons <span style=color:#a2f>enable</span> metrics-server
+</span></span></code></pre></div><p>A saída será semelhante a:</p><pre tabindex=0><code>The &#39;metrics-server&#39; addon is enabled
+</code></pre></li><li><p>Visualize o Pod e o Service que você acabou de criar:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get pod,svc -n kube-system
+</span></span></code></pre></div><p>A saída será semelhante a:</p><pre tabindex=0><code>NAME                                        READY     STATUS    RESTARTS   AGE
+pod/coredns-5644d7b6d9-mh9ll                1/1       Running   0          34m
+pod/coredns-5644d7b6d9-pqd2t                1/1       Running   0          34m
+pod/metrics-server-67fb648c5                1/1       Running   0          26s
+pod/etcd-minikube                           1/1       Running   0          34m
+pod/influxdb-grafana-b29w8                  2/2       Running   0          26s
+pod/kube-addon-manager-minikube             1/1       Running   0          34m
+pod/kube-apiserver-minikube                 1/1       Running   0          34m
+pod/kube-controller-manager-minikube        1/1       Running   0          34m
+pod/kube-proxy-rnlps                        1/1       Running   0          34m
+pod/kube-scheduler-minikube                 1/1       Running   0          34m
+pod/storage-provisioner                     1/1       Running   0          34m
+
+NAME                           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
+service/metrics-server         ClusterIP   10.96.241.45    &lt;none&gt;        80/TCP              26s
+service/kube-dns               ClusterIP   10.96.0.10      &lt;none&gt;        53/UDP,53/TCP       34m
+service/monitoring-grafana     NodePort    10.99.24.54     &lt;none&gt;        80:30002/TCP        26s
+service/monitoring-influxdb    ClusterIP   10.111.169.94   &lt;none&gt;        8083/TCP,8086/TCP   26s
+</code></pre></li><li><p>Desabilite o complemento <code>metrics-server</code>:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>minikube addons disable metrics-server
+</span></span></code></pre></div><p>A saída será semelhante a:</p><pre tabindex=0><code>metrics-server was successfully disabled
+</code></pre></li></ol><h2 id=limpeza>Limpeza</h2><p>Agora você pode remover todos os recursos criados no seu cluster:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl delete service hello-node
+</span></span><span style=display:flex><span>kubectl delete deployment hello-node
+</span></span></code></pre></div><p>Encerre o cluster do minikube:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>minikube stop
+</span></span></code></pre></div><p>(Opcional) Apague a máquina virtual (VM) do minikube:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># Opcional</span>
+</span></span><span style=display:flex><span>minikube delete
+</span></span></code></pre></div><p>Se você desejar utilizar o minikube novamente para aprender mais sobre o Kubernetes,
+você não precisa apagar a VM.</p><h2 id=próximos-passos>Próximos passos</h2><ul><li>Aprenda mais sobre <a href=/docs/concepts/workloads/controllers/deployment/>objetos Deployment</a>.</li><li>Aprenda mais sobre <a href=/docs/tasks/run-application/run-stateless-application-deployment/>implantar aplicações</a>.</li><li>Aprenda mais sobre <a href=/docs/concepts/services-networking/service/>objetos Service</a>.</li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-3c83f53a74233ace9b289ac5e24c3e62>2 - Aprenda as noções básicas do Kubernetes</h1><div class="pageinfo pageinfo-secondary"><h4>Encerramento dos tutoriais interativos</h4><p>Os tutoriais interativos neste website estão sendo encerrados. O projeto
+Kubernetes espera oferecer uma experiência interativa de aprendizagem semelhante
+no futuro.</p><p>O encerramento segue a <a href=https://www.oreilly.com/content/oreilly-acquires-katacoda-and-a-new-way-for-2-5m-customers-to-learn/>aquisição</a>
+do Katacoda pela O'Reilly Media em 2019.</p><p>O projeto Kubernetes é grato à O'Reilly e ao Katacoda pelos vários anos de
+auxílio às pessoas dando seus primeiros passos nas suas jornadas de aprendizagem
+do Kubernetes.</p><p>Os tutoriais encerrarão seu funcionamento no dia <b>31 de março de 2023</b>.
+Para mais informações, leia
+"<a href=/pt-br/blog/2023/02/14/kubernetes-katacoda-tutorials-stop-from-2023-03-31/>os tutoriais gratuitos do Katacoda estão sendo encerrados</a>."</p></div><!doctype html><html lang=en><body><link href=/docs/tutorials/kubernetes-basics/public/css/styles.css rel=stylesheet><div class=layout id=top><main class=content><div class=row><div class=col-md-9><h2>Noções Básicas do Kubernetes</h2><p>Este tutorial fornece instruções básicas sobre o sistema de orquestração
+de cluster do Kubernetes. Cada módulo contém algumas informações básicas
+sobre os principais recursos e conceitos do Kubernetes e inclui um tutorial
+online interativo. Esses tutoriais interativos permitem que você mesmo
+gerencie um cluster simples e seus aplicativos em contêineres.</p><p>Usando os tutoriais interativos, você pode aprender a:</p><ul><li>Implantar um aplicativo em contêiner em um cluster.</li><li>Dimensionar a implantação.</li><li>Atualizar o aplicativo em contêiner com uma nova versão do software.</li><li>Depurar o aplicativo em contêiner.</li></ul><p>Os tutoriais usam Katacoda para executar um terminal virtual em seu navegador da Web, executado em Minikube, uma implantação local em pequena escala do Kubernetes que pode ser executada em qualquer lugar. Não há necessidade de instalar nenhum software ou configurar nada; cada tutorial interativo é executado diretamente no navegador da web.</p></div></div><br><div class=row><div class=col-md-9><h2>O que o Kubernetes pode fazer por você?</h2><p>Com os serviços da Web modernos, os usuários esperam que os aplicativos estejam disponíveis 24 horas por dia, 7 dias por semana, e os desenvolvedores esperam implantar novas versões desses aplicativos várias vezes ao dia. A conteinerização ajuda a empacotar o software para atender a esses objetivos, permitindo que os aplicativos sejam lançados e atualizados de maneira fácil e rápida, sem tempo de inatividade. O Kubernetes ajuda a garantir que esses aplicativos em contêiner sejam executados onde e quando você quiser e os ajuda a encontrar os recursos e ferramentas de que precisam para funcionar. Kubernetes é uma plataforma de código aberto pronta para produção, projetada com a experiência acumulada do Google em orquestração de contêineres, combinada com as melhores idéias da comunidade.</p></div></div><br><div id=basics-modules class=content__modules><h2>Módulos básicos do Kubernetes</h2><div class=row><div class=col-md-12><div class=row><div class=col-md-4><div class=thumbnail><a href=/pt-br/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/><img src="/docs/tutorials/kubernetes-basics/public/images/module_01.svg?v=1469803628347" alt></a><div class=caption><a href=/pt-br/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/><h5>1. Criar um cluster Kubernetes</h5></a></div></div></div><div class=col-md-4><div class=thumbnail><a href=/pt-br/docs/tutorials/kubernetes-basics/deploy-app/deploy-intro/><img src="/docs/tutorials/kubernetes-basics/public/images/module_02.svg?v=1469803628347" alt></a><div class=caption><a href=/pt-br/docs/tutorials/kubernetes-basics/deploy-app/deploy-intro/><h5>2. Implantar um aplicativo</h5></a></div></div></div><div class=col-md-4><div class=thumbnail><a href=/pt-br/docs/tutorials/kubernetes-basics/explore/explore-intro/><img src="/docs/tutorials/kubernetes-basics/public/images/module_03.svg?v=1469803628347" alt></a><div class=caption><a href=/pt-br/docs/tutorials/kubernetes-basics/explore/explore-intro/><h5>3. Explore seu aplicativo</h5></a></div></div></div></div></div><div class=col-md-12><div class=row><div class=col-md-4><div class=thumbnail><a href=/pt-br/docs/tutorials/kubernetes-basics/expose/expose-intro/><img src="/docs/tutorials/kubernetes-basics/public/images/module_04.svg?v=1469803628347" alt></a><div class=caption><a href=/pt-br/docs/tutorials/kubernetes-basics/expose/expose-intro/><h5>4. Exponha seu aplicativo publicamente</h5></a></div></div></div><div class=col-md-4><div class=thumbnail><a href=/pt-br/docs/tutorials/kubernetes-basics/scale/scale-intro/><img src="/docs/tutorials/kubernetes-basics/public/images/module_05.svg?v=1469803628347" alt></a><div class=caption><a href=/pt-br/docs/tutorials/kubernetes-basics/scale/scale-intro/><h5>5. Escale seu aplicativo</h5></a></div></div></div><div class=col-md-4><div class=thumbnail><a href=/docs/tutorials/kubernetes-basics/update/update-intro/><img src="/docs/tutorials/kubernetes-basics/public/images/module_06.svg?v=1469803628347" alt></a><div class=caption><a href=/docs/tutorials/kubernetes-basics/update/update-intro/><h5>6. Atualize seu aplicativo</h5></a></div></div></div></div></div></div></div></main></div></body></html></div><div class=td-content style=page-break-before:always><h1 id=pg-7df66040311338d6098ebeab43ba9afb>2.1 - Crie um Cluster</h1><p>Aprenda sobre <a class=glossary-tooltip title='Um conjunto de servidores de processamento, também chamados de nós, que executam aplicações containerizadas. Todo cluster possui ao menos um servidor de processamento (worker node).' data-toggle=tooltip data-placement=top href='/pt-br/docs/reference/glossary/?all=true#term-cluster' target=_blank aria-label=clusters>clusters</a>
+do Kubernetes e crie um cluster simples utilizando o Minikube.</p></div><div class=td-content><h1 id=pg-de49316920e97a82e36763cb66781ada>2.1.1 - Usando Minikube para criar um cluster</h1><div class=lead>Aprenda o que é um cluster do Kubernetes.
+Aprenda o que é Minikube.
+Inicialize um cluster do Kubernetes.</div><!doctype html><html lang=pt-br><body><link href=/docs/tutorials/kubernetes-basics/public/css/styles.css rel=stylesheet><div class=layout id=top><main class=content><div class=row><div class=col-md-8><h3>Objetivos</h3><ul><li>Aprenda o que é um cluster do Kubernetes.</li><li>Aprenda o que é Minikube.</li><li>Inicialize um cluster Kubernetes no seu computador.</li></ul></div><div class=col-md-8><h3>Clusters do Kubernetes</h3><p><b>O Kubernetes coordena um cluster de computadores de alta
+disponibilidade, conectados para funcionar como uma única unidade.</b>
+As abstrações no Kubernetes permitem implantar aplicativos em
+contêineres em um cluster sem vinculá-los especificamente à uma
+máquina individual. Para fazer uso desse novo modelo de
+implantação, os aplicativos precisam ser empacotados de uma
+forma que os desacoplem dos <i>hosts</i> individuais: eles
+precisam ser empacotados em contêineres. Os aplicativos em
+contêineres são mais flexíveis e disponíveis do que nos modelos
+de implantação anteriores, nos quais os aplicativos eram
+instalados diretamente em máquinas específicas como pacotes
+profundamente integrados ao <i>host</i>.
+<b>O Kubernetes automatiza a distribuição e o agendamento de
+contêineres de aplicativos em um cluster de maneira mais eficiente.</b>
+O Kubernetes é uma plataforma de código aberto e está pronto para
+produção.</p><p>Um cluster Kubernetes consiste em dois tipos de recursos:<ul><li>A <b>Camada de Gerenciamento</b> (<i>Control Plane</i>)
+coordena o cluster</li><li>Os <b>Nós</b> (<i>Nodes</i>) são as máquinas de processamento
+que executam aplicativos</li></ul></p></div><div class=col-md-4><div class="content__box content__box_lined"><h3>Resumo:</h3><ul><li>Cluster do Kubernetes</li><li>Minikube</li></ul></div><div class="content__box content__box_fill"><p><i>O Kubernetes é uma plataforma de código aberto de nível
+de produção que orquestra a alocação e a execução de
+contêineres de aplicativos dentro de e entre clusters de
+computadores.</i></p></div></div></div><br><div class=row><div class=col-md-8><h2 style=color:#3771e3>Diagrama do Cluster</h2></div></div><div class=row><div class=col-md-8><p><img src=/docs/tutorials/kubernetes-basics/public/images/module_01_cluster.svg></p></div></div><br><div class=row><div class=col-md-8><p><b>A camada de gerenciamento é responsável por gerenciar o cluster.</b>
+A camada de gerenciamento coordena todas as atividades em seu
+cluster, como a alocação de aplicativos, manutenção do estado
+desejado dos aplicativos, escalonamento de aplicativos e lançamento
+de novas atualizações.</p><p><b>Um nó é uma máquina virtual ou um computador físico que atua
+como um nó de processamento em um cluster Kubernetes.</b>
+Cada nó tem um Kubelet, que é um agente para gerenciar o nó e
+comunicar-se com a camada de gerenciamento do Kubernetes. O nó
+também deve ter ferramentas para gerenciar operações de contêiner,
+como containerd ou Docker. Um cluster Kubernetes que lida com
+o tráfego de produção deve ter no mínimo três nós, pois se um
+dos nós tornar-se indisponível, um membro do
+<a href=/pt-br/docs/concepts/overview/components/#etcd>etcd</a>
+e um nó da camada de gerenciamento serão perdidos, comprometendo
+a redundância. Você pode mitigar este risco aumentando o número
+de nós da camada de gerenciamento.</p></div><div class=col-md-4><div class="content__box content__box_fill"><p><i>A camada de gerenciamento gerencia o cluster e os nós que
+são usados para hospedar os aplicativos em execução.</i></p></div></div></div><div class=row><div class=col-md-8><p>Ao implantar aplicativos no Kubernetes, você solicita que a camada
+de gerenciamento inicie os contêineres de aplicativos. A camada
+de gerenciamento aloca os contêineres para serem executados nos
+nós do cluster.
+<b>Os nós se comunicam com a camada de gerenciamento usando a
+<a href=/docs/concepts/overview/kubernetes-api/>API do Kubernetes</a>
+</b>, que a camada de gerenciamento expõe. Os usuários finais
+também podem usar a API do Kubernetes diretamente para interagir
+com o cluster.</p><p>Um cluster do Kubernetes pode ser implantado em máquinas físicas
+ou virtuais. Para começar a ambientar-se com desenvolvimento de
+aplicações para o Kubernetes, você pode usar o Minikube. O
+Minikube é uma implementação leve do Kubernetes que cria uma
+VM em sua máquina local e implanta um cluster simples contendo
+apenas um nó. O Minikube está disponível para sistemas Linux,
+macOS e Windows. O utilitário de linha de comando (<i>CLI</i>)
+do Minikube fornece operações básicas de inicialização para
+trabalhar com seu cluster, incluindo iniciar, parar, status e
+excluir.</p><p>Agora que você sabe mais sobre o que é Kubernetes, visite
+<a href=/pt-br/docs/tutorials/hello-minikube/>Olá, Minikube!</a>
+para testar as operações no seu computador.</p></div></div><div class=row><p>Assim que você finalizar este tutorial, vá para
+<a href=/pt-br/docs/tutorials/kubernetes-basics/deploy-app/deploy-intro/>Usando <tt>kubectl</tt>
+para criar uma implantação</a>.</p></div></main></div></body></html></div><div class=td-content style=page-break-before:always><h1 id=pg-76d78b3fba507f7ed33cef14a35b631d>2.2 - Implantar um aplicativo</h1></div><div class=td-content><h1 id=pg-2b1bba431989008c7493109a0f049ece>2.2.1 - Usando kubectl para criar um Deployment</h1><div class=lead>Aprenda sobre objetos Deployment do Kubernetes.
+Implante seu primeiro aplicativo no Kubernetes utilizando o kubectl.</div><!doctype html><html lang=pt-br><body><link href=/docs/tutorials/kubernetes-basics/public/css/styles.css rel=stylesheet><div class=layout id=top><main class=content><div class=row><div class=col-md-8><h3>Objetivos</h3><ul><li>Saiba mais sobre implantações de aplicativos.</li><li>Implante seu primeiro aplicativo no Kubernetes com o kubectl.</li></ul></div><div class=col-md-8><h3>Deployments do Kubernetes</h3><p>Assim que o seu <a href=/pt-br/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/>cluster
+Kubernetes estiver em execução</a> você pode implantar seu aplicativo
+contêinerizado nele.
+Para fazer isso, você precisa criar um objeto <b>Deployment</b> do Kubernetes.
+O Deployment instrui o Kubernetes sobre como criar e atualizar instâncias
+do seu aplicativo. Depois de criar um Deployment, a camada de gerenciamento
+do Kubernetes aloca as instâncias do aplicativo incluídas nesse Deployment
+para serem executadas em nós individuais do cluster.</p><p>Depois que as instâncias do aplicativo são criadas, o controlador de
+Deployment do Kubernetes monitora continuamente essas instâncias.
+Se o nó em que uma instância está alocada ficar indisponível ou for
+excluído, o controlador de Deployment substituirá a instância por uma
+instância em outro nó no cluster.
+<b>Isso fornece um mecanismo de autocorreção para lidar com falhas ou
+manutenção da máquina.</b></p><p>Em um mundo de pré-orquestração, os scripts de instalação eram utilizados
+para iniciar aplicativos, mas não permitiam a recuperação de falha da máquina.
+Ao criar suas instâncias de aplicativo e mantê-las em execução entre nós,
+os Deployments do Kubernetes fornecem uma abordagem fundamentalmente
+diferente para o gerenciamento de aplicativos.</p></div><div class=col-md-4><div class="content__box content__box_lined"><h3>Resumo:</h3><ul><li>Deployments</li><li>Kubectl</li></ul></div><div class="content__box content__box_fill"><p><i>O objeto Deployment é responsável por criar e atualizar instâncias
+de seu aplicativo</i></p></div></div></div><br><div class=row><div class=col-md-8><h2 style=color:#3771e3>Implante seu primeiro aplicativo no
+Kubernetes</h2></div></div><div class=row><div class=col-md-8><p><img src=/docs/tutorials/kubernetes-basics/public/images/module_02_first_app.svg></p></div></div><br><div class=row><div class=col-md-8><p>Você pode criar e gerenciar uma implantação usando a interface
+de linha de comando do Kubernetes, o <b>kubectl</b>.
+O kubectl usa a API do Kubernetes para interagir com o cluster.
+Neste módulo, você aprenderá os comandos Kubectl mais comuns
+necessários para criar Deployments que executam seus aplicativos
+em um cluster Kubernetes.</p><p>Quando você cria um Deployment, você precisa especificar a imagem
+de contêiner para seu aplicativo e o número de réplicas que deseja executar.
+Você pode alterar essas informações posteriormente, atualizando seu Deployment;
+os Módulos <a href=/pt-br/docs/tutorials/kubernetes-basics/scale/scale-intro/>5</a>
+e <a href=/docs/tutorials/kubernetes-basics/update/update-intro/>6</a>
+do bootcamp explicam como você pode dimensionar e atualizar seus Deployments.</p></div><div class=col-md-4><div class="content__box content__box_fill"><p><i>Os aplicativos precisam ser empacotados em um dos formatos de
+contêiner suportados para serem implantados no Kubernetes</i></p></div></div></div><div class=row><div class=col-md-8><p>Para criar seu primeiro Deployment, você usará o aplicativo hello-node
+empacotado em um contêiner que utiliza o NGINX para repetir todas as requisições.
+(Se você ainda não tentou criar o aplicativo hello-node e implantá-lo
+usando um contêiner, você pode fazer isso primeiro seguindo as
+instruções do <a href=/pt-br/docs/tutorials/hello-minikube/>tutorial Olá, Minikube!</a>).</p><p>Você precisará ter o kubectl instalado também. Se você precisar de
+instruções de instalação, veja
+<a href=/pt-br/docs/tasks/tools/#kubectl>instalando ferramentas</a>.</p><p>Agora que você já sabe o que são Deployments, vamos implantar
+nosso primeiro aplicativo!</p></div></div><br><div class=row><div class=col-md-8><h3>Noções básicas do kubectl</h3><p>O formato comum de um comando kubectl é: <code>kubectl <i>ação recurso</i></code></p><p>Isto executa a <em>ação</em> especificada (como por exemplo <i>create</i>,
+<i>describe</i> ou <i>delete</i>) no <em>recurso</em>
+especificado (por exemplo, <tt>node</tt> ou <tt>deployment</tt>).
+Você pode utilizar <code>--help</code> após o subcomando
+para obter informações adicionais sobre parâmetros permitidos
+(por exemplo, <code>kubectl get nodes --help</code>).</p><p>Verifique que o kubectl está configurado para comunicar-se com seu
+cluster rodando o comando <b><code>kubectl version</code></b>.</p><p>Certifique-se de que o kubectl está instalado e que você consegue ver
+as versões do cliente e do servidor.</p><p>Para visualizar os nós do cluster, execute o comando <b><code>kubectl
+get nodes</code></b>.</p><p>Você verá os nós disponíveis. Posteriormente, o Kubernetes irá escolher
+onde implantar nossa aplicação baseado nos recursos disponíveis nos nós.</p></div></div><div class=row><div class=col-md-12><h3>Implante uma aplicação</h3><p>Vamos implantar nossa primeira aplicação no Kubernetes utilizando
+o comando <code>kubectl create deployment</code>. Precisaremos
+fornecer o nome do Deployment e a localização da imagem de contêiner
+do aplicativo (inclua a URL completa do repositório para images
+hospedadas fora do Docker Hub).</p><p><b><code>kubectl create deployment kubernetes-bootcamp
+--image=gcr.io/google-samples/kubernetes-bootcamp:v1</code></b></p><p>Excelente! Você acabou de implantar sua primeira aplicação através
+da criação de um Deployment. Este comando efetuou algumas ações
+para você:</p><ul><li>buscou um nó utilizável onde a instância da aplicação pode ser executada
+(temos somente um nó disponível)</li><li>alocou a aplicação para rodar naquele nó</li><li>configurou o cluster para realocar a instância em um novo nó sempre
+que necessário</li></ul><p>Para listar seus Deployments existentes, utilize o comando
+<code>kubectl get deployments</code>:</p><p><b><code>kubectl get deployments</code></b></p><p>Podemos observar que há um Deployment rodando uma única instância
+da sua aplicação. A instância está executando dentro de um contêiner
+no seu nó.</p></div></div><div class=row><div class=col-md-12><h3>Visualize o aplicativo</h3><p>Pods que rodam dentro do Kubernetes estão rodando em uma rede privada e isolada.
+Por padrão, eles são visíveis a outros Pods e Services dentro do mesmo
+cluster do Kubernetes, mas não de fora daquela rede.
+Ao usarmos <code>kubectl</code>, estamos interagindo através de um
+<i>endpoint</i> de API para comunicar-nos com a nossa aplicação.</p><p>Iremos discutir outras opções de como expor sua aplicação fora do
+cluster do Kubernetes no Módulo 4.</p><p>O comando <code>kubectl</code> pode criar um proxy que encaminha
+comunicações para dentro da rede privada que engloba todo o cluster. O
+proxy pode ser encerrado utilizando a sequência control-C e não irá
+imprimir nenhum tipo de saída enquanto estiver rodando.</p><p><strong>Você precisa abrir uma segunda janela do terminal para executar
+o proxy.</strong></p><p><b><code>kubectl proxy</code></b></p><p>Agora temos uma conexão entre nosso <i>host</i> (o terminal online) e o
+cluster do Kubernetes. O proxy habilita acesso direto à API através
+destes terminais.</p><p>Você pode ver todas as APIs hospedadas através do <i>endpoint</i> do
+proxy. Por exemplo, podemos obter a versão diretamente através da API
+utilizando o comando <code>curl</code>:</p><p><b><code>curl http://localhost:8001/version</code></b></p><div class="alert alert-info note callout" role=alert><strong>Nota:</strong> se a porta 8001 não estiver acessível, certifique-se
+de que o comando <code>kubectl proxy</code> que você iniciou acima está
+rodando no segundo terminal.</div><p>O servidor da API irá automaticamente criar um <i>endpoint</i> para cada
+Pod, baseado no nome do Pod, que também estará acessível através do proxy.</p><p>Primeiro, precisaremos obter o nome do Pod. Iremos armazená-lo na
+variável de ambiente <tt>POD_NAME</tt>:</p><p><b><code>export POD_NAME=$(kubectl get pods -o go-template --template
+'{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')</code></b><br><b><code>echo Nome do Pod: $POD_NAME</code></b></p><p>Você pode acessar o Pod através da API encaminhada, rodando o comando:</p><p><b><code>curl
+http://localhost:8001/api/v1/namespaces/default/pods/$POD_NAME/</code></b></p><p>Para que o novo Deployment esteja acessível sem utilizar o proxy, um
+Service é requerido. Isto será explicado nos próximos módulos.</p></div></div><div class=row><p>Assim que você finalizar este tutorial, vá para <a href=/pt-br/docs/tutorials/kubernetes-basics/explore/explore-intro/ title="Visualizando Pods e Nós">Visualizando Pods e Nós</a>.</p></div></main></div></body></html></div><div class=td-content style=page-break-before:always><h1 id=pg-250d620a73ec8be7e1f7d835574c4596>2.3 - Explore seu aplicativo</h1></div><div class=td-content><h1 id=pg-2771f4e8c45321b17cb0114a2d266453>2.3.1 - Visualizando Pods e Nós</h1><div class=lead>Aprenda como depurar aplicações do Kubernetes utilizando
+kubectl get, kubectl describe, kubectl logs e
+kubectl exec.</div><!doctype html><html lang=pt-br><body><link href=/docs/tutorials/kubernetes-basics/public/css/styles.css rel=stylesheet><div class=layout id=top><main class=content><div class=row><div class=col-md-8><h3>Objetivos</h3><ul><li>Aprenda sobre Pods do Kubernetes.</li><li>Aprenda sobre Nós do Kubernetes.</li><li>Solucione problemas de aplicativos implantados no Kubernetes.</li></ul></div><div class=col-md-8><h2>Kubernetes Pods</h2><p>Quando você criou um Deployment no Módulo
+<a href=/pt-br/docs/tutorials/kubernetes-basics/deploy-app/deploy-intro/>2</a>,
+o Kubernetes criou um <b>Pod</b> para hospedar a instância do
+seu aplicativo. Um Pod é uma abstração do Kubernetes que representa
+um grupo de um ou mais contêineres de aplicativos (como Docker)
+e alguns recursos compartilhados para esses contêineres. Esses
+recursos incluem:</p><ul><li>Armazenamento compartilhado, como Volumes</li><li>Rede, como um endereço IP único no cluster</li><li>Informações sobre como executar cada contêiner, como a
+versão da imagem do contêiner ou portas específicas a serem
+usadas</li></ul><p>Um Pod define um "<i>host</i> lógico" específico para o aplicativo e
+pode conter diferentes contêineres de aplicativos que, na maioria
+dos casos, são fortemente acoplados. Por exemplo, um Pod pode
+incluir tanto o contêiner com seu aplicativo Node.js quanto um
+outro contêiner que alimenta os dados a serem publicados pelo
+servidor web do Node.js. Os contêineres de um Pod compartilham
+um endereço IP e intervalo de portas, são sempre co-localizados,
+co-alocados e executam em um contexto compartilhado no mesmo Nó.</p><p>Pods são a unidade atômica na plataforma Kubernetes. Quando
+criamos um Deployment no Kubernetes, esse Deployment cria Pods
+com contêineres dentro dele (em vez de você criar contêineres
+diretamente). Cada Pod está vinculado ao nó onde está alocado
+e lá permanece até o encerramento (de acordo com a política de
+reinicialização) ou exclusão. Em caso de falha do nó, Pods
+idênticos são alocados em outros nós disponíveis no cluster.</p></div><div class=col-md-4><div class="content__box content__box_lined"><h3>Sumário:</h3><ul><li>Pods</li><li>Nós</li><li>Principais comandos do Kubectl</li></ul></div><div class="content__box content__box_fill"><p><i>Um Pod é um grupo de um ou mais contêineres de
+aplicativos (como Docker) que inclui armazenamento
+compartilhado (volumes), endereço IP e informações
+sobre como executá-los.</i></p></div></div></div><br><div class=row><div class=col-md-8><h2 style=color:#3771e3>Visão geral sobre os Pods</h2></div></div><div class=row><div class=col-md-8><p><img src=/docs/tutorials/kubernetes-basics/public/images/module_03_pods.svg></p></div></div><br><div class=row><div class=col-md-8><h2>Nós</h2><p>Um Pod sempre será executado em um <b>Nó</b>. Um Nó é uma
+máquina de processamento em um cluster Kubernetes e pode ser
+uma máquina física ou virtual. Cada Nó é gerenciado pela
+Camada de Gerenciamento. Um Nó pode possuir múltiplos Pods e a
+Camada de Gerenciamento do Kubernetes gerencia automaticamente
+a alocação dos Pods nos nós do cluster. A alocação automática
+dos Pods pela Camada de Gerenciamento leva em consideração os
+recursos disponíveis em cada Nó.</p><p>Cada Nó do Kubernetes executa pelo menos:</p><ul><li>O Kubelet, que é o processo responsável pela comunicação entre a
+Camada de Gerenciamento e o Nó; gerencia os Pods e os contêineres
+rodando em uma máquina.</li><li>Um agente de execução de contêiner (por exemplo, Docker)
+responsável por baixar a imagem do contêiner de um registro
+de imagens (por exemplo, o <a href=https://hub.docker.com/>Docker Hub</a>),
+extrair o contêiner e executar a aplicação.</li></ul></div><div class=col-md-4><div class="content__box content__box_fill"><p><i>Os contêineres só devem ser alocados juntos em um único Pod se
+estiverem fortemente acoplados e precisarem compartilhar recursos,
+como disco, por exemplo.</i></p></div></div></div><br><div class=row><div class=col-md-8><h2 style=color:#3771e3>Visão Geral sobre os Nós</h2></div></div><div class=row><div class=col-md-8><p><img src=/docs/tutorials/kubernetes-basics/public/images/module_03_nodes.svg></p></div></div><br><div class=row><div class=col-md-8><h2>Solucionando problemas usando o comando kubectl</h2><p>No Módulo <a href=/pt-br/docs/tutorials/kubernetes-basics/deploy-app/deploy-intro/>2</a>,
+você usou a ferramenta de linha de comando kubectl. Você irá continuar
+utilizando o kubectl no Módulo 3 para obter informação sobre aplicações
+implantadas e seus recursos. As operações mais comuns podem ser
+efetuadas com os comandos abaixo:</p><ul><li><tt><b>kubectl get</b></tt> - listar recursos</li><li><tt><b>kubectl describe</b></tt> - mostrar informações detalhadas sobre um recurso</li><li><tt><b>kubectl logs</b></tt> - mostrar os logs de um contêiner em um Pod</li><li><tt><b>kubectl exec</b></tt> - executar um comando em um contêiner em um Pod</li></ul><p>Você pode usar esses comandos para verificar quando o Deployment foi
+criado, qual seu status atual, onde os Pods estão rodando e quais são
+as suas configurações.</p><p>Agora que sabemos mais sobre os componentes de um cluster Kubernetes
+e o comando kubectl, vamos explorar a nossa aplicação.</p></div><div class=col-md-4><div class="content__box content__box_fill"><p><i>Um nó é uma máquina de processamento do Kubernetes e pode ser
+uma VM ou máquina física, dependendo do cluster. Vários Pods
+podem ser executados em um nó.</i></p></div></div></div><div class=row><div class=col-md-12><h3>Verifique a configuração da aplicação</h3><p>Vamos verificar que a aplicação que implantamos no cenário anterior
+está executando. Iremos utilizar o comando <code>kubectl get</code>
+e procurar por Pods existentes:</p><p><b><code>kubectl get pods</code></b></p><p>Se nenhum Pod estiver rodando, aguarde alguns instantes e liste os
+Pods novamente. Você pode continuar assim que ver um Pod rodando.</p><p>A seguir, para visualizar quais contêineres encontram-se no Pod e quais
+imagens foram utilizadas para criar tais contêineres iremos usar o
+comando <code>kubectl describe pods</code>:</p><p><b><code>kubectl describe pods</code></b></p><p>Vemos aqui detalhes a respeito dos contêineres do Pod: endereço IP,
+portas utilizadas e uma lista de eventos relacionados ao ciclo de vida
+do Pod.</p><p>A saída do subcomando <tt>describe</tt> é extensa e cobre alguns
+conceitos que não foram explicados ainda. Não se preocupe, estes
+conceitos serão familiares até o fim deste <i>bootcamp</i>.</p><p><em><strong>Nota:</strong> o subcomando <tt>describe</tt> pode ser utilizado
+para obter informações detalhadas sobre a maioria das primitivas do
+Kubernetes, incluindo Nós (Nodes), Pods e Deployments. A saída do
+subcomando <tt>describe</tt> é projetada para ser legível por humanos,
+não para ser consumida por processos automatizados.</em></p></div></div><div class=row><div class=col-md-12><h3>Exiba a aplicação no terminal</h3><p>Lembre-se que Pods estão executando em uma rede isolada e privada -
+portanto, precisaremos de um proxy para acessá-los, a fim de tornar
+possível a depuração e a interação com estes objetos. Para inicializar
+um proxy, utilizaremos o comando <code>kubectl proxy</code> em um
+<strong>segundo terminal</strong>. Abra uma nova janela do terminal,
+e nesta nova janela, execute o comando:</p><p><code><b>kubectl proxy</b></code></p><p>Agora iremos novamente obter o nome do Pod e obter informações do Pod
+diretamente através do proxy. Para obter o nome do Pod e armazená-lo
+na variável de ambiente <tt>POD_NAME</tt>, utilize o comando:</p><p><code><b>export POD_NAME="$(kubectl get pods -o go-template --template
+'{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')"</b></code><br><code><b>echo Nome do Pod: $POD_NAME</b></code></p><p>Para ver a saída da aplicação, execute uma requisição com o comando
+<code>curl</code>:</p><p><code><b>curl http://localhost:8001/api/v1/namespaces/default/pods/$POD_NAME:8080/proxy/</b></code></p><p>A URL é a rota para a API do Pod.</p></div></div><div class=row><div class=col-md-12><h3>Visualize os logs do contêiner</h3><p>Qualquer mensagem que normalmente seria impressa na saída padrão (stdout)
+torna-se parte do log do contêiner dentro do Pod. Podemos obter tais
+logs utilizando o comando <code>kubectl logs</code>:</p><p><code><b>kubectl logs "$POD_NAME"</b></code></p><p><em><strong>Nota:</strong> não é necessário especificarmos o nome do
+contêiner pois temos apenas um contêiner neste Pod.</em></p></div><div class=row><div class=col-md-12><h3>Executando comandos no contêiner</h3><p>Podemos executar comandos diretamente no contêiner uma vez que o
+Pod esteja criado e rodando. Para isso, utilizaremos o subcomando
+<code>exec</code> e o nome do Pod como um parâmetro. Vamos listar
+as variáveis de ambiente:</p><p><code><b>kubectl exec "$POD_NAME" -- env</b></code></p><p>Novamente, vale a pena mencionar que o nome do contêiner pode ser
+omitido pois temos apenas um contêiner no Pod.</p><p>A seguir, vamos iniciar uma sessão do bash no contêiner do Pod:</p><p><code><b>kubectl exec -ti $POD_NAME -- bash</b></code></p><p>Agora temos um terminal aberto no contêiner onde nossa aplicação
+Node.js está executando. O código-fonte da aplicação encontra-se
+no arquivo <tt>server.js</tt>:</p><p><code><b>cat server.js</b></code></p><p>Você pode verificar que a aplicação está rodando utilizando uma
+requisição com o comando <tt>curl</tt>:</p><p><code><b>curl http://localhost:8080</b></code></p><p><em><strong>Nota:</strong> aqui utilizamos <tt>localhost</tt> pois
+executamos o comando dentro do Pod do Node.js. Se você não conseguir
+conectar-se a localhost:8080, certifique-se de que você utilizou
+o comando <code>kubectl exec</code> e que está rodando a requisição
+<tt>curl</tt> de dentro do Pod</em>.</p><p>Para encerrar sua conexão ao contêiner, digite <code><b>exit</b></code>.</p></div></div></div><div class=row><p>Assim que você finalizar este tutorial, vá para
+<a href=/pt-br/docs/tutorials/kubernetes-basics/expose/expose-intro/ title="Utilizando um serviço para expor sua aplicação">Utilizando um Service para expor sua aplicação
+</a>.</p></p></div></main></div></body></html></div><div class=td-content style=page-break-before:always><h1 id=pg-4b0e31c9e0eae68bbb0a358b4042ada9>2.4 - Exponha publicamente seu aplicativo</h1></div><div class=td-content><h1 id=pg-8ef4dad8f743b191a9e8c6f891cb191a>2.4.1 - Utilizando um serviço para expor seu aplicativo</h1><div class=lead>Aprenda sobre Services no Kubernetes.
+Entenda como rótulos (<i>labels</i>) e seletores (<i>selectors</i>) relacionam-se aos Services.
+Exponha uma aplicação externamente ao cluster Kubernetes.</div><!doctype html><html lang=pt-br><body><link href=/docs/tutorials/kubernetes-basics/public/css/styles.css rel=stylesheet><div class=layout id=top><main class=content><div class=row><div class=col-md-8><h3>Objetivos</h3><ul><li>Aprenda sobre Services no Kubernetes</li><li>Entenda como rótulos (<i>labels</i>) e seletores (<i>selectors</i>) relacionam-se aos Services</li><li>Exponha uma aplicação externamente ao cluster Kubernetes usando um Service</li></ul></div><div class=col-md-8><h3>Visão Geral dos Services no Kubernetes</h3><p><a href=/docs/concepts/workloads/pods/>Pods</a> do Kubernetes são efêmeros.
+Na verdade, Pods possuem um <a href=/docs/concepts/workloads/pods/pod-lifecycle/>ciclo de vida</a>.
+Quando um nó de processamento morre, os Pods executados no nó também são
+perdidos. A partir disso, o <a href=/pt-br/docs/concepts/workloads/controllers/replicaset/>ReplicaSet</a>
+pode dinamicamente retornar o cluster ao estado desejado através da criação
+de novos Pods para manter sua aplicação em execução. Como outro exemplo,
+considere um backend de processamento de imagens com 3 réplicas. Estas
+réplicas são permutáveis; o sistema front-end não deveria se importar
+com as réplicas backend ou ainda se um Pod foi perdido ou recriado. Dito
+isso, cada Pod em um cluster Kubernetes tem um endereço IP único, incluindo
+Pods que estejam rodando no mesmo nó, então há necessidade de ter uma
+forma de reconciliar automaticamente mudanças entre Pods de modo que sua
+aplicação continue funcionando.</p><p>Um objeto Service no Kubernetes é uma abstração que define um conjunto
+lógico de Pods e uma política pela qual acessá-los. Serviços permitem um
+baixo acoplamento entre os Pods dependentes. Um serviço é definido usando
+YAML ou JSON, como todos os manifestos de objetos Kubernetes. O conjunto
+de Pods selecionados por um Service é geralmente determinado por um
+<i>seletor de rótulos</i> (veja abaixo o motivo pelo qual você poderia
+desejar um Service que não inclui um seletor (<code>selector</code>) na
+especificação (<code>spec</code>)).</p><p>Embora cada Pod tenha um endereço IP único, estes IPs não são expostos
+externamente ao cluster sem um objeto Service. Objetos Service permitem
+que suas aplicações recebam tráfego. Services podem ser expostos de
+formas diferentes especificando um tipo (campo <code>type</code>) na
+especificação do serviço (campo <tt>spec</tt>):</p><ul><li><i>ClusterIP</i> (padrão) - Expõe o serviço sob um endereço IP interno
+no cluster. Este tipo de serviço é acessível somente dentro do cluster.</li><li><i>NodePort</i> - Expõe o serviço sob a mesma porta em cada nó
+selecionado no cluster usando NAT. Torna o serviço acessível externamente
+ao cluster usando o endereço <code>&lt;NodeIP>:&lt;NodePort></code>.
+É um superconjunto do tipo ClusterIP.</li><li><i>LoadBalancer</i> - Cria um balanceador de carga externo no provedor
+de nuvem atual (se suportado) e atribui um endereço IP fixo e externo
+para o serviço. É um superconjunto do tipo NodePort.</li><li><i>ExternalName</i> - Mapeia o Service para o conteúdo do campo
+<code>externalName</code> (por exemplo, <code>foo.bar.example.com</code>),
+retornando um registro DNS do tipo <code>CNAME</code> com o seu valor.
+Nenhum tipo de proxy é configurado. Este tipo requer a versão 1.7 ou
+mais recente do <code>kube-dns</code>, ou o CoreDNS versão 0.0.8 ou
+superior.</li></ul><p>Mais informações sobre diferentes tipos de Services podem ser encontradas
+no tutorial <a href=/docs/tutorials/services/source-ip/>Utilizando IP de origem</a>.
+Veja também <a href=/docs/tutorials/services/connect-applications-service>Conectando aplicações com serviços</a>.</p><p>Adicionalmente, note que existem alguns casos de uso com serviços que
+envolvem a ausência de um <code>selector</code> no campo <code>spec</code>.
+Services criados sem <code>selector</code> também não criarão objetos
+Endpoints correspondentes. Isto permite que usuários mapeiem manualmente
+um serviço a <i>endpoints</i> específicos. Outro motivo pelo qual seletores
+podem estar ausentes é que você esteja utilizando estritamente
+<code>type: ExternalName</code>.</p></div><div class=col-md-4><div class="content__box content__box_lined"><h3>Resumo</h3><ul><li>Exposição de Pods ao tráfego externo</li><li>Balanceamento de carga de tráfego entre múltiplos Pods</li><li>Utilização de rótulos (<i>labels</i>)</li></ul></div><div class="content__box content__box_fill"><p><i>Um objeto Service do Kubernetes é uma camada de abstração que define
+um conjunto lógico de Pods e habilita a exposição ao tráfego externo,
+balanceamento de carga e descoberta de serviço para esses Pods.</i></p></div></div></div><br><div class=row><div class=col-md-8><h3>Serviços e Rótulos</h3></div></div><div class=row><div class=col-md-8><p>Um Service roteia tráfego entre um conjunto de Pods. Service é a
+abstração que permite Pods morrerem e se replicarem no Kubernetes sem
+impactar sua aplicação. A descoberta e o roteamento entre Pods
+dependentes (tal como componentes frontend e backend dentro de uma
+aplicação) são controlados por Services do Kubernetes.</p><p>Services relacionam um conjunto de Pods usando
+<a href=/docs/concepts/overview/working-with-objects/labels>rótulos e seletores</a>,
+uma primitiva de agrupamento que permite operações lógicas sobre objetos
+do Kubernetes. Rótulos são pares chave/valor anexados à objetos e
+podem ser usados de diversas formas:</p><ul><li>Designar objetos para desenvolvimento, teste e produção</li><li>Adicionar tags de versão</li><li>Classificar um objeto usando tags</li></ul></div></div><br><div class=row><div class=col-md-8><p><img src=/docs/tutorials/kubernetes-basics/public/images/module_04_labels.svg></p></div></div><br><div class=row><div class=col-md-8><p>Rótulos podem ser anexados aos objetos no momento de sua criação ou
+posteriormente. Eles podem ser modificados a qualquer momento. Vamos
+expor nossa aplicação usando um Service e aplicar alguns rótulos.</p></div></div><br><div class=row><div class=col-md-12><h3>Crie um novo Service</h3><p>Vamos verificar que nossa aplicação está rodando. Utilizaremos o comando
+<code>kubectl get</code> e procuraremos por Pods existentes:</p><p><code><b>kubectl get pods</b></code></p><p>Se não houver Pods rodando, isso significa que o ambiente interativo
+ainda está recarregando o estado anterior. Por favor, aguarde alguns
+instantes e liste os Pods novamente. Você poderá prosseguir assim que
+vir um Pod rodando.</p><p>A seguir, vamos listar os Services existentes no momento no nosso cluster:</p><p><code><b>kubectl get services</b></code></p><p>Temos um Service chamado <tt>kubernetes</tt> que é criado por padrão
+quando o minikube inicializa o cluster.
+Para criar um novo Service e expô-lo para tráfego externo utilizaremos
+o comando <tt>expose</tt> com o tipo NodePort.</p><p><code><b>kubectl expose deployment/kubernetes-bootcamp --type=NodePort --port 8080</b></code></p><p>Vamos rodar novamente o subcomando <code>get services</code>:</p><p><code><b>kubectl get services</b></code></p><p>Temos agora um Service chamado kubernetes-bootcamp rodando. Aqui vemos
+que o Service recebeu um ClusterIP único, uma porta interna e um IP
+externo (o IP do nó).</p><p>Para descobrir qual porta foi aberta externamente (para o Service com
+tipo <tt>NodePort</tt>) iremos rodar o subcomando <code>describe service</code>:</p><p><code><b>kubectl describe services/kubernetes-bootcamp</b></code></p><p>Crie uma variável de ambiente chamada <tt>NODE_PORT</tt> que armazena
+o número da porta do nó:</p><p><code><b>export NODE_PORT="$(kubectl get services/kubernetes-bootcamp -o go-template='{{(index .spec.ports 0).nodePort}}')"</b></code><br><code><b>echo "NODE_PORT=$NODE_PORT"</b></code></p><p>Agora podemos verificar que a aplicação está exposta externamente ao
+cluster utilizando <code>curl</code>, o endereço IP do nó e a porta
+exposta externamente:</p><p><code><b>curl http://"$(minikube ip):$NODE_PORT"</b></code></p><p>E receberemos uma resposta do servidor. O Service está exposto.</p></div></div><div class=row><div class=col-md-12><h3>Passo 2: Utilizando rótulos (<i>labels</i>)</h3><div class=content><p>O Deployment criou automaticamente um rótulo para o nosso Pod. Com o
+subcomando <code>describe deployment</code> você pode ver o nome
+(a <em>chave</em>) deste rótulo:</p><p><code><b>kubectl describe deployment</b></code></p><p>Vamos utilizar este rótulo para filtrar nossa lista de Pods.
+Utilizaremos o comando <code>kubectl get pods</code> com o parâmetro
+<tt>-l</tt>, seguido dos valores dos rótulos:</p><p><code><b>kubectl get pods -l app=kubernetes-bootcamp</b></code></p><p>Você pode fazer o mesmo para listar os Services existentes:</p><p><code><b>kubectl get services -l app=kubernetes-bootcamp</b></code></p><p>Obtenha o nome do Pod e armazene-o na variável de ambiente <tt>POD_NAME</tt>:</p><p><code><b>export POD_NAME="$(kubectl get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')"</b></code><br><code><b>echo "Name of the Pod: $POD_NAME"</b></code></p><p>Para aplicar um novo rótulo podemos utilizar o subcomando <code>label</code>,
+seguido pelo tipo de objeto, nome do objeto e o novo rótulo:</p><p><code><b>kubectl label pods "$POD_NAME" version=v1</b></code></p><p>Este comando aplicará um novo rótulo no Pod (nós fixamos a versão
+da aplicação ao Pod) e podemos verificar com o comando
+<code>describe pod</code>:</p><p><code><b>kubectl describe pods "$POD_NAME"</b></code></p><p>Vemos aqui que o rótulo está agora vinculado ao nosso Pod. E agora
+podemos pesquisar a lista de Pods utilizando o novo label:</p><p><code><b>kubectl get pods -l version=v1</b></code></p><p>E vemos o Pod.</p></div></div></div><div class=row><div class=col-md-12><h3>Removendo um Service</h3><p>Para remover um Service você pode utilizar o subcomando <code>delete service</code>.
+Rótulos também podem ser utilizados aqui:</p><p><code><b>kubectl delete service -l app=kubernetes-bootcamp</b></code></p><p>Confirme que o Service foi removido com sucesso:</p><p><code><b>kubectl get services</b></code></p><p>Isto confirma que nosso Service foi removido. Para confirmar que a rota
+não está mais exposta, você pode disparar uma requisição para o endereço
+IP e porta previamente expostos através do comando <tt>curl</tt>:</p><p><code><b>curl http://"$(minikube ip):$NODE_PORT"</b></code></p><p>Isto prova que a aplicação não está mais acessível de fora do cluster.
+Você pode confirmar que a aplicação ainda está rodando com um <tt>curl</tt>
+de dentro do Pod:</p><p><code><b>kubectl exec -ti $POD_NAME -- curl http://localhost:8080</b></code></p><p>Vemos aqui que a aplicação ainda está rodando. Isto se deve ao fato de
+que o Deployment está gerenciando a aplicação. Para encerrar a aplicação,
+você precisaria remover o Deployment também.</p></div></div><div class=row><p>Assim que você finalizar este tutorial, vá para
+<a href=/pt-br/docs/tutorials/kubernetes-basics/scale/scale-intro/ title="Executando Múltiplas Instâncias do seu Aplicativo">Executando Múltiplas Instâncias do seu Aplicativo</a>.</p></div></main></div></body></html></div><div class=td-content style=page-break-before:always><h1 id=pg-be4996c93fb39c459a30b6669569d423>2.5 - Escale seu aplicativo</h1></div><div class=td-content><h1 id=pg-d1c15c9bd4f625adbc13149b1475287c>2.5.1 - Executando Múltiplas Instâncias da sua Aplicação</h1><div class=lead>Escalone uma aplicação existente de forma manual utilizando kubectl.</div><!doctype html><html lang=pt-br><body><div class=layout id=top><main class=content><div class=row><div class=col-md-8><h3>Objetivos</h3><ul><li>Escalonar uma aplicação usando kubectl.</li></ul></div><div class=col-md-8><h3>Escalonando uma aplicação</h3><p>Nos módulos anteriores, criamos um
+<a href=/docs/concepts/workloads/controllers/deployment/>Deployment</a>,
+e então o expusemos publicamente através de um serviço
+(<a href=/docs/concepts/services-networking/service/>Service</a>).
+O Deployment criou apenas um único Pod para executar nossa aplicação.
+Quando o tráfego aumentar, precisaremos escalonar a aplicação para
+suportar a demanda de usuários.</p><p>Se você ainda não tiver estudado as seções anteriores, inicie
+pelo tutorial
+<a href=/pt-br/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/>Usando Minikube para criar um cluster</a>.</p><p>O <em>escalonamento</em> é obtido pela mudança do número de
+réplicas em um Deployment</p><p><b>NOTA</b> Se você estiver seguindo este tutorial após a
+<a href=/pt-br/docs/tutorials/kubernetes-basics/expose/expose-intro/>seção anterior</a>,
+poderá ser necessário refazer a seção <a href=/pt-br/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/>criando um cluster</a>,
+pois os serviços podem ter sido removidos.</p></div><div class=col-md-4><div class="content__box content__box_lined"><h3>Resumo:</h3><ul><li>Escalonando um Deployment</li></ul></div><div class="content__box content__box_fill"><p><i>Você pode criar desde o início um Deployment com
+múltiplas instâncias usando o parâmetro --replicas
+do comando kubectl create deployment</i></p></div></div></div><br><div class=row><div class=col-md-8><h2 style=color:#3771e3>Visão geral sobre escalonamento</h2></div></div><div class=row><div class=col-md-1></div><div class=col-md-8><div id=myCarousel class=carousel data-ride=carousel data-interval=3000><ol class=carousel-indicators><li data-target=#myCarousel data-slide-to=0 class=active></li><li data-target=#myCarousel data-slide-to=1></li></ol><div class=carousel-inner role=listbox><div class="item carousel-item active"><img src=/docs/tutorials/kubernetes-basics/public/images/module_05_scaling1.svg></div><div class="item carousel-item"><img src=/docs/tutorials/kubernetes-basics/public/images/module_05_scaling2.svg></div></div><a class="left carousel-control" href=#myCarousel role=button data-slide=prev><span class=sr-only>Anterior</span></a>
+<a class="right carousel-control" href=#myCarousel role=button data-slide=next><span class=sr-only>Próximo</span></a></div></div></div><br><div class=row><div class=col-md-8><p>Escalonar um Deployment garantirá que novos Pods serão criados
+e alocados em nós de processamento com recursos disponíveis. O
+escalonamento aumentará o número de Pods para o novo estado
+desejado. O Kubernetes também suporta o auto-escalonamento
+(<a href=/docs/tasks/run-application/horizontal-pod-autoscale/>autoscaling</a>)
+de Pods, mas isso está fora do escopo deste tutorial. Escalonar
+para zero também é possível, e encerrará todos os Pods do
+Deployment especificado.</p><p>Executar múltiplas instâncias de uma aplicação requer uma forma
+de distribuir o tráfego entre todas elas. Serviços possuem um
+balanceador de carga integrado que distribui o tráfego de rede
+entre todos os Pods de um Deployment exposto. Serviços irão
+monitorar continuamente os Pods em execução usando endpoints
+para garantir que o tráfego seja enviado apenas para Pods
+disponíveis.</p></div><div class=col-md-4><div class="content__box content__box_fill"><p><i>O escalonamento é obtido pela mudança do número de
+réplicas em um Deployment.</i></p></div></div></div><br><div class=row><div class=col-md-8><p>Uma vez que você tenha múltiplas instâncias de uma aplicação
+em execução será possível realizar atualizações graduais no
+cluster sem que ocorra indisponibilidade. Cobriremos isso no
+próximo módulo. Agora, vamos ao terminal escalonar nossa aplicação.</p></div></div><div class=row><div class=col-md-12><h3>Escalonando um Deployment</h3><p>Para listar seus Deployments, utilize o subcomando
+<code>get deployments</code>:
+<code><b>kubectl get deployments</b></code></p><p>A saída deve ser semelhante a:</p><pre>
+                NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+                kubernetes-bootcamp   1/1     1            1           11m
+                </pre><p>Teremos um único Pod. Se nenhum Pod aparecer, tente rodar o
+comando novamente.</p><ul><li><em>NAME</em> lista os nomes dos Deployments no cluster.</li><li><em>READY</em> exibe a proporção de réplicas atuais/desejadas
+(<i>CURRENT/DESIRED</i>).</li><li><em>UP-TO-DATE</em> exibe o número de réplicas que foram
+atualizadas para atingir o estado desejado.</li><li><em>AVAILABLE</em> exibe o número de réplicas da aplicação
+que estão disponíveis para seus usuários.</li><li><em>AGE</em> exibe há quanto tempo a aplicação está rodando.</li></ul><p>Para ver o ReplicaSet criado pelo Deployment, execute
+<code><b>kubectl get rs</b></code></p><p>Observe que o nome do ReplicaSet sempre é exibido no formato
+<tt>[NOME-DO-DEPLOYMENT]-[TEXTO-ALEATÓRIO]</tt>. O texto aleatório
+é gerado e utiliza o valor do <i>pod-template-hash</i> como semente.</p><p>Duas colunas importantes desta saída são:</p><ul><li><em>DESIRED</em> exibe o número desejado de réplicas da aplicação,
+que você define quando cria o objeto Deployment. Este é o estado
+desejado.</li><li><em>CURRENT</em> exibe quantas réplicas estão em execução atualmente.</li></ul><p>A seguir, vamos escalonar o Deployment para 4 réplicas. Utilizaremos
+o comando <code>kubectl scale</code>, seguido pelo tipo Deployment,
+nome e o número desejado de instâncias:</p><p><code><b>kubectl scale deployments/kubernetes-bootcamp --replicas=4</b></code></p><p>Para listar seus Deployments mais uma vez, utilize <code>get deployments</code>:</p><p><code><b>kubectl get deployments</b></code></p><p>A mudança foi aplicada, e temos 4 instâncias da aplicação disponíveis. A seguir,
+vamos verificar se o número de Pods mudou:</p><p><code><b>kubectl get pods -o wide</b></code></p><p>Temos 4 Pods agora, com endereços IP diferentes. A mudança foi registrada no log
+de eventos do Deployment. Para verificar esta mudança, utilize o subcomando describe:</p><p><code><b>kubectl describe deployments/kubernetes-bootcamp</b></code></p><p>Você pode ver na saída deste comando que temos 4 réplicas agora.</p></div></div><div class=row><div class=col-md-12><h3>Balanceamento de carga</h3><p>Vamos verificar que o Service está efetuando o balanceamento de carga
+do tráfego recebido. Para encontrar o endereço IP exposto e a porta podemos
+utilizar o comando para descrever o serviço como aprendemos na seção anterior:</p><p><code><b>kubectl describe services/kubernetes-bootcamp</b></code></p><p>Crie uma variável de ambiente chamada <tt>NODE_PORT</tt> que possui
+o valor da porta do nó:</p><p><code><b>export NODE_PORT="$(kubectl get services/kubernetes-bootcamp -o go-template='{{(index .spec.ports 0).nodePort}}')"</b></code></p><p><code><b>echo NODE_PORT=$NODE_PORT</b></code></p><p>A seguir, iremos executar o comando <code>curl</code> para efetuar
+uma requisição para o endereço IP e porta expostos. Rode este comando
+múltiplas vezes:</p><p><code><b>curl http://"$(minikube ip):$NODE_PORT"</b></code></p><p>Cada requisição é atendida por um Pod diferente. Isso demonstra que o
+balanceamento de carga está funcionando.</p></div></div><div class=row><div class=col-md-12><h3>Reduzir o número de réplicas</h3><p>Para reduzir o número de réplicas do Deployment para 2, execute
+o subcomando <code>scale</code> novamente:</p><p><code><b>kubectl scale deployments/kubernetes-bootcamp --replicas=2</b></code></p><p>Liste os Deployments para verificar se a mudança foi aplicada
+com o subcomando <code>get deployments</code>:</p><p><code><b>kubectl get deployments</b></code></p><p>O número de réplicas reduziu para 2. Liste o número de Pods com
+o comando <code>get pods</code>:</p><p><code><b>kubectl get pods -o wide</b></code></p><p>Isso confirma que 2 Pods foram encerrados.</p></div></div><div class=row><p>Assim que você finalizar este tutorial, vá para
+<a href=/docs/tutorials/kubernetes-basics/update/update-intro/ title="Performing a Rolling Update">Performing a Rolling Update</a> (em inglês).</p></p></div></main></div></body></html></div><div class=td-content style=page-break-before:always><h1 id=pg-7bdb3fbaa1177ff5dfa3fe86bd35ef59>2.5.2 - Tutorial Interativo - Escalando seu aplicativo</h1><!doctype html><html lang=en><body><link href=/docs/tutorials/kubernetes-basics/public/css/styles.css rel=stylesheet><link href=/docs/tutorials/kubernetes-basics/public/css/overrides.css rel=stylesheet><script src=https://katacoda.com/embed.js></script><div class=layout id=top><main class="content katacoda-content"><div><h2 class=katacoda-gone>Conteúdo indisponível</h2><p>O tutorial interativo de como escalonar um aplicativo que está rodando
+no seu cluster não está disponível.
+Para mais informações, veja o
+<a href=https://kubernetes.io/pt-br/blog/2023/02/14/kubernetes-katacoda-tutorials-stop-from-2023-03-31/>anúncio de encerramento do Katacoda</a>.</p></div></main></div></body></html></div></main></div></div><footer class=d-print-none><div class=footer__links><nav><a class=text-white href=/pt-br/docs/home/>Documentação</a>
+<a class=text-white href=/pt-br/blog/>Blog</a>
+<a class=text-white href=/pt-br/partners/>Parceiros</a>
+<a class=text-white href=/pt-br/community/>Comunidade</a>
+<a class=text-white href=/pt-br/case-studies/>Casos de estudo</a></nav></div><div class=container-fluid><div class=row><div class="col-6 col-sm-2 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="User mailing list" aria-label="User mailing list"><a class=text-white target=_blank href=https://discuss.kubernetes.io><i class="fa fa-envelope"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank href=https://twitter.com/kubernetesio><i class="fab fa-twitter"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Calendar aria-label=Calendar><a class=text-white target=_blank href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io"><i class="fas fa-calendar-alt"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Youtube aria-label=Youtube><a class=text-white target=_blank href=https://youtube.com/kubernetescommunity><i class="fab fa-youtube"></i></a></li></ul></div><div class="col-6 col-sm-2 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank href=https://github.com/kubernetes/kubernetes><i class="fab fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Slack aria-label=Slack><a class=text-white target=_blank href=https://slack.k8s.io><i class="fab fa-slack"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Contribute aria-label=Contribute><a class=text-white target=_blank href=https://git.k8s.io/community/contributors/guide><i class="fas fa-edit"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="Stack Overflow" aria-label="Stack Overflow"><a class=text-white target=_blank href=https://stackoverflow.com/questions/tagged/kubernetes><i class="fab fa-stack-overflow"></i></a></li></ul></div><div class="col-12 col-sm-8 text-center order-sm-2"><small class=text-white>&copy; 2026 Os autores do Kubernetes | Documentação Distribuída sob <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a></small><br><small class=text-white>Copyright &copy; 2026 The Linux Foundation &reg;. Todos os direitos reservados. A Linux Foundation tem marcas registradas e usa marcas registradas. Para uma lista de marcas registradas da The Linux Foundation, por favor, veja nossa <a href=https://www.linuxfoundation.org/trademark-usage class=light-text>Página de uso de marca registrada</a></small><br><small class=text-white><a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></small></div></div></div></footer></div><script src=/js/jquery-3.6.0.min.js integrity=sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK crossorigin=anonymous></script>
+<script src=/js/popper-1.16.1.min.js intregrity=sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN crossorigin=anonymous></script>
+<script src=/js/bootstrap-4.6.1.min.js integrity=sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2 crossorigin=anonymous></script>
+<script src=/js/script.js></script>
+<script async src=/js/mermaid-8.13.4.min.js integrity=sha384-5hHNvPeMrNH14oM3IcQofDoBhiclNK3g2+hnEinKzQ07C4AliMeVpnvxuiwEGpaO crossorigin=anonymous></script>
+<script src=/js/main.min.f675c5c4c54b6b5388e8b068c737501040fb82c5372a14c00c002fe79b2e53fb.js integrity="sha256-9nXFxMVLa1OI6LBoxzdQEED7gsU3KhTADAAv55suU/s=" crossorigin=anonymous></script>
+<script>let splitInstance=null;function enableSplitter(e){e.matches?splitInstance||(splitInstance=Split(["#sidebarnav","#maindoc"],{sizes:[20,80],minSize:100})):splitInstance&&(splitInstance.destroy(),splitInstance=null)}const screenWidthMediaQuery=window.matchMedia("(min-width: 768px)"),eleNav=document.getElementById("sidebarnav");eleNav!==null&&(enableSplitter(screenWidthMediaQuery),screenWidthMediaQuery.addListener(enableSplitter))</script></body></html>

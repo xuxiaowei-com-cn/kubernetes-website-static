@@ -1,0 +1,34 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kubernetes – Produktionsreife Container-Orchestrierung</title><link>https://kubernetes.xuxiaowei.com.cn/de/</link><description>The Kubernetes project blog</description><generator>Hugo -- gohugo.io</generator><image><url>https://raw.githubusercontent.com/kubernetes/kubernetes/master/logo/logo.png</url><title>Kubernetes.io</title><link>https://kubernetes.xuxiaowei.com.cn/de/</link></image><atom:link href="https://kubernetes.xuxiaowei.com.cn/de/feed.xml" rel="self" type="application/rss+xml"/><item><title>Blog: k8s.gcr.io Image Registry Will Be Frozen From the 3rd of April 2023</title><link>https://kubernetes.xuxiaowei.com.cn/de/blog/2023/03/10/k8s-gcr-io-freeze-announcement/</link><pubDate>Fri, 10 Mar 2023 00:00:00 +0000</pubDate><guid>https://kubernetes.xuxiaowei.com.cn/de/blog/2023/03/10/k8s-gcr-io-freeze-announcement/</guid><description>
+&lt;p>&lt;strong>Authors&lt;/strong>: Michael Mueller (Giant Swarm)&lt;/p>
+&lt;p>Das Kubernetes-Projekt betreibt eine zur Community gehörende Container-Image-Registry namens &lt;code>registry.k8s.io&lt;/code>, um die zum Projekt gehörenden Container-Images zu hosten. Am 3. April 2023 wird diese Container-Image-Registry &lt;code>k8s.gcr.io&lt;/code> eingefroren und es werden keine weiteren Container-Images für Kubernetes und Teilprojekte in die alte Registry gepusht.&lt;/p>
+&lt;p>Die Container-Image-Registry &lt;code>registry.k8s.io&lt;/code> ist bereits seit einigen Monaten verfügbar und wird die alte Registry ersetzen. Wir haben einen &lt;a href="https://kubernetes.xuxiaowei.com.cn/blog/2022/11/28/registry-k8s-io-faster-cheaper-ga/">Blogbeitrag&lt;/a> über die Vorteile für die Community und das Kubernetes-Projekt veröffentlicht. In diesem Beitrag wurde auch angekündigt, dass zukünftige Versionen von Kubernetes nicht mehr in der alten Registry Released sein werden.&lt;/p>
+&lt;p>Was bedeutet dies für Contributors:&lt;/p>
+&lt;ul>
+&lt;li>Wenn Du ein Maintainer eines Teilprojekts bist, musst du die Manifeste und Helm-Charts entsprechend anpassen, um die neue Container-Registry zu verwenden.&lt;/li>
+&lt;/ul>
+&lt;p>Was bedeutet dies Änderung für Endanwender:&lt;/p>
+&lt;ul>
+&lt;li>Das Kubernetes Release 1.27 wird nicht auf der alten Registry veröffentlicht.&lt;/li>
+&lt;li>Patchreleases für 1.24, 1.25 und 1.26 werden ab April nicht mehr in der alten Container-Image-Registry veröffentlicht. Bitte beachte den untenstehenden Zeitplan für die Details zu Patchreleases in der alten Container-Registry.&lt;/li>
+&lt;li>Beginnend mit dem Release 1.25, wurde die Standardeinstellung der Container-Image-Registry auf &lt;code>registry.k8s.io&lt;/code> geändert. Diese Einstellung kann in &lt;code>kubeadm&lt;/code> und dem &lt;code>kubelet&lt;/code> abgeändert werden, sollte der Wert jedoch auf &lt;code>k8s.gcr.io&lt;/code> gesetzt werden, wird dies für neue Releases ab April fehlschlagen, da diese nicht in die alte Container-Image-Registry gepusht werden.&lt;/li>
+&lt;li>Solltest Du die Zuverlässigkeit der Cluster erhöhen wollen und Abhängigkeiten zu dem zur Community gehörenden Container-Image-Registry auflösen wollen, oder betreibst Cluster in einer Umgebung mit eingeschränktem externen Netzwerkzugriff, solltest Du in Betracht ziehen eine lokale Container-Image-Registry als Mirror zu betreiben. Einige Cloud-Anbieter haben hierfür entsprechende Angebote.&lt;/li>
+&lt;/ul>
+&lt;h2 id="zeitplan-der-änderungen">Zeitplan der Änderungen&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>k8s.gcr.io&lt;/code> wird zum 3.April 2023 eingefroren&lt;/li>
+&lt;li>Der 1.27 Release wird zum 12.April 2023 erwartet&lt;/li>
+&lt;li>Das letzte 1.23 Release auf &lt;code>k8s.gcr.io&lt;/code> wird 1.23.18 sein (1.23 wird end-of-life vor dem einfrieren erreichen)&lt;/li>
+&lt;li>Das letzte 1.24 Release auf &lt;code>k8s.gcr.io&lt;/code> wird 1.24.12 sein&lt;/li>
+&lt;li>Das letzte 1.25 Release auf &lt;code>k8s.gcr.io&lt;/code> wird 1.25.8 sein&lt;/li>
+&lt;li>Das letzte 1.26 Release auf &lt;code>k8s.gcr.io&lt;/code> wird 1.26.3 sein&lt;/li>
+&lt;/ul>
+&lt;h2 id="was-geschieht-nun">Was geschieht nun&lt;/h2>
+&lt;p>Bitte stelle sicher, dass die Cluster keine Abhängigkeiten zu der Alten Container-Image-Registry haben. Dies kann zum Beispiel folgendermaßen überprüft werden, durch Ausführung des fogenden Kommandos erhält man eine Liste der Container-Images die ein Pod verwendet:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>kubectl get pods --all-namespaces -o &lt;span style="color:#b8860b">jsonpath&lt;/span>&lt;span style="color:#666">=&lt;/span>&lt;span style="color:#b44">&amp;#34;{.items[*].spec.containers[*].image}&amp;#34;&lt;/span> |&lt;span style="color:#b62;font-weight:bold">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#b62;font-weight:bold">&lt;/span>tr -s &lt;span style="color:#b44">&amp;#39;[[:space:]]&amp;#39;&lt;/span> &lt;span style="color:#b44">&amp;#39;\n&amp;#39;&lt;/span> |&lt;span style="color:#b62;font-weight:bold">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#b62;font-weight:bold">&lt;/span>sort |&lt;span style="color:#b62;font-weight:bold">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#b62;font-weight:bold">&lt;/span>uniq -c
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Es können durchaus weitere Abhängigkeiten zu der alten Container-Image-Registry bestehen, stelle also sicher, dass du alle möglichen Abhängigkeiten überprüfst, um die Cluster funktional und auf dem neuesten Stand zu halten.&lt;/p>
+&lt;h2 id="acknowledgments">Acknowledgments&lt;/h2>
+&lt;p>&lt;strong>Change is hard&lt;/strong>, die Weiterentwicklung unserer Container-Image-Registry ist notwendig, um eine nachhaltige Zukunft für das Projekt zu gewährleisten. Wir bemühen uns, Dinge für alle, die Kubernetes nutzen, zu verbessern. Viele Mitwirkende aus allen Ecken unserer Community haben lange und hart daran gearbeitet, sicherzustellen, dass wir die bestmöglichen Entscheidungen treffen, Pläne umsetzen und unser Bestes tun, um diese Pläne zu kommunizieren.&lt;/p>
+&lt;p>Dank geht an Aaron Crickenberger, Arnaud Meukam, Benjamin Elder, Caleb Woodbine, Davanum Srinivas, Mahamed Ali, und Tim Hockin von SIG K8s Infra, Brian McQueen, und Sergey Kanzhelev von SIG Node, Lubomir Ivanov von SIG Cluster Lifecycle, Adolfo García Veytia, Jeremy Rickard, Sascha Grunert, und Stephen Augustus von SIG Release, Bob Killen und Kaslin Fields von SIG Contribex, Tim Allclair von the Security Response Committee. Also a big thank you to our friends acting as liaisons with our cloud provider partners: Jay Pipes von Amazon und Jon Johnson Jr. von Google.&lt;/p></description></item></channel></rss>
