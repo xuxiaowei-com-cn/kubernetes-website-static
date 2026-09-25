@@ -1,0 +1,882 @@
+<!doctype html><html lang=en class=no-js><head><meta name=ROBOTS content="NOINDEX, NOFOLLOW"><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','UA-36037335-10')</script><script type=text/javascript>(function(a,e,b,f,g,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},c=e.createElement(f),c.async=1,c.src="https://www.clarity.ms/tag/"+g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d)})(window,document,"clarity","script","yn9rpyjul2")</script><link rel=alternate hreflang=zh href=https://kubernetes.xuxiaowei.com.cn/zh/docs/concepts/scheduling-eviction/><link rel=alternate hreflang=ko href=https://kubernetes.xuxiaowei.com.cn/ko/docs/concepts/scheduling-eviction/><link rel=alternate hreflang=ja href=https://kubernetes.xuxiaowei.com.cn/ja/docs/concepts/scheduling-eviction/><link rel=alternate hreflang=pt href=https://kubernetes.xuxiaowei.com.cn/pt/docs/concepts/scheduling-eviction/><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.82.0"><link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/><link rel="shortcut icon" type=image/png href=/images/favicon.png><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=manifest href=/manifest.webmanifest><link rel=apple-touch-icon href=/images/kubernetes-192x192.png><title>Scheduling and Eviction | Kubernetes</title><meta property="og:title" content="Scheduling and Eviction"><meta property="og:description" content="In Kubernetes, scheduling refers to making sure that Pods are matched to Nodes so that the kubelet can run them. Eviction is the process of proactively failing one or more Pods on resource-starved Nodes.
+"><meta property="og:type" content="website"><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/"><meta property="og:site_name" content="Kubernetes"><meta itemprop=name content="Scheduling and Eviction"><meta itemprop=description content="In Kubernetes, scheduling refers to making sure that Pods are matched to Nodes so that the kubelet can run them. Eviction is the process of proactively failing one or more Pods on resource-starved Nodes.
+"><meta name=twitter:card content="summary"><meta name=twitter:title content="Scheduling and Eviction"><meta name=twitter:description content="In Kubernetes, scheduling refers to making sure that Pods are matched to Nodes so that the kubelet can run them. Eviction is the process of proactively failing one or more Pods on resource-starved Nodes.
+"><link rel=preload href=/scss/main.min.ed63f113a0b4af323a0aa55cc07086aca653953991514680addf11d30c63bcf4.css as=style><link href=/scss/main.min.ed63f113a0b4af323a0aa55cc07086aca653953991514680addf11d30c63bcf4.css rel=stylesheet integrity><script src=/js/jquery-3.3.1.min.js integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin=anonymous></script><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png"}</script><meta name=theme-color content="#326ce5"><link rel=stylesheet href=/css/feature-states.css><meta name=description content="In Kubernetes, scheduling refers to making sure that Pods are matched to Nodes so that the kubelet can run them. Eviction is the process of proactively failing one or more Pods on resource-starved Nodes.
+"><meta property="og:description" content="In Kubernetes, scheduling refers to making sure that Pods are matched to Nodes so that the kubelet can run them. Eviction is the process of proactively failing one or more Pods on resource-starved Nodes.
+"><meta name=twitter:description content="In Kubernetes, scheduling refers to making sure that Pods are matched to Nodes so that the kubelet can run them. Eviction is the process of proactively failing one or more Pods on resource-starved Nodes.
+"><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/"><meta property="og:title" content="Scheduling and Eviction"><meta name=twitter:title content="Scheduling and Eviction"><meta name=twitter:image content="https://kubernetes.io/images/favicon.png"><meta name=twitter:image:alt content="Kubernetes"><meta property="og:image" content="/images/kubernetes-horizontal-color.png"><meta property="og:type" content="article"><script src=/js/script.js></script></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-row td-navbar" data-auto-burger=primary><a class=navbar-brand href=/></a><div class="td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0"><li class="nav-item mr-2 mb-lg-0"><a class="nav-link active" href=/docs/>Documentation</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/blog/>Kubernetes Blog</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/training/>Training</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/partners/>Partners</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/community/>Community</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/case-studies/>Case Studies</span></a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>Versions</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=https://xuxiaowei.io/t/1320/docs/concepts/scheduling-eviction/>Kubernetes 文档说明</a>
+<a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/>v1.38</a>
+<a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/>v1.37</a>
+<a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/>v1.36</a>
+<a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/>v1.35</a>
+<a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/>v1.34</a>
+<a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/>v1.33</a>
+<a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/>v1.32</a>
+<a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/>v1.31</a>
+<a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/>v1.30</a>
+<a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/>v1.29</a>
+<a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/>v1.28</a>
+<a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/>v1.27</a>
+<a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/>v1.26</a>
+<a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/>v1.25</a>
+<a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/>v1.24</a>
+<a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/>v1.23</a>
+<a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/>v1.22</a>
+<a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/>v1.21</a>
+<a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/>v1.20</a></div></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdownMenuLink role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>English</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh/docs/concepts/scheduling-eviction/>中文 Chinese</a>
+<a class=dropdown-item href=/ko/docs/concepts/scheduling-eviction/>한국어 Korean</a>
+<a class=dropdown-item href=/ja/docs/concepts/scheduling-eviction/>日本語 Japanese</a>
+<a class=dropdown-item href=/pt/docs/concepts/scheduling-eviction/>Português</a></div></li></ul></div><button id=hamburger onclick=kub.toggleMenu() data-auto-burger-exclude><div></div></button></nav></header><div class="container-fluid td-outer"><div class=td-main><div class="row flex-xl-nowrap"><div class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none"></div><div class="d-none d-xl-block col-xl-2 td-toc d-print-none"></div><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><div class=td-content><div class="pageinfo pageinfo-primary d-print-none"><p>This the multi-page printable view of this section.
+<a href=# onclick="return print(),!1">Click here to print</a>.</p><p><a href=/docs/concepts/scheduling-eviction/>Return to the regular view of this page</a>.</p></div><h1 class=title>Scheduling and Eviction</h1><div class=lead>In Kubernetes, scheduling refers to making sure that Pods are matched to Nodes so that the kubelet can run them. Eviction is the process of proactively failing one or more Pods on resource-starved Nodes.</div><ul><li>1: <a href=#pg-598f36d691ab197f9d995784574b0a12>Kubernetes Scheduler</a></li><li>2: <a href=#pg-21169f516071aea5d16734a4c27789a5>Assigning Pods to Nodes</a></li><li>3: <a href=#pg-961126cd43559012893979e568396a49>Resource Bin Packing for Extended Resources</a></li><li>4: <a href=#pg-ede4960b56a3529ee0bfe7c8fe2d09a5>Taints and Tolerations</a></li><li>5: <a href=#pg-da22fe2278df236f71efbe672f392677>Pod Overhead</a></li><li>6: <a href=#pg-45b5702b685c32798723d679c86aad02>Eviction Policy</a></li><li>7: <a href=#pg-602208c95fe7b1f1170310ce993f5814>Scheduling Framework</a></li><li>8: <a href=#pg-d9574a30fcbc631b0d2a57850e161e89>Scheduler Performance Tuning</a></li></ul><div class=content></div></div><div class=td-content><h1 id=pg-598f36d691ab197f9d995784574b0a12>1 - Kubernetes Scheduler</h1><p>In Kubernetes, <em>scheduling</em> refers to making sure that <a class=glossary-tooltip title="A Pod represents a set of running containers in your cluster." data-toggle=tooltip data-placement=top href=/docs/concepts/workloads/pods/ target=_blank aria-label=Pods>Pods</a>
+are matched to <a class=glossary-tooltip title="A node is a worker machine in Kubernetes." data-toggle=tooltip data-placement=top href=/docs/concepts/architecture/nodes/ target=_blank aria-label=Nodes>Nodes</a> so that
+<a class=glossary-tooltip title="An agent that runs on each node in the cluster. It makes sure that containers are running in a pod." data-toggle=tooltip data-placement=top href=/docs/reference/generated/kubelet target=_blank aria-label=Kubelet>Kubelet</a> can run them.</p><h2 id=scheduling>Scheduling overview</h2><p>A scheduler watches for newly created Pods that have no Node assigned. For
+every Pod that the scheduler discovers, the scheduler becomes responsible
+for finding the best Node for that Pod to run on. The scheduler reaches
+this placement decision taking into account the scheduling principles
+described below.</p><p>If you want to understand why Pods are placed onto a particular Node,
+or if you're planning to implement a custom scheduler yourself, this
+page will help you learn about scheduling.</p><h2 id=kube-scheduler>kube-scheduler</h2><p><a href=/docs/reference/command-line-tools-reference/kube-scheduler/>kube-scheduler</a>
+is the default scheduler for Kubernetes and runs as part of the
+<a class=glossary-tooltip title="The container orchestration layer that exposes the API and interfaces to define, deploy, and manage the lifecycle of containers." data-toggle=tooltip data-placement=top href="/docs/reference/glossary/?all=true#term-control-plane" target=_blank aria-label="control plane">control plane</a>.
+kube-scheduler is designed so that, if you want and need to, you can
+write your own scheduling component and use that instead.</p><p>For every newly created pod or other unscheduled pods, kube-scheduler
+selects an optimal node for them to run on. However, every container in
+pods has different requirements for resources and every pod also has
+different requirements. Therefore, existing nodes need to be filtered
+according to the specific scheduling requirements.</p><p>In a cluster, Nodes that meet the scheduling requirements for a Pod
+are called <em>feasible</em> nodes. If none of the nodes are suitable, the pod
+remains unscheduled until the scheduler is able to place it.</p><p>The scheduler finds feasible Nodes for a Pod and then runs a set of
+functions to score the feasible Nodes and picks a Node with the highest
+score among the feasible ones to run the Pod. The scheduler then notifies
+the API server about this decision in a process called <em>binding</em>.</p><p>Factors that need taken into account for scheduling decisions include
+individual and collective resource requirements, hardware / software /
+policy constraints, affinity and anti-affinity specifications, data
+locality, inter-workload interference, and so on.</p><h3 id=kube-scheduler-implementation>Node selection in kube-scheduler</h3><p>kube-scheduler selects a node for the pod in a 2-step operation:</p><ol><li>Filtering</li><li>Scoring</li></ol><p>The <em>filtering</em> step finds the set of Nodes where it's feasible to
+schedule the Pod. For example, the PodFitsResources filter checks whether a
+candidate Node has enough available resource to meet a Pod's specific
+resource requests. After this step, the node list contains any suitable
+Nodes; often, there will be more than one. If the list is empty, that
+Pod isn't (yet) schedulable.</p><p>In the <em>scoring</em> step, the scheduler ranks the remaining nodes to choose
+the most suitable Pod placement. The scheduler assigns a score to each Node
+that survived filtering, basing this score on the active scoring rules.</p><p>Finally, kube-scheduler assigns the Pod to the Node with the highest ranking.
+If there is more than one node with equal scores, kube-scheduler selects
+one of these at random.</p><p>There are two supported ways to configure the filtering and scoring behavior
+of the scheduler:</p><ol><li><a href=/docs/reference/scheduling/policies>Scheduling Policies</a> allow you to configure <em>Predicates</em> for filtering and <em>Priorities</em> for scoring.</li><li><a href=/docs/reference/scheduling/config/#profiles>Scheduling Profiles</a> allow you to configure Plugins that implement different scheduling stages, including: <code>QueueSort</code>, <code>Filter</code>, <code>Score</code>, <code>Bind</code>, <code>Reserve</code>, <code>Permit</code>, and others. You can also configure the kube-scheduler to run different profiles.</li></ol><h2 id=what-s-next>What's next</h2><ul><li>Read about <a href=/docs/concepts/scheduling-eviction/scheduler-perf-tuning/>scheduler performance tuning</a></li><li>Read about <a href=/docs/concepts/workloads/pods/pod-topology-spread-constraints/>Pod topology spread constraints</a></li><li>Read the <a href=/docs/reference/command-line-tools-reference/kube-scheduler/>reference documentation</a> for kube-scheduler</li><li>Read the <a href=/docs/reference/config-api/kube-scheduler-config.v1beta1/>kube-scheduler config (v1beta1)</a> reference</li><li>Learn about <a href=/docs/tasks/extend-kubernetes/configure-multiple-schedulers/>configuring multiple schedulers</a></li><li>Learn about <a href=/docs/tasks/administer-cluster/topology-manager/>topology management policies</a></li><li>Learn about <a href=/docs/concepts/scheduling-eviction/pod-overhead/>Pod Overhead</a></li><li>Learn about scheduling of Pods that use volumes in:<ul><li><a href=/docs/concepts/storage/storage-classes/#volume-binding-mode>Volume Topology Support</a></li><li><a href=/docs/concepts/storage/storage-capacity/>Storage Capacity Tracking</a></li><li><a href=/docs/concepts/storage/storage-limits/>Node-specific Volume Limits</a></li></ul></li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-21169f516071aea5d16734a4c27789a5>2 - Assigning Pods to Nodes</h1><p>You can constrain a <a class=glossary-tooltip title="A Pod represents a set of running containers in your cluster." data-toggle=tooltip data-placement=top href=/docs/concepts/workloads/pods/ target=_blank aria-label=Pod>Pod</a> so that it can only run on particular set of
+<a class=glossary-tooltip title="A node is a worker machine in Kubernetes." data-toggle=tooltip data-placement=top href=/docs/concepts/architecture/nodes/ target=_blank aria-label=Node(s)>Node(s)</a>.
+There are several ways to do this and the recommended approaches all use
+<a href=/docs/concepts/overview/working-with-objects/labels/>label selectors</a> to facilitate the selection.
+Generally such constraints are unnecessary, as the scheduler will automatically do a reasonable placement
+(e.g. spread your pods across nodes so as not place the pod on a node with insufficient free resources, etc.)
+but there are some circumstances where you may want to control which node the pod deploys to - for example to ensure
+that a pod ends up on a machine with an SSD attached to it, or to co-locate pods from two different
+services that communicate a lot into the same availability zone.</p><h2 id=nodeselector>nodeSelector</h2><p><code>nodeSelector</code> is the simplest recommended form of node selection constraint.
+<code>nodeSelector</code> is a field of PodSpec. It specifies a map of key-value pairs. For the pod to be eligible
+to run on a node, the node must have each of the indicated key-value pairs as labels (it can have
+additional labels as well). The most common usage is one key-value pair.</p><p>Let's walk through an example of how to use <code>nodeSelector</code>.</p><h3 id=step-zero-prerequisites>Step Zero: Prerequisites</h3><p>This example assumes that you have a basic understanding of Kubernetes pods and that you have <a href=/docs/setup/>set up a Kubernetes cluster</a>.</p><h3 id=step-one-attach-label-to-the-node>Step One: Attach label to the node</h3><p>Run <code>kubectl get nodes</code> to get the names of your cluster's nodes. Pick out the one that you want to add a label to, and then run <code>kubectl label nodes &lt;node-name> &lt;label-key>=&lt;label-value></code> to add a label to the node you've chosen. For example, if my node name is 'kubernetes-foo-node-1.c.a-robinson.internal' and my desired label is 'disktype=ssd', then I can run <code>kubectl label nodes kubernetes-foo-node-1.c.a-robinson.internal disktype=ssd</code>.</p><p>You can verify that it worked by re-running <code>kubectl get nodes --show-labels</code> and checking that the node now has a label. You can also use <code>kubectl describe node "nodename"</code> to see the full list of labels of the given node.</p><h3 id=step-two-add-a-nodeselector-field-to-your-pod-configuration>Step Two: Add a nodeSelector field to your pod configuration</h3><p>Take whatever pod config file you want to run, and add a nodeSelector section to it, like this. For example, if this is my pod config:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>env</span>:<span style=color:#bbb> </span>test<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span></code></pre></div><p>Then add a nodeSelector like so:</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/pods/pod-nginx.yaml download=pods/pod-nginx.yaml><code>pods/pod-nginx.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('pods-pod-nginx-yaml')" title="Copy pods/pod-nginx.yaml to clipboard"></img></div><div class=includecode id=pods-pod-nginx-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>env</span>:<span style=color:#bbb> </span>test<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>imagePullPolicy</span>:<span style=color:#bbb> </span>IfNotPresent<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>nodeSelector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>disktype</span>:<span style=color:#bbb> </span>ssd<span style=color:#bbb>
+</span></code></pre></div></div></div><p>When you then run <code>kubectl apply -f https://k8s.io/examples/pods/pod-nginx.yaml</code>,
+the Pod will get scheduled on the node that you attached the label to. You can
+verify that it worked by running <code>kubectl get pods -o wide</code> and looking at the
+"NODE" that the Pod was assigned to.</p><h2 id=built-in-node-labels>Interlude: built-in node labels</h2><p>In addition to labels you <a href=#step-one-attach-label-to-the-node>attach</a>, nodes come pre-populated
+with a standard set of labels. See <a href=/docs/reference/kubernetes-api/labels-annotations-taints/>Well-Known Labels, Annotations and Taints</a> for a list of these.</p><blockquote class="note callout"><div><strong>Note:</strong> The value of these labels is cloud provider specific and is not guaranteed to be reliable.
+For example, the value of <code>kubernetes.io/hostname</code> may be the same as the Node name in some environments
+and a different value in other environments.</div></blockquote><h2 id=node-isolation-restriction>Node isolation/restriction</h2><p>Adding labels to Node objects allows targeting pods to specific nodes or groups of nodes.
+This can be used to ensure specific pods only run on nodes with certain isolation, security, or regulatory properties.
+When using labels for this purpose, choosing label keys that cannot be modified by the kubelet process on the node is strongly recommended.
+This prevents a compromised node from using its kubelet credential to set those labels on its own Node object,
+and influencing the scheduler to schedule workloads to the compromised node.</p><p>The <code>NodeRestriction</code> admission plugin prevents kubelets from setting or modifying labels with a <code>node-restriction.kubernetes.io/</code> prefix.
+To make use of that label prefix for node isolation:</p><ol><li>Ensure you are using the <a href=/docs/reference/access-authn-authz/node/>Node authorizer</a> and have <em>enabled</em> the <a href=/docs/reference/access-authn-authz/admission-controllers/#noderestriction>NodeRestriction admission plugin</a>.</li><li>Add labels under the <code>node-restriction.kubernetes.io/</code> prefix to your Node objects, and use those labels in your node selectors.
+For example, <code>example.com.node-restriction.kubernetes.io/fips=true</code> or <code>example.com.node-restriction.kubernetes.io/pci-dss=true</code>.</li></ol><h2 id=affinity-and-anti-affinity>Affinity and anti-affinity</h2><p><code>nodeSelector</code> provides a very simple way to constrain pods to nodes with particular labels. The affinity/anti-affinity
+feature, greatly expands the types of constraints you can express. The key enhancements are</p><ol><li>The affinity/anti-affinity language is more expressive. The language offers more matching rules
+besides exact matches created with a logical AND operation;</li><li>you can indicate that the rule is "soft"/"preference" rather than a hard requirement, so if the scheduler
+can't satisfy it, the pod will still be scheduled;</li><li>you can constrain against labels on other pods running on the node (or other topological domain),
+rather than against labels on the node itself, which allows rules about which pods can and cannot be co-located</li></ol><p>The affinity feature consists of two types of affinity, "node affinity" and "inter-pod affinity/anti-affinity".
+Node affinity is like the existing <code>nodeSelector</code> (but with the first two benefits listed above),
+while inter-pod affinity/anti-affinity constrains against pod labels rather than node labels, as
+described in the third item listed above, in addition to having the first and second properties listed above.</p><h3 id=node-affinity>Node affinity</h3><p>Node affinity is conceptually similar to <code>nodeSelector</code> -- it allows you to constrain which nodes your
+pod is eligible to be scheduled on, based on labels on the node.</p><p>There are currently two types of node affinity, called <code>requiredDuringSchedulingIgnoredDuringExecution</code> and
+<code>preferredDuringSchedulingIgnoredDuringExecution</code>. You can think of them as "hard" and "soft" respectively,
+in the sense that the former specifies rules that <em>must</em> be met for a pod to be scheduled onto a node (similar to
+<code>nodeSelector</code> but using a more expressive syntax), while the latter specifies <em>preferences</em> that the scheduler
+will try to enforce but will not guarantee. The "IgnoredDuringExecution" part of the names means that, similar
+to how <code>nodeSelector</code> works, if labels on a node change at runtime such that the affinity rules on a pod are no longer
+met, the pod continues to run on the node. In the future we plan to offer
+<code>requiredDuringSchedulingRequiredDuringExecution</code> which will be identical to <code>requiredDuringSchedulingIgnoredDuringExecution</code>
+except that it will evict pods from nodes that cease to satisfy the pods' node affinity requirements.</p><p>Thus an example of <code>requiredDuringSchedulingIgnoredDuringExecution</code> would be "only run the pod on nodes with Intel CPUs"
+and an example <code>preferredDuringSchedulingIgnoredDuringExecution</code> would be "try to run this set of pods in failure
+zone XYZ, but if it's not possible, then allow some to run elsewhere".</p><p>Node affinity is specified as field <code>nodeAffinity</code> of field <code>affinity</code> in the PodSpec.</p><p>Here's an example of a pod that uses node affinity:</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/pods/pod-with-node-affinity.yaml download=pods/pod-with-node-affinity.yaml><code>pods/pod-with-node-affinity.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('pods-pod-with-node-affinity-yaml')" title="Copy pods/pod-with-node-affinity.yaml to clipboard"></img></div><div class=includecode id=pods-pod-with-node-affinity-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>with-node-affinity<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>affinity</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>nodeAffinity</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>requiredDuringSchedulingIgnoredDuringExecution</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>nodeSelectorTerms</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>matchExpressions</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span>kubernetes.io/e2e-az-name<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span>In<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>values</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>            </span>- e2e-az1<span style=color:#bbb>
+</span><span style=color:#bbb>            </span>- e2e-az2<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>preferredDuringSchedulingIgnoredDuringExecution</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>weight</span>:<span style=color:#bbb> </span><span style=color:#666>1</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>preference</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>matchExpressions</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span>another-node-label-key<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span>In<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>values</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>            </span>- another-node-label-value<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>with-node-affinity<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>k8s.gcr.io/pause:2.0</code></pre></div></div></div><p>This node affinity rule says the pod can only be placed on a node with a label whose key is
+<code>kubernetes.io/e2e-az-name</code> and whose value is either <code>e2e-az1</code> or <code>e2e-az2</code>. In addition,
+among nodes that meet that criteria, nodes with a label whose key is <code>another-node-label-key</code> and whose
+value is <code>another-node-label-value</code> should be preferred.</p><p>You can see the operator <code>In</code> being used in the example. The new node affinity syntax supports the following operators: <code>In</code>, <code>NotIn</code>, <code>Exists</code>, <code>DoesNotExist</code>, <code>Gt</code>, <code>Lt</code>.
+You can use <code>NotIn</code> and <code>DoesNotExist</code> to achieve node anti-affinity behavior, or use
+<a href=/docs/concepts/scheduling-eviction/taint-and-toleration/>node taints</a> to repel pods from specific nodes.</p><p>If you specify both <code>nodeSelector</code> and <code>nodeAffinity</code>, <em>both</em> must be satisfied for the pod
+to be scheduled onto a candidate node.</p><p>If you specify multiple <code>nodeSelectorTerms</code> associated with <code>nodeAffinity</code> types, then the pod can be scheduled onto a node <strong>if one of the</strong> <code>nodeSelectorTerms</code> can be satisfied.</p><p>If you specify multiple <code>matchExpressions</code> associated with <code>nodeSelectorTerms</code>, then the pod can be scheduled onto a node <strong>only if all</strong> <code>matchExpressions</code> is satisfied.</p><p>If you remove or change the label of the node where the pod is scheduled, the pod won't be removed. In other words, the affinity selection works only at the time of scheduling the pod.</p><p>The <code>weight</code> field in <code>preferredDuringSchedulingIgnoredDuringExecution</code> is in the range 1-100. For each node that meets all of the scheduling requirements (resource request, RequiredDuringScheduling affinity expressions, etc.), the scheduler will compute a sum by iterating through the elements of this field and adding "weight" to the sum if the node matches the corresponding MatchExpressions. This score is then combined with the scores of other priority functions for the node. The node(s) with the highest total score are the most preferred.</p><h4 id=node-affinity-per-scheduling-profile>Node affinity per scheduling profile</h4><div style=margin-top:10px;margin-bottom:10px><b>FEATURE STATE:</b> <code>Kubernetes v1.20 [beta]</code></div><p>When configuring multiple <a href=/docs/reference/scheduling/config/#multiple-profiles>scheduling profiles</a>, you can associate
+a profile with a Node affinity, which is useful if a profile only applies to a specific set of Nodes.
+To do so, add an <code>addedAffinity</code> to the args of the <a href=/docs/reference/scheduling/config/#scheduling-plugins><code>NodeAffinity</code> plugin</a>
+in the <a href=/docs/reference/scheduling/config/>scheduler configuration</a>. For example:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>kubescheduler.config.k8s.io/v1beta1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>KubeSchedulerConfiguration<span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>profiles</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>schedulerName</span>:<span style=color:#bbb> </span>default-scheduler<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>schedulerName</span>:<span style=color:#bbb> </span>foo-scheduler<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>pluginConfig</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>NodeAffinity<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>args</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>addedAffinity</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>requiredDuringSchedulingIgnoredDuringExecution</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>nodeSelectorTerms</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>              </span>- <span style=color:green;font-weight:700>matchExpressions</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>                </span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span>scheduler-profile<span style=color:#bbb>
+</span><span style=color:#bbb>                  </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span>In<span style=color:#bbb>
+</span><span style=color:#bbb>                  </span><span style=color:green;font-weight:700>values</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>                  </span>- foo<span style=color:#bbb>
+</span></code></pre></div><p>The <code>addedAffinity</code> is applied to all Pods that set <code>.spec.schedulerName</code> to <code>foo-scheduler</code>, in addition to the
+NodeAffinity specified in the PodSpec.
+That is, in order to match the Pod, Nodes need to satisfy <code>addedAffinity</code> and the Pod's <code>.spec.NodeAffinity</code>.</p><p>Since the <code>addedAffinity</code> is not visible to end users, its behavior might be unexpected to them. We
+recommend to use node labels that have clear correlation with the profile's scheduler name.</p><blockquote class="note callout"><div><strong>Note:</strong> The DaemonSet controller, which <a href=/docs/concepts/workloads/controllers/daemonset/#scheduled-by-default-scheduler>creates Pods for DaemonSets</a>
+is not aware of scheduling profiles. For this reason, it is recommended that you keep a scheduler profile, such as the
+<code>default-scheduler</code>, without any <code>addedAffinity</code>. Then, the Daemonset's Pod template should use this scheduler name.
+Otherwise, some Pods created by the Daemonset controller might remain unschedulable.</div></blockquote><h3 id=inter-pod-affinity-and-anti-affinity>Inter-pod affinity and anti-affinity</h3><p>Inter-pod affinity and anti-affinity allow you to constrain which nodes your pod is eligible to be scheduled <em>based on
+labels on pods that are already running on the node</em> rather than based on labels on nodes. The rules are of the form
+"this pod should (or, in the case of anti-affinity, should not) run in an X if that X is already running one or more pods that meet rule Y".
+Y is expressed as a LabelSelector with an optional associated list of namespaces; unlike nodes, because pods are namespaced
+(and therefore the labels on pods are implicitly namespaced),
+a label selector over pod labels must specify which namespaces the selector should apply to. Conceptually X is a topology domain
+like node, rack, cloud provider zone, cloud provider region, etc. You express it using a <code>topologyKey</code> which is the
+key for the node label that the system uses to denote such a topology domain; for example, see the label keys listed above
+in the section <a href=#built-in-node-labels>Interlude: built-in node labels</a>.</p><blockquote class="note callout"><div><strong>Note:</strong> Inter-pod affinity and anti-affinity require substantial amount of
+processing which can slow down scheduling in large clusters significantly. We do
+not recommend using them in clusters larger than several hundred nodes.</div></blockquote><blockquote class="note callout"><div><strong>Note:</strong> Pod anti-affinity requires nodes to be consistently labelled, in other words every node in the cluster must have an appropriate label matching <code>topologyKey</code>. If some or all nodes are missing the specified <code>topologyKey</code> label, it can lead to unintended behavior.</div></blockquote><p>As with node affinity, there are currently two types of pod affinity and anti-affinity, called <code>requiredDuringSchedulingIgnoredDuringExecution</code> and
+<code>preferredDuringSchedulingIgnoredDuringExecution</code> which denote "hard" vs. "soft" requirements.
+See the description in the node affinity section earlier.
+An example of <code>requiredDuringSchedulingIgnoredDuringExecution</code> affinity would be "co-locate the pods of service A and service B
+in the same zone, since they communicate a lot with each other"
+and an example <code>preferredDuringSchedulingIgnoredDuringExecution</code> anti-affinity would be "spread the pods from this service across zones"
+(a hard requirement wouldn't make sense, since you probably have more pods than zones).</p><p>Inter-pod affinity is specified as field <code>podAffinity</code> of field <code>affinity</code> in the PodSpec.
+And inter-pod anti-affinity is specified as field <code>podAntiAffinity</code> of field <code>affinity</code> in the PodSpec.</p><h4 id=an-example-of-a-pod-that-uses-pod-affinity>An example of a pod that uses pod affinity:</h4><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/pods/pod-with-pod-affinity.yaml download=pods/pod-with-pod-affinity.yaml><code>pods/pod-with-pod-affinity.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('pods-pod-with-pod-affinity-yaml')" title="Copy pods/pod-with-pod-affinity.yaml to clipboard"></img></div><div class=includecode id=pods-pod-with-pod-affinity-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>with-pod-affinity<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>affinity</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>podAffinity</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>requiredDuringSchedulingIgnoredDuringExecution</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>labelSelector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>matchExpressions</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span>security<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span>In<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>values</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>            </span>- S1<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>topologyKey</span>:<span style=color:#bbb> </span>topology.kubernetes.io/zone<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>podAntiAffinity</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>preferredDuringSchedulingIgnoredDuringExecution</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>weight</span>:<span style=color:#bbb> </span><span style=color:#666>100</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>podAffinityTerm</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>labelSelector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>matchExpressions</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>            </span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span>security<span style=color:#bbb>
+</span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span>In<span style=color:#bbb>
+</span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>values</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>              </span>- S2<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>topologyKey</span>:<span style=color:#bbb> </span>topology.kubernetes.io/zone<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>with-pod-affinity<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>k8s.gcr.io/pause:2.0<span style=color:#bbb>
+</span></code></pre></div></div></div><p>The affinity on this pod defines one pod affinity rule and one pod anti-affinity rule. In this example, the
+<code>podAffinity</code> is <code>requiredDuringSchedulingIgnoredDuringExecution</code>
+while the <code>podAntiAffinity</code> is <code>preferredDuringSchedulingIgnoredDuringExecution</code>. The
+pod affinity rule says that the pod can be scheduled onto a node only if that node is in the same zone
+as at least one already-running pod that has a label with key "security" and value "S1". (More precisely, the pod is eligible to run
+on node N if node N has a label with key <code>topology.kubernetes.io/zone</code> and some value V
+such that there is at least one node in the cluster with key <code>topology.kubernetes.io/zone</code> and
+value V that is running a pod that has a label with key "security" and value "S1".) The pod anti-affinity
+rule says that the pod should not be scheduled onto a node if that node is in the same zone as a pod with
+label having key "security" and value "S2". See the
+<a href=https://git.k8s.io/community/contributors/design-proposals/scheduling/podaffinity.md>design doc</a>
+for many more examples of pod affinity and anti-affinity, both the <code>requiredDuringSchedulingIgnoredDuringExecution</code>
+flavor and the <code>preferredDuringSchedulingIgnoredDuringExecution</code> flavor.</p><p>The legal operators for pod affinity and anti-affinity are <code>In</code>, <code>NotIn</code>, <code>Exists</code>, <code>DoesNotExist</code>.</p><p>In principle, the <code>topologyKey</code> can be any legal label-key. However,
+for performance and security reasons, there are some constraints on topologyKey:</p><ol><li>For pod affinity, empty <code>topologyKey</code> is not allowed in both <code>requiredDuringSchedulingIgnoredDuringExecution</code>
+and <code>preferredDuringSchedulingIgnoredDuringExecution</code>.</li><li>For pod anti-affinity, empty <code>topologyKey</code> is also not allowed in both <code>requiredDuringSchedulingIgnoredDuringExecution</code>
+and <code>preferredDuringSchedulingIgnoredDuringExecution</code>.</li><li>For <code>requiredDuringSchedulingIgnoredDuringExecution</code> pod anti-affinity, the admission controller <code>LimitPodHardAntiAffinityTopology</code> was introduced to limit <code>topologyKey</code> to <code>kubernetes.io/hostname</code>. If you want to make it available for custom topologies, you may modify the admission controller, or disable it.</li><li>Except for the above cases, the <code>topologyKey</code> can be any legal label-key.</li></ol><p>In addition to <code>labelSelector</code> and <code>topologyKey</code>, you can optionally specify a list <code>namespaces</code>
+of namespaces which the <code>labelSelector</code> should match against (this goes at the same level of the definition as <code>labelSelector</code> and <code>topologyKey</code>).
+If omitted or empty, it defaults to the namespace of the pod where the affinity/anti-affinity definition appears.</p><p>All <code>matchExpressions</code> associated with <code>requiredDuringSchedulingIgnoredDuringExecution</code> affinity and anti-affinity
+must be satisfied for the pod to be scheduled onto a node.</p><h4 id=more-practical-use-cases>More Practical Use-cases</h4><p>Interpod Affinity and AntiAffinity can be even more useful when they are used with higher
+level collections such as ReplicaSets, StatefulSets, Deployments, etc. One can easily configure that a set of workloads should
+be co-located in the same defined topology, eg., the same node.</p><h5 id=always-co-located-in-the-same-node>Always co-located in the same node</h5><p>In a three node cluster, a web application has in-memory cache such as redis. We want the web-servers to be co-located with the cache as much as possible.</p><p>Here is the yaml snippet of a simple redis deployment with three replicas and selector label <code>app=store</code>. The deployment has <code>PodAntiAffinity</code> configured to ensure the scheduler does not co-locate replicas on a single node.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>apps/v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Deployment<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>redis-cache<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>matchLabels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>store<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>replicas</span>:<span style=color:#bbb> </span><span style=color:#666>3</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>template</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>store<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>affinity</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>podAntiAffinity</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>requiredDuringSchedulingIgnoredDuringExecution</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span>- <span style=color:green;font-weight:700>labelSelector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>matchExpressions</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>              </span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span>app<span style=color:#bbb>
+</span><span style=color:#bbb>                </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span>In<span style=color:#bbb>
+</span><span style=color:#bbb>                </span><span style=color:green;font-weight:700>values</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>                </span>- store<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>topologyKey</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;kubernetes.io/hostname&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>redis-server<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>redis:3.2-alpine<span style=color:#bbb>
+</span></code></pre></div><p>The below yaml snippet of the webserver deployment has <code>podAntiAffinity</code> and <code>podAffinity</code> configured. This informs the scheduler that all its replicas are to be co-located with pods that have selector label <code>app=store</code>. This will also ensure that each web-server replica does not co-locate on a single node.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>apps/v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Deployment<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>web-server<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>matchLabels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>web-store<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>replicas</span>:<span style=color:#bbb> </span><span style=color:#666>3</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>template</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>web-store<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>affinity</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>podAntiAffinity</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>requiredDuringSchedulingIgnoredDuringExecution</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span>- <span style=color:green;font-weight:700>labelSelector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>matchExpressions</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>              </span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span>app<span style=color:#bbb>
+</span><span style=color:#bbb>                </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span>In<span style=color:#bbb>
+</span><span style=color:#bbb>                </span><span style=color:green;font-weight:700>values</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>                </span>- web-store<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>topologyKey</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;kubernetes.io/hostname&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>podAffinity</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>requiredDuringSchedulingIgnoredDuringExecution</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span>- <span style=color:green;font-weight:700>labelSelector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>matchExpressions</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>              </span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span>app<span style=color:#bbb>
+</span><span style=color:#bbb>                </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span>In<span style=color:#bbb>
+</span><span style=color:#bbb>                </span><span style=color:green;font-weight:700>values</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>                </span>- store<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>topologyKey</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;kubernetes.io/hostname&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>web-app<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx:1.16-alpine<span style=color:#bbb>
+</span></code></pre></div><p>If we create the above two deployments, our three node cluster should look like below.</p><table><thead><tr><th style=text-align:center>node-1</th><th style=text-align:center>node-2</th><th style=text-align:center>node-3</th></tr></thead><tbody><tr><td style=text-align:center><em>webserver-1</em></td><td style=text-align:center><em>webserver-2</em></td><td style=text-align:center><em>webserver-3</em></td></tr><tr><td style=text-align:center><em>cache-1</em></td><td style=text-align:center><em>cache-2</em></td><td style=text-align:center><em>cache-3</em></td></tr></tbody></table><p>As you can see, all the 3 replicas of the <code>web-server</code> are automatically co-located with the cache as expected.</p><pre><code>kubectl get pods -o wide
+</code></pre><p>The output is similar to this:</p><pre><code>NAME                           READY     STATUS    RESTARTS   AGE       IP           NODE
+redis-cache-1450370735-6dzlj   1/1       Running   0          8m        10.192.4.2   kube-node-3
+redis-cache-1450370735-j2j96   1/1       Running   0          8m        10.192.2.2   kube-node-1
+redis-cache-1450370735-z73mh   1/1       Running   0          8m        10.192.3.1   kube-node-2
+web-server-1287567482-5d4dz    1/1       Running   0          7m        10.192.2.3   kube-node-1
+web-server-1287567482-6f7v5    1/1       Running   0          7m        10.192.4.3   kube-node-3
+web-server-1287567482-s330j    1/1       Running   0          7m        10.192.3.2   kube-node-2
+</code></pre><h5 id=never-co-located-in-the-same-node>Never co-located in the same node</h5><p>The above example uses <code>PodAntiAffinity</code> rule with <code>topologyKey: "kubernetes.io/hostname"</code> to deploy the redis cluster so that
+no two instances are located on the same host.
+See <a href=/docs/tutorials/stateful-application/zookeeper/#tolerating-node-failure>ZooKeeper tutorial</a>
+for an example of a StatefulSet configured with anti-affinity for high availability, using the same technique.</p><h2 id=nodename>nodeName</h2><p><code>nodeName</code> is the simplest form of node selection constraint, but due
+to its limitations it is typically not used. <code>nodeName</code> is a field of
+PodSpec. If it is non-empty, the scheduler ignores the pod and the
+kubelet running on the named node tries to run the pod. Thus, if
+<code>nodeName</code> is provided in the PodSpec, it takes precedence over the
+above methods for node selection.</p><p>Some of the limitations of using <code>nodeName</code> to select nodes are:</p><ul><li>If the named node does not exist, the pod will not be run, and in
+some cases may be automatically deleted.</li><li>If the named node does not have the resources to accommodate the
+pod, the pod will fail and its reason will indicate why,
+for example OutOfmemory or OutOfcpu.</li><li>Node names in cloud environments are not always predictable or
+stable.</li></ul><p>Here is an example of a pod config file using the <code>nodeName</code> field:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>nodeName</span>:<span style=color:#bbb> </span>kube-01<span style=color:#bbb>
+</span></code></pre></div><p>The above pod will run on the node kube-01.</p><h2 id=what-s-next>What's next</h2><p><a href=/docs/concepts/scheduling-eviction/taint-and-toleration/>Taints</a> allow a Node to <em>repel</em> a set of Pods.</p><p>The design documents for
+<a href=https://git.k8s.io/community/contributors/design-proposals/scheduling/nodeaffinity.md>node affinity</a>
+and for <a href=https://git.k8s.io/community/contributors/design-proposals/scheduling/podaffinity.md>inter-pod affinity/anti-affinity</a> contain extra background information about these features.</p><p>Once a Pod is assigned to a Node, the kubelet runs the Pod and allocates node-local resources.
+The <a href=/docs/tasks/administer-cluster/topology-manager/>topology manager</a> can take part in node-level
+resource allocation decisions.</p></div><div class=td-content style=page-break-before:always><h1 id=pg-961126cd43559012893979e568396a49>3 - Resource Bin Packing for Extended Resources</h1><div style=margin-top:10px;margin-bottom:10px><b>FEATURE STATE:</b> <code>Kubernetes v1.16 [alpha]</code></div><p>The kube-scheduler can be configured to enable bin packing of resources along
+with extended resources using <code>RequestedToCapacityRatioResourceAllocation</code>
+priority function. Priority functions can be used to fine-tune the
+kube-scheduler as per custom needs.</p><h2 id=enabling-bin-packing-using-requestedtocapacityratioresourceallocation>Enabling Bin Packing using RequestedToCapacityRatioResourceAllocation</h2><p>Kubernetes allows the users to specify the resources along with weights for
+each resource to score nodes based on the request to capacity ratio. This
+allows users to bin pack extended resources by using appropriate parameters
+and improves the utilization of scarce resources in large clusters. The
+behavior of the <code>RequestedToCapacityRatioResourceAllocation</code> priority function
+can be controlled by a configuration option called
+<code>requestedToCapacityRatioArguments</code>. This argument consists of two parameters
+<code>shape</code> and <code>resources</code>. The <code>shape</code> parameter allows the user to tune the
+function as least requested or most requested based on <code>utilization</code> and
+<code>score</code> values. The <code>resources</code> parameter consists of <code>name</code> of the resource
+to be considered during scoring and <code>weight</code> specify the weight of each
+resource.</p><p>Below is an example configuration that sets
+<code>requestedToCapacityRatioArguments</code> to bin packing behavior for extended
+resources <code>intel.com/foo</code> and <code>intel.com/bar</code>.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Policy<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:#080;font-style:italic># ...</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>priorities</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:#080;font-style:italic># ...</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>RequestedToCapacityRatioPriority<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>weight</span>:<span style=color:#bbb> </span><span style=color:#666>2</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>argument</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>requestedToCapacityRatioArguments</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>shape</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span>- <span style=color:green;font-weight:700>utilization</span>:<span style=color:#bbb> </span><span style=color:#666>0</span><span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>score</span>:<span style=color:#bbb> </span><span style=color:#666>0</span><span style=color:#bbb>
+</span><span style=color:#bbb>          </span>- <span style=color:green;font-weight:700>utilization</span>:<span style=color:#bbb> </span><span style=color:#666>100</span><span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>score</span>:<span style=color:#bbb> </span><span style=color:#666>10</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>intel.com/foo<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>weight</span>:<span style=color:#bbb> </span><span style=color:#666>3</span><span style=color:#bbb>
+</span><span style=color:#bbb>          </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>intel.com/bar<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>weight</span>:<span style=color:#bbb> </span><span style=color:#666>5</span><span style=color:#bbb>
+</span></code></pre></div><p><strong>This feature is disabled by default</strong></p><h3 id=tuning-the-priority-function>Tuning the Priority Function</h3><p><code>shape</code> is used to specify the behavior of the
+<code>RequestedToCapacityRatioPriority</code> function.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>shape</span>:<span style=color:#bbb>
+</span><span style=color:#bbb> </span>- <span style=color:green;font-weight:700>utilization</span>:<span style=color:#bbb> </span><span style=color:#666>0</span><span style=color:#bbb>
+</span><span style=color:#bbb>   </span><span style=color:green;font-weight:700>score</span>:<span style=color:#bbb> </span><span style=color:#666>0</span><span style=color:#bbb>
+</span><span style=color:#bbb> </span>- <span style=color:green;font-weight:700>utilization</span>:<span style=color:#bbb> </span><span style=color:#666>100</span><span style=color:#bbb>
+</span><span style=color:#bbb>   </span><span style=color:green;font-weight:700>score</span>:<span style=color:#bbb> </span><span style=color:#666>10</span><span style=color:#bbb>
+</span></code></pre></div><p>The above arguments give the node a <code>score</code> of 0 if <code>utilization</code> is 0% and 10 for
+<code>utilization</code> 100%, thus enabling bin packing behavior. To enable least
+requested the score value must be reversed as follows.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>shape</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>utilization</span>:<span style=color:#bbb> </span><span style=color:#666>0</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>score</span>:<span style=color:#bbb> </span><span style=color:#666>10</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>utilization</span>:<span style=color:#bbb> </span><span style=color:#666>100</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>score</span>:<span style=color:#bbb> </span><span style=color:#666>0</span><span style=color:#bbb>
+</span></code></pre></div><p><code>resources</code> is an optional parameter which defaults to:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>CPU<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>weight</span>:<span style=color:#bbb> </span><span style=color:#666>1</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>Memory<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>weight</span>:<span style=color:#bbb> </span><span style=color:#666>1</span><span style=color:#bbb>
+</span></code></pre></div><p>It can be used to add extended resources as follows:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>intel.com/foo<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>weight</span>:<span style=color:#bbb> </span><span style=color:#666>5</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>CPU<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>weight</span>:<span style=color:#bbb> </span><span style=color:#666>3</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>Memory<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>weight</span>:<span style=color:#bbb> </span><span style=color:#666>1</span><span style=color:#bbb>
+</span></code></pre></div><p>The <code>weight</code> parameter is optional and is set to 1 if not specified. Also, the
+<code>weight</code> cannot be set to a negative value.</p><h3 id=node-scoring-for-capacity-allocation>Node scoring for capacity allocation</h3><p>This section is intended for those who want to understand the internal details
+of this feature.
+Below is an example of how the node score is calculated for a given set of values.</p><p>Requested resources:</p><pre><code>intel.com/foo : 2
+Memory: 256MB
+CPU: 2
+</code></pre><p>Resource weights:</p><pre><code>intel.com/foo : 5
+Memory: 1
+CPU: 3
+</code></pre><p>FunctionShapePoint {{0, 0}, {100, 10}}</p><p>Node 1 spec:</p><pre><code>Available:
+  intel.com/foo: 4
+  Memory: 1 GB
+  CPU: 8
+
+Used:
+  intel.com/foo: 1
+  Memory: 256MB
+  CPU: 1
+</code></pre><p>Node score:</p><pre><code>intel.com/foo  = resourceScoringFunction((2+1),4)
+               = (100 - ((4-3)*100/4)
+               = (100 - 25)
+               = 75                       # requested + used = 75% * available
+               = rawScoringFunction(75) 
+               = 7                        # floor(75/10) 
+
+Memory         = resourceScoringFunction((256+256),1024)
+               = (100 -((1024-512)*100/1024))
+               = 50                       # requested + used = 50% * available
+               = rawScoringFunction(50)
+               = 5                        # floor(50/10)
+
+CPU            = resourceScoringFunction((2+1),8)
+               = (100 -((8-3)*100/8))
+               = 37.5                     # requested + used = 37.5% * available
+               = rawScoringFunction(37.5)
+               = 3                        # floor(37.5/10)
+
+NodeScore   =  (7 * 5) + (5 * 1) + (3 * 3) / (5 + 1 + 3)
+            =  5
+</code></pre><p>Node 2 spec:</p><pre><code>Available:
+  intel.com/foo: 8
+  Memory: 1GB
+  CPU: 8
+Used:
+  intel.com/foo: 2
+  Memory: 512MB
+  CPU: 6
+</code></pre><p>Node score:</p><pre><code>intel.com/foo  = resourceScoringFunction((2+2),8)
+               =  (100 - ((8-4)*100/8)
+               =  (100 - 50)
+               =  50
+               =  rawScoringFunction(50)
+               = 5
+
+Memory         = resourceScoringFunction((256+512),1024)
+               = (100 -((1024-768)*100/1024))
+               = 75
+               = rawScoringFunction(75)
+               = 7
+
+CPU            = resourceScoringFunction((2+6),8)
+               = (100 -((8-8)*100/8))
+               = 100
+               = rawScoringFunction(100)
+               = 10
+
+NodeScore   =  (5 * 5) + (7 * 1) + (10 * 3) / (5 + 1 + 3)
+            =  7
+
+</code></pre><h2 id=what-s-next>What's next</h2><ul><li>Read more about the <a href=/docs/concepts/scheduling-eviction/scheduling-framework/>scheduling framework</a></li><li>Read more about <a href=/docs/reference/scheduling/config/>scheduler configuration</a></li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-ede4960b56a3529ee0bfe7c8fe2d09a5>4 - Taints and Tolerations</h1><p><a href=/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity><em>Node affinity</em></a>,
+is a property of <a class=glossary-tooltip title="A Pod represents a set of running containers in your cluster." data-toggle=tooltip data-placement=top href=/docs/concepts/workloads/pods/ target=_blank aria-label=Pods>Pods</a> that <em>attracts</em> them to
+a set of <a class=glossary-tooltip title="A node is a worker machine in Kubernetes." data-toggle=tooltip data-placement=top href=/docs/concepts/architecture/nodes/ target=_blank aria-label=nodes>nodes</a> (either as a preference or a
+hard requirement). <em>Taints</em> are the opposite -- they allow a node to repel a set of pods.</p><p><em>Tolerations</em> are applied to pods, and allow (but do not require) the pods to schedule
+onto nodes with matching taints.</p><p>Taints and tolerations work together to ensure that pods are not scheduled
+onto inappropriate nodes. One or more taints are applied to a node; this
+marks that the node should not accept any pods that do not tolerate the taints.</p><h2 id=concepts>Concepts</h2><p>You add a taint to a node using <a href=/docs/reference/generated/kubectl/kubectl-commands#taint>kubectl taint</a>.
+For example,</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl taint nodes node1 <span style=color:#b8860b>key1</span><span style=color:#666>=</span>value1:NoSchedule
+</code></pre></div><p>places a taint on node <code>node1</code>. The taint has key <code>key1</code>, value <code>value1</code>, and taint effect <code>NoSchedule</code>.
+This means that no pod will be able to schedule onto <code>node1</code> unless it has a matching toleration.</p><p>To remove the taint added by the command above, you can run:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl taint nodes node1 <span style=color:#b8860b>key1</span><span style=color:#666>=</span>value1:NoSchedule-
+</code></pre></div><p>You specify a toleration for a pod in the PodSpec. Both of the following tolerations "match" the
+taint created by the <code>kubectl taint</code> line above, and thus a pod with either toleration would be able
+to schedule onto <code>node1</code>:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>tolerations</span>:<span style=color:#bbb>
+</span><span style=color:#bbb></span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;key1&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;Equal&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;value1&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>effect</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;NoSchedule&#34;</span><span style=color:#bbb>
+</span></code></pre></div><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>tolerations</span>:<span style=color:#bbb>
+</span><span style=color:#bbb></span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;key1&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;Exists&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>effect</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;NoSchedule&#34;</span><span style=color:#bbb>
+</span></code></pre></div><p>Here's an example of a pod that uses tolerations:</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/pods/pod-with-toleration.yaml download=pods/pod-with-toleration.yaml><code>pods/pod-with-toleration.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('pods-pod-with-toleration-yaml')" title="Copy pods/pod-with-toleration.yaml to clipboard"></img></div><div class=includecode id=pods-pod-with-toleration-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>env</span>:<span style=color:#bbb> </span>test<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>imagePullPolicy</span>:<span style=color:#bbb> </span>IfNotPresent<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>tolerations</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;example-key&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;Exists&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>effect</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;NoSchedule&#34;</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>The default value for <code>operator</code> is <code>Equal</code>.</p><p>A toleration "matches" a taint if the keys are the same and the effects are the same, and:</p><ul><li>the <code>operator</code> is <code>Exists</code> (in which case no <code>value</code> should be specified), or</li><li>the <code>operator</code> is <code>Equal</code> and the <code>value</code>s are equal.</li></ul><blockquote class="note callout"><div><strong>Note:</strong><p>There are two special cases:</p><p>An empty <code>key</code> with operator <code>Exists</code> matches all keys, values and effects which means this
+will tolerate everything.</p><p>An empty <code>effect</code> matches all effects with key <code>key1</code>.</p></div></blockquote><p>The above example used <code>effect</code> of <code>NoSchedule</code>. Alternatively, you can use <code>effect</code> of <code>PreferNoSchedule</code>.
+This is a "preference" or "soft" version of <code>NoSchedule</code> -- the system will <em>try</em> to avoid placing a
+pod that does not tolerate the taint on the node, but it is not required. The third kind of <code>effect</code> is
+<code>NoExecute</code>, described later.</p><p>You can put multiple taints on the same node and multiple tolerations on the same pod.
+The way Kubernetes processes multiple taints and tolerations is like a filter: start
+with all of a node's taints, then ignore the ones for which the pod has a matching toleration; the
+remaining un-ignored taints have the indicated effects on the pod. In particular,</p><ul><li>if there is at least one un-ignored taint with effect <code>NoSchedule</code> then Kubernetes will not schedule
+the pod onto that node</li><li>if there is no un-ignored taint with effect <code>NoSchedule</code> but there is at least one un-ignored taint with
+effect <code>PreferNoSchedule</code> then Kubernetes will <em>try</em> to not schedule the pod onto the node</li><li>if there is at least one un-ignored taint with effect <code>NoExecute</code> then the pod will be evicted from
+the node (if it is already running on the node), and will not be
+scheduled onto the node (if it is not yet running on the node).</li></ul><p>For example, imagine you taint a node like this</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl taint nodes node1 <span style=color:#b8860b>key1</span><span style=color:#666>=</span>value1:NoSchedule
+kubectl taint nodes node1 <span style=color:#b8860b>key1</span><span style=color:#666>=</span>value1:NoExecute
+kubectl taint nodes node1 <span style=color:#b8860b>key2</span><span style=color:#666>=</span>value2:NoSchedule
+</code></pre></div><p>And a pod has two tolerations:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>tolerations</span>:<span style=color:#bbb>
+</span><span style=color:#bbb></span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;key1&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;Equal&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;value1&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>effect</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;NoSchedule&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb></span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;key1&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;Equal&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;value1&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>effect</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;NoExecute&#34;</span><span style=color:#bbb>
+</span></code></pre></div><p>In this case, the pod will not be able to schedule onto the node, because there is no
+toleration matching the third taint. But it will be able to continue running if it is
+already running on the node when the taint is added, because the third taint is the only
+one of the three that is not tolerated by the pod.</p><p>Normally, if a taint with effect <code>NoExecute</code> is added to a node, then any pods that do
+not tolerate the taint will be evicted immediately, and pods that do tolerate the
+taint will never be evicted. However, a toleration with <code>NoExecute</code> effect can specify
+an optional <code>tolerationSeconds</code> field that dictates how long the pod will stay bound
+to the node after the taint is added. For example,</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>tolerations</span>:<span style=color:#bbb>
+</span><span style=color:#bbb></span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;key1&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;Equal&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;value1&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>effect</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;NoExecute&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>tolerationSeconds</span>:<span style=color:#bbb> </span><span style=color:#666>3600</span><span style=color:#bbb>
+</span></code></pre></div><p>means that if this pod is running and a matching taint is added to the node, then
+the pod will stay bound to the node for 3600 seconds, and then be evicted. If the
+taint is removed before that time, the pod will not be evicted.</p><h2 id=example-use-cases>Example Use Cases</h2><p>Taints and tolerations are a flexible way to steer pods <em>away</em> from nodes or evict
+pods that shouldn't be running. A few of the use cases are</p><ul><li><p><strong>Dedicated Nodes</strong>: If you want to dedicate a set of nodes for exclusive use by
+a particular set of users, you can add a taint to those nodes (say,
+<code>kubectl taint nodes nodename dedicated=groupName:NoSchedule</code>) and then add a corresponding
+toleration to their pods (this would be done most easily by writing a custom
+<a href=/docs/reference/access-authn-authz/admission-controllers/>admission controller</a>).
+The pods with the tolerations will then be allowed to use the tainted (dedicated) nodes as
+well as any other nodes in the cluster. If you want to dedicate the nodes to them <em>and</em>
+ensure they <em>only</em> use the dedicated nodes, then you should additionally add a label similar
+to the taint to the same set of nodes (e.g. <code>dedicated=groupName</code>), and the admission
+controller should additionally add a node affinity to require that the pods can only schedule
+onto nodes labeled with <code>dedicated=groupName</code>.</p></li><li><p><strong>Nodes with Special Hardware</strong>: In a cluster where a small subset of nodes have specialized
+hardware (for example GPUs), it is desirable to keep pods that don't need the specialized
+hardware off of those nodes, thus leaving room for later-arriving pods that do need the
+specialized hardware. This can be done by tainting the nodes that have the specialized
+hardware (e.g. <code>kubectl taint nodes nodename special=true:NoSchedule</code> or
+<code>kubectl taint nodes nodename special=true:PreferNoSchedule</code>) and adding a corresponding
+toleration to pods that use the special hardware. As in the dedicated nodes use case,
+it is probably easiest to apply the tolerations using a custom
+<a href=/docs/reference/access-authn-authz/admission-controllers/>admission controller</a>.
+For example, it is recommended to use <a href=/docs/concepts/configuration/manage-resources-containers/#extended-resources>Extended
+Resources</a>
+to represent the special hardware, taint your special hardware nodes with the
+extended resource name and run the
+<a href=/docs/reference/access-authn-authz/admission-controllers/#extendedresourcetoleration>ExtendedResourceToleration</a>
+admission controller. Now, because the nodes are tainted, no pods without the
+toleration will schedule on them. But when you submit a pod that requests the
+extended resource, the <code>ExtendedResourceToleration</code> admission controller will
+automatically add the correct toleration to the pod and that pod will schedule
+on the special hardware nodes. This will make sure that these special hardware
+nodes are dedicated for pods requesting such hardware and you don't have to
+manually add tolerations to your pods.</p></li><li><p><strong>Taint based Evictions</strong>: A per-pod-configurable eviction behavior
+when there are node problems, which is described in the next section.</p></li></ul><h2 id=taint-based-evictions>Taint based Evictions</h2><div style=margin-top:10px;margin-bottom:10px><b>FEATURE STATE:</b> <code>Kubernetes v1.18 [stable]</code></div><p>The <code>NoExecute</code> taint effect, mentioned above, affects pods that are already
+running on the node as follows</p><ul><li>pods that do not tolerate the taint are evicted immediately</li><li>pods that tolerate the taint without specifying <code>tolerationSeconds</code> in
+their toleration specification remain bound forever</li><li>pods that tolerate the taint with a specified <code>tolerationSeconds</code> remain
+bound for the specified amount of time</li></ul><p>The node controller automatically taints a Node when certain conditions
+are true. The following taints are built in:</p><ul><li><code>node.kubernetes.io/not-ready</code>: Node is not ready. This corresponds to
+the NodeCondition <code>Ready</code> being "<code>False</code>".</li><li><code>node.kubernetes.io/unreachable</code>: Node is unreachable from the node
+controller. This corresponds to the NodeCondition <code>Ready</code> being "<code>Unknown</code>".</li><li><code>node.kubernetes.io/out-of-disk</code>: Node becomes out of disk.</li><li><code>node.kubernetes.io/memory-pressure</code>: Node has memory pressure.</li><li><code>node.kubernetes.io/disk-pressure</code>: Node has disk pressure.</li><li><code>node.kubernetes.io/network-unavailable</code>: Node's network is unavailable.</li><li><code>node.kubernetes.io/unschedulable</code>: Node is unschedulable.</li><li><code>node.cloudprovider.kubernetes.io/uninitialized</code>: When the kubelet is started
+with "external" cloud provider, this taint is set on a node to mark it
+as unusable. After a controller from the cloud-controller-manager initializes
+this node, the kubelet removes this taint.</li></ul><p>In case a node is to be evicted, the node controller or the kubelet adds relevant taints
+with <code>NoExecute</code> effect. If the fault condition returns to normal the kubelet or node
+controller can remove the relevant taint(s).</p><blockquote class="note callout"><div><strong>Note:</strong> The control plane limits the rate of adding node new taints to nodes. This rate limiting
+manages the number of evictions that are triggered when many nodes become unreachable at
+once (for example: if there is a network disruption).</div></blockquote><p>You can specify <code>tolerationSeconds</code> for a Pod to define how long that Pod stays bound
+to a failing or unresponsive Node.</p><p>For example, you might want to keep an application with a lot of local state
+bound to node for a long time in the event of network partition, hoping
+that the partition will recover and thus the pod eviction can be avoided.
+The toleration you set for that Pod might look like:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>tolerations</span>:<span style=color:#bbb>
+</span><span style=color:#bbb></span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;node.kubernetes.io/unreachable&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;Exists&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>effect</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;NoExecute&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>tolerationSeconds</span>:<span style=color:#bbb> </span><span style=color:#666>6000</span><span style=color:#bbb>
+</span></code></pre></div><blockquote class="note callout"><div><strong>Note:</strong><p>Kubernetes automatically adds a toleration for
+<code>node.kubernetes.io/not-ready</code> and <code>node.kubernetes.io/unreachable</code>
+with <code>tolerationSeconds=300</code>,
+unless you, or a controller, set those tolerations explicitly.</p><p>These automatically-added tolerations mean that Pods remain bound to
+Nodes for 5 minutes after one of these problems is detected.</p></div></blockquote><p><a href=/docs/concepts/workloads/controllers/daemonset/>DaemonSet</a> pods are created with
+<code>NoExecute</code> tolerations for the following taints with no <code>tolerationSeconds</code>:</p><ul><li><code>node.kubernetes.io/unreachable</code></li><li><code>node.kubernetes.io/not-ready</code></li></ul><p>This ensures that DaemonSet pods are never evicted due to these problems.</p><h2 id=taint-nodes-by-condition>Taint Nodes by Condition</h2><p>The node lifecycle controller automatically creates taints corresponding to
+Node conditions with <code>NoSchedule</code> effect.
+Similarly the scheduler does not check Node conditions; instead the scheduler checks taints. This assures that Node conditions don't affect what's scheduled onto the Node. The user can choose to ignore some of the Node's problems (represented as Node conditions) by adding appropriate Pod tolerations.</p><p>The DaemonSet controller automatically adds the following <code>NoSchedule</code>
+tolerations to all daemons, to prevent DaemonSets from breaking.</p><ul><li><code>node.kubernetes.io/memory-pressure</code></li><li><code>node.kubernetes.io/disk-pressure</code></li><li><code>node.kubernetes.io/out-of-disk</code> (<em>only for critical pods</em>)</li><li><code>node.kubernetes.io/unschedulable</code> (1.10 or later)</li><li><code>node.kubernetes.io/network-unavailable</code> (<em>host network only</em>)</li></ul><p>Adding these tolerations ensures backward compatibility. You can also add
+arbitrary tolerations to DaemonSets.</p><h2 id=what-s-next>What's next</h2><ul><li>Read about <a href=/docs/tasks/administer-cluster/out-of-resource/>out of resource handling</a> and how you can configure it</li><li>Read about <a href=/docs/concepts/configuration/pod-priority-preemption/>pod priority</a></li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-da22fe2278df236f71efbe672f392677>5 - Pod Overhead</h1><div style=margin-top:10px;margin-bottom:10px><b>FEATURE STATE:</b> <code>Kubernetes v1.18 [beta]</code></div><p>When you run a Pod on a Node, the Pod itself takes an amount of system resources. These
+resources are additional to the resources needed to run the container(s) inside the Pod.
+<em>Pod Overhead</em> is a feature for accounting for the resources consumed by the Pod infrastructure
+on top of the container requests & limits.</p><p>In Kubernetes, the Pod's overhead is set at
+<a href=/docs/reference/access-authn-authz/extensible-admission-controllers/#what-are-admission-webhooks>admission</a>
+time according to the overhead associated with the Pod's
+<a href=/docs/concepts/containers/runtime-class/>RuntimeClass</a>.</p><p>When Pod Overhead is enabled, the overhead is considered in addition to the sum of container
+resource requests when scheduling a Pod. Similarly, the kubelet will include the Pod overhead when sizing
+the Pod cgroup, and when carrying out Pod eviction ranking.</p><h2 id=set-up>Enabling Pod Overhead</h2><p>You need to make sure that the <code>PodOverhead</code>
+<a href=/docs/reference/command-line-tools-reference/feature-gates/>feature gate</a> is enabled (it is on by default as of 1.18)
+across your cluster, and a <code>RuntimeClass</code> is utilized which defines the <code>overhead</code> field.</p><h2 id=usage-example>Usage example</h2><p>To use the PodOverhead feature, you need a RuntimeClass that defines the <code>overhead</code> field. As
+an example, you could use the following RuntimeClass definition with a virtualizing container runtime
+that uses around 120MiB per Pod for the virtual machine and the guest OS:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#00f;font-weight:700>---</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>RuntimeClass<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>node.k8s.io/v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>kata-fc<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>handler</span>:<span style=color:#bbb> </span>kata-fc<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>overhead</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>podFixed</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;120Mi&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;250m&#34;</span><span style=color:#bbb>
+</span></code></pre></div><p>Workloads which are created which specify the <code>kata-fc</code> RuntimeClass handler will take the memory and
+cpu overheads into account for resource quota calculations, node scheduling, as well as Pod cgroup sizing.</p><p>Consider running the given example workload, test-pod:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>test-pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>runtimeClassName</span>:<span style=color:#bbb> </span>kata-fc<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>busybox-ctr<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>busybox<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>stdin</span>:<span style=color:#bbb> </span><span style=color:#a2f;font-weight:700>true</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>tty</span>:<span style=color:#bbb> </span><span style=color:#a2f;font-weight:700>true</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span>500m<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span>100Mi<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>nginx-ctr<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span>1500m<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span>100Mi<span style=color:#bbb>
+</span></code></pre></div><p>At admission time the RuntimeClass <a href=/docs/reference/access-authn-authz/admission-controllers/>admission controller</a>
+updates the workload's PodSpec to include the <code>overhead</code> as described in the RuntimeClass. If the PodSpec already has this field defined,
+the Pod will be rejected. In the given example, since only the RuntimeClass name is specified, the admission controller mutates the Pod
+to include an <code>overhead</code>.</p><p>After the RuntimeClass admission controller, you can check the updated PodSpec:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>kubectl get pod test-pod -o <span style=color:#b8860b>jsonpath</span><span style=color:#666>=</span><span style=color:#b44>&#39;{.spec.overhead}&#39;</span>
+</code></pre></div><p>The output is:</p><pre><code>map[cpu:250m memory:120Mi]
+</code></pre><p>If a ResourceQuota is defined, the sum of container requests as well as the
+<code>overhead</code> field are counted.</p><p>When the kube-scheduler is deciding which node should run a new Pod, the scheduler considers that Pod's
+<code>overhead</code> as well as the sum of container requests for that Pod. For this example, the scheduler adds the
+requests and the overhead, then looks for a node that has 2.25 CPU and 320 MiB of memory available.</p><p>Once a Pod is scheduled to a node, the kubelet on that node creates a new <a class=glossary-tooltip title="A group of Linux processes with optional resource isolation, accounting and limits." data-toggle=tooltip data-placement=top href="/docs/reference/glossary/?all=true#term-cgroup" target=_blank aria-label=cgroup>cgroup</a>
+for the Pod. It is within this pod that the underlying container runtime will create containers.</p><p>If the resource has a limit defined for each container (Guaranteed QoS or Bustrable QoS with limits defined),
+the kubelet will set an upper limit for the pod cgroup associated with that resource (cpu.cfs_quota_us for CPU
+and memory.limit_in_bytes memory). This upper limit is based on the sum of the container limits plus the <code>overhead</code>
+defined in the PodSpec.</p><p>For CPU, if the Pod is Guaranteed or Burstable QoS, the kubelet will set <code>cpu.shares</code> based on the sum of container
+requests plus the <code>overhead</code> defined in the PodSpec.</p><p>Looking at our example, verify the container requests for the workload:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>kubectl get pod test-pod -o <span style=color:#b8860b>jsonpath</span><span style=color:#666>=</span><span style=color:#b44>&#39;{.spec.containers[*].resources.limits}&#39;</span>
+</code></pre></div><p>The total container requests are 2000m CPU and 200MiB of memory:</p><pre><code>map[cpu: 500m memory:100Mi] map[cpu:1500m memory:100Mi]
+</code></pre><p>Check this against what is observed by the node:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>kubectl describe node | grep test-pod -B2
+</code></pre></div><p>The output shows 2250m CPU and 320MiB of memory are requested, which includes PodOverhead:</p><pre><code>  Namespace                   Name                CPU Requests  CPU Limits   Memory Requests  Memory Limits  AGE
+  ---------                   ----                ------------  ----------   ---------------  -------------  ---
+  default                     test-pod            2250m (56%)   2250m (56%)  320Mi (1%)       320Mi (1%)     36m
+</code></pre><h2 id=verify-pod-cgroup-limits>Verify Pod cgroup limits</h2><p>Check the Pod's memory cgroups on the node where the workload is running. In the following example, <a href=https://github.com/kubernetes-sigs/cri-tools/blob/master/docs/crictl.md><code>crictl</code></a>
+is used on the node, which provides a CLI for CRI-compatible container runtimes. This is an
+advanced example to show PodOverhead behavior, and it is not expected that users should need to check
+cgroups directly on the node.</p><p>First, on the particular node, determine the Pod identifier:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#080;font-style:italic># Run this on the node where the Pod is scheduled</span>
+<span style=color:#b8860b>POD_ID</span><span style=color:#666>=</span><span style=color:#b44>&#34;</span><span style=color:#a2f;font-weight:700>$(</span>sudo crictl pods --name test-pod -q<span style=color:#a2f;font-weight:700>)</span><span style=color:#b44>&#34;</span>
+</code></pre></div><p>From this, you can determine the cgroup path for the Pod:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#080;font-style:italic># Run this on the node where the Pod is scheduled</span>
+sudo crictl inspectp -o<span style=color:#666>=</span>json <span style=color:#b8860b>$POD_ID</span> | grep cgroupsPath
+</code></pre></div><p>The resulting cgroup path includes the Pod's <code>pause</code> container. The Pod level cgroup is one directory above.</p><pre><code>        &quot;cgroupsPath&quot;: &quot;/kubepods/podd7f4b509-cf94-4951-9417-d1087c92a5b2/7ccf55aee35dd16aca4189c952d83487297f3cd760f1bbf09620e206e7d0c27a&quot;
+</code></pre><p>In this specific case, the pod cgroup path is <code>kubepods/podd7f4b509-cf94-4951-9417-d1087c92a5b2</code>. Verify the Pod level cgroup setting for memory:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#080;font-style:italic># Run this on the node where the Pod is scheduled.</span>
+<span style=color:#080;font-style:italic># Also, change the name of the cgroup to match the cgroup allocated for your pod.</span>
+ cat /sys/fs/cgroup/memory/kubepods/podd7f4b509-cf94-4951-9417-d1087c92a5b2/memory.limit_in_bytes
+</code></pre></div><p>This is 320 MiB, as expected:</p><pre><code>335544320
+</code></pre><h3 id=observability>Observability</h3><p>A <code>kube_pod_overhead</code> metric is available in <a href=https://github.com/kubernetes/kube-state-metrics>kube-state-metrics</a>
+to help identify when PodOverhead is being utilized and to help observe stability of workloads
+running with a defined Overhead. This functionality is not available in the 1.9 release of
+kube-state-metrics, but is expected in a following release. Users will need to build kube-state-metrics
+from source in the meantime.</p><h2 id=what-s-next>What's next</h2><ul><li><a href=/docs/concepts/containers/runtime-class/>RuntimeClass</a></li><li><a href=https://github.com/kubernetes/enhancements/tree/master/keps/sig-node/688-pod-overhead>PodOverhead Design</a></li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-45b5702b685c32798723d679c86aad02>6 - Eviction Policy</h1><p>This page is an overview of Kubernetes' policy for eviction.</p><h2 id=eviction-policy>Eviction Policy</h2><p>The <a class=glossary-tooltip title="An agent that runs on each node in the cluster. It makes sure that containers are running in a pod." data-toggle=tooltip data-placement=top href=/docs/reference/generated/kubelet target=_blank aria-label=kubelet>kubelet</a> proactively monitors for
+and prevents total starvation of a compute resource. In those cases, the <code>kubelet</code> can reclaim
+the starved resource by failing one or more Pods. When the <code>kubelet</code> fails
+a Pod, it terminates all of its containers and transitions its <code>PodPhase</code> to <code>Failed</code>.
+If the evicted Pod is managed by a Deployment, the Deployment creates another Pod
+to be scheduled by Kubernetes.</p><h2 id=what-s-next>What's next</h2><ul><li>Learn how to <a href=/docs/tasks/administer-cluster/out-of-resource/>configure out of resource handling</a> with eviction signals and thresholds.</li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-602208c95fe7b1f1170310ce993f5814>7 - Scheduling Framework</h1><div style=margin-top:10px;margin-bottom:10px><b>FEATURE STATE:</b> <code>Kubernetes v1.15 [alpha]</code></div><p>The scheduling framework is a pluggable architecture for the Kubernetes scheduler.
+It adds a new set of "plugin" APIs to the existing scheduler. Plugins are compiled into the scheduler. The APIs allow most scheduling features to be implemented as plugins, while keeping the
+scheduling "core" lightweight and maintainable. Refer to the <a href=https://github.com/kubernetes/enhancements/blob/master/keps/sig-scheduling/624-scheduling-framework/README.md>design proposal of the
+scheduling framework</a> for more technical information on the design of the
+framework.</p><h1 id=framework-workflow>Framework workflow</h1><p>The Scheduling Framework defines a few extension points. Scheduler plugins
+register to be invoked at one or more extension points. Some of these plugins
+can change the scheduling decisions and some are informational only.</p><p>Each attempt to schedule one Pod is split into two phases, the <strong>scheduling
+cycle</strong> and the <strong>binding cycle</strong>.</p><h2 id=scheduling-cycle-binding-cycle>Scheduling Cycle & Binding Cycle</h2><p>The scheduling cycle selects a node for the Pod, and the binding cycle applies
+that decision to the cluster. Together, a scheduling cycle and binding cycle are
+referred to as a "scheduling context".</p><p>Scheduling cycles are run serially, while binding cycles may run concurrently.</p><p>A scheduling or binding cycle can be aborted if the Pod is determined to
+be unschedulable or if there is an internal error. The Pod will be returned to
+the queue and retried.</p><h2 id=extension-points>Extension points</h2><p>The following picture shows the scheduling context of a Pod and the extension
+points that the scheduling framework exposes. In this picture "Filter" is
+equivalent to "Predicate" and "Scoring" is equivalent to "Priority function".</p><p>One plugin may register at multiple extension points to perform more complex or
+stateful tasks.</p><figure><img src=/images/docs/scheduling-framework-extensions.png><figcaption><h4>scheduling framework extension points</h4></figcaption></figure><h3 id=queue-sort>QueueSort</h3><p>These plugins are used to sort Pods in the scheduling queue. A queue sort plugin
+essentially provides a <code>Less(Pod1, Pod2)</code> function. Only one queue sort
+plugin may be enabled at a time.</p><h3 id=pre-filter>PreFilter</h3><p>These plugins are used to pre-process info about the Pod, or to check certain
+conditions that the cluster or the Pod must meet. If a PreFilter plugin returns
+an error, the scheduling cycle is aborted.</p><h3 id=filter>Filter</h3><p>These plugins are used to filter out nodes that cannot run the Pod. For each
+node, the scheduler will call filter plugins in their configured order. If any
+filter plugin marks the node as infeasible, the remaining plugins will not be
+called for that node. Nodes may be evaluated concurrently.</p><h3 id=post-filter>PostFilter</h3><p>These plugins are called after Filter phase, but only when no feasible nodes
+were found for the pod. Plugins are called in their configured order. If
+any postFilter plugin marks the node as <code>Schedulable</code>, the remaining plugins
+will not be called. A typical PostFilter implementation is preemption, which
+tries to make the pod schedulable by preempting other Pods.</p><h3 id=pre-score>PreScore</h3><p>These plugins are used to perform "pre-scoring" work, which generates a sharable
+state for Score plugins to use. If a PreScore plugin returns an error, the
+scheduling cycle is aborted.</p><h3 id=scoring>Score</h3><p>These plugins are used to rank nodes that have passed the filtering phase. The
+scheduler will call each scoring plugin for each node. There will be a well
+defined range of integers representing the minimum and maximum scores. After the
+<a href=#normalize-scoring>NormalizeScore</a> phase, the scheduler will combine node
+scores from all plugins according to the configured plugin weights.</p><h3 id=normalize-scoring>NormalizeScore</h3><p>These plugins are used to modify scores before the scheduler computes a final
+ranking of Nodes. A plugin that registers for this extension point will be
+called with the <a href=#scoring>Score</a> results from the same plugin. This is called
+once per plugin per scheduling cycle.</p><p>For example, suppose a plugin <code>BlinkingLightScorer</code> ranks Nodes based on how
+many blinking lights they have.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a2f;font-weight:700>func</span> <span style=color:#00a000>ScoreNode</span>(_ <span style=color:#666>*</span>v1.pod, n <span style=color:#666>*</span>v1.Node) (<span style=color:#0b0;font-weight:700>int</span>, <span style=color:#0b0;font-weight:700>error</span>) {
+    <span style=color:#a2f;font-weight:700>return</span> <span style=color:#00a000>getBlinkingLightCount</span>(n)
+}
+</code></pre></div><p>However, the maximum count of blinking lights may be small compared to
+<code>NodeScoreMax</code>. To fix this, <code>BlinkingLightScorer</code> should also register for this
+extension point.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a2f;font-weight:700>func</span> <span style=color:#00a000>NormalizeScores</span>(scores <span style=color:#a2f;font-weight:700>map</span>[<span style=color:#0b0;font-weight:700>string</span>]<span style=color:#0b0;font-weight:700>int</span>) {
+    highest <span style=color:#666>:=</span> <span style=color:#666>0</span>
+    <span style=color:#a2f;font-weight:700>for</span> _, score <span style=color:#666>:=</span> <span style=color:#a2f;font-weight:700>range</span> scores {
+        highest = <span style=color:#00a000>max</span>(highest, score)
+    }
+    <span style=color:#a2f;font-weight:700>for</span> node, score <span style=color:#666>:=</span> <span style=color:#a2f;font-weight:700>range</span> scores {
+        scores[node] = score<span style=color:#666>*</span>NodeScoreMax<span style=color:#666>/</span>highest
+    }
+}
+</code></pre></div><p>If any NormalizeScore plugin returns an error, the scheduling cycle is
+aborted.</p><blockquote class="note callout"><div><strong>Note:</strong> Plugins wishing to perform "pre-reserve" work should use the
+NormalizeScore extension point.</div></blockquote><h3 id=reserve>Reserve</h3><p>A plugin that implements the Reserve extension has two methods, namely <code>Reserve</code>
+and <code>Unreserve</code>, that back two informational scheduling phases called Reserve
+and Unreserve, respectively. Plugins which maintain runtime state (aka "stateful
+plugins") should use these phases to be notified by the scheduler when resources
+on a node are being reserved and unreserved for a given Pod.</p><p>The Reserve phase happens before the scheduler actually binds a Pod to its
+designated node. It exists to prevent race conditions while the scheduler waits
+for the bind to succeed. The <code>Reserve</code> method of each Reserve plugin may succeed
+or fail; if one <code>Reserve</code> method call fails, subsequent plugins are not executed
+and the Reserve phase is considered to have failed. If the <code>Reserve</code> method of
+all plugins succeed, the Reserve phase is considered to be successful and the
+rest of the scheduling cycle and the binding cycle are executed.</p><p>The Unreserve phase is triggered if the Reserve phase or a later phase fails.
+When this happens, the <code>Unreserve</code> method of <strong>all</strong> Reserve plugins will be
+executed in the reverse order of <code>Reserve</code> method calls. This phase exists to
+clean up the state associated with the reserved Pod.</p><blockquote class="caution callout"><div><strong>Caution:</strong> The implementation of the <code>Unreserve</code> method in Reserve plugins must be
+idempotent and may not fail.</div></blockquote><h3 id=permit>Permit</h3><p><em>Permit</em> plugins are invoked at the end of the scheduling cycle for each Pod, to
+prevent or delay the binding to the candidate node. A permit plugin can do one of
+the three things:</p><ol><li><p><strong>approve</strong><br>Once all Permit plugins approve a Pod, it is sent for binding.</p></li><li><p><strong>deny</strong><br>If any Permit plugin denies a Pod, it is returned to the scheduling queue.
+This will trigger the Unreserve phase in <a href=#reserve>Reserve plugins</a>.</p></li><li><p><strong>wait</strong> (with a timeout)<br>If a Permit plugin returns "wait", then the Pod is kept in an internal "waiting"
+Pods list, and the binding cycle of this Pod starts but directly blocks until it
+gets approved. If a timeout occurs, <strong>wait</strong> becomes <strong>deny</strong>
+and the Pod is returned to the scheduling queue, triggering the
+Unreserve phase in <a href=#reserve>Reserve plugins</a>.</p></li></ol><blockquote class="note callout"><div><strong>Note:</strong> While any plugin can access the list of "waiting" Pods and approve them
+(see <a href=https://git.k8s.io/enhancements/keps/sig-scheduling/624-scheduling-framework#frameworkhandle><code>FrameworkHandle</code></a>), we expect only the permit
+plugins to approve binding of reserved Pods that are in "waiting" state. Once a Pod
+is approved, it is sent to the <a href=#pre-bind>PreBind</a> phase.</div></blockquote><h3 id=pre-bind>PreBind</h3><p>These plugins are used to perform any work required before a Pod is bound. For
+example, a pre-bind plugin may provision a network volume and mount it on the
+target node before allowing the Pod to run there.</p><p>If any PreBind plugin returns an error, the Pod is <a href=#reserve>rejected</a> and
+returned to the scheduling queue.</p><h3 id=bind>Bind</h3><p>These plugins are used to bind a Pod to a Node. Bind plugins will not be called
+until all PreBind plugins have completed. Each bind plugin is called in the
+configured order. A bind plugin may choose whether or not to handle the given
+Pod. If a bind plugin chooses to handle a Pod, <strong>the remaining bind plugins are
+skipped</strong>.</p><h3 id=post-bind>PostBind</h3><p>This is an informational extension point. Post-bind plugins are called after a
+Pod is successfully bound. This is the end of a binding cycle, and can be used
+to clean up associated resources.</p><h2 id=plugin-api>Plugin API</h2><p>There are two steps to the plugin API. First, plugins must register and get
+configured, then they use the extension point interfaces. Extension point
+interfaces have the following form.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a2f;font-weight:700>type</span> Plugin <span style=color:#a2f;font-weight:700>interface</span> {
+    <span style=color:#00a000>Name</span>() <span style=color:#0b0;font-weight:700>string</span>
+}
+
+<span style=color:#a2f;font-weight:700>type</span> QueueSortPlugin <span style=color:#a2f;font-weight:700>interface</span> {
+    Plugin
+    <span style=color:#00a000>Less</span>(<span style=color:#666>*</span>v1.pod, <span style=color:#666>*</span>v1.pod) <span style=color:#0b0;font-weight:700>bool</span>
+}
+
+<span style=color:#a2f;font-weight:700>type</span> PreFilterPlugin <span style=color:#a2f;font-weight:700>interface</span> {
+    Plugin
+    <span style=color:#00a000>PreFilter</span>(context.Context, <span style=color:#666>*</span>framework.CycleState, <span style=color:#666>*</span>v1.pod) <span style=color:#0b0;font-weight:700>error</span>
+}
+
+<span style=color:#080;font-style:italic>// ...
+</span></code></pre></div><h2 id=plugin-configuration>Plugin configuration</h2><p>You can enable or disable plugins in the scheduler configuration. If you are using
+Kubernetes v1.18 or later, most scheduling
+<a href=/docs/reference/scheduling/config/#scheduling-plugins>plugins</a> are in use and
+enabled by default.</p><p>In addition to default plugins, you can also implement your own scheduling
+plugins and get them configured along with default plugins. You can visit
+<a href=https://github.com/kubernetes-sigs/scheduler-plugins>scheduler-plugins</a> for more details.</p><p>If you are using Kubernetes v1.18 or later, you can configure a set of plugins as
+a scheduler profile and then define multiple profiles to fit various kinds of workload.
+Learn more at <a href=/docs/reference/scheduling/config/#multiple-profiles>multiple profiles</a>.</p></div><div class=td-content style=page-break-before:always><h1 id=pg-d9574a30fcbc631b0d2a57850e161e89>8 - Scheduler Performance Tuning</h1><div style=margin-top:10px;margin-bottom:10px><b>FEATURE STATE:</b> <code>Kubernetes v1.14 [beta]</code></div><p><a href=/docs/concepts/scheduling-eviction/kube-scheduler/#kube-scheduler>kube-scheduler</a>
+is the Kubernetes default scheduler. It is responsible for placement of Pods
+on Nodes in a cluster.</p><p>Nodes in a cluster that meet the scheduling requirements of a Pod are
+called <em>feasible</em> Nodes for the Pod. The scheduler finds feasible Nodes
+for a Pod and then runs a set of functions to score the feasible Nodes,
+picking a Node with the highest score among the feasible ones to run
+the Pod. The scheduler then notifies the API server about this decision
+in a process called <em>Binding</em>.</p><p>This page explains performance tuning optimizations that are relevant for
+large Kubernetes clusters.</p><p>In large clusters, you can tune the scheduler's behaviour balancing
+scheduling outcomes between latency (new Pods are placed quickly) and
+accuracy (the scheduler rarely makes poor placement decisions).</p><p>You configure this tuning setting via kube-scheduler setting
+<code>percentageOfNodesToScore</code>. This KubeSchedulerConfiguration setting determines
+a threshold for scheduling nodes in your cluster.</p><h3 id=setting-the-threshold>Setting the threshold</h3><p>The <code>percentageOfNodesToScore</code> option accepts whole numeric values between 0
+and 100. The value 0 is a special number which indicates that the kube-scheduler
+should use its compiled-in default.
+If you set <code>percentageOfNodesToScore</code> above 100, kube-scheduler acts as if you
+had set a value of 100.</p><p>To change the value, edit the
+<a href=/docs/reference/config-api/kube-scheduler-config.v1beta1/>kube-scheduler configuration file</a>
+and then restart the scheduler.
+In many cases, the configuration file can be found at <code>/etc/kubernetes/config/kube-scheduler.yaml</code>.</p><p>After you have made this change, you can run</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>kubectl get pods -n kube-system | grep kube-scheduler
+</code></pre></div><p>to verify that the kube-scheduler component is healthy.</p><h2 id=percentage-of-nodes-to-score>Node scoring threshold</h2><p>To improve scheduling performance, the kube-scheduler can stop looking for
+feasible nodes once it has found enough of them. In large clusters, this saves
+time compared to a naive approach that would consider every node.</p><p>You specify a threshold for how many nodes are enough, as a whole number percentage
+of all the nodes in your cluster. The kube-scheduler converts this into an
+integer number of nodes. During scheduling, if the kube-scheduler has identified
+enough feasible nodes to exceed the configured percentage, the kube-scheduler
+stops searching for more feasible nodes and moves on to the
+<a href=/docs/concepts/scheduling-eviction/kube-scheduler/#kube-scheduler-implementation>scoring phase</a>.</p><p><a href=#how-the-scheduler-iterates-over-nodes>How the scheduler iterates over Nodes</a>
+describes the process in detail.</p><h3 id=default-threshold>Default threshold</h3><p>If you don't specify a threshold, Kubernetes calculates a figure using a
+linear formula that yields 50% for a 100-node cluster and yields 10%
+for a 5000-node cluster. The lower bound for the automatic value is 5%.</p><p>This means that, the kube-scheduler always scores at least 5% of your cluster no
+matter how large the cluster is, unless you have explicitly set
+<code>percentageOfNodesToScore</code> to be smaller than 5.</p><p>If you want the scheduler to score all nodes in your cluster, set
+<code>percentageOfNodesToScore</code> to 100.</p><h2 id=example>Example</h2><p>Below is an example configuration that sets <code>percentageOfNodesToScore</code> to 50%.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>kubescheduler.config.k8s.io/v1alpha1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>KubeSchedulerConfiguration<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>algorithmSource</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>provider</span>:<span style=color:#bbb> </span>DefaultProvider<span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:#00f;font-weight:700>...</span><span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>percentageOfNodesToScore</span>:<span style=color:#bbb> </span><span style=color:#666>50</span><span style=color:#bbb>
+</span></code></pre></div><h2 id=tuning-percentageofnodestoscore>Tuning percentageOfNodesToScore</h2><p><code>percentageOfNodesToScore</code> must be a value between 1 and 100 with the default
+value being calculated based on the cluster size. There is also a hardcoded
+minimum value of 50 nodes.</p><blockquote class="note callout"><div><strong>Note:</strong><p>In clusters with less than 50 feasible nodes, the scheduler still
+checks all the nodes because there are not enough feasible nodes to stop
+the scheduler's search early.</p><p>In a small cluster, if you set a low value for <code>percentageOfNodesToScore</code>, your
+change will have no or little effect, for a similar reason.</p><p>If your cluster has several hundred Nodes or fewer, leave this configuration option
+at its default value. Making changes is unlikely to improve the
+scheduler's performance significantly.</p></div></blockquote><p>An important detail to consider when setting this value is that when a smaller
+number of nodes in a cluster are checked for feasibility, some nodes are not
+sent to be scored for a given Pod. As a result, a Node which could possibly
+score a higher value for running the given Pod might not even be passed to the
+scoring phase. This would result in a less than ideal placement of the Pod.</p><p>You should avoid setting <code>percentageOfNodesToScore</code> very low so that kube-scheduler
+does not make frequent, poor Pod placement decisions. Avoid setting the
+percentage to anything below 10%, unless the scheduler's throughput is critical
+for your application and the score of nodes is not important. In other words, you
+prefer to run the Pod on any Node as long as it is feasible.</p><h2 id=how-the-scheduler-iterates-over-nodes>How the scheduler iterates over Nodes</h2><p>This section is intended for those who want to understand the internal details
+of this feature.</p><p>In order to give all the Nodes in a cluster a fair chance of being considered
+for running Pods, the scheduler iterates over the nodes in a round robin
+fashion. You can imagine that Nodes are in an array. The scheduler starts from
+the start of the array and checks feasibility of the nodes until it finds enough
+Nodes as specified by <code>percentageOfNodesToScore</code>. For the next Pod, the
+scheduler continues from the point in the Node array that it stopped at when
+checking feasibility of Nodes for the previous Pod.</p><p>If Nodes are in multiple zones, the scheduler iterates over Nodes in various
+zones to ensure that Nodes from different zones are considered in the
+feasibility checks. As an example, consider six nodes in two zones:</p><pre><code>Zone 1: Node 1, Node 2, Node 3, Node 4
+Zone 2: Node 5, Node 6
+</code></pre><p>The Scheduler evaluates feasibility of the nodes in this order:</p><pre><code>Node 1, Node 5, Node 2, Node 6, Node 3, Node 4
+</code></pre><p>After going over all the Nodes, it goes back to Node 1.</p><h2 id=what-s-next>What's next</h2><ul><li>Check the <a href=/docs/reference/config-api/kube-scheduler-config.v1beta1/>kube-scheduler configuration reference (v1beta1)</a></li></ul></div></main></div></div><footer class=d-print-none><div class=footer__links><nav><a class=text-white href=/docs/home/>Home</a>
+<a class=text-white href=/blog/>Blog</a>
+<a class=text-white href=/training/>Training</a>
+<a class=text-white href=/partners/>Partners</a>
+<a class=text-white href=/community/>Community</a>
+<a class=text-white href=/case-studies/>Case Studies</a></nav></div><div class=container-fluid><div class=row><div class="col-6 col-sm-2 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="User mailing list" aria-label="User mailing list"><a class=text-white target=_blank href=https://discuss.kubernetes.io><i class="fa fa-envelope"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank href=https://twitter.com/kubernetesio><i class="fab fa-twitter"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Calendar aria-label=Calendar><a class=text-white target=_blank href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io"><i class="fas fa-calendar-alt"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Youtube aria-label=Youtube><a class=text-white target=_blank href=https://youtube.com/kubernetescommunity><i class="fab fa-youtube"></i></a></li></ul></div><div class="col-6 col-sm-2 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank href=https://github.com/kubernetes/kubernetes><i class="fab fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Slack aria-label=Slack><a class=text-white target=_blank href=https://slack.k8s.io><i class="fab fa-slack"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Contribute aria-label=Contribute><a class=text-white target=_blank href=https://git.k8s.io/community/contributors/guide><i class="fas fa-edit"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="Stack Overflow" aria-label="Stack Overflow"><a class=text-white target=_blank href=https://stackoverflow.com/questions/tagged/kubernetes><i class="fab fa-stack-overflow"></i></a></li></ul></div><div class="col-12 col-sm-8 text-center order-sm-2"><small class=text-white>&copy; 2026 The Kubernetes Authors | Documentation Distributed under <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a></small><br><small class=text-white>Copyright &copy; 2026 The Linux Foundation &reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href=https://www.linuxfoundation.org/trademark-usage class=light-text>Trademark Usage page</a></small><br><small class=text-white><a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></small></div></div></div></footer></div><script src=/js/popper-1.14.3.min.js integrity=sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49 crossorigin=anonymous></script><script src=/js/bootstrap-4.3.1.min.js integrity=sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM crossorigin=anonymous></script><script src=/js/main.min.223905d4acc5f7b370e2af585c8a5b56ce39b2fddddd6dffb6f6c3428927fe2c.js integrity="sha256-IjkF1KzF97Nw4q9YXIpbVs45sv3d3W3/tvbDQokn/iw=" crossorigin=anonymous></script></body></html>

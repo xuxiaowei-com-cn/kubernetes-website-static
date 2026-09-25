@@ -1,0 +1,632 @@
+<!doctype html><html lang=ko class=no-js><head><meta name=ROBOTS content="NOINDEX, NOFOLLOW"><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','UA-36037335-10')</script><script type=text/javascript>(function(a,e,b,f,g,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},c=e.createElement(f),c.async=1,c.src="https://www.clarity.ms/tag/"+g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d)})(window,document,"clarity","script","yn9rpyjul2")</script><link rel=alternate hreflang=en href=https://kubernetes.xuxiaowei.com.cn/docs/tasks/administer-cluster/manage-resources/><link rel=alternate hreflang=zh href=https://kubernetes.xuxiaowei.com.cn/zh/docs/tasks/administer-cluster/manage-resources/><link rel=alternate hreflang=fr href=https://kubernetes.xuxiaowei.com.cn/fr/docs/tasks/administer-cluster/manage-resources/><link rel=alternate hreflang=es href=https://kubernetes.xuxiaowei.com.cn/es/docs/tasks/administer-cluster/manage-resources/><link rel=alternate hreflang=id href=https://kubernetes.xuxiaowei.com.cn/id/docs/tasks/administer-cluster/manage-resources/><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.82.0"><link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/><link rel="shortcut icon" type=image/png href=/images/favicon.png><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=manifest href=/manifest.webmanifest><link rel=apple-touch-icon href=/images/kubernetes-192x192.png><title>메모리, CPU 와 API 리소스 관리 | Kubernetes</title><meta property="og:title" content="메모리, CPU 와 API 리소스 관리"><meta property="og:description" content="운영 수준의 컨테이너 오케스트레이션"><meta property="og:type" content="website"><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/"><meta property="og:site_name" content="Kubernetes"><meta itemprop=name content="메모리, CPU 와 API 리소스 관리"><meta itemprop=description content="운영 수준의 컨테이너 오케스트레이션"><meta name=twitter:card content="summary"><meta name=twitter:title content="메모리, CPU 와 API 리소스 관리"><meta name=twitter:description content="운영 수준의 컨테이너 오케스트레이션"><link rel=preload href=/scss/main.min.ed63f113a0b4af323a0aa55cc07086aca653953991514680addf11d30c63bcf4.css as=style><link href=/scss/main.min.ed63f113a0b4af323a0aa55cc07086aca653953991514680addf11d30c63bcf4.css rel=stylesheet integrity><script src=/js/jquery-3.3.1.min.js integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin=anonymous></script><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png"}</script><meta name=theme-color content="#326ce5"><link rel=stylesheet href=/css/feature-states.css><meta name=description content><meta property="og:description" content><meta name=twitter:description content><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/"><meta property="og:title" content="메모리, CPU 와 API 리소스 관리"><meta name=twitter:title content="메모리, CPU 와 API 리소스 관리"><meta name=twitter:image content="https://kubernetes.io/images/favicon.png"><meta name=twitter:image:alt content="Kubernetes"><meta property="og:image" content="/images/kubernetes-horizontal-color.png"><meta property="og:type" content="article"><script src=/js/script.js></script></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-row td-navbar" data-auto-burger=primary><a class=navbar-brand href=/ko/></a><div class="td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0"><li class="nav-item mr-2 mb-lg-0"><a class="nav-link active" href=/ko/docs/>문서</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/ko/blog/>쿠버네티스 블로그</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/ko/training/>교육</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/ko/partners/>파트너</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/ko/community/>커뮤니티</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/ko/case-studies/>사례 연구</span></a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>버전</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=https://xuxiaowei.io/t/1320/ko/docs/tasks/administer-cluster/manage-resources/>Kubernetes 文档说明</a>
+<a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/>v1.38</a>
+<a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/>v1.37</a>
+<a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/>v1.36</a>
+<a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/>v1.35</a>
+<a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/>v1.34</a>
+<a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/>v1.33</a>
+<a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/>v1.32</a>
+<a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/>v1.31</a>
+<a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/>v1.30</a>
+<a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/>v1.29</a>
+<a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/>v1.28</a>
+<a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/>v1.27</a>
+<a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/>v1.26</a>
+<a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/>v1.25</a>
+<a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/>v1.24</a>
+<a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/>v1.23</a>
+<a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/>v1.22</a>
+<a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/>v1.21</a>
+<a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn/ko/docs/tasks/administer-cluster/manage-resources/>v1.20</a></div></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdownMenuLink role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>한국어 Korean</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/tasks/administer-cluster/manage-resources/>English</a>
+<a class=dropdown-item href=/zh/docs/tasks/administer-cluster/manage-resources/>中文 Chinese</a>
+<a class=dropdown-item href=/fr/docs/tasks/administer-cluster/manage-resources/>Français</a>
+<a class=dropdown-item href=/es/docs/tasks/administer-cluster/manage-resources/>Español</a>
+<a class=dropdown-item href=/id/docs/tasks/administer-cluster/manage-resources/>Bahasa Indonesia</a></div></li></ul></div><button id=hamburger onclick=kub.toggleMenu() data-auto-burger-exclude><div></div></button></nav></header><div class="container-fluid td-outer"><div class=td-main><div class="row flex-xl-nowrap"><div class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none"></div><div class="d-none d-xl-block col-xl-2 td-toc d-print-none"></div><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><div class=td-content><div class="pageinfo pageinfo-primary d-print-none"><p>This the multi-page printable view of this section.
+<a href=# onclick="return print(),!1">Click here to print</a>.</p><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/>Return to the regular view of this page</a>.</p></div><h1 class=title>메모리, CPU 와 API 리소스 관리</h1><ul><li>1: <a href=#pg-337620c76587e4aeb32009cb23be46de>네임스페이스에 대한 기본 메모리 요청량과 상한 구성</a></li><li>2: <a href=#pg-320af95e480962c538ebef7ae205845c>네임스페이스에 대한 기본 CPU 요청량과 상한 구성</a></li><li>3: <a href=#pg-adb489b1ab985c9215657b0d4c6ae92b>네임스페이스에 대한 메모리의 최소 및 최대 제약 조건 구성</a></li><li>4: <a href=#pg-a87cbd1f9379dac7a48ae320da68a9ad>네임스페이스에 대한 CPU의 최소 및 최대 제약 조건 구성</a></li><li>5: <a href=#pg-fe3283559a3df299aae3ee00ecea2fad>네임스페이스에 대한 메모리 및 CPU 쿼터 구성</a></li><li>6: <a href=#pg-40e30a9209e0c9f4153707e43243e9d7>네임스페이스에 대한 파드 쿼터 구성</a></li></ul><div class=content></div></div><div class=td-content><h1 id=pg-337620c76587e4aeb32009cb23be46de>1 - 네임스페이스에 대한 기본 메모리 요청량과 상한 구성</h1><p>이 페이지는 네임스페이스에 대한 기본 메모리 요청량(request)과 상한(limit)을 구성하는 방법을 보여준다.
+기본 메모리 상한이 있는 네임스페이스에서 컨테이너가 생성되고, 컨테이너가
+자체 메모리 상한을 지정하지 않으면, 컨테이너에 기본 메모리 상한이 할당된다.
+쿠버네티스는 이 문서의 뒷부분에서 설명하는 특정 조건에서 기본 메모리 요청량을 할당한다.</p><h2 id=시작하기-전에>시작하기 전에</h2><p><p>쿠버네티스 클러스터가 필요하고, kubectl 커맨드-라인 툴이 클러스터와
+통신할 수 있도록 설정되어 있어야 한다.
+만약, 아직 클러스터를 가지고 있지 않다면,
+<a href=/ko/docs/tasks/tools/#minikube>minikube</a>를 사용해서 생성하거나
+다음의 쿠버네티스 플레이그라운드 중 하나를 사용할 수 있다.</p><ul><li><a href=https://www.katacoda.com/courses/kubernetes/playground>Katacoda</a></li><li><a href=http://labs.play-with-k8s.com/>Play with Kubernetes</a></li></ul>버전 확인을 위해서, 다음 커맨드를 실행 <code>kubectl version</code>.</p><p>클러스터의 각 노드에는 최소 2GiB의 메모리가 있어야 한다.</p><h2 id=네임스페이스-생성>네임스페이스 생성</h2><p>이 연습에서 생성한 리소스가 클러스터의 다른 리소스와
+격리되도록 네임스페이스를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl create namespace default-mem-example
+</code></pre></div><h2 id=리밋레인지-limitrange-와-파드-생성>리밋레인지(LimitRange)와 파드 생성</h2><p>다음은 리밋레인지 오브젝트의 구성 파일이다. 구성은
+메모리 요청량 기본값(default)과 메모리 상한 기본값을 지정한다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/memory-defaults.yaml download=admin/resource/memory-defaults.yaml><code>admin/resource/memory-defaults.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-memory-defaults-yaml')" title="Copy admin/resource/memory-defaults.yaml to clipboard"></img></div><div class=includecode id=admin-resource-memory-defaults-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>LimitRange<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>mem-limit-range<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>default</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span>512Mi<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>defaultRequest</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span>256Mi<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>type</span>:<span style=color:#bbb> </span>Container<span style=color:#bbb>
+</span></code></pre></div></div></div><p>default-mem-example 네임스페이스에 리밋레인지를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/memory-defaults.yaml --namespace<span style=color:#666>=</span>default-mem-example
+</code></pre></div><p>이제 컨테이너가 default-mem-example 네임스페이스에 생성되고,
+컨테이너가 메모리 요청량 및 메모리 상한에 대해 고유한 값을 지정하지 않으면,
+컨테이너에 메모리 요청량 기본값 256MiB와 메모리 상한 기본값
+512MiB가 지정된다.</p><p>컨테이너가 하나인 파드의 구성 파일은 다음과 같다. 컨테이너는
+메모리 요청량 및 상한을 지정하지 않는다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/memory-defaults-pod.yaml download=admin/resource/memory-defaults-pod.yaml><code>admin/resource/memory-defaults-pod.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-memory-defaults-pod-yaml')" title="Copy admin/resource/memory-defaults-pod.yaml to clipboard"></img></div><div class=includecode id=admin-resource-memory-defaults-pod-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>default-mem-demo<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>default-mem-demo-ctr<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span></code></pre></div></div></div><p>파드를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/memory-defaults-pod.yaml --namespace<span style=color:#666>=</span>default-mem-example
+</code></pre></div><p>파드에 대한 자세한 정보를 본다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pod default-mem-demo --output<span style=color:#666>=</span>yaml --namespace<span style=color:#666>=</span>default-mem-example
+</code></pre></div><p>출력 결과는 파드의 컨테이너에 256MiB의 메모리 요청량과
+512MiB의 메모리 상한이 있음을 나타낸다. 이것은 리밋레인지에 의해 지정된 기본값이다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>containers:
+- image: nginx
+  imagePullPolicy: Always
+  name: default-mem-demo-ctr
+  resources:
+    limits:
+      memory: 512Mi
+    requests:
+      memory: 256Mi
+</code></pre></div><p>파드를 삭제한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl delete pod default-mem-demo --namespace<span style=color:#666>=</span>default-mem-example
+</code></pre></div><h2 id=컨테이너-상한은-지정하고-요청량을-지정하지-않으면-어떻게-되나>컨테이너 상한은 지정하고, 요청량을 지정하지 않으면 어떻게 되나?</h2><p>컨테이너가 하나인 파드의 구성 파일은 다음과 같다. 컨테이너는
+메모리 상한을 지정하지만, 요청량은 지정하지 않는다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/memory-defaults-pod-2.yaml download=admin/resource/memory-defaults-pod-2.yaml><code>admin/resource/memory-defaults-pod-2.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-memory-defaults-pod-2-yaml')" title="Copy admin/resource/memory-defaults-pod-2.yaml to clipboard"></img></div><div class=includecode id=admin-resource-memory-defaults-pod-2-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>default-mem-demo-2<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>default-mem-demo-2-ctr<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;1Gi&#34;</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>파드를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/memory-defaults-pod-2.yaml --namespace<span style=color:#666>=</span>default-mem-example
+</code></pre></div><p>파드에 대한 자세한 정보를 본다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pod default-mem-demo-2 --output<span style=color:#666>=</span>yaml --namespace<span style=color:#666>=</span>default-mem-example
+</code></pre></div><p>출력 결과는 컨테이너의 메모리 요청량이 메모리 상한과 일치하도록 설정되었음을 보여준다.
+참고로 컨테이너에는 기본 메모리 요청량의 값인 256Mi가 할당되지 않았다.</p><pre><code>resources:
+  limits:
+    memory: 1Gi
+  requests:
+    memory: 1Gi
+</code></pre><h2 id=컨테이너의-요청량은-지정하고-상한을-지정하지-않으면-어떻게-되나>컨테이너의 요청량은 지정하고, 상한을 지정하지 않으면 어떻게 되나?</h2><p>컨테이너가 하나인 파드의 구성 파일은 다음과 같다. 컨테이너는
+메모리 요청량을 지정하지만, 상한은 지정하지 않았다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/memory-defaults-pod-3.yaml download=admin/resource/memory-defaults-pod-3.yaml><code>admin/resource/memory-defaults-pod-3.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-memory-defaults-pod-3-yaml')" title="Copy admin/resource/memory-defaults-pod-3.yaml to clipboard"></img></div><div class=includecode id=admin-resource-memory-defaults-pod-3-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>default-mem-demo-3<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>default-mem-demo-3-ctr<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>requests</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;128Mi&#34;</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>파드를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/memory-defaults-pod-3.yaml --namespace<span style=color:#666>=</span>default-mem-example
+</code></pre></div><p>파드 사양을 확인한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pod default-mem-demo-3 --output<span style=color:#666>=</span>yaml --namespace<span style=color:#666>=</span>default-mem-example
+</code></pre></div><p>출력 결과는 컨테이너의 메모리 요청량이 컨테이너의 구성 파일에 지정된 값으로
+설정되었음을 보여준다. 컨테이너의 메모리 상한은 네임스페이스의
+기본 메모리 상한인 512Mi로 설정되어 있다.</p><pre><code>resources:
+  limits:
+    memory: 512Mi
+  requests:
+    memory: 128Mi
+</code></pre><h2 id=기본-메모리-상한-및-요청량에-대한-동기>기본 메모리 상한 및 요청량에 대한 동기</h2><p>네임스페이스에 리소스 쿼터가 있는 경우,
+메모리 상한에 기본값을 설정하는 것이 좋다.
+다음은 리소스 쿼터가 네임스페이스에 적용하는 두 가지 제한 사항이다.</p><ul><li>네임스페이스에서 실행되는 모든 컨테이너에는 자체 메모리 상한이 있어야 한다.</li><li>네임스페이스의 모든 컨테이너가 사용하는 총 메모리 양은 지정된 상한을 초과하지 않아야 한다.</li></ul><p>컨테이너가 자체 메모리 상한을 지정하지 않으면, 기본 상한이 부여되고,
+쿼터에 의해 제한되는 네임스페이스에서 실행될 수 있다.</p><h2 id=정리>정리</h2><p>네임스페이스를 삭제한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl delete namespace default-mem-example
+</code></pre></div><h2 id=다음-내용>다음 내용</h2><h3 id=클러스터-관리자를-위한-문서>클러스터 관리자를 위한 문서</h3><ul><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/>네임스페이스에 대한 기본 CPU 요청량과 상한 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/>네임스페이스에 대한 메모리의 최소 및 최대 제약 조건 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/cpu-constraint-namespace/>네임스페이스에 대한 CPU의 최소 및 최대 제약 조건 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/>네임스페이스에 대한 메모리 및 CPU 쿼터 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/quota-pod-namespace/>네임스페이스에 대한 파드 쿼터 구성</a></p></li><li><p><a href=/docs/tasks/administer-cluster/quota-api-object/>API 오브젝트에 대한 쿼터 구성</a></p></li></ul><h3 id=앱-개발자를-위한-문서>앱 개발자를 위한 문서</h3><ul><li><p><a href=/ko/docs/tasks/configure-pod-container/assign-memory-resource/>컨테이너 및 파드 메모리 리소스 할당</a></p></li><li><p><a href=/docs/tasks/configure-pod-container/assign-cpu-resource/>컨테이너 및 파드 CPU 리소스 할당</a></p></li><li><p><a href=/ko/docs/tasks/configure-pod-container/quality-service-pod/>파드에 대한 서비스 품질(QoS) 구성</a></p></li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-320af95e480962c538ebef7ae205845c>2 - 네임스페이스에 대한 기본 CPU 요청량과 상한 구성</h1><p>이 페이지는 네임스페이스에 대한 기본 CPU 요청량(request) 및 상한(limit)을 구성하는 방법을 보여준다.
+쿠버네티스 클러스터는 네임스페이스로 나눌 수 있다. 기본 CPU 상한이 있는 네임스페이스에서
+컨테이너가 생성되고, 컨테이너가 자체 CPU 상한을 지정하지 않으면,
+컨테이너에 기본 CPU 상한이 할당된다. 쿠버네티스는 이 문서의 뒷부분에서
+설명하는 특정 조건에서 기본 CPU 요청량을 할당한다.</p><h2 id=시작하기-전에>시작하기 전에</h2><p><p>쿠버네티스 클러스터가 필요하고, kubectl 커맨드-라인 툴이 클러스터와
+통신할 수 있도록 설정되어 있어야 한다.
+만약, 아직 클러스터를 가지고 있지 않다면,
+<a href=/ko/docs/tasks/tools/#minikube>minikube</a>를 사용해서 생성하거나
+다음의 쿠버네티스 플레이그라운드 중 하나를 사용할 수 있다.</p><ul><li><a href=https://www.katacoda.com/courses/kubernetes/playground>Katacoda</a></li><li><a href=http://labs.play-with-k8s.com/>Play with Kubernetes</a></li></ul>버전 확인을 위해서, 다음 커맨드를 실행 <code>kubectl version</code>.</p><h2 id=네임스페이스-생성>네임스페이스 생성</h2><p>이 연습에서 생성한 리소스가 클러스터의 나머지와
+격리되도록 네임스페이스를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl create namespace default-cpu-example
+</code></pre></div><h2 id=리밋레인지-limitrange-와-파드-생성>리밋레인지(LimitRange)와 파드 생성</h2><p>다음은 리밋레인지 오브젝트의 구성 파일이다. 구성은
+기본 CPU 요청량 및 기본 CPU 상한을 지정한다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/cpu-defaults.yaml download=admin/resource/cpu-defaults.yaml><code>admin/resource/cpu-defaults.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-cpu-defaults-yaml')" title="Copy admin/resource/cpu-defaults.yaml to clipboard"></img></div><div class=includecode id=admin-resource-cpu-defaults-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>LimitRange<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>cpu-limit-range<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>default</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#666>1</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>defaultRequest</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#666>0.5</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>type</span>:<span style=color:#bbb> </span>Container<span style=color:#bbb>
+</span></code></pre></div></div></div><p>default-cpu-example 네임스페이스에 리밋레인지를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/cpu-defaults.yaml --namespace<span style=color:#666>=</span>default-cpu-example
+</code></pre></div><p>이제 컨테이너가 default-cpu-example 네임스페이스에 생성되고,
+컨테이너가 CPU 요청량 및 CPU 상한에 대해 고유한 값을 지정하지 않으면,
+컨테이너에 CPU 요청량의 기본값 0.5와 CPU 상한
+기본값 1이 부여된다.</p><p>컨테이너가 하나인 파드의 구성 파일은 다음과 같다. 컨테이너는
+CPU 요청량과 상한을 지정하지 않는다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/cpu-defaults-pod.yaml download=admin/resource/cpu-defaults-pod.yaml><code>admin/resource/cpu-defaults-pod.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-cpu-defaults-pod-yaml')" title="Copy admin/resource/cpu-defaults-pod.yaml to clipboard"></img></div><div class=includecode id=admin-resource-cpu-defaults-pod-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>default-cpu-demo<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>default-cpu-demo-ctr<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span></code></pre></div></div></div><p>파드를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/cpu-defaults-pod.yaml --namespace<span style=color:#666>=</span>default-cpu-example
+</code></pre></div><p>파드의 사양을 확인한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pod default-cpu-demo --output<span style=color:#666>=</span>yaml --namespace<span style=color:#666>=</span>default-cpu-example
+</code></pre></div><p>출력 결과는 파드의 컨테이너에 500 milicpu의 CPU 요청량과
+1 cpu의 CPU 상한이 있음을 나타낸다. 이것은 리밋레인지에 의해 지정된 기본값이다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>containers:
+- image: nginx
+  imagePullPolicy: Always
+  name: default-cpu-demo-ctr
+  resources:
+    limits:
+      cpu: <span style=color:#b44>&#34;1&#34;</span>
+    requests:
+      cpu: 500m
+</code></pre></div><h2 id=컨테이너-상한은-지정하고-요청량을-지정하지-않으면-어떻게-되나>컨테이너 상한은 지정하고, 요청량을 지정하지 않으면 어떻게 되나?</h2><p>컨테이너가 하나인 파드의 구성 파일은 다음과 같다. 컨테이너는
+CPU 상한을 지정하지만, 요청량은 지정하지 않는다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/cpu-defaults-pod-2.yaml download=admin/resource/cpu-defaults-pod-2.yaml><code>admin/resource/cpu-defaults-pod-2.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-cpu-defaults-pod-2-yaml')" title="Copy admin/resource/cpu-defaults-pod-2.yaml to clipboard"></img></div><div class=includecode id=admin-resource-cpu-defaults-pod-2-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>default-cpu-demo-2<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>default-cpu-demo-2-ctr<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;1&#34;</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>파드를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/cpu-defaults-pod-2.yaml --namespace<span style=color:#666>=</span>default-cpu-example
+</code></pre></div><p>파드 사양을 확인한다.</p><pre><code>kubectl get pod default-cpu-demo-2 --output=yaml --namespace=default-cpu-example
+</code></pre><p>출력 결과는 컨테이너의 CPU 요청량이 CPU 상한과 일치하도록 설정되었음을 보여준다.
+참고로 컨테이너에는 CPU 요청량의 기본값인 0.5 cpu가 할당되지 않았다.</p><pre><code>resources:
+  limits:
+    cpu: &quot;1&quot;
+  requests:
+    cpu: &quot;1&quot;
+</code></pre><h2 id=컨테이너의-요청량은-지정하고-상한을-지정하지-않으면-어떻게-되나>컨테이너의 요청량은 지정하고, 상한을 지정하지 않으면 어떻게 되나?</h2><p>컨테이너가 하나인 파드의 구성 파일은 다음과 같다. 컨테이너는
+CPU 요청량을 지정하지만, 상한은 지정하지 않았다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/cpu-defaults-pod-3.yaml download=admin/resource/cpu-defaults-pod-3.yaml><code>admin/resource/cpu-defaults-pod-3.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-cpu-defaults-pod-3-yaml')" title="Copy admin/resource/cpu-defaults-pod-3.yaml to clipboard"></img></div><div class=includecode id=admin-resource-cpu-defaults-pod-3-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>default-cpu-demo-3<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>default-cpu-demo-3-ctr<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>requests</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;0.75&#34;</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>파드를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/cpu-defaults-pod-3.yaml --namespace<span style=color:#666>=</span>default-cpu-example
+</code></pre></div><p>파드 사양을 확인한다.</p><pre><code>kubectl get pod default-cpu-demo-3 --output=yaml --namespace=default-cpu-example
+</code></pre><p>출력 결과는 컨테이너의 CPU 요청량이 컨테이너의 구성 파일에 지정된 값으로
+설정되었음을 보여준다. 컨테이너의 CPU 상한은 1 cpu로 설정되며, 이는
+네임스페이스의 CPU 상한 기본값이다.</p><pre><code>resources:
+  limits:
+    cpu: &quot;1&quot;
+  requests:
+    cpu: 750m
+</code></pre><h2 id=cpu-상한-및-요청량의-기본값에-대한-동기>CPU 상한 및 요청량의 기본값에 대한 동기</h2><p>네임스페이스에 <a href=/ko/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/>리소스 쿼터</a>가 있는 경우,
+CPU 상한에 대해 기본값을 설정하는 것이 좋다.
+다음은 리소스 쿼터가 네임스페이스에 적용하는 두 가지 제한 사항이다.</p><ul><li>네임스페이스에서 실행되는 모든 컨테이너에는 자체 CPU 상한이 있어야 한다.</li><li>네임스페이스의 모든 컨테이너가 사용하는 총 CPU 양은 지정된 상한을 초과하지 않아야 한다.</li></ul><p>컨테이너가 자체 CPU 상한을 지정하지 않으면, 상한 기본값이 부여되고, 쿼터에
+의해 제한되는 네임스페이스에서 실행될 수 있다.</p><h2 id=정리>정리</h2><p>네임스페이스를 삭제한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl delete namespace default-cpu-example
+</code></pre></div><h2 id=다음-내용>다음 내용</h2><h3 id=클러스터-관리자를-위한-문서>클러스터 관리자를 위한 문서</h3><ul><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/>네임스페이스에 대한 기본 메모리 요청량과 상한 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/>네임스페이스에 대한 메모리의 최소 및 최대 제약 조건 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/cpu-constraint-namespace/>네임스페이스에 대한 CPU의 최소 및 최대 제약 조건 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/>네임스페이스에 대한 메모리 및 CPU 쿼터 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/quota-pod-namespace/>네임스페이스에 대한 파드 쿼터 구성</a></p></li><li><p><a href=/docs/tasks/administer-cluster/quota-api-object/>API 오브젝트에 대한 쿼터 구성</a></p></li></ul><h3 id=앱-개발자를-위한-문서>앱 개발자를 위한 문서</h3><ul><li><p><a href=/ko/docs/tasks/configure-pod-container/assign-memory-resource/>컨테이너 및 파드 메모리 리소스 할당</a></p></li><li><p><a href=/docs/tasks/configure-pod-container/assign-cpu-resource/>컨테이너 및 파드 CPU 리소스 할당</a></p></li><li><p><a href=/ko/docs/tasks/configure-pod-container/quality-service-pod/>파드에 대한 서비스 품질(QoS) 구성</a></p></li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-adb489b1ab985c9215657b0d4c6ae92b>3 - 네임스페이스에 대한 메모리의 최소 및 최대 제약 조건 구성</h1><p>이 페이지는 네임스페이스에서 실행되는 컨테이너가 사용하는 메모리의 최솟값과 최댓값을
+설정하는 방법을 보여준다. <a href=/docs/reference/generated/kubernetes-api/v1.20/#limitrange-v1-core>리밋레인지(LimitRange)</a>
+오브젝트에 최소 및 최대 메모리 값을
+지정한다. 파드가 리밋레인지에 의해 부과된 제약 조건을 충족하지 않으면,
+네임스페이스에서 생성될 수 없다.</p><h2 id=시작하기-전에>시작하기 전에</h2><p><p>쿠버네티스 클러스터가 필요하고, kubectl 커맨드-라인 툴이 클러스터와
+통신할 수 있도록 설정되어 있어야 한다.
+만약, 아직 클러스터를 가지고 있지 않다면,
+<a href=/ko/docs/tasks/tools/#minikube>minikube</a>를 사용해서 생성하거나
+다음의 쿠버네티스 플레이그라운드 중 하나를 사용할 수 있다.</p><ul><li><a href=https://www.katacoda.com/courses/kubernetes/playground>Katacoda</a></li><li><a href=http://labs.play-with-k8s.com/>Play with Kubernetes</a></li></ul>버전 확인을 위해서, 다음 커맨드를 실행 <code>kubectl version</code>.</p><p>클러스터의 각 노드에는 최소 1GiB의 메모리가 있어야 한다.</p><h2 id=네임스페이스-생성>네임스페이스 생성</h2><p>이 연습에서 생성한 리소스가 클러스터의 나머지와
+격리되도록 네임스페이스를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl create namespace constraints-mem-example
+</code></pre></div><h2 id=리밋레인지와-파드-생성>리밋레인지와 파드 생성</h2><p>다음은 리밋레인지의 구성 파일이다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/memory-constraints.yaml download=admin/resource/memory-constraints.yaml><code>admin/resource/memory-constraints.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-memory-constraints-yaml')" title="Copy admin/resource/memory-constraints.yaml to clipboard"></img></div><div class=includecode id=admin-resource-memory-constraints-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>LimitRange<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>mem-min-max-demo-lr<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>max</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span>1Gi<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>min</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span>500Mi<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>type</span>:<span style=color:#bbb> </span>Container<span style=color:#bbb>
+</span></code></pre></div></div></div><p>리밋레인지를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/memory-constraints.yaml --namespace<span style=color:#666>=</span>constraints-mem-example
+</code></pre></div><p>리밋레인지에 대한 자세한 정보를 본다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get limitrange mem-min-max-demo-lr --namespace<span style=color:#666>=</span>constraints-mem-example --output<span style=color:#666>=</span>yaml
+</code></pre></div><p>출력 결과는 예상대로 메모리의 최소 및 최대 제약 조건을 보여준다. 그러나
+참고로 리밋레인지의 구성 파일에 기본값(default)을
+지정하지 않아도 자동으로 생성된다.</p><pre><code>  limits:
+  - default:
+      memory: 1Gi
+    defaultRequest:
+      memory: 1Gi
+    max:
+      memory: 1Gi
+    min:
+      memory: 500Mi
+    type: Container
+</code></pre><p>이제 constraints-mem-example 네임스페이스에 컨테이너가 생성될 때마다, 쿠버네티스는
+다음 단계를 수행한다.</p><ul><li><p>컨테이너가 자체 메모리 요청량(request)과 상한(limit)을 지정하지 않으면, 기본 메모리 요청량과
+상한을 컨테이너에 지정한다.</p></li><li><p>컨테이너에 500MiB 이상의 메모리 요청량이 있는지 확인한다.</p></li><li><p>컨테이너의 메모리 상한이 1GiB 이하인지 확인한다.</p></li></ul><p>컨테이너가 하나인 파드의 구성 파일은 다음과 같다. 컨테이너 매니페스트는
+600MiB의 메모리 요청량과 800MiB의 메모리 상한을 지정한다. 이들은
+리밋레인지에 의해 부과된 메모리의 최소 및 최대 제약 조건을 충족한다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/memory-constraints-pod.yaml download=admin/resource/memory-constraints-pod.yaml><code>admin/resource/memory-constraints-pod.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-memory-constraints-pod-yaml')" title="Copy admin/resource/memory-constraints-pod.yaml to clipboard"></img></div><div class=includecode id=admin-resource-memory-constraints-pod-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>constraints-mem-demo<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>constraints-mem-demo-ctr<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;800Mi&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>requests</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;600Mi&#34;</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>파드를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/memory-constraints-pod.yaml --namespace<span style=color:#666>=</span>constraints-mem-example
+</code></pre></div><p>파드의 컨테이너가 실행 중인지 확인한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pod constraints-mem-demo --namespace<span style=color:#666>=</span>constraints-mem-example
+</code></pre></div><p>파드에 대한 자세한 정보를 본다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pod constraints-mem-demo --output<span style=color:#666>=</span>yaml --namespace<span style=color:#666>=</span>constraints-mem-example
+</code></pre></div><p>출력 결과는 컨테이너의 메모리 요청량이 600MiB이고 메모리 상한이 800MiB임을
+나타낸다. 이는 리밋레인지에 의해 부과된 제약 조건을 충족한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>     </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span>800Mi<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>requests</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span>600Mi<span style=color:#bbb>
+</span></code></pre></div><p>파드를 삭제한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl delete pod constraints-mem-demo --namespace<span style=color:#666>=</span>constraints-mem-example
+</code></pre></div><h2 id=최대-메모리-제약-조건을-초과하는-파드-생성-시도>최대 메모리 제약 조건을 초과하는 파드 생성 시도</h2><p>컨테이너가 하나인 파드의 구성 파일은 다음과 같다. 컨테이너는
+800MiB의 메모리 요청량과 1.5GiB의 메모리 상한을 지정한다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/memory-constraints-pod-2.yaml download=admin/resource/memory-constraints-pod-2.yaml><code>admin/resource/memory-constraints-pod-2.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-memory-constraints-pod-2-yaml')" title="Copy admin/resource/memory-constraints-pod-2.yaml to clipboard"></img></div><div class=includecode id=admin-resource-memory-constraints-pod-2-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>constraints-mem-demo-2<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>constraints-mem-demo-2-ctr<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;1.5Gi&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>requests</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;800Mi&#34;</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>파드 생성을 시도한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/memory-constraints-pod-2.yaml --namespace<span style=color:#666>=</span>constraints-mem-example
+</code></pre></div><p>컨테이너가 너무 큰 메모리 상한을 지정하므로, 출력 결과에 파드가 생성되지 않은 것으로
+표시된다.</p><pre><code>Error from server (Forbidden): error when creating &quot;examples/admin/resource/memory-constraints-pod-2.yaml&quot;:
+pods &quot;constraints-mem-demo-2&quot; is forbidden: maximum memory usage per Container is 1Gi, but limit is 1536Mi.
+</code></pre><h2 id=최소-메모리-요청량을-충족하지-않는-파드-생성-시도>최소 메모리 요청량을 충족하지 않는 파드 생성 시도</h2><p>컨테이너가 하나인 파드의 구성 파일은 다음과 같다. 컨테이너는
+100MiB의 메모리 요청량과 800MiB의 메모리 상한을 지정한다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/memory-constraints-pod-3.yaml download=admin/resource/memory-constraints-pod-3.yaml><code>admin/resource/memory-constraints-pod-3.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-memory-constraints-pod-3-yaml')" title="Copy admin/resource/memory-constraints-pod-3.yaml to clipboard"></img></div><div class=includecode id=admin-resource-memory-constraints-pod-3-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>constraints-mem-demo-3<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>constraints-mem-demo-3-ctr<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;800Mi&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>requests</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;100Mi&#34;</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>파드 생성을 시도한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/memory-constraints-pod-3.yaml --namespace<span style=color:#666>=</span>constraints-mem-example
+</code></pre></div><p>컨테이너가 너무 작은 메모리 요청량을 지정하므로, 출력 결과에 파드가 생성되지
+않은 것으로 표시된다.</p><pre><code>Error from server (Forbidden): error when creating &quot;examples/admin/resource/memory-constraints-pod-3.yaml&quot;:
+pods &quot;constraints-mem-demo-3&quot; is forbidden: minimum memory usage per Container is 500Mi, but request is 100Mi.
+</code></pre><h2 id=메모리-요청량-또는-상한을-지정하지-않은-파드-생성>메모리 요청량 또는 상한을 지정하지 않은 파드 생성</h2><p>컨테이너가 하나인 파드의 구성 파일은 다음과 같다. 컨테이너는
+메모리 요청량을 지정하지 않으며, 메모리 상한을 지정하지 않는다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/memory-constraints-pod-4.yaml download=admin/resource/memory-constraints-pod-4.yaml><code>admin/resource/memory-constraints-pod-4.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-memory-constraints-pod-4-yaml')" title="Copy admin/resource/memory-constraints-pod-4.yaml to clipboard"></img></div><div class=includecode id=admin-resource-memory-constraints-pod-4-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>constraints-mem-demo-4<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>constraints-mem-demo-4-ctr<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>파드를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/memory-constraints-pod-4.yaml --namespace<span style=color:#666>=</span>constraints-mem-example
+</code></pre></div><p>파드에 대한 자세한 정보를 본다.</p><pre><code>kubectl get pod constraints-mem-demo-4 --namespace=constraints-mem-example --output=yaml
+</code></pre><p>출력 결과는 파드의 컨테이너에 1GiB의 메모리 요청량과 1GiB의 메모리 상한이 있음을 보여준다.
+컨테이너는 이러한 값을 어떻게 얻었을까?</p><pre><code>resources:
+  limits:
+    memory: 1Gi
+  requests:
+    memory: 1Gi
+</code></pre><p>컨테이너가 자체 메모리 요청량과 상한을 지정하지 않았으므로,
+리밋레인지의 <a href=/ko/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/>메모리의 요청량과 상한 기본값</a>이
+제공되었다.</p><p>이 시점에서, 컨테이너가 실행 중이거나 실행 중이 아닐 수 있다. 이 태스크의 전제 조건은
+노드에 최소 1GiB의 메모리가 있어야 한다는 것이다. 각 노드에
+1GiB의 메모리만 있는 경우, 노드에 할당할 수 있는 메모리가 1GiB의 메모리 요청량을 수용하기에 충분하지
+않을 수 있다. 메모리가 2GiB인 노드를 사용하는 경우에는, 메모리가
+1GiB 요청량을 수용하기에 충분할 것이다.</p><p>파드를 삭제한다.</p><pre><code>kubectl delete pod constraints-mem-demo-4 --namespace=constraints-mem-example
+</code></pre><h2 id=메모리의-최소-및-최대-제약-조건-적용>메모리의 최소 및 최대 제약 조건 적용</h2><p>리밋레인지에 의해 네임스페이스에 부과된 메모리의 최대 및 최소 제약 조건은
+파드를 생성하거나 업데이트할 때만 적용된다. 리밋레인지를 변경해도, 이전에 생성된
+파드에는 영향을 미치지 않는다.</p><h2 id=메모리의-최소-및-최대-제약-조건에-대한-동기>메모리의 최소 및 최대 제약 조건에 대한 동기</h2><p>클러스터 관리자는 파드가 사용할 수 있는 메모리 양에 제한을 둘 수 있다.
+예를 들면 다음과 같다.</p><ul><li><p>클러스터의 각 노드에는 2GB의 메모리가 있다. 클러스터의 어떤 노드도 2GB 이상의 요청량을
+지원할 수 없으므로, 2GB 이상의 메모리를 요청하는 파드를 수락하지 않으려고 한다.</p></li><li><p>클러스터는 운영 부서와 개발 부서에서 공유한다.
+프로덕션 워크로드가 최대 8GB의 메모리를 소비하도록 하려면,
+개발 워크로드를 512MB로 제한해야 한다. 프로덕션 및 개발을 위해
+별도의 네임스페이스를 만들고, 각 네임스페이스에 메모리 제약 조건을 적용한다.</p></li></ul><h2 id=정리>정리</h2><p>네임스페이스를 삭제한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl delete namespace constraints-mem-example
+</code></pre></div><h2 id=다음-내용>다음 내용</h2><h3 id=클러스터-관리자를-위한-문서>클러스터 관리자를 위한 문서</h3><ul><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/>네임스페이스에 대한 기본 메모리 요청량과 상한 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/>네임스페이스에 대한 기본 CPU 요청량과 상한 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/cpu-constraint-namespace/>네임스페이스에 대한 CPU의 최소 및 최대 제약 조건 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/>네임스페이스에 대한 메모리 및 CPU 쿼터 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/quota-pod-namespace/>네임스페이스에 대한 파드 쿼터 구성</a></p></li><li><p><a href=/docs/tasks/administer-cluster/quota-api-object/>API 오브젝트에 대한 쿼터 구성</a></p></li></ul><h3 id=앱-개발자를-위한-문서>앱 개발자를 위한 문서</h3><ul><li><p><a href=/ko/docs/tasks/configure-pod-container/assign-memory-resource/>컨테이너 및 파드 메모리 리소스 할당</a></p></li><li><p><a href=/docs/tasks/configure-pod-container/assign-cpu-resource/>컨테이너 및 파드 CPU 리소스 할당</a></p></li><li><p><a href=/ko/docs/tasks/configure-pod-container/quality-service-pod/>파드에 대한 서비스 품질(QoS) 구성</a></p></li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-a87cbd1f9379dac7a48ae320da68a9ad>4 - 네임스페이스에 대한 CPU의 최소 및 최대 제약 조건 구성</h1><p>이 페이지는 네임스페이스에서 컨테이너와 파드가 사용하는 CPU 리소스의 최솟값과 최댓값을 설정하는
+방법을 보여준다. <a href=/docs/reference/generated/kubernetes-api/v1.20/#limitrange-v1-core>리밋레인지(LimitRange)</a>
+오브젝트에 CPU의 최솟값과 최댓값을
+지정한다. 리밋레인지에 의해 부과된 제약 조건을 파드가 충족하지 않으면, 네임스페이스에서
+생성될 수 없다.</p><h2 id=시작하기-전에>시작하기 전에</h2><p><p>쿠버네티스 클러스터가 필요하고, kubectl 커맨드-라인 툴이 클러스터와
+통신할 수 있도록 설정되어 있어야 한다.
+만약, 아직 클러스터를 가지고 있지 않다면,
+<a href=/ko/docs/tasks/tools/#minikube>minikube</a>를 사용해서 생성하거나
+다음의 쿠버네티스 플레이그라운드 중 하나를 사용할 수 있다.</p><ul><li><a href=https://www.katacoda.com/courses/kubernetes/playground>Katacoda</a></li><li><a href=http://labs.play-with-k8s.com/>Play with Kubernetes</a></li></ul>버전 확인을 위해서, 다음 커맨드를 실행 <code>kubectl version</code>.</p><p>태스크 예제를 실행하려면 클러스터에 적어도 1 CPU 이상이 사용 가능해야 한다.</p><h2 id=네임스페이스-생성>네임스페이스 생성</h2><p>이 연습에서 생성한 리소스가 클러스터의 나머지와
+격리되도록 네임스페이스를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl create namespace constraints-cpu-example
+</code></pre></div><h2 id=리밋레인지와-파드-생성>리밋레인지와 파드 생성</h2><p>다음은 리밋레인지에 대한 구성 파일이다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/cpu-constraints.yaml download=admin/resource/cpu-constraints.yaml><code>admin/resource/cpu-constraints.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-cpu-constraints-yaml')" title="Copy admin/resource/cpu-constraints.yaml to clipboard"></img></div><div class=includecode id=admin-resource-cpu-constraints-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>LimitRange<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>cpu-min-max-demo-lr<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>max</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;800m&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>min</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;200m&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>type</span>:<span style=color:#bbb> </span>Container<span style=color:#bbb>
+</span></code></pre></div></div></div><p>리밋레인지를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/cpu-constraints.yaml --namespace<span style=color:#666>=</span>constraints-cpu-example
+</code></pre></div><p>리밋레인지에 대한 자세한 정보를 본다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get limitrange cpu-min-max-demo-lr --output<span style=color:#666>=</span>yaml --namespace<span style=color:#666>=</span>constraints-cpu-example
+</code></pre></div><p>출력 결과는 예상대로 CPU의 최소와 최대 제약 조건을 보여준다. 그러나
+참고로 리밋레인지에 대한 구성 파일에 기본값을
+지정하지 않아도 자동으로 생성된다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb></span>- <span style=color:green;font-weight:700>default</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span>800m<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>defaultRequest</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span>800m<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>max</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span>800m<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>min</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span>200m<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>type</span>:<span style=color:#bbb> </span>Container<span style=color:#bbb>
+</span></code></pre></div><p>이제 constraints-cpu-example 네임스페이스에 컨테이너가 생성될 때마다, 쿠버네티스는
+다음 단계를 수행한다.</p><ul><li><p>컨테이너가 자체 CPU 요청량(request)과 상한(limit)을 지정하지 않으면, 컨테이너에
+CPU 요청량과 상한의 기본값(default)을 지정한다.</p></li><li><p>컨테이너가 200 millicpu 이상의 CPU 요청량을 지정하는지 확인한다.</p></li><li><p>컨테이너가 800 millicpu 이하의 CPU 상한을 지정하는지 확인한다.</p></li></ul><blockquote class="note callout"><div><strong>참고:</strong> <code>LimitRange</code> 오브젝트를 생성할 때, huge-pages
+또는 GPU에도 상한을 지정할 수 있다. 그러나, 이 리소스들에 <code>default</code> 와 <code>defaultRequest</code> 가
+모두 지정되어 있으면, 두 값은 같아야 한다.</div></blockquote><p>컨테이너가 하나인 파드의 구성 파일은 다음과 같다. 컨테이너 매니페스트는
+500 millicpu의 CPU 요청량 및 800 millicpu의 CPU 상한을 지정한다. 이는 리밋레인지에
+의해 부과된 CPU의 최소와 최대 제약 조건을 충족시킨다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/cpu-constraints-pod.yaml download=admin/resource/cpu-constraints-pod.yaml><code>admin/resource/cpu-constraints-pod.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-cpu-constraints-pod-yaml')" title="Copy admin/resource/cpu-constraints-pod.yaml to clipboard"></img></div><div class=includecode id=admin-resource-cpu-constraints-pod-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>constraints-cpu-demo<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>constraints-cpu-demo-ctr<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;800m&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>requests</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;500m&#34;</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>파드를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/cpu-constraints-pod.yaml --namespace<span style=color:#666>=</span>constraints-cpu-example
+</code></pre></div><p>파드의 컨테이너가 실행 중인지 확인한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pod constraints-cpu-demo --namespace<span style=color:#666>=</span>constraints-cpu-example
+</code></pre></div><p>파드에 대한 자세한 정보를 본다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pod constraints-cpu-demo --output<span style=color:#666>=</span>yaml --namespace<span style=color:#666>=</span>constraints-cpu-example
+</code></pre></div><p>출력 결과는 컨테이너의 CPU 요청량이 500 millicpu이고, CPU 상한이 800 millicpu임을
+나타낸다. 이는 리밋레인지에 의해 부과된 제약 조건을 만족시킨다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span>800m<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>requests</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span>500m<span style=color:#bbb>
+</span></code></pre></div><h2 id=파드-삭제>파드 삭제</h2><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl delete pod constraints-cpu-demo --namespace<span style=color:#666>=</span>constraints-cpu-example
+</code></pre></div><h2 id=cpu-최대-제약-조건을-초과하는-파드-생성-시도>CPU 최대 제약 조건을 초과하는 파드 생성 시도</h2><p>컨테이너가 하나인 파드의 구성 파일은 다음과 같다. 컨테이너는
+500 millicpu의 CPU 요청량과 1.5 cpu의 CPU 상한을 지정한다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/cpu-constraints-pod-2.yaml download=admin/resource/cpu-constraints-pod-2.yaml><code>admin/resource/cpu-constraints-pod-2.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-cpu-constraints-pod-2-yaml')" title="Copy admin/resource/cpu-constraints-pod-2.yaml to clipboard"></img></div><div class=includecode id=admin-resource-cpu-constraints-pod-2-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>constraints-cpu-demo-2<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>constraints-cpu-demo-2-ctr<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;1.5&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>requests</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;500m&#34;</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>파드 생성을 시도한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/cpu-constraints-pod-2.yaml --namespace<span style=color:#666>=</span>constraints-cpu-example
+</code></pre></div><p>컨테이너가 너무 큰 CPU 상한을 지정하므로, 출력 결과에 파드가 생성되지 않은 것으로
+표시된다.</p><pre><code>Error from server (Forbidden): error when creating &quot;examples/admin/resource/cpu-constraints-pod-2.yaml&quot;:
+pods &quot;constraints-cpu-demo-2&quot; is forbidden: maximum cpu usage per Container is 800m, but limit is 1500m.
+</code></pre><h2 id=최소-cpu-요청량을-충족하지-않는-파드-생성-시도>최소 CPU 요청량을 충족하지 않는 파드 생성 시도</h2><p>컨테이너가 하나인 파드의 구성 파일은 다음과 같다. 컨테이너는
+100 millicpu의 CPU 요청량과 800 millicpu의 CPU 상한을 지정한다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/cpu-constraints-pod-3.yaml download=admin/resource/cpu-constraints-pod-3.yaml><code>admin/resource/cpu-constraints-pod-3.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-cpu-constraints-pod-3-yaml')" title="Copy admin/resource/cpu-constraints-pod-3.yaml to clipboard"></img></div><div class=includecode id=admin-resource-cpu-constraints-pod-3-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>constraints-cpu-demo-3<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>constraints-cpu-demo-3-ctr<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;800m&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>requests</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;100m&#34;</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>파드 생성을 시도한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/cpu-constraints-pod-3.yaml --namespace<span style=color:#666>=</span>constraints-cpu-example
+</code></pre></div><p>컨테이너가 너무 작은 CPU 요청량을 지정하므로, 출력 결과에 파드가 생성되지
+않은 것으로 표시된다.</p><pre><code>Error from server (Forbidden): error when creating &quot;examples/admin/resource/cpu-constraints-pod-3.yaml&quot;:
+pods &quot;constraints-cpu-demo-3&quot; is forbidden: minimum cpu usage per Container is 200m, but request is 100m.
+</code></pre><h2 id=cpu-요청량-또는-상한을-지정하지-않은-파드-생성>CPU 요청량 또는 상한을 지정하지 않은 파드 생성</h2><p>컨테이너가 하나인 파드의 구성 파일은 다음과 같다. 컨테이너는
+CPU 요청량을 지정하지 않으며, CPU 상한을 지정하지 않는다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/cpu-constraints-pod-4.yaml download=admin/resource/cpu-constraints-pod-4.yaml><code>admin/resource/cpu-constraints-pod-4.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-cpu-constraints-pod-4-yaml')" title="Copy admin/resource/cpu-constraints-pod-4.yaml to clipboard"></img></div><div class=includecode id=admin-resource-cpu-constraints-pod-4-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>constraints-cpu-demo-4<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>constraints-cpu-demo-4-ctr<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>vish/stress<span style=color:#bbb>
+</span></code></pre></div></div></div><p>파드를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/cpu-constraints-pod-4.yaml --namespace<span style=color:#666>=</span>constraints-cpu-example
+</code></pre></div><p>파드에 대한 자세한 정보를 본다.</p><pre><code>kubectl get pod constraints-cpu-demo-4 --namespace=constraints-cpu-example --output=yaml
+</code></pre><p>출력 결과는 파드의 컨테이너에 대한 CPU 요청량이 800 millicpu이고, CPU 상한이 800 millicpu임을 나타낸다.
+컨테이너는 어떻게 이런 값을 얻었을까?</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span>800m<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>requests</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span>800m<span style=color:#bbb>
+</span></code></pre></div><p>컨테이너가 자체 CPU 요청량과 상한을 지정하지 않았으므로, 리밋레인지로부터
+<a href=/ko/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/>CPU 요청량과 상한의 기본값</a>이
+주어졌다.</p><p>이 시점에서, 컨테이너는 실행 중이거나 실행 중이 아닐 수 있다. 이 태스크의 전제 조건은 클러스터에 1 CPU 이상 사용 가능해야 한다는 것이다. 각 노드에 1 CPU만 있는 경우, 노드에 할당할 수 있는 CPU가 800 millicpu의 요청량을 수용하기에 충분하지 않을 수 있다. 2 CPU인 노드를 사용하는 경우에는, CPU가 800 millicpu 요청량을 수용하기에 충분할 것이다.</p><p>파드를 삭제한다.</p><pre><code>kubectl delete pod constraints-cpu-demo-4 --namespace=constraints-cpu-example
+</code></pre><h2 id=cpu의-최소-및-최대-제약-조건의-적용>CPU의 최소 및 최대 제약 조건의 적용</h2><p>리밋레인지에 의해 네임스페이스에 부과된 CPU의 최대 및 최소 제약 조건은
+파드를 생성하거나 업데이트할 때만 적용된다. 리밋레인지를 변경해도, 이전에 생성된 파드에는
+영향을 미치지 않는다.</p><h2 id=cpu의-최소-및-최대-제약-조건에-대한-동기>CPU의 최소 및 최대 제약 조건에 대한 동기</h2><p>클러스터 관리자는 파드가 사용할 수 있는 CPU 리소스에 제한을 둘 수 있다.
+예를 들면 다음과 같다.</p><ul><li><p>클러스터의 각 노드에는 2 CPU가 있다. 클러스터의 어떤 노드도 요청량을 지원할 수 없기 때문에,
+2 CPU 이상을 요청하는 파드를 수락하지 않으려고 한다.</p></li><li><p>클러스터는 프로덕션과 개발 부서에서 공유한다.
+프로덕션 워크로드가 최대 3 CPU를 소비하도록 하고 싶지만, 개발 워크로드는 1 CPU로
+제한하려고 한다. 프로덕션과 개발을 위해 별도의 네임스페이스를 생성하고, 각 네임스페이스에 CPU 제약 조건을
+적용한다.</p></li></ul><h2 id=정리>정리</h2><p>네임스페이스를 삭제한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl delete namespace constraints-cpu-example
+</code></pre></div><h2 id=다음-내용>다음 내용</h2><h3 id=클러스터-관리자를-위한-문서>클러스터 관리자를 위한 문서</h3><ul><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/>네임스페이스에 대한 기본 메모리 요청량과 상한 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/>네임스페이스에 대한 기본 CPU 요청량과 상한 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/>네임스페이스에 대한 메모리의 최소 및 최대 제약 조건 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/>네임스페이스에 대한 메모리 및 CPU 쿼터 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/quota-pod-namespace/>네임스페이스에 대한 파드 쿼터 구성</a></p></li><li><p><a href=/docs/tasks/administer-cluster/quota-api-object/>API 오브젝트에 대한 쿼터 구성</a></p></li></ul><h3 id=앱-개발자를-위한-문서>앱 개발자를 위한 문서</h3><ul><li><p><a href=/ko/docs/tasks/configure-pod-container/assign-memory-resource/>컨테이너 및 파드 메모리 리소스 할당</a></p></li><li><p><a href=/docs/tasks/configure-pod-container/assign-cpu-resource/>컨테이너와 파드 CPU 리소스 할당</a></p></li><li><p><a href=/ko/docs/tasks/configure-pod-container/quality-service-pod/>파드에 대한 서비스 품질(QoS) 구성</a></p></li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-fe3283559a3df299aae3ee00ecea2fad>5 - 네임스페이스에 대한 메모리 및 CPU 쿼터 구성</h1><p>이 페이지는 네임스페이스에서 실행 중인 모든 컨테이너가 사용할 수 있는
+총 메모리 및 CPU 양에 대한 쿼터를 설정하는 방법을 보여준다.
+<a href=/docs/reference/generated/kubernetes-api/v1.20/#resourcequota-v1-core>리소스쿼터(ResourceQuota)</a>
+오브젝트에 쿼터를 지정한다.</p><h2 id=시작하기-전에>시작하기 전에</h2><p><p>쿠버네티스 클러스터가 필요하고, kubectl 커맨드-라인 툴이 클러스터와
+통신할 수 있도록 설정되어 있어야 한다.
+만약, 아직 클러스터를 가지고 있지 않다면,
+<a href=/ko/docs/tasks/tools/#minikube>minikube</a>를 사용해서 생성하거나
+다음의 쿠버네티스 플레이그라운드 중 하나를 사용할 수 있다.</p><ul><li><a href=https://www.katacoda.com/courses/kubernetes/playground>Katacoda</a></li><li><a href=http://labs.play-with-k8s.com/>Play with Kubernetes</a></li></ul>버전 확인을 위해서, 다음 커맨드를 실행 <code>kubectl version</code>.</p><p>클러스터의 각 노드에는 최소 1GiB의 메모리가 있어야 한다.</p><h2 id=네임스페이스-생성>네임스페이스 생성</h2><p>이 연습에서 생성한 리소스가 클러스터의 나머지와
+격리되도록 네임스페이스를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl create namespace quota-mem-cpu-example
+</code></pre></div><h2 id=리소스쿼터-생성>리소스쿼터 생성</h2><p>다음은 리소스쿼터 오브젝트의 구성 파일이다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/quota-mem-cpu.yaml download=admin/resource/quota-mem-cpu.yaml><code>admin/resource/quota-mem-cpu.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-quota-mem-cpu-yaml')" title="Copy admin/resource/quota-mem-cpu.yaml to clipboard"></img></div><div class=includecode id=admin-resource-quota-mem-cpu-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>ResourceQuota<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>mem-cpu-demo<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>hard</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>requests.cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;1&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>requests.memory</span>:<span style=color:#bbb> </span>1Gi<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>limits.cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;2&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>limits.memory</span>:<span style=color:#bbb> </span>2Gi<span style=color:#bbb>
+</span></code></pre></div></div></div><p>리소스쿼터를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/quota-mem-cpu.yaml --namespace<span style=color:#666>=</span>quota-mem-cpu-example
+</code></pre></div><p>리소스쿼터에 대한 자세한 정보를 본다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get resourcequota mem-cpu-demo --namespace<span style=color:#666>=</span>quota-mem-cpu-example --output<span style=color:#666>=</span>yaml
+</code></pre></div><p>리소스쿼터는 이러한 요구 사항을 quota-mem-cpu-example 네임스페이스에 배치한다.</p><ul><li>모든 컨테이너에는 메모리 요청량(request), 메모리 상한(limit), CPU 요청량 및 CPU 상한이 있어야 한다.</li><li>모든 컨테이너에 대한 총 메모리 요청량은 1GiB를 초과하지 않아야 한다.</li><li>모든 컨테이너에 대한 총 메모리 상한은 2GiB를 초과하지 않아야 한다.</li><li>모든 컨테이너에 대한 총 CPU 요청량은 1 cpu를 초과해서는 안된다.</li><li>모든 컨테이너에 대한 총 CPU 상한은 2 cpu를 초과해서는 안된다.</li></ul><h2 id=파드-생성>파드 생성</h2><p>파드의 구성 파일은 다음과 같다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/quota-mem-cpu-pod.yaml download=admin/resource/quota-mem-cpu-pod.yaml><code>admin/resource/quota-mem-cpu-pod.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-quota-mem-cpu-pod-yaml')" title="Copy admin/resource/quota-mem-cpu-pod.yaml to clipboard"></img></div><div class=includecode id=admin-resource-quota-mem-cpu-pod-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>quota-mem-cpu-demo<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>quota-mem-cpu-demo-ctr<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;800Mi&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;800m&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>requests</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;600Mi&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;400m&#34;</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>파드를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/quota-mem-cpu-pod.yaml --namespace<span style=color:#666>=</span>quota-mem-cpu-example
+</code></pre></div><p>파드의 컨테이너가 실행 중인지 확인한다.</p><pre><code>kubectl get pod quota-mem-cpu-demo --namespace=quota-mem-cpu-example
+</code></pre><p>다시 한 번, 리소스쿼터에 대한 자세한 정보를 본다.</p><pre><code>kubectl get resourcequota mem-cpu-demo --namespace=quota-mem-cpu-example --output=yaml
+</code></pre><p>출력 결과는 쿼터와 사용된 쿼터를 함께 보여준다.
+파드의 메모리와 CPU 요청량 및 상한이 쿼터를 초과하지 않은 것을
+볼 수 있다.</p><pre><code>status:
+  hard:
+    limits.cpu: &quot;2&quot;
+    limits.memory: 2Gi
+    requests.cpu: &quot;1&quot;
+    requests.memory: 1Gi
+  used:
+    limits.cpu: 800m
+    limits.memory: 800Mi
+    requests.cpu: 400m
+    requests.memory: 600Mi
+</code></pre><h2 id=두-번째-파드-생성-시도>두 번째 파드 생성 시도</h2><p>다음은 두 번째 파드의 구성 파일이다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/quota-mem-cpu-pod-2.yaml download=admin/resource/quota-mem-cpu-pod-2.yaml><code>admin/resource/quota-mem-cpu-pod-2.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-quota-mem-cpu-pod-2-yaml')" title="Copy admin/resource/quota-mem-cpu-pod-2.yaml to clipboard"></img></div><div class=includecode id=admin-resource-quota-mem-cpu-pod-2-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>quota-mem-cpu-demo-2<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>quota-mem-cpu-demo-2-ctr<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>redis<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;1Gi&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;800m&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>requests</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;700Mi&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;400m&#34;</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>구성 파일에서, 파드의 메모리 요청량이 700MiB임을 알 수 있다.
+사용된 메모리 요청량과 이 새 메모리 요청량의 합계가
+메모리 요청량 쿼터를 초과한다. 600MiB + 700MiB > 1GiB</p><p>파드 생성을 시도한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/quota-mem-cpu-pod-2.yaml --namespace<span style=color:#666>=</span>quota-mem-cpu-example
+</code></pre></div><p>두 번째 파드는 생성되지 않는다. 출력 결과는 두 번째 파드를 생성하면
+메모리 요청량의 총 합계가 메모리 요청량 쿼터를 초과함을 보여준다.</p><pre><code>Error from server (Forbidden): error when creating &quot;examples/admin/resource/quota-mem-cpu-pod-2.yaml&quot;:
+pods &quot;quota-mem-cpu-demo-2&quot; is forbidden: exceeded quota: mem-cpu-demo,
+requested: requests.memory=700Mi,used: requests.memory=600Mi, limited: requests.memory=1Gi
+</code></pre><h2 id=토론>토론</h2><p>이 연습에서 보았듯이, 리소스쿼터를 사용하여
+네임스페이스에서 실행 중인 모든 컨테이너에 대한 메모리 요청량의 총 합계를 제한할 수 있다.
+메모리 상한, CPU 요청량 및 CPU 상한의 총 합계를 제한할 수도 있다.</p><p>모든 컨테이너에 대한 합계 대신 개별 컨테이너를 제한하려면,
+<a href=/ko/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/>리밋레인지(LimitRange)</a>를 사용한다.</p><h2 id=정리>정리</h2><p>네임스페이스를 삭제한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl delete namespace quota-mem-cpu-example
+</code></pre></div><h2 id=다음-내용>다음 내용</h2><h3 id=클러스터-관리자를-위한-문서>클러스터 관리자를 위한 문서</h3><ul><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/>네임스페이스에 대한 기본 메모리 요청량과 상한 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/>네임스페이스에 대한 기본 CPU 요청량과 상한 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/>네임스페이스에 대한 메모리의 최소 및 최대 제약 조건 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/cpu-constraint-namespace/>네임스페이스에 대한 CPU의 최소 및 최대 제약 조건 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/quota-pod-namespace/>네임스페이스에 대한 파드 쿼터 구성</a></p></li><li><p><a href=/docs/tasks/administer-cluster/quota-api-object/>API 오브젝트에 대한 쿼터 구성</a></p></li></ul><h3 id=앱-개발자를-위한-문서>앱 개발자를 위한 문서</h3><ul><li><p><a href=/ko/docs/tasks/configure-pod-container/assign-memory-resource/>컨테이너 및 파드 메모리 리소스 할당</a></p></li><li><p><a href=/docs/tasks/configure-pod-container/assign-cpu-resource/>컨테이너 및 파드 CPU 리소스 할당</a></p></li><li><p><a href=/ko/docs/tasks/configure-pod-container/quality-service-pod/>파드에 대한 서비스 품질(QoS) 구성</a></p></li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-40e30a9209e0c9f4153707e43243e9d7>6 - 네임스페이스에 대한 파드 쿼터 구성</h1><p>이 페이지는 네임스페이스에서 실행할 수 있는 총 파드 수에 대한 쿼터를
+설정하는 방법을 보여준다.
+<a href=/docs/reference/generated/kubernetes-api/v1.20/#resourcequota-v1-core>리소스쿼터(ResourceQuota)</a>
+오브젝트에 쿼터를 지정한다.</p><h2 id=시작하기-전에>시작하기 전에</h2><p><p>쿠버네티스 클러스터가 필요하고, kubectl 커맨드-라인 툴이 클러스터와
+통신할 수 있도록 설정되어 있어야 한다.
+만약, 아직 클러스터를 가지고 있지 않다면,
+<a href=/ko/docs/tasks/tools/#minikube>minikube</a>를 사용해서 생성하거나
+다음의 쿠버네티스 플레이그라운드 중 하나를 사용할 수 있다.</p><ul><li><a href=https://www.katacoda.com/courses/kubernetes/playground>Katacoda</a></li><li><a href=http://labs.play-with-k8s.com/>Play with Kubernetes</a></li></ul>버전 확인을 위해서, 다음 커맨드를 실행 <code>kubectl version</code>.</p><h2 id=네임스페이스-생성>네임스페이스 생성</h2><p>이 실습에서 생성한 리소스가 클러스터의 나머지와
+격리되도록 네임스페이스를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl create namespace quota-pod-example
+</code></pre></div><h2 id=리소스쿼터-생성>리소스쿼터 생성</h2><p>다음은 리소스쿼터 오브젝트의 구성 파일이다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/quota-pod.yaml download=admin/resource/quota-pod.yaml><code>admin/resource/quota-pod.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-quota-pod-yaml')" title="Copy admin/resource/quota-pod.yaml to clipboard"></img></div><div class=includecode id=admin-resource-quota-pod-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>ResourceQuota<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>pod-demo<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>hard</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>pods</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;2&#34;</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>리소스쿼터를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/quota-pod.yaml --namespace<span style=color:#666>=</span>quota-pod-example
+</code></pre></div><p>리소스쿼터에 대한 자세한 정보를 본다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get resourcequota pod-demo --namespace<span style=color:#666>=</span>quota-pod-example --output<span style=color:#666>=</span>yaml
+</code></pre></div><p>출력 결과는 네임스페이스에 두 개의 파드 쿼터가 있고, 현재 파드가 없음을
+보여준다. 즉, 쿼터 중 어느 것도 사용되지 않았다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>hard</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>pods</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;2&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>status</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>hard</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>pods</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;2&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>used</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>pods</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;0&#34;</span><span style=color:#bbb>
+</span></code></pre></div><p>다음은 디플로이먼트(Deployment) 구성 파일이다.</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/ko/examples/admin/resource/quota-pod-deployment.yaml download=admin/resource/quota-pod-deployment.yaml><code>admin/resource/quota-pod-deployment.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-resource-quota-pod-deployment-yaml')" title="Copy admin/resource/quota-pod-deployment.yaml to clipboard"></img></div><div class=includecode id=admin-resource-quota-pod-deployment-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>apps/v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Deployment<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>pod-quota-demo<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>matchLabels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>purpose</span>:<span style=color:#bbb> </span>quota-demo<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>replicas</span>:<span style=color:#bbb> </span><span style=color:#666>3</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>template</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>purpose</span>:<span style=color:#bbb> </span>quota-demo<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>pod-quota-demo<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span></code></pre></div></div></div><p>구성 파일에서, <code>replicas: 3</code> 은 쿠버네티스가 모두 동일한 애플리케이션을 실행하는 세 개의 파드를 만들도록 지시한다.</p><p>디플로이먼트를 생성한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/admin/resource/quota-pod-deployment.yaml --namespace<span style=color:#666>=</span>quota-pod-example
+</code></pre></div><p>디플로이먼트에 대한 자세한 정보를 본다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get deployment pod-quota-demo --namespace<span style=color:#666>=</span>quota-pod-example --output<span style=color:#666>=</span>yaml
+</code></pre></div><p>출력 결과는 디플로이먼트에서 3개의 레플리카를 지정하더라도, 쿼터로
+인해 2개의 파드만 생성되었음을 보여준다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>...<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>replicas</span>:<span style=color:#bbb> </span><span style=color:#666>3</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:#00f;font-weight:700>...</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>status</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>availableReplicas</span>:<span style=color:#bbb> </span><span style=color:#666>2</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:#00f;font-weight:700>...</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>lastUpdateTime</span>:<span style=color:#bbb> </span>2017-07-07T20:57:05Z<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>message: &#39;unable to create pods</span>:<span style=color:#bbb> </span>pods &#34;pod-quota-demo-1650323038-&#34; is forbidden:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>exceeded quota: pod-demo, requested: pods=1, used: pods=2, limited</span>:<span style=color:#bbb> </span>pods=2&#39;<span style=color:#bbb>
+</span></code></pre></div><h2 id=정리>정리</h2><p>네임스페이스를 삭제한다.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl delete namespace quota-pod-example
+</code></pre></div><h2 id=다음-내용>다음 내용</h2><h3 id=클러스터-관리자를-위한-문서>클러스터 관리자를 위한 문서</h3><ul><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/>네임스페이스에 대한 기본 메모리 요청량과 상한 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/>네임스페이스에 대한 기본 CPU 요청량과 상한 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/>네임스페이스에 대한 메모리의 최소 및 최대 제약 조건 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/cpu-constraint-namespace/>네임스페이스에 대한 CPU의 최소 및 최대 제약 조건 구성</a></p></li><li><p><a href=/ko/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/>네임스페이스에 대한 메모리 및 CPU 쿼터 구성</a></p></li><li><p><a href=/docs/tasks/administer-cluster/quota-api-object/>API 오브젝트에 대한 쿼터 구성</a></p></li></ul><h3 id=앱-개발자를-위한-문서>앱 개발자를 위한 문서</h3><ul><li><p><a href=/ko/docs/tasks/configure-pod-container/assign-memory-resource/>컨테이너 및 파드 메모리 리소스 할당</a></p></li><li><p><a href=/docs/tasks/configure-pod-container/assign-cpu-resource/>컨테이너 및 파드 CPU 리소스 할당</a></p></li><li><p><a href=/ko/docs/tasks/configure-pod-container/quality-service-pod/>파드에 대한 서비스 품질(QoS) 구성</a></p></li></ul></div></main></div></div><footer class=d-print-none><div class=footer__links><nav><a class=text-white href=/ko/docs/home/>홈</a>
+<a class=text-white href=/ko/blog/>블로그</a>
+<a class=text-white href=/ko/training/>교육</a>
+<a class=text-white href=/ko/partners/>파트너</a>
+<a class=text-white href=/ko/community/>커뮤니티</a>
+<a class=text-white href=/ko/case-studies/>사례 연구</a></nav></div><div class=container-fluid><div class=row><div class="col-6 col-sm-2 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="User mailing list" aria-label="User mailing list"><a class=text-white target=_blank href=https://discuss.kubernetes.io><i class="fa fa-envelope"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank href=https://twitter.com/kubernetesio><i class="fab fa-twitter"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Calendar aria-label=Calendar><a class=text-white target=_blank href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io"><i class="fas fa-calendar-alt"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Youtube aria-label=Youtube><a class=text-white target=_blank href=https://youtube.com/kubernetescommunity><i class="fab fa-youtube"></i></a></li></ul></div><div class="col-6 col-sm-2 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank href=https://github.com/kubernetes/kubernetes><i class="fab fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Slack aria-label=Slack><a class=text-white target=_blank href=https://slack.k8s.io><i class="fab fa-slack"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Contribute aria-label=Contribute><a class=text-white target=_blank href=https://git.k8s.io/community/contributors/guide><i class="fas fa-edit"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="Stack Overflow" aria-label="Stack Overflow"><a class=text-white target=_blank href=https://stackoverflow.com/questions/tagged/kubernetes><i class="fab fa-stack-overflow"></i></a></li></ul></div><div class="col-12 col-sm-8 text-center order-sm-2"><small class=text-white>&copy; 2026 The Kubernetes Authors | Documentation Distributed under <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a></small><br><small class=text-white>Copyright &copy; 2026 The Linux Foundation &reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href=https://www.linuxfoundation.org/trademark-usage class=light-text>Trademark Usage page</a></small><br><small class=text-white><a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></small></div></div></div></footer></div><script src=/js/popper-1.14.3.min.js integrity=sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49 crossorigin=anonymous></script><script src=/js/bootstrap-4.3.1.min.js integrity=sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM crossorigin=anonymous></script><script src=/js/main.min.223905d4acc5f7b370e2af585c8a5b56ce39b2fddddd6dffb6f6c3428927fe2c.js integrity="sha256-IjkF1KzF97Nw4q9YXIpbVs45sv3d3W3/tvbDQokn/iw=" crossorigin=anonymous></script></body></html>

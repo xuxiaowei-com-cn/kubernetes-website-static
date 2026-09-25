@@ -1,0 +1,549 @@
+<!doctype html><html lang=es class=no-js><head><meta name=ROBOTS content="NOINDEX, NOFOLLOW"><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','UA-36037335-10')</script><script type=text/javascript>(function(a,e,b,f,g,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},c=e.createElement(f),c.async=1,c.src="https://www.clarity.ms/tag/"+g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d)})(window,document,"clarity","script","yn9rpyjul2")</script><link rel=alternate hreflang=en href=https://kubernetes.xuxiaowei.com.cn/docs/tasks/debug-application-cluster/><link rel=alternate hreflang=zh href=https://kubernetes.xuxiaowei.com.cn/zh/docs/tasks/debug-application-cluster/><link rel=alternate hreflang=ko href=https://kubernetes.xuxiaowei.com.cn/ko/docs/tasks/debug-application-cluster/><link rel=alternate hreflang=ja href=https://kubernetes.xuxiaowei.com.cn/ja/docs/tasks/debug-application-cluster/><link rel=alternate hreflang=fr href=https://kubernetes.xuxiaowei.com.cn/fr/docs/tasks/debug-application-cluster/><link rel=alternate hreflang=de href=https://kubernetes.xuxiaowei.com.cn/de/docs/tasks/debug-application-cluster/><link rel=alternate hreflang=id href=https://kubernetes.xuxiaowei.com.cn/id/docs/tasks/debug-application-cluster/><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.82.0"><link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/><link rel="shortcut icon" type=image/png href=/images/favicon.png><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=manifest href=/manifest.webmanifest><link rel=apple-touch-icon href=/images/kubernetes-192x192.png><title>Monitorización, Logs y Debugging | Kubernetes</title><meta property="og:title" content="Monitorización, Logs y Debugging"><meta property="og:description" content="Orquestación de contenedores para producción"><meta property="og:type" content="website"><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/"><meta property="og:site_name" content="Kubernetes"><meta itemprop=name content="Monitorización, Logs y Debugging"><meta itemprop=description content="Orquestación de contenedores para producción"><meta name=twitter:card content="summary"><meta name=twitter:title content="Monitorización, Logs y Debugging"><meta name=twitter:description content="Orquestación de contenedores para producción"><link rel=preload href=/scss/main.min.ed63f113a0b4af323a0aa55cc07086aca653953991514680addf11d30c63bcf4.css as=style><link href=/scss/main.min.ed63f113a0b4af323a0aa55cc07086aca653953991514680addf11d30c63bcf4.css rel=stylesheet integrity><script src=/js/jquery-3.3.1.min.js integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin=anonymous></script><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png"}</script><meta name=theme-color content="#326ce5"><link rel=stylesheet href=/css/feature-states.css><meta name=description content><meta property="og:description" content><meta name=twitter:description content><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/"><meta property="og:title" content="Monitorización, Logs y Debugging"><meta name=twitter:title content="Monitorización, Logs y Debugging"><meta name=twitter:image content="https://kubernetes.io/images/favicon.png"><meta name=twitter:image:alt content="Kubernetes"><meta property="og:image" content="/images/kubernetes-horizontal-color.png"><meta property="og:type" content="article"><script src=/js/script.js></script></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-row td-navbar" data-auto-burger=primary><a class=navbar-brand href=/es/></a><div class="td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0"><li class="nav-item mr-2 mb-lg-0"><a class="nav-link active" href=/es/docs/>Documentación</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/es/blog/>Kubernetes Blog</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/es/partners/>Partners</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/es/community/>Comunidad</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/es/case-studies/>Casos de éxito</span></a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>Versions</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=https://xuxiaowei.io/t/1320/es/docs/tasks/debug-application-cluster/>Kubernetes 文档说明</a>
+<a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/>v1.38</a>
+<a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/>v1.37</a>
+<a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/>v1.36</a>
+<a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/>v1.35</a>
+<a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/>v1.34</a>
+<a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/>v1.33</a>
+<a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/>v1.32</a>
+<a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/>v1.31</a>
+<a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/>v1.30</a>
+<a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/>v1.29</a>
+<a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/>v1.28</a>
+<a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/>v1.27</a>
+<a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/>v1.26</a>
+<a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/>v1.25</a>
+<a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/>v1.24</a>
+<a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/>v1.23</a>
+<a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/>v1.22</a>
+<a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/>v1.21</a>
+<a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn/es/docs/tasks/debug-application-cluster/>v1.20</a></div></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdownMenuLink role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>Español</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/tasks/debug-application-cluster/>English</a>
+<a class=dropdown-item href=/zh/docs/tasks/debug-application-cluster/>中文 Chinese</a>
+<a class=dropdown-item href=/ko/docs/tasks/debug-application-cluster/>한국어 Korean</a>
+<a class=dropdown-item href=/ja/docs/tasks/debug-application-cluster/>日本語 Japanese</a>
+<a class=dropdown-item href=/fr/docs/tasks/debug-application-cluster/>Français</a>
+<a class=dropdown-item href=/de/docs/tasks/debug-application-cluster/>Deutsch</a>
+<a class=dropdown-item href=/id/docs/tasks/debug-application-cluster/>Bahasa Indonesia</a></div></li></ul></div><button id=hamburger onclick=kub.toggleMenu() data-auto-burger-exclude><div></div></button></nav></header><div class="container-fluid td-outer"><div class=td-main><div class="row flex-xl-nowrap"><div class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none"></div><div class="d-none d-xl-block col-xl-2 td-toc d-print-none"></div><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><div class=td-content><div class="pageinfo pageinfo-primary d-print-none"><p>This the multi-page printable view of this section.
+<a href=# onclick="return print(),!1">Click here to print</a>.</p><p><a href=/es/docs/tasks/debug-application-cluster/>Return to the regular view of this page</a>.</p></div><h1 class=title>Monitorización, Logs y Debugging</h1><ul><li>1: <a href=#pg-cbd33a50cc4779f855318a0dd00d7b06>Auditoría</a></li><li>2: <a href=#pg-06bb252f25983de12f635c806d180d30>Depurar Contenedores de Inicialización</a></li><li>3: <a href=#pg-c66e72f8378fe1ded545373488749822>Escribiendo Logs con Elasticsearch y Kibana</a></li><li>4: <a href=#pg-aef2d647baf9f2c220ed2d4af0721634>Escribiendo Logs con Stackdriver</a></li><li>5: <a href=#pg-96b25d30e732385047272b84d3c4188f>Pipeline de métricas de recursos</a></li></ul><div class=content></div></div><div class=td-content><h1 id=pg-cbd33a50cc4779f855318a0dd00d7b06>1 - Auditoría</h1><p>La auditoría de Kubernetes proporciona un conjunto de registros cronológicos referentes a la seguridad
+que documentan la secuencia de actividades que tanto los usuarios individuales, como
+los administradores y otros componentes del sistema ha realizado en el sistema.
+Así, permite al administrador del clúster responder a las siguientes cuestiones:</p><ul><li>¿qué ha pasado?</li><li>¿cuándo ha pasado?</li><li>¿quién lo ha iniciado?</li><li>¿sobre qué ha pasado?</li><li>¿dónde se ha observado?</li><li>¿desde dónde se ha iniciado?</li><li>¿hacia dónde iba?</li></ul><p>El componente <a href=/docs/admin/kube-apiserver>Kube-apiserver</a> lleva a cabo la auditoría. Cada petición en cada fase
+de su ejecución genera un evento, que se pre-procesa según un cierto reglamento y
+se escribe en un backend. Este reglamento determina lo que se audita
+y los backends persisten los registros. Las implementaciones actuales de backend
+incluyen los archivos de logs y los webhooks.</p><p>Cada petición puede grabarse junto con una "etapa" asociada. Las etapas conocidas son:</p><ul><li><code>RequestReceived</code> - La etapa para aquellos eventos generados tan pronto como
+el responsable de la auditoría recibe la petición, pero antes de que sea delegada al
+siguiente responsable en la cadena.</li><li><code>ResponseStarted</code> - Una vez que las cabeceras de la respuesta se han enviado,
+pero antes de que el cuerpo de la respuesta se envíe. Esta etapa sólo se genera
+en peticiones de larga duración (ej. watch).</li><li><code>ResponseComplete</code> - El cuerpo de la respuesta se ha completado y no se enviarán más bytes.</li><li><code>Panic</code> - Eventos que se generan cuando ocurre una situación de pánico.</li></ul><blockquote class="note callout"><div><strong>Nota:</strong> La característica de registro de auditoría incrementa el consumo de memoria del servidor API
+porque requiere de contexto adicional para lo que se audita en cada petición.
+De forma adicional, el consumo de memoria depende de la configuración misma del registro.</div></blockquote><h2 id=reglamento-de-auditoría>Reglamento de Auditoría</h2><p>El reglamento de auditoría define las reglas acerca de los eventos que deberían registrarse y
+los datos que deberían incluir. La estructura del objeto de reglas de auditoría se define
+en el <a href=https://github.com/kubernetes/kubernetes/blob/v1.20.15/staging/src/k8s.io/apiserver/pkg/apis/audit/v1/types.go><code>audit.k8s.io</code> grupo de API</a>. Cuando se procesa un evento, se compara
+con la lista de reglas en orden. La primera regla coincidente establece el "nivel de auditoría"
+del evento. Los niveles de auditoría conocidos son:</p><ul><li><code>None</code> - no se registra eventos que disparan esta regla.</li><li><code>Metadata</code> - se registra los metadatos de la petición (usuario que la realiza, marca de fecha y hora, recurso,
+verbo, etc.), pero no la petición ni el cuerpo de la respuesta.</li><li><code>Request</code> - se registra los metadatos del evento y el cuerpo de la petición, pero no el cuerpo de la respuesta.
+Esto no aplica para las peticiones que no son de recurso.</li><li><code>RequestResponse</code> - se registra los metadatos del evento, y los cuerpos de la petición y la respuesta.
+Esto no aplica para las peticiones que no son de recurso.</li></ul><p>Es posible indicar un archivo al definir el reglamento en el <a href=/docs/admin/kube-apiserver>kube-apiserver</a>
+usando el parámetro <code>--audit-policy-file</code>. Si dicho parámetros se omite, no se registra ningún evento.
+Nótese que el campo <code>rules</code> <strong>debe</strong> proporcionarse en el archivo del reglamento de auditoría.
+Un reglamento sin (0) reglas se considera ilegal.</p><p>Abajo se presenta un ejemplo de un archivo de reglamento de auditoría:</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/es/examples/audit/audit-policy.yaml download=audit/audit-policy.yaml><code>audit/audit-policy.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('audit-audit-policy-yaml')" title="Copy audit/audit-policy.yaml to clipboard"></img></div><div class=includecode id=audit-audit-policy-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>audit.k8s.io/v1<span style=color:#bbb> </span><span style=color:#080;font-style:italic># Esto es obligatorio.</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Policy<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:#080;font-style:italic># No generar eventos de auditoría para las peticiones en la etapa RequestReceived.</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>omitStages</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:#b44>&#34;RequestReceived&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>rules</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:#080;font-style:italic># Registrar los cambios del pod al nivel RequestResponse</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>level</span>:<span style=color:#bbb> </span>RequestResponse<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>group</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:#080;font-style:italic># Los recursos &#34;pods&#34; no hacen coincidir las peticiones a cualquier sub-recurso de pods,</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:#080;font-style:italic># lo que es consistente con la regla RBAC.</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;pods&#34;</span>]<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:#080;font-style:italic># Registrar &#34;pods/log&#34;, &#34;pods/status&#34; al nivel Metadata</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>level</span>:<span style=color:#bbb> </span>Metadata<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>group</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;pods/log&#34;</span>,<span style=color:#bbb> </span><span style=color:#b44>&#34;pods/status&#34;</span>]<span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:#080;font-style:italic># No registrar peticiones al configmap denominado &#34;controller-leader&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>level</span>:<span style=color:#bbb> </span>None<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>group</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;configmaps&#34;</span>]<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>resourceNames</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;controller-leader&#34;</span>]<span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:#080;font-style:italic># No registrar peticiones de observación hechas por &#34;system:kube-proxy&#34; sobre puntos de acceso o servicios</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>level</span>:<span style=color:#bbb> </span>None<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>users</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;system:kube-proxy&#34;</span>]<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>verbs</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;watch&#34;</span>]<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>group</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;&#34;</span><span style=color:#bbb> </span><span style=color:#080;font-style:italic># Grupo API base</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;endpoints&#34;</span>,<span style=color:#bbb> </span><span style=color:#b44>&#34;services&#34;</span>]<span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:#080;font-style:italic># No registrar peticiones autenticadas a ciertas rutas URL que no son recursos.</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>level</span>:<span style=color:#bbb> </span>None<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>userGroups</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;system:authenticated&#34;</span>]<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>nonResourceURLs</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:#b44>&#34;/api*&#34;</span><span style=color:#bbb> </span><span style=color:#080;font-style:italic># Coincidencia por comodín.</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:#b44>&#34;/version&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:#080;font-style:italic># Registrar el cuerpo de la petición de los cambios de configmap en kube-system.</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>level</span>:<span style=color:#bbb> </span>Request<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>group</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;&#34;</span><span style=color:#bbb> </span><span style=color:#080;font-style:italic># Grupo API base</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;configmaps&#34;</span>]<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:#080;font-style:italic># Esta regla sólo aplica a los recursos en el Namespace &#34;kube-system&#34;.</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:#080;font-style:italic># La cadena vacía &#34;&#34; se puede usar para seleccionar los recursos sin Namespace.</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>namespaces</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;kube-system&#34;</span>]<span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:#080;font-style:italic># Registrar los cambios de configmap y secret en todos los otros Namespaces al nivel Metadata.</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>level</span>:<span style=color:#bbb> </span>Metadata<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>group</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;&#34;</span><span style=color:#bbb> </span><span style=color:#080;font-style:italic># Grupo API base</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;secrets&#34;</span>,<span style=color:#bbb> </span><span style=color:#b44>&#34;configmaps&#34;</span>]<span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:#080;font-style:italic># Registrar todos los recursos en core y extensions al nivel Request.</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>level</span>:<span style=color:#bbb> </span>Request<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>group</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;&#34;</span><span style=color:#bbb> </span><span style=color:#080;font-style:italic># Grupo API base</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>group</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;extensions&#34;</span><span style=color:#bbb> </span><span style=color:#080;font-style:italic># La versión del grupo NO debería incluirse.</span><span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:#080;font-style:italic># Regla para &#34;cazar&#34; todos las demás peticiones al nivel Metadata.</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>level</span>:<span style=color:#bbb> </span>Metadata<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:#080;font-style:italic># Las peticiones de larga duración, como los watches, que caen bajo esta regla no</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:#080;font-style:italic># generan un evento de auditoría en RequestReceived.</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>omitStages</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:#b44>&#34;RequestReceived&#34;</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>Puedes usar un archivo mínimo de reglamento de auditoría para registrar todas las peticiones al nivel <code>Metadata</code> de la siguiente forma:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#080;font-style:italic># Log all requests at the Metadata level.</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>audit.k8s.io/v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Policy<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>rules</span>:<span style=color:#bbb>
+</span><span style=color:#bbb></span>- <span style=color:green;font-weight:700>level</span>:<span style=color:#bbb> </span>Metadata<span style=color:#bbb>
+</span></code></pre></div><p>El <a href=https://github.com/kubernetes/kubernetes/blob/v1.20.15/cluster/gce/gci/configure-helper.sh#L735>perfil de auditoría utilizado por GCE</a> debería servir como referencia para
+que los administradores construyeran sus propios perfiles de auditoría.</p><h2 id=backends-de-auditoría>Backends de auditoría</h2><p>Los backends de auditoría persisten los eventos de auditoría en un almacenamiento externo.
+El <a href=/docs/admin/kube-apiserver>Kube-apiserver</a> por defecto proporciona tres backends:</p><ul><li>Backend de logs, que escribe los eventos en disco</li><li>Backend de webhook, que envía los eventos a una API externa</li><li>Backend dinámico, que configura backends de webhook a través de objetos de la API AuditSink.</li></ul><p>En todos los casos, la estructura de los eventos de auditoría se define por la API del grupo
+<code>audit.k8s.io</code>. La versión actual de la API es
+<a href=https://github.com/kubernetes/kubernetes/blob/v1.20.15/staging/src/k8s.io/apiserver/pkg/apis/audit/v1/types.go><code>v1</code></a>.</p><blockquote class="note callout"><div><strong>Nota:</strong><p>En el caso de parches, el cuerpo de la petición es una matriz JSON con operaciones de parcheado, en vez
+de un objeto JSON que incluya el objeto de la API de Kubernetes apropiado. Por ejemplo,
+el siguiente cuerpo de mensaje es una petición de parcheado válida para
+<code>/apis/batch/v1/namespaces/some-namespace/jobs/some-job-name</code>.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>[
+  {
+    <span style=color:green;font-weight:700>&#34;op&#34;</span>: <span style=color:#b44>&#34;replace&#34;</span>,
+    <span style=color:green;font-weight:700>&#34;path&#34;</span>: <span style=color:#b44>&#34;/spec/parallelism&#34;</span>,
+    <span style=color:green;font-weight:700>&#34;value&#34;</span>: <span style=color:#666>0</span>
+  },
+  {
+    <span style=color:green;font-weight:700>&#34;op&#34;</span>: <span style=color:#b44>&#34;remove&#34;</span>,
+    <span style=color:green;font-weight:700>&#34;path&#34;</span>: <span style=color:#b44>&#34;/spec/template/spec/containers/0/terminationMessagePolicy&#34;</span>
+  }
+]
+</code></pre></div></div></blockquote><h3 id=backend-de-logs>Backend de Logs</h3><p>El backend de logs escribe los eventos de auditoría a un archivo en formato JSON.
+Puedes configurar el backend de logs de auditoría usando el siguiente
+parámetro de <a href=/docs/admin/kube-apiserver>kube-apiserver</a> flags:</p><ul><li><code>--audit-log-path</code> especifica la ruta al archivo de log que el backend utiliza para
+escribir los eventos de auditoría. Si no se especifica, se deshabilita el backend de logs. <code>-</code> significa salida estándar</li><li><code>--audit-log-maxage</code> define el máximo número de días a retener los archivos de log</li><li><code>--audit-log-maxbackup</code> define el máximo número de archivos de log a retener</li><li><code>--audit-log-maxsize</code> define el tamaño máximo en megabytes del archivo de logs antes de ser rotado</li></ul><h3 id=backend-de-webhook>Backend de Webhook</h3><p>El backend de Webhook envía eventos de auditoría a una API remota, que se supone es la misma API
+que expone el <a href=/docs/admin/kube-apiserver>kube-apiserver</a>. Puedes configurar el backend de webhook de auditoría usando
+los siguientes parámetros de kube-apiserver:</p><ul><li><code>--audit-webhook-config-file</code> especifica la ruta a un archivo con configuración del webhook.
+La configuración del webhook es, de hecho, un archivo <a href=/docs/tasks/access-application-cluster/configure-access-multiple-clusters/>kubeconfig</a>.</li><li><code>--audit-webhook-initial-backoff</code> especifica la cantidad de tiempo a esperar tras una petición fallida
+antes de volver a intentarla. Los reintentos posteriores se ejecutan con retraso exponencial.</li></ul><p>El archivo de configuración del webhook usa el formato kubeconfig para especificar la dirección remota
+del servicio y las credenciales para conectarse al mismo.</p><p>En la versión 1.13, los backends de webhook pueden configurarse <a href=#dynamic-backend>dinámicamente</a>.</p><h3 id=procesamiento-por-lotes>Procesamiento por lotes</h3><p>Tanto el backend de logs como el de webhook permiten procesamiento por lotes. Si usamos el webhook como ejemplo,
+aquí se muestra la lista de parámetros disponibles. Para aplicar el mismo parámetro al backend de logs,
+simplemente sustituye <code>webhook</code> por <code>log</code> en el nombre del parámetro. Por defecto,
+el procesimiento por lotes está habilitado en <code>webhook</code> y deshabilitado en <code>log</code>. De forma similar,
+por defecto la regulación (throttling) está habilitada en <code>webhook</code> y deshabilitada en <code>log</code>.</p><ul><li><code>--audit-webhook-mode</code> define la estrategia de memoria intermedia (búfer), que puede ser una de las siguientes:<ul><li><code>batch</code> - almacenar eventos y procesarlos de forma asíncrona en lotes. Esta es la estrategia por defecto.</li><li><code>blocking</code> - bloquear todas las respuestas del servidor API al procesar cada evento de forma individual.</li><li><code>blocking-strict</code> - igual que blocking, pero si ocurre un error durante el registro de la audtoría en la etapa RequestReceived, la petición completa al apiserver fallará.</li></ul></li></ul><p>Los siguientes parámetros se usan únicamente en el modo <code>batch</code>:</p><ul><li><code>--audit-webhook-batch-buffer-size</code> define el número de eventos a almacenar de forma intermedia antes de procesar por lotes.
+Si el ritmo de eventos entrantes desborda la memoria intermedia, dichos eventos se descartan.</li><li><code>--audit-webhook-batch-max-size</code> define el número máximo de eventos en un único proceso por lotes.</li><li><code>--audit-webhook-batch-max-wait</code> define la cantidad máxima de tiempo a esperar de forma incondicional antes de procesar los eventos de la cola.</li><li><code>--audit-webhook-batch-throttle-qps</code> define el promedio máximo de procesos por lote generados por segundo.</li><li><code>--audit-webhook-batch-throttle-burst</code> define el número máximo de procesos por lote generados al mismo tiempo si el QPS permitido no fue usado en su totalidad anteriormente.</li></ul><h4 id=ajuste-de-parámetros>Ajuste de parámetros</h4><p>Los parámetros deberían ajustarse a la carga del apiserver.</p><p>Por ejemplo, si kube-apiserver recibe 100 peticiones por segundo, y para cada petición se audita
+las etapas <code>ResponseStarted</code> y <code>ResponseComplete</code>, deberías esperar unos ~200
+eventos de auditoría generados por segundo. Asumiendo que hay hasta 100 eventos en un lote,
+deberías establecer el nivel de regulación (throttling) por lo menos a 2 QPS. Además, asumiendo
+que el backend puede tardar hasta 5 segundos en escribir eventos, deberías configurar el tamaño de la memoria intermedia para almacenar hasta 5 segundos de eventos, esto es,
+10 lotes, o sea, 1000 eventos.</p><p>En la mayoría de los casos, sin embargo, los valores por defecto de los parámetros
+deberían ser suficientes y no deberías preocuparte de ajustarlos manualmente.
+Puedes echar un vistazo a la siguientes métricas de Prometheus que expone kube-apiserver
+y también los logs para monitorizar el estado del subsistema de auditoría:</p><ul><li><code>apiserver_audit_event_total</code> métrica que contiene el número total de eventos de auditoría exportados.</li><li><code>apiserver_audit_error_total</code> métrica que contiene el número total de eventos descartados debido a un error durante su exportación.</li></ul><h3 id=truncado>Truncado</h3><p>Tanto el backend de logs como el de webhook permiten truncado. Como ejemplo, aquí se indica la
+lista de parámetros disponible para el backend de logs:</p><ul><li><code>audit-log-truncate-enabled</code> indica si el truncado de eventos y por lotes está habilitado.</li><li><code>audit-log-truncate-max-batch-size</code> indica el tamaño máximo en bytes del lote enviado al backend correspondiente.</li><li><code>audit-log-truncate-max-event-size</code> indica el tamaño máximo en bytes del evento de auditoría enviado al backend correspondiente.</li></ul><p>Por defecto, el truncado está deshabilitado tanto en <code>webhook</code> como en <code>log</code>; un administrador del clúster debe configurar bien el parámetro <code>audit-log-truncate-enabled</code> o <code>audit-webhook-truncate-enabled</code> para habilitar esta característica.</p><h3 id=backend-dinámico>Backend dinámico</h3><div style=margin-top:10px;margin-bottom:10px><b>FEATURE STATE:</b> <code>Kubernetes v1.13 [alpha]</code></div><p>En la versión 1.13 de Kubernetes, puedes configurar de forma dinámica los backends de auditoría usando objetos de la API AuditSink.</p><p>Para habilitar la auditoría dinámica, debes configurar los siguientes parámetros de apiserver:</p><ul><li><code>--audit-dynamic-configuration</code>: el interruptor principal. Cuando esta característica sea GA, el único parámetro necesario.</li><li><code>--feature-gates=DynamicAuditing=true</code>: en evaluación en alpha y beta.</li><li><code>--runtime-config=auditregistration.k8s.io/v1alpha1=true</code>: habilitar la API.</li></ul><p>Cuando se habilita, un objeto AuditSink se provisiona de la siguiente forma:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>auditregistration.k8s.io/v1alpha1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>AuditSink<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>mysink<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>policy</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>level</span>:<span style=color:#bbb> </span>Metadata<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>stages</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- ResponseComplete<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>webhook</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>throttle</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>qps</span>:<span style=color:#bbb> </span><span style=color:#666>10</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>burst</span>:<span style=color:#bbb> </span><span style=color:#666>15</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>clientConfig</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>url</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;https://audit.app&#34;</span><span style=color:#bbb>
+</span></code></pre></div><p>Para una definición completa de la API, ver <a href=/docs/reference/generated/kubernetes-api/v1.13/#auditsink-v1alpha1-auditregistration>AuditSink</a>. Múltiples objetos existirán como soluciones independientes.</p><p>Aquellos backends estáticos que se configuran con parámetros en tiempo de ejecución no se ven impactados por esta característica.
+Sin embargo, estos backends dinámicos comparten las opciones de truncado del webhook estático, de forma que si dichas opciones se configura con parámetros en tiempo de ejecución, entonces se aplican a todos los backends dinámicos.</p><h4 id=reglamento>Reglamento</h4><p>El reglamento de AuditSink es diferente del de la auditoría en tiempo de ejecución. Esto es debido a que el objeto de la API sirve para casos de uso diferentes. El reglamento continuará
+evolucionando para dar cabida a más casos de uso.</p><p>El campo <code>level</code> establece el nivel de auditoría indicado a todas las peticiones. El campo <code>stages</code> es actualmente una lista de las etapas que se permite registrar.</p><h4 id=seguridad>Seguridad</h4><p>Los administradores deberían tener en cuenta que permitir el acceso en modo escritura de esta característica otorga el modo de acceso de lectura
+a toda la información del clúster. Así, el acceso debería gestionarse como un privilegio de nivel <code>cluster-admin</code>.</p><h4 id=rendimiento>Rendimiento</h4><p>Actualmente, esta característica tiene implicaciones en el apiserver en forma de incrementos en el uso de la CPU y la memoria.
+Aunque debería ser nominal cuando se trata de un número pequeño de destinos, se realizarán pruebas adicionales de rendimiento para entender su impacto real antes de que esta API pase a beta.</p><h2 id=configuración-multi-clúster>Configuración multi-clúster</h2><p>Si estás extendiendo la API de Kubernetes mediante la <a href=/docs/concepts/api-extension/apiserver-aggregation>capa de agregación</a>, puedes también
+configurar el registro de auditoría para el apiserver agregado. Para ello, pasa las opciones
+de configuración en el mismo formato que se describe arriba al apiserver agregado
+y configura el mecanismo de ingestión de logs para que recolecte los logs de auditoría.
+Cada uno de los apiservers puede tener configuraciones de auditoría diferentes con
+diferentes reglamentos de auditoría.</p><h2 id=ejemplos-de-recolectores-de-logs>Ejemplos de recolectores de Logs</h2><h3 id=uso-de-fluentd-para-recolectar-y-distribuir-eventos-de-auditoría-a-partir-de-un-archivo-de-logs>Uso de fluentd para recolectar y distribuir eventos de auditoría a partir de un archivo de logs</h3><p><a href=http://www.fluentd.org/>Fluentd</a> es un recolector de datos de libre distribución que proporciona una capa unificada de registros.
+En este ejemplo, usaremos fluentd para separar los eventos de auditoría por nombres de espacio:</p><ol><li><p>Instala <a href=https://docs.fluentd.org/v1.0/articles/quickstart#step-1:-installing-fluentd>fluentd</a>, fluent-plugin-forest y fluent-plugin-rewrite-tag-filter en el nodo donde corre kube-apiserver<blockquote class="note callout"><div><strong>Nota:</strong> Fluent-plugin-forest y fluent-plugin-rewrite-tag-filter son plugins de fluentd. Puedes obtener detalles de la instalación de estos plugins en el documento [fluentd plugin-management][fluentd_plugin_management_doc].</div></blockquote></p></li><li><p>Crea un archivo de configuración para fluentd:</p><pre><code>cat &lt;&lt;'EOF' &gt; /etc/fluentd/config
+# fluentd conf runs in the same host with kube-apiserver
+&lt;source&gt;
+    @type tail
+    # audit log path of kube-apiserver
+    path /var/log/kube-audit
+    pos_file /var/log/audit.pos
+    format json
+    time_key time
+    time_format %Y-%m-%dT%H:%M:%S.%N%z
+    tag audit
+&lt;/source&gt;
+
+&lt;filter audit&gt;
+    #https://github.com/fluent/fluent-plugin-rewrite-tag-filter/issues/13
+    @type record_transformer
+    enable_ruby
+    &lt;record&gt;
+     namespace ${record[&quot;objectRef&quot;].nil? ? &quot;none&quot;:(record[&quot;objectRef&quot;][&quot;namespace&quot;].nil? ? &quot;none&quot;:record[&quot;objectRef&quot;][&quot;namespace&quot;])}
+    &lt;/record&gt;
+&lt;/filter&gt;
+
+&lt;match audit&gt;
+    # route audit according to namespace element in context
+    @type rewrite_tag_filter
+    &lt;rule&gt;
+        key namespace
+        pattern /^(.+)/
+        tag ${tag}.$1
+    &lt;/rule&gt;
+&lt;/match&gt;
+
+&lt;filter audit.**&gt;
+   @type record_transformer
+   remove_keys namespace
+&lt;/filter&gt;
+
+&lt;match audit.**&gt;
+    @type forest
+    subtype file
+    remove_prefix audit
+    &lt;template&gt;
+        time_slice_format %Y%m%d%H
+        compress gz
+        path /var/log/audit-${tag}.*.log
+        format json
+        include_time_key true
+    &lt;/template&gt;
+&lt;/match&gt;
+EOF
+</code></pre></li><li><p>Arranca fluentd:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>fluentd -c /etc/fluentd/config  -vv
+</code></pre></div></li><li><p>Arranca el componente kube-apiserver con las siguientes opciones:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>--audit-policy-file<span style=color:#666>=</span>/etc/kubernetes/audit-policy.yaml --audit-log-path<span style=color:#666>=</span>/var/log/kube-audit --audit-log-format<span style=color:#666>=</span>json
+</code></pre></div></li><li><p>Comprueba las auditorías de los distintos espacios de nombres en <code>/var/log/audit-*.log</code></p></li></ol><h3 id=uso-de-logstash-para-recolectar-y-distribuir-eventos-de-auditoría-desde-un-backend-de-webhook>Uso de logstash para recolectar y distribuir eventos de auditoría desde un backend de webhook</h3><p><a href=https://www.elastic.co/products/logstash>Logstash</a> es una herramienta de libre distribución de procesamiento de datos en servidor.
+En este ejemplo, vamos a usar logstash para recolectar eventos de auditoría a partir de un backend de webhook,
+y grabar los eventos de usuarios diferentes en archivos distintos.</p><ol><li><p>Instala <a href=https://www.elastic.co/guide/en/logstash/current/installing-logstash.html>logstash</a></p></li><li><p>Crea un archivo de configuración para logstash:</p><pre><code>cat &lt;&lt;EOF &gt; /etc/logstash/config
+input{
+    http{
+        #TODO, figure out a way to use kubeconfig file to authenticate to logstash
+        #https://www.elastic.co/guide/en/logstash/current/plugins-inputs-http.html#plugins-inputs-http-ssl
+        port=&gt;8888
+    }
+}
+filter{
+    split{
+        # Webhook audit backend sends several events together with EventList
+        # split each event here.
+        field=&gt;[items]
+        # We only need event subelement, remove others.
+        remove_field=&gt;[headers, metadata, apiVersion, &quot;@timestamp&quot;, kind, &quot;@version&quot;, host]
+    }
+    mutate{
+        rename =&gt; {items=&gt;event}
+    }
+}
+output{
+    file{
+        # Audit events from different users will be saved into different files.
+        path=&gt;&quot;/var/log/kube-audit-%{[event][user][username]}/audit&quot;
+    }
+}
+EOF
+</code></pre></li><li><p>Arranca logstash:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>bin/logstash -f /etc/logstash/config --path.settings /etc/logstash/
+</code></pre></div></li><li><p>Crea un <a href=/docs/tasks/access-application-cluster/authenticate-across-clusters-kubeconfig/>archivo kubeconfig</a> para el webhook del backend de auditoría de kube-apiserver:</p><pre><code> cat &lt;&lt;EOF &gt; /etc/kubernetes/audit-webhook-kubeconfig
+ apiVersion: v1
+ clusters:
+ - cluster:
+     server: http://&lt;ip_of_logstash&gt;:8888
+   name: logstash
+ contexts:
+ - context:
+     cluster: logstash
+     user: &quot;&quot;
+   name: default-context
+ current-context: default-context
+ kind: Config
+ preferences: {}
+ users: []
+ EOF
+</code></pre></li><li><p>Arranca kube-apiserver con las siguientes opciones:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>--audit-policy-file<span style=color:#666>=</span>/etc/kubernetes/audit-policy.yaml --audit-webhook-config-file<span style=color:#666>=</span>/etc/kubernetes/audit-webhook-kubeconfig
+</code></pre></div></li><li><p>Comprueba las auditorías en los directorios <code>/var/log/kube-audit-*/audit</code> de los nodos de logstash</p></li></ol><p>Nótese que además del plugin para salida en archivos, logstash ofrece una variedad de salidas adicionales
+que permiten a los usuarios enviar la información donde necesiten. Por ejemplo, se puede enviar los eventos de auditoría
+al plugin de elasticsearch que soporta búsquedas avanzadas y analíticas.</p></div><div class=td-content style=page-break-before:always><h1 id=pg-06bb252f25983de12f635c806d180d30>2 - Depurar Contenedores de Inicialización</h1><p>Esta página muestra cómo investigar problemas relacionados con la ejecución
+de los contenedores de inicialización (init containers). Las líneas de comando del ejemplo de abajo
+se refieren al Pod como <code>&lt;pod-name></code> y a los Init Containers como <code>&lt;init-container-1></code> e
+<code>&lt;init-container-2></code> respectivamente.</p><h2 id=antes-de-empezar>Antes de empezar</h2><p><p>Debes tener un cluster Kubernetes a tu dispocición, y la herramienta de línea de comandos <code>kubectl</code> debe estar configurada. Si no tienes un cluster, puedes crear uno utilizando <a href=/docs/setup/minikube>Minikube</a>,
+o puedes utilizar una de las siguientes herramientas en línea:</p><ul><li><a href=https://www.katacoda.com/courses/kubernetes/playground>Katacoda</a></li><li><a href=http://labs.play-with-k8s.com/>Play with Kubernetes</a></li></ul>Para comprobar la versión, introduzca <code>kubectl version</code>.</p><ul><li>Deberías estar familizarizado con el concepto de <a href=/docs/concepts/abstractions/init-containers/>Init Containers</a>.</li><li>Deberías conocer la <a href=/docs/tasks/configure-pod-container/configure-pod-initialization/#creating-a-pod-that-has-an-init-container/>Configuración de un Init Container</a>.</li></ul><h2 id=comprobar-el-estado-de-los-init-containers>Comprobar el estado de los Init Containers</h2><p>Muestra el estado de tu pod:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pod &lt;pod-name&gt;
+</code></pre></div><p>Por ejemplo, un estado de <code>Init:1/2</code> indica que uno de los Init Containers
+se ha ejecutado satisfactoriamente:</p><pre><code>NAME         READY     STATUS     RESTARTS   AGE
+&lt;pod-name&gt;   0/1       Init:1/2   0          7s
+</code></pre><p>Echa un vistazo a <a href=#understanding-pod-status>Comprender el estado de un Pod</a> para más ejemplos
+de valores de estado y sus significados.</p><h2 id=obtener-detalles-acerca-de-los-init-containers>Obtener detalles acerca de los Init Containers</h2><p>Para ver información detallada acerca de la ejecución de un Init Container:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl describe pod &lt;pod-name&gt;
+</code></pre></div><p>Por ejemplo, un Pod con dos Init Containers podría mostrar lo siguiente:</p><pre><code>Init Containers:
+  &lt;init-container-1&gt;:
+    Container ID:    ...
+    ...
+    State:           Terminated
+      Reason:        Completed
+      Exit Code:     0
+      Started:       ...
+      Finished:      ...
+    Ready:           True
+    Restart Count:   0
+    ...
+  &lt;init-container-2&gt;:
+    Container ID:    ...
+    ...
+    State:           Waiting
+      Reason:        CrashLoopBackOff
+    Last State:      Terminated
+      Reason:        Error
+      Exit Code:     1
+      Started:       ...
+      Finished:      ...
+    Ready:           False
+    Restart Count:   3
+    ...
+</code></pre><p>También puedes acceder al estado del Init Container de forma programática mediante
+la lectura del campo <code>status.initContainerStatuses</code> dentro del Pod Spec:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pod nginx --template <span style=color:#b44>&#39;{{.status.initContainerStatuses}}&#39;</span>
+</code></pre></div><p>Este comando devolverá la misma información que arriba en formato JSON.</p><h2 id=acceder-a-los-logs-de-los-init-containers>Acceder a los logs de los Init Containers</h2><p>Indica el nombre del Init Container así como el nombre del Pod para
+acceder a sus logs.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl logs &lt;pod-name&gt; -c &lt;init-container-2&gt;
+</code></pre></div><p>Los Init Containers que ejecutan secuencias de línea de comandos muestran los comandos
+conforme se van ejecutando. Por ejemplo, puedes hacer lo siguiente en Bash
+indicando <code>set -x</code> al principio de la secuencia.</p><h2 id=comprender-el-estado-de-un-pod>Comprender el estado de un Pod</h2><p>Un estado de un Pod que comienza con <code>Init:</code> especifica el estado de la ejecución de
+un Init Container. La tabla a continuación muestra algunos valores de estado de ejemplo
+que puedes encontrar al depurar Init Containers.</p><table><thead><tr><th>Estado</th><th>Significado</th></tr></thead><tbody><tr><td><code>Init:N/M</code></td><td>El Pod tiene <code>M</code> Init Containers, y por el momento se han completado <code>N</code>.</td></tr><tr><td><code>Init:Error</code></td><td>Ha fallado la ejecución de un Init Container.</td></tr><tr><td><code>Init:CrashLoopBackOff</code></td><td>Un Init Container ha fallado de forma repetida.</td></tr><tr><td><code>Pending</code></td><td>El Pod todavía no ha comenzado a ejecutar sus Init Containers.</td></tr><tr><td><code>PodInitializing</code> o <code>Running</code></td><td>El Pod ya ha terminado de ejecutar sus Init Containers.</td></tr></tbody></table></div><div class=td-content style=page-break-before:always><h1 id=pg-c66e72f8378fe1ded545373488749822>3 - Escribiendo Logs con Elasticsearch y Kibana</h1><p>En la plataforma Google Compute Engine (GCE), por defecto da soporte a la escritura de logs haciendo uso de
+<a href=https://cloud.google.com/logging/>Stackdriver Logging</a>, el cual se describe en detalle en <a href=/docs/user-guide/logging/stackdriver>Logging con Stackdriver Logging</a>.</p><p>Este artículo describe cómo configurar un clúster para la ingesta de logs en
+<a href=https://www.elastic.co/products/elasticsearch>Elasticsearch</a> y su posterior visualización
+con <a href=https://www.elastic.co/products/kibana>Kibana</a>, a modo de alternativa a
+Stackdriver Logging cuando se utiliza la plataforma GCE.</p><blockquote class="note callout"><div><strong>Nota:</strong> No se puede desplegar de forma automática Elasticsearch o Kibana en un clúster alojado en Google Kubernetes Engine. Hay que desplegarlos de forma manual.</div></blockquote><p>Para utilizar Elasticsearch y Kibana para escritura de logs del clúster, deberías configurar
+la siguiente variable de entorno que se muestra a continuación como parte de la creación
+del clúster con kube-up.sh:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#b8860b>KUBE_LOGGING_DESTINATION</span><span style=color:#666>=</span>elasticsearch
+</code></pre></div><p>También deberías asegurar que <code>KUBE_ENABLE_NODE_LOGGING=true</code> (que es el valor por defecto en la plataforma GCE).</p><p>Así, cuando crees un clúster, un mensaje te indicará que la recolección de logs de los daemons de Fluentd
+que corren en cada nodo enviará dichos logs a Elasticsearch:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>cluster/kube-up.sh
+</code></pre></div><pre><code>...
+Project: kubernetes-satnam
+Zone: us-central1-b
+... calling kube-up
+Project: kubernetes-satnam
+Zone: us-central1-b
++++ Staging server tars to Google Storage: gs://kubernetes-staging-e6d0e81793/devel
++++ kubernetes-server-linux-amd64.tar.gz uploaded (sha1 = 6987c098277871b6d69623141276924ab687f89d)
++++ kubernetes-salt.tar.gz uploaded (sha1 = bdfc83ed6b60fa9e3bff9004b542cfc643464cd0)
+Looking for already existing resources
+Starting master and configuring firewalls
+Created [https://www.googleapis.com/compute/v1/projects/kubernetes-satnam/zones/us-central1-b/disks/kubernetes-master-pd].
+NAME                 ZONE          SIZE_GB TYPE   STATUS
+kubernetes-master-pd us-central1-b 20      pd-ssd READY
+Created [https://www.googleapis.com/compute/v1/projects/kubernetes-satnam/regions/us-central1/addresses/kubernetes-master-ip].
++++ Logging using Fluentd to elasticsearch
+</code></pre><p>Tanto los pods por nodo de Fluentd, como los pods de Elasticsearch, y los pods de Kibana
+deberían ejecutarse en el namespace de kube-system inmediatamente después
+de que el clúster esté disponible.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pods --namespace<span style=color:#666>=</span>kube-system
+</code></pre></div><pre><code>NAME                                           READY     STATUS    RESTARTS   AGE
+elasticsearch-logging-v1-78nog                 1/1       Running   0          2h
+elasticsearch-logging-v1-nj2nb                 1/1       Running   0          2h
+fluentd-elasticsearch-kubernetes-node-5oq0     1/1       Running   0          2h
+fluentd-elasticsearch-kubernetes-node-6896     1/1       Running   0          2h
+fluentd-elasticsearch-kubernetes-node-l1ds     1/1       Running   0          2h
+fluentd-elasticsearch-kubernetes-node-lz9j     1/1       Running   0          2h
+kibana-logging-v1-bhpo8                        1/1       Running   0          2h
+kube-dns-v3-7r1l9                              3/3       Running   0          2h
+monitoring-heapster-v4-yl332                   1/1       Running   1          2h
+monitoring-influx-grafana-v1-o79xf             2/2       Running   0          2h
+</code></pre><p>Los pods de <code>fluentd-elasticsearch</code> recogen los logs de cada nodo y los envían a los
+pods de <code>elasticsearch-logging</code>, que son parte de un <a href=/docs/concepts/services-networking/service/>servicio</a> llamado <code>elasticsearch-logging</code>.
+Estos pods de Elasticsearch almacenan los logs y los exponen via una API REST.
+El pod de <code>kibana-logging</code> proporciona una UI via web donde leer los logs almacenados en
+Elasticsearch, y es parte de un servicio denominado <code>kibana-logging</code>.</p><p>Los servicios de Elasticsearch y Kibana ambos están en el namespace <code>kube-system</code>
+y no se exponen de forma directa mediante una IP accesible públicamente. Para poder acceder a dichos logs,
+sigue las instrucciones acerca de cómo <a href=/docs/concepts/cluster-administration/access-clusater/#accessing-services-running-on-the-cluster>Acceder a servicios corriendo en un clúster</a>.</p><p>Si tratas de acceder al servicio de <code>elasticsearch-logging</code> desde tu navegador,
+verás una página de estado que se parece a la siguiente:</p><p><img src=/images/docs/es-browser.png alt="Estado de Elasticsearch"></p><p>A partir de ese momento, puedes introducir consultas de Elasticsearch directamente en el navegador, si lo necesitas.
+Echa un vistazo a la <a href=https://www.elastic.co/guide/en/elasticsearch/reference/current/search-uri-request.html>documentación de Elasticsearch</a>
+para más detalles acerca de cómo hacerlo.</p><p>De forma alternativa, puedes ver los logs de tu clúster en Kibana (de nuevo usando las
+<a href=/docs/user-guide/accessing-the-cluster/#accessing-services-running-on-the-cluster>instrucciones para acceder a un servicio corriendo en un clúster</a>).
+La primera vez que visitas la URL de Kibana se te presentará una página que te pedirá
+que configures una vista de los logs. Selecciona la opción de valores de serie temporal
+y luego <code>@timestamp</code>. En la página siguiente selecciona la pestaña de <code>Discover</code>
+y entonces deberías ver todos los logs. Puedes establecer el intervalo de actualización
+en 5 segundos para refrescar los logs de forma regular.</p><p>Aquí se muestra una vista típica de logs desde el visor de Kibana:</p><p><img src=/images/docs/kibana-logs.png alt="Kibana logs"></p><h2 id=siguientes-pasos>Siguientes pasos</h2><p>¡Kibana te permite todo tipo de potentes opciones para explorar tus logs! Puedes encontrar
+algunas ideas para profundizar en el tema en la <a href=https://www.elastic.co/guide/en/kibana/current/discover.html>documentación de Kibana</a>.</p></div><div class=td-content style=page-break-before:always><h1 id=pg-aef2d647baf9f2c220ed2d4af0721634>4 - Escribiendo Logs con Stackdriver</h1><p>Antes de seguir leyendo esta página, deberías familiarizarte con el
+<a href=/docs/concepts/cluster-administration/logging>resumen de escritura de logs en Kubernetes</a>.</p><blockquote class="note callout"><div><strong>Nota:</strong> Por defecto, Stackdriver recolecta toda la salida estándar de tus contenedores, así
+como el flujo de la salida de error. Para recolectar cualquier log tu aplicación escribe en un archivo (por ejemplo),
+ver la <a href=/docs/concepts/cluster-administration/logging#sidecar-container-with-a-logging-agent>estrategia de sidecar</a>
+en el resumen de escritura de logs en Kubernetes.</div></blockquote><h2 id=despliegue>Despliegue</h2><p>Para ingerir logs, debes desplegar el agente de Stackdriver Logging en cada uno de los nodos de tu clúster.
+Dicho agente configura una instancia de <code>fluentd</code>, donde la configuración se guarda en un <code>ConfigMap</code>
+y las instancias se gestionan a través de un <code>DaemonSet</code> de Kubernetes. El despliegue actual del
+<code>ConfigMap</code> y el <code>DaemonSet</code> dentro de tu clúster depende de tu configuración individual del clúster.</p><h3 id=desplegar-en-un-nuevo-clúster>Desplegar en un nuevo clúster</h3><h4 id=google-kubernetes-engine>Google Kubernetes Engine</h4><p>Stackdriver es la solución por defecto de escritura de logs para aquellos clústeres desplegados en Google Kubernetes Engine.
+Stackdriver Logging se despliega por defecto en cada clúster a no ser que se le indique de forma explícita no hacerlo.</p><h4 id=otras-plataformas>Otras plataformas</h4><p>Para desplegar Stackdriver Logging en un <em>nuevo</em> clúster que estés creando con
+<code>kube-up.sh</code>, haz lo siguiente:</p><ol><li>Configura la variable de entorno <code>KUBE_LOGGING_DESTINATION</code> con el valor <code>gcp</code>.</li><li><strong>Si no estás trabajando en GCE</strong>, incluye <code>beta.kubernetes.io/fluentd-ds-ready=true</code>
+en la variable <code>KUBE_NODE_LABELS</code>.</li></ol><p>Una vez que tu clúster ha arrancado, cada nodo debería ejecutar un agente de Stackdriver Logging.
+Los <code>DaemonSet</code> y <code>ConfigMap</code> se configuran como extras. Si no estás usando <code>kube-up.sh</code>,
+considera la posibilidad de arrancar un clúster sin una solución pre-determinada de escritura de logs
+y entonces desplegar los agentes de Stackdriver Logging una vez el clúster esté ejecutándose.</p><blockquote class="warning callout"><div><strong>Advertencia:</strong> El proceso de Stackdriver Logging reporta problemas conocidos en plataformas distintas
+a Google Kubernetes Engine. Úsalo bajo tu propio riesgo.</div></blockquote><h3 id=desplegar-a-un-clúster-existente>Desplegar a un clúster existente</h3><ol><li><p>Aplica una etiqueta en cada nodo, si no estaba presente ya.</p><p>El despliegue del agente de Stackdriver Logging utiliza etiquetas de nodo para
+determinar en qué nodos debería desplegarse. Estas etiquetas fueron introducidas
+para distinguir entre nodos de Kubernetes de la versión 1.6 o superior.
+Si el clúster se creó con Stackdriver Logging configurado y el nodo tiene la
+versión 1.5.X o inferior, ejecutará fluentd como un pod estático. Puesto que un nodo
+no puede tener más de una instancia de fluentd, aplica únicamente las etiquetas
+a los nodos que no tienen un pod de fluentd ya desplegado. Puedes confirmar si tu nodo
+ha sido etiquetado correctamente ejecutando <code>kubectl describe</code> de la siguiente manera:</p><pre><code>kubectl describe node $NODE_NAME
+</code></pre><p>La salida debería ser similar a la siguiente:</p><pre><code>Name:           NODE_NAME
+Role:
+Labels:         beta.kubernetes.io/fluentd-ds-ready=true
+...
+</code></pre><p>Asegúrate que la salida contiene la etiqueta <code>beta.kubernetes.io/fluentd-ds-ready=true</code>.
+Si no está presente, puedes añadirla usando el comando <code>kubectl label</code> como se indica:</p><pre><code>kubectl label node $NODE_NAME beta.kubernetes.io/fluentd-ds-ready=true
+</code></pre><blockquote class="note callout"><div><strong>Nota:</strong> Si un nodo falla y tiene que volver a crearse, deberás volver a definir
+la etiqueta al nuevo nodo. Para facilitar esta tarea, puedes utilizar el
+parámetro de línea de comandos del Kubelet para aplicar dichas etiquetas
+cada vez que se arranque un nodo.</div></blockquote></li><li><p>Despliega un <code>ConfigMap</code> con la configuración del agente de escritura de logs ejecutando el siguiente comando:</p><pre><code>kubectl apply -f https://k8s.io/examples/debug/fluentd-gcp-configmap.yaml
+</code></pre><p>Este comando crea el <code>ConfigMap</code> en el espacio de nombres <code>default</code>. Puedes descargar el archivo
+manualmente y cambiarlo antes de crear el objeto <code>ConfigMap</code>.</p></li><li><p>Despliega el agente <code>DaemonSet</code> de escritura de logs ejecutando el siguiente comando:</p><pre><code>kubectl apply -f https://k8s.io/examples/debug/fluentd-gcp-ds.yaml
+</code></pre><p>Puedes descargar y editar este archivo antes de usarlo igualmente.</p></li></ol><h2 id=verificar-el-despliegue-de-tu-agente-de-escritura-de-logs>Verificar el despliegue de tu agente de escritura de logs</h2><p>Tras el despliegue del <code>DaemonSet</code> de StackDriver, puedes comprobar el estado de
+cada uno de los despliegues de los agentes ejecutando el siguiente comando:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get ds --all-namespaces
+</code></pre></div><p>Si tienes 3 nodos en el clúster, la salida debería ser similar a esta:</p><pre><code>NAMESPACE     NAME               DESIRED   CURRENT   READY     NODE-SELECTOR                              AGE
+...
+default       fluentd-gcp-v2.0   3         3         3         beta.kubernetes.io/fluentd-ds-ready=true   5m
+...
+</code></pre><p>Para comprender cómo funciona Stackdriver, considera la siguiente especificación
+de un generador de logs sintéticos <a href=/examples/debug/counter-pod.yaml>counter-pod.yaml</a>:</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/es/examples/debug/counter-pod.yaml download=debug/counter-pod.yaml><code>debug/counter-pod.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('debug-counter-pod-yaml')" title="Copy debug/counter-pod.yaml to clipboard"></img></div><div class=includecode id=debug-counter-pod-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>counter<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>count<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>busybox<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>args</span>:<span style=color:#bbb> </span>[/bin/sh, -c,<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:#b44>&#39;i=0; while true; do echo &#34;$i: $(date)&#34;; i=$((i+1)); sleep 1; done&#39;</span>]<span style=color:#bbb>
+</span></code></pre></div></div></div><p>Esta especificación de pod tiene un contenedor que ejecuta una secuencia de comandos bash
+que escribe el valor de un contador y la fecha y hora cada segundo, de forma indefinida.
+Vamos a crear este pod en el espacio de nombres por defecto.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/debug/counter-pod.yaml
+</code></pre></div><p>Puedes observar el pod corriendo:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pods
+</code></pre></div><pre><code>NAME                                           READY     STATUS    RESTARTS   AGE
+counter                                        1/1       Running   0          5m
+</code></pre><p>Durante un período de tiempo corto puedes observar que el estado del pod es 'Pending', debido a que el kubelet
+tiene primero que descargar la imagen del contenedor. Cuando el estado del pod cambia a <code>Running</code>
+puedes usar el comando <code>kubectl logs</code> para ver la salida de este pod contador.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl logs counter
+</code></pre></div><pre><code>0: Mon Jan  1 00:00:00 UTC 2001
+1: Mon Jan  1 00:00:01 UTC 2001
+2: Mon Jan  1 00:00:02 UTC 2001
+...
+</code></pre><p>Como se describe en el resumen de escritura de logs, este comando visualiza las entradas de logs
+del archivo de logs del contenedor. Si se termina el contenedor y Kubernetes lo reinicia,
+todavía puedes acceder a los logs de la ejecución previa del contenedor. Sin embargo,
+si el pod se desaloja del nodo, los archivos de log se pierden. Vamos a demostrar este
+comportamiento mediante el borrado del contenedor que ejecuta nuestro contador:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl delete pod counter
+</code></pre></div><pre><code>pod &quot;counter&quot; deleted
+</code></pre><p>y su posterior re-creación:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl create -f https://k8s.io/examples/debug/counter-pod.yaml
+</code></pre></div><pre><code>pod/counter created
+</code></pre><p>Tras un tiempo, puedes acceder a los logs del pod contador otra vez:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl logs counter
+</code></pre></div><pre><code>0: Mon Jan  1 00:01:00 UTC 2001
+1: Mon Jan  1 00:01:01 UTC 2001
+2: Mon Jan  1 00:01:02 UTC 2001
+...
+</code></pre><p>Como era de esperar, únicamente se visualizan las líneas de log recientes. Sin embargo,
+para una aplicación real seguramente prefieras acceder a los logs de todos los contenedores,
+especialmente cuando te haga falta depurar problemas. Aquí es donde haber habilitado
+Stackdriver Logging puede ayudarte.</p><h2 id=ver-logs>Ver logs</h2><p>El agente de Stackdriver Logging asocia metadatos a cada entrada de log, para que puedas usarlos posteriormente
+en consultas para seleccionar sólo los mensajes que te interesan: por ejemplo,
+los mensajes de un pod en particular.</p><p>Los metadatos más importantes son el tipo de recurso y el nombre del log.
+El tipo de recurso de un log de contenedor tiene el valor <code>container</code>, que se muestra como
+<code>GKE Containers</code> en la UI (incluso si el clúster de Kubernetes no está en Google Kubernetes Engine).
+El nombre de log es el nombre del contenedor, de forma que si tienes un pod con
+dos contenedores, denominados <code>container_1</code> y <code>container_2</code> en la especificación, sus logs
+tendrán los nombres <code>container_1</code> y <code>container_2</code> respectivamente.</p><p>Los componentes del sistema tienen el valor <code>compute</code> como tipo de recursos, que se muestra como
+<code>GCE VM Instance</code> en la UI. Los nombres de log para los componentes del sistema son fijos.
+Para un nodo de Google Kubernetes Engine, cada entrada de log de cada componente de sistema tiene uno de los siguientes nombres:</p><ul><li>docker</li><li>kubelet</li><li>kube-proxy</li></ul><p>Puedes aprender más acerca de cómo visualizar los logs en la <a href=https://cloud.google.com/logging/docs/view/logs_viewer>página dedicada a Stackdriver</a>.</p><p>Uno de los posibles modos de ver los logs es usando el comando de línea de interfaz
+<a href=https://cloud.google.com/logging/docs/api/gcloud-logging><code>gcloud logging</code></a>
+del <a href=https://cloud.google.com/sdk/>SDK de Google Cloud</a>.
+Este comando usa la <a href=https://cloud.google.com/logging/docs/view/advanced_filters>sintaxis de filtrado</a> de StackDriver Logging
+para consultar logs específicos. Por ejemplo, puedes ejecutar el siguiente comando:</p><pre><code class=language-none data-lang=none>gcloud beta logging read 'logName=&quot;projects/$YOUR_PROJECT_ID/logs/count&quot;' --format json | jq '.[].textPayload'
+</code></pre><pre><code>...
+&quot;2: Mon Jan  1 00:01:02 UTC 2001\n&quot;
+&quot;1: Mon Jan  1 00:01:01 UTC 2001\n&quot;
+&quot;0: Mon Jan  1 00:01:00 UTC 2001\n&quot;
+...
+&quot;2: Mon Jan  1 00:00:02 UTC 2001\n&quot;
+&quot;1: Mon Jan  1 00:00:01 UTC 2001\n&quot;
+&quot;0: Mon Jan  1 00:00:00 UTC 2001\n&quot;
+</code></pre><p>Como puedes observar, muestra los mensajes del contenedor contador tanto de la
+primera como de la segunda ejecución, a pesar de que el kubelet ya había eliminado los logs del primer contenedor.</p><h3 id=exportar-logs>Exportar logs</h3><p>Puedes exportar los logs al <a href=https://cloud.google.com/storage/>Google Cloud Storage</a>
+o a <a href=https://cloud.google.com/bigquery/>BigQuery</a> para llevar a cabo un análisis más profundo.
+Stackdriver Logging ofrece el concepto de destinos, donde puedes especificar el destino de
+las entradas de logs. Más información disponible en la <a href=https://cloud.google.com/logging/docs/export/configure_export_v2>página de exportación de logs</a> de StackDriver.</p><h2 id=configurar-los-agentes-de-stackdriver-logging>Configurar los agentes de Stackdriver Logging</h2><p>En ocasiones la instalación por defecto de Stackdriver Logging puede que no se ajuste a tus necesidades, por ejemplo:</p><ul><li>Puede que quieras añadir más recursos porque el rendimiento por defecto no encaja con tus necesidades.</li><li>Puede que quieras añadir un parseo adicional para extraer más metadatos de tus mensajes de log,
+como la severidad o referencias al código fuente.</li><li>Puede que quieras enviar los logs no sólo a Stackdriver o sólo enviarlos a Stackdriver parcialmente.</li></ul><p>En cualquiera de estos casos, necesitas poder cambiar los parámetros del <code>DaemonSet</code> y el <code>ConfigMap</code>.</p><h3 id=prerequisitos>Prerequisitos</h3><p>Si estás usando GKE y Stackdriver Logging está habilitado en tu clúster, no puedes
+cambiar su configuración, porque ya está gestionada por GKE.
+Sin embargo, puedes deshabilitar la integración por defecto y desplegar la tuya propia.</p><blockquote class="note callout"><div><strong>Nota:</strong> Tendrás que mantener y dar soporte tú mismo a la nueva configuración desplegada:
+actualizar la imagen y la configuración, ajustar los recuros y todo eso.</div></blockquote><p>Para deshabilitar la integración por defecto, usa el siguiente comando:</p><pre><code>gcloud beta container clusters update --logging-service=none CLUSTER
+</code></pre><p>Puedes encontrar notas acerca de cómo instalar los agentes de Stackdriver Logging
+en un clúster ya ejecutándose en la <a href=#deploying>sección de despliegue</a>.</p><h3 id=cambiar-los-parámetros-del-daemonset>Cambiar los parámetros del <code>DaemonSet</code></h3><p>Cuando tienes un <code>DaemonSet</code> de Stackdriver Logging en tu clúster, puedes simplemente
+modificar el campo <code>template</code> en su especificación, y el controlador del daemonset actualizará los pods por ti. Por ejemplo,
+asumamos que acabas de instalar el Stackdriver Logging como se describe arriba. Ahora quieres cambiar
+el límite de memoria que se le asigna a fluentd para poder procesar más logs de forma segura.</p><p>Obtén la especificación del <code>DaemonSet</code> que corre en tu clúster:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get ds fluentd-gcp-v2.0 --namespace kube-system -o yaml &gt; fluentd-gcp-ds.yaml
+</code></pre></div><p>A continuación, edita los requisitos del recurso en el <code>spec</code> y actualiza el objeto <code>DaemonSet</code>
+en el apiserver usando el siguiente comando:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl replace -f fluentd-gcp-ds.yaml
+</code></pre></div><p>Tras un tiempo, los pods de agente de Stackdriver Logging se reiniciarán con la nueva configuración.</p><h3 id=cambiar-los-parámetros-de-fluentd>Cambiar los parámetros de fluentd</h3><p>La configuración de Fluentd se almacena en un objeto <code>ConfigMap</code>. Realmente se trata de un conjunto
+de archivos de configuración que se combinan conjuntamente. Puedes aprender acerca de
+la configuración de fluentd en el <a href=http://docs.fluentd.org>sitio oficial</a>.</p><p>Imagina que quieres añadir una nueva lógica de parseo a la configuración actual, de forma que fluentd pueda entender
+el formato de logs por defecto de Python. Un filtro apropiado de fluentd para conseguirlo sería:</p><pre><code>&lt;filter reform.**&gt;
+  type parser
+  format /^(?&lt;severity&gt;\w):(?&lt;logger_name&gt;\w):(?&lt;log&gt;.*)/
+  reserve_data true
+  suppress_parse_error_log true
+  key_name log
+&lt;/filter&gt;
+</code></pre><p>Ahora tienes que añadirlo a la configuración actual y que los agentes de Stackdriver Logging la usen.
+Para ello, obtén la versión actual del <code>ConfigMap</code> de Stackdriver Logging de tu clúster
+ejecutando el siguiente comando:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get cm fluentd-gcp-config --namespace kube-system -o yaml &gt; fluentd-gcp-configmap.yaml
+</code></pre></div><p>Luego, como valor de la clave <code>containers.input.conf</code>, inserta un nuevo filtro justo después
+de la sección <code>source</code>.</p><blockquote class="note callout"><div><strong>Nota:</strong> El orden es importante.</div></blockquote><p>Actualizar el <code>ConfigMap</code> en el apiserver es más complicado que actualizar el <code>DaemonSet</code>.
+Es mejor considerar que un <code>ConfigMap</code> es inmutable. Así, para poder actualizar la configuración, deberías
+crear un nuevo <code>ConfigMap</code> con otro nombre y cambiar el <code>DaemonSet</code> para que apunte al nuevo
+siguiendo la <a href=#changing-daemonset-parameters>guía de arriba</a>.</p><h3 id=añadir-plugins-de-fluentd>Añadir plugins de fluentd</h3><p>Fluentd está desarrollado en Ruby y permite extender sus capacidades mediante el uso de
+<a href=http://www.fluentd.org/plugins>plugins</a>. Si quieres usar un plugin que no está incluido en
+la imagen por defecto del contenedor de Stackdriver Logging, debes construir tu propia imagen.
+Imagina que quieres añadir un destino Kafka para aquellos mensajes de un contenedor en particular
+para poder procesarlos posteriormente. Puedes reusar los <a href=https://git.k8s.io/contrib/fluentd/fluentd-gcp-image>fuentes de imagen de contenedor</a>
+con algunos pequeños cambios:</p><ul><li>Cambia el archivo Makefile para que apunte a tu repositorio de contenedores, ej. <code>PREFIX=gcr.io/&lt;your-project-id></code>.</li><li>Añade tu dependencia al archivo Gemfile, por ejemplo <code>gem 'fluent-plugin-kafka'</code>.</li></ul><p>Luego, ejecuta <code>make build push</code> desde ese directorio. Cuando el <code>DaemonSet</code> haya tomado los cambios de la nueva imagen,
+podrás usar el plugin que has indicado en la configuración de fluentd.</p></div><div class=td-content style=page-break-before:always><h1 id=pg-96b25d30e732385047272b84d3c4188f>5 - Pipeline de métricas de recursos</h1><p>Desde Kubernetes 1.8, las métricas de uso de recursos, tales como el uso de CPU y memoria del contenedor,
+están disponibles en Kubernetes a través de la API de métricas. Estas métricas son accedidas directamente
+por el usuario, por ejemplo usando el comando <code>kubectl top</code>, o usadas por un controlador en el cluster,
+por ejemplo el Horizontal Pod Autoscaler, para la toma de decisiones.</p><h2 id=la-api-de-métricas>La API de Métricas</h2><p>A través de la API de métricas, Metrics API en inglés, puedes obtener la cantidad de recursos usados
+actualmente por cada nodo o pod. Esta API no almacena los valores de las métricas,
+así que no es posible, por ejemplo, obtener la cantidad de recursos que fueron usados por
+un nodo hace 10 minutos.</p><p>La API de métricas está completamente integrada en la API de Kubernetes:</p><ul><li>se expone a través del mismo endpoint que las otras APIs de Kubernetes bajo el path <code>/apis/metrics.k8s.io/</code></li><li>ofrece las mismas garantías de seguridad, escalabilidad y confiabilidad</li></ul><p>La API está definida en el repositorio <a href=https://github.com/kubernetes/metrics/blob/master/pkg/apis/metrics/v1beta1/types.go>k8s.io/metrics</a>. Puedes encontrar
+más información sobre la API ahí.</p><blockquote class="note callout"><div><strong>Nota:</strong> La API requiere que el servidor de métricas esté desplegado en el clúster. En otro caso no estará
+disponible.</div></blockquote><h2 id=servidor-de-métricas>Servidor de Métricas</h2><p>El <a href=https://github.com/kubernetes-incubator/metrics-server>Servidor de Métricas</a> es un agregador
+de datos de uso de recursos de todo el clúster.
+A partir de Kubernetes 1.8, el servidor de métricas se despliega por defecto como un objeto de
+tipo <a href=https://github.com/docs/concepts/workloads/controllers/deployment/>Deployment</a> en clústeres
+creados con el script <code>kube-up.sh</code>. Si usas otro mecanismo de configuración de Kubernetes, puedes desplegarlo
+usando los <a href=https://github.com/kubernetes-incubator/metrics-server/tree/master/deploy>yamls de despliegue</a>
+proporcionados. Está soportado a partir de Kubernetes 1.7 (más detalles al final).</p><p>El servidor reune métricas de la Summary API, que es expuesta por el <a href=/docs/admin/kubelet/>Kubelet</a> en cada nodo.</p><p>El servidor de métricas se añadió a la API de Kubernetes utilizando el
+<a href=/docs/concepts/api-extension/apiserver-aggregation/>Kubernetes aggregator</a> introducido en Kubernetes 1.7.</p><p>Puedes aprender más acerca del servidor de métricas en el <a href=https://github.com/kubernetes/community/blob/master/contributors/design-proposals/instrumentation/metrics-server.md>documento de diseño</a>.</p></div></main></div></div><footer class=d-print-none><div class=footer__links><nav><a class=text-white href=/es/docs/home/>Home</a>
+<a class=text-white href=/es/blog/>Blog</a>
+<a class=text-white href=/es/partners/>Partners</a>
+<a class=text-white href=/es/community/>Comunidad</a>
+<a class=text-white href=/es/case-studies/>Casos de éxito</a></nav></div><div class=container-fluid><div class=row><div class="col-6 col-sm-2 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="User mailing list" aria-label="User mailing list"><a class=text-white target=_blank href=https://discuss.kubernetes.io><i class="fa fa-envelope"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank href=https://twitter.com/kubernetesio><i class="fab fa-twitter"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Calendar aria-label=Calendar><a class=text-white target=_blank href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io"><i class="fas fa-calendar-alt"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Youtube aria-label=Youtube><a class=text-white target=_blank href=https://youtube.com/kubernetescommunity><i class="fab fa-youtube"></i></a></li></ul></div><div class="col-6 col-sm-2 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank href=https://github.com/kubernetes/kubernetes><i class="fab fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Slack aria-label=Slack><a class=text-white target=_blank href=https://slack.k8s.io><i class="fab fa-slack"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Contribute aria-label=Contribute><a class=text-white target=_blank href=https://git.k8s.io/community/contributors/guide><i class="fas fa-edit"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="Stack Overflow" aria-label="Stack Overflow"><a class=text-white target=_blank href=https://stackoverflow.com/questions/tagged/kubernetes><i class="fab fa-stack-overflow"></i></a></li></ul></div><div class="col-12 col-sm-8 text-center order-sm-2"><small class=text-white>&copy; 2026 Los autores de Kubernetes | Documentación distribuida bajo <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a></small><br><small class=text-white>Copyright &copy; 2026 The Linux Foundation &reg;. Todos los derechos reservados. The Linux Foundation tiene marcas registradas y utiliza marcas registradas. Para obtener una lista de marcas registradas por The Linux Foundation, visita <a href=https://www.linuxfoundation.org/trademark-usage class=light-text>Trademark Usage page</a></small><br><small class=text-white><a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></small></div></div></div></footer></div><script src=/js/popper-1.14.3.min.js integrity=sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49 crossorigin=anonymous></script><script src=/js/bootstrap-4.3.1.min.js integrity=sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM crossorigin=anonymous></script><script src=/js/main.min.223905d4acc5f7b370e2af585c8a5b56ce39b2fddddd6dffb6f6c3428927fe2c.js integrity="sha256-IjkF1KzF97Nw4q9YXIpbVs45sv3d3W3/tvbDQokn/iw=" crossorigin=anonymous></script></body></html>

@@ -1,0 +1,1018 @@
+<!doctype html><html lang=zh class=no-js><head><meta name=ROBOTS content="NOINDEX, NOFOLLOW"><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','UA-36037335-10')</script><script type=text/javascript>(function(a,e,b,f,g,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},c=e.createElement(f),c.async=1,c.src="https://www.clarity.ms/tag/"+g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d)})(window,document,"clarity","script","yn9rpyjul2")</script><link rel=alternate hreflang=en href=https://kubernetes.xuxiaowei.com.cn/docs/concepts/cluster-administration/><link rel=alternate hreflang=ko href=https://kubernetes.xuxiaowei.com.cn/ko/docs/concepts/cluster-administration/><link rel=alternate hreflang=ja href=https://kubernetes.xuxiaowei.com.cn/ja/docs/concepts/cluster-administration/><link rel=alternate hreflang=fr href=https://kubernetes.xuxiaowei.com.cn/fr/docs/concepts/cluster-administration/><link rel=alternate hreflang=it href=https://kubernetes.xuxiaowei.com.cn/it/docs/concepts/cluster-administration/><link rel=alternate hreflang=de href=https://kubernetes.xuxiaowei.com.cn/de/docs/concepts/cluster-administration/><link rel=alternate hreflang=es href=https://kubernetes.xuxiaowei.com.cn/es/docs/concepts/cluster-administration/><link rel=alternate hreflang=pt href=https://kubernetes.xuxiaowei.com.cn/pt/docs/concepts/cluster-administration/><link rel=alternate hreflang=id href=https://kubernetes.xuxiaowei.com.cn/id/docs/concepts/cluster-administration/><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.82.0"><link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/><link rel="shortcut icon" type=image/png href=/images/favicon.png><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=manifest href=/manifest.webmanifest><link rel=apple-touch-icon href=/images/kubernetes-192x192.png><title>集群管理 | Kubernetes</title><meta property="og:title" content="集群管理"><meta property="og:description" content="关于创建和管理 Kubernetes 集群的底层细节。
+"><meta property="og:type" content="website"><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/"><meta property="og:site_name" content="Kubernetes"><meta itemprop=name content="集群管理"><meta itemprop=description content="关于创建和管理 Kubernetes 集群的底层细节。
+"><meta name=twitter:card content="summary"><meta name=twitter:title content="集群管理"><meta name=twitter:description content="关于创建和管理 Kubernetes 集群的底层细节。
+"><link rel=preload href=/scss/main.min.ed63f113a0b4af323a0aa55cc07086aca653953991514680addf11d30c63bcf4.css as=style><link href=/scss/main.min.ed63f113a0b4af323a0aa55cc07086aca653953991514680addf11d30c63bcf4.css rel=stylesheet integrity><script src=/js/jquery-3.3.1.min.js integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin=anonymous></script><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png"}</script><meta name=theme-color content="#326ce5"><link rel=stylesheet href=/css/feature-states.css><meta name=description content="关于创建和管理 Kubernetes 集群的底层细节。
+"><meta property="og:description" content="关于创建和管理 Kubernetes 集群的底层细节。
+"><meta name=twitter:description content="关于创建和管理 Kubernetes 集群的底层细节。
+"><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/"><meta property="og:title" content="集群管理"><meta name=twitter:title content="集群管理"><meta name=twitter:image content="https://kubernetes.io/images/favicon.png"><meta name=twitter:image:alt content="Kubernetes"><meta property="og:image" content="/images/kubernetes-horizontal-color.png"><meta property="og:type" content="article"><script src=/js/script.js></script></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-row td-navbar" data-auto-burger=primary><a class=navbar-brand href=/zh/></a><div class="td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0"><li class="nav-item mr-2 mb-lg-0"><a class="nav-link active" href=/zh/docs/>文档</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/zh/blog/>Kubernetes 博客</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/zh/training/>培训</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/zh/partners/>合作伙伴</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/zh/community/>社区</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/zh/case-studies/>案例分析</span></a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>版本列表</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=https://xuxiaowei.io/t/1320/zh/docs/concepts/cluster-administration/>Kubernetes 文档说明</a>
+<a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/>v1.38</a>
+<a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/>v1.37</a>
+<a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/>v1.36</a>
+<a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/>v1.35</a>
+<a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/>v1.34</a>
+<a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/>v1.33</a>
+<a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/>v1.32</a>
+<a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/>v1.31</a>
+<a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/>v1.30</a>
+<a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/>v1.29</a>
+<a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/>v1.28</a>
+<a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/>v1.27</a>
+<a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/>v1.26</a>
+<a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/>v1.25</a>
+<a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/>v1.24</a>
+<a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/>v1.23</a>
+<a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/>v1.22</a>
+<a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/>v1.21</a>
+<a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn/zh/docs/concepts/cluster-administration/>v1.20</a></div></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdownMenuLink role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>中文 Chinese</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/concepts/cluster-administration/>English</a>
+<a class=dropdown-item href=/ko/docs/concepts/cluster-administration/>한국어 Korean</a>
+<a class=dropdown-item href=/ja/docs/concepts/cluster-administration/>日本語 Japanese</a>
+<a class=dropdown-item href=/fr/docs/concepts/cluster-administration/>Français</a>
+<a class=dropdown-item href=/it/docs/concepts/cluster-administration/>Italiano</a>
+<a class=dropdown-item href=/de/docs/concepts/cluster-administration/>Deutsch</a>
+<a class=dropdown-item href=/es/docs/concepts/cluster-administration/>Español</a>
+<a class=dropdown-item href=/pt/docs/concepts/cluster-administration/>Português</a>
+<a class=dropdown-item href=/id/docs/concepts/cluster-administration/>Bahasa Indonesia</a></div></li></ul></div><button id=hamburger onclick=kub.toggleMenu() data-auto-burger-exclude><div></div></button></nav></header><div class="container-fluid td-outer"><div class=td-main><div class="row flex-xl-nowrap"><div class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none"></div><div class="d-none d-xl-block col-xl-2 td-toc d-print-none"></div><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><div class=td-content><div class="pageinfo pageinfo-primary d-print-none"><p>这是本节的多页打印视图。
+<a href=# onclick="return print(),!1">点击此处打印</a>.</p><p><a href=/zh/docs/concepts/cluster-administration/>返回本页常规视图</a>.</p></div><h1 class=title>集群管理</h1><div class=lead>关于创建和管理 Kubernetes 集群的底层细节。</div><ul><li>1: <a href=#pg-2bf9a93ab5ba014fb6ff70b22c29d432>证书</a></li><li>2: <a href=#pg-3aeeecf7cdb2a21eb4b31db7a71c81e2>管理资源</a></li><li>3: <a href=#pg-d649067a69d8d5c7e71564b42b96909e>集群网络系统</a></li><li>4: <a href=#pg-cbfd3654996eae9fcdef009f70fa83f0>Kubernetes 系统组件指标</a></li><li>5: <a href=#pg-c4b1e87a84441f8a90699a345ce48d68>日志架构</a></li><li>6: <a href=#pg-5cc31ecfba86467f8884856412cfb6b2>系统日志</a></li><li>7: <a href=#pg-2e05a56491965ae320c2662590b2ca18>容器镜像的垃圾收集</a></li><li>8: <a href=#pg-08e94e6a480e0d6b2de72d84a1b97617>Kubernetes 中的代理</a></li><li>9: <a href=#pg-31c9327d2332c585341b64ddafa19cdd>API 优先级和公平性</a></li><li>10: <a href=#pg-85d633ae590aa20ec024f1b7af1d74fc>安装扩展（Addons）</a></li></ul><div class=content><p>集群管理概述面向任何创建和管理 Kubernetes 集群的读者人群。
+我们假设你大概了解一些核心的 Kubernetes <a href=/zh/docs/concepts/>概念</a>。</p><h2 id=planning-a-cluster>规划集群</h2><p>查阅<a href=/zh/docs/setup/>安装</a>中的指导，获取如何规划、建立以及配置 Kubernetes
+集群的示例。本文所列的文章称为<em>发行版</em> 。</p><blockquote class="note callout"><div><strong>说明：</strong> 并非所有发行版都是被积极维护的。
+请选择使用最近 Kubernetes 版本测试过的发行版。</div></blockquote><p>在选择一个指南前，有一些因素需要考虑：</p><ul><li>你是打算在你的计算机上尝试 Kubernetes，还是要构建一个高可用的多节点集群？
+请选择最适合你需求的发行版。</li><li>你正在使用类似 <a href=https://cloud.google.com/kubernetes-engine/>Google Kubernetes Engine</a>
+这样的<strong>被托管的 Kubernetes 集群</strong>, 还是<strong>管理你自己的集群</strong>？</li><li>你的集群是在<strong>本地</strong>还是<strong>云（IaaS）</strong> 上？Kubernetes 不能直接支持混合集群。
+作为代替，你可以建立多个集群。</li><li><strong>如果你在本地配置 Kubernetes</strong>，需要考虑哪种
+<a href=/zh/docs/concepts/cluster-administration/networking/>网络模型</a>最适合。</li><li>你的 Kubernetes 在<strong>裸金属硬件</strong>上还是<strong>虚拟机（VMs）</strong> 上运行？</li><li>你是想<strong>运行一个集群</strong>，还是打算<strong>参与开发 Kubernetes 项目代码</strong>？
+如果是后者，请选择一个处于开发状态的发行版。
+某些发行版只提供二进制发布版，但提供更多的选择。</li><li>让你自己熟悉运行一个集群所需的<a href=/zh/docs/concepts/overview/components/>组件</a>。</li></ul><h2 id=managing-a-cluster>管理集群</h2><ul><li><p>学习如何<a href=/zh/docs/concepts/architecture/nodes/>管理节点</a>。</p></li><li><p>学习如何设定和管理集群共享的<a href=/zh/docs/concepts/policy/resource-quotas/>资源配额</a> 。</p></li></ul><h2 id=securing-a-cluster>保护集群</h2><ul><li><a href=/zh/docs/tasks/administer-cluster/certificates/>生成证书</a>
+节描述了使用不同的工具链生成证书的步骤。</li><li><a href=/zh/docs/concepts/containers/container-environment/>Kubernetes 容器环境</a>
+描述了 Kubernetes 节点上由 Kubelet 管理的容器的环境。</li><li><a href=/zh/docs/concepts/security/controlling-access/>控制到 Kubernetes API 的访问</a>
+描述了如何为用户和 service accounts 建立权限许可。</li><li><a href=/zh/docs/reference/access-authn-authz/authentication/>身份认证</a>
+节阐述了 Kubernetes 中的身份认证功能，包括许多认证选项。</li><li><a href=/zh/docs/reference/access-authn-authz/authorization/>鉴权</a>
+与身份认证不同，用于控制如何处理 HTTP 请求。</li><li><a href=/zh/docs/reference/access-authn-authz/admission-controllers>使用准入控制器</a>
+阐述了在认证和授权之后拦截到 Kubernetes API 服务的请求的插件。</li><li><a href=/zh/docs/tasks/administer-cluster/sysctl-cluster/>在 Kubernetes 集群中使用 Sysctls</a>
+描述了管理员如何使用 <code>sysctl</code> 命令行工具来设置内核参数。</li><li><a href=/zh/docs/tasks/debug-application-cluster/audit/>审计</a>
+描述了如何与 Kubernetes 的审计日志交互。</li></ul><h3 id=securing-the-kubelet>保护 kubelet</h3><ul><li><a href=/zh/docs/concepts/architecture/control-plane-node-communication/>主控节点通信</a></li><li><a href=/zh/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/>TLS 引导</a></li><li><a href=/zh/docs/reference/command-line-tools-reference/kubelet-authentication-authorization/>Kubelet 认证/授权</a></li></ul><h2 id=optional-cluster-services>可选集群服务</h2><ul><li><a href=/zh/docs/concepts/services-networking/dns-pod-service/>DNS 集成</a>
+描述了如何将一个 DNS 名解析到一个 Kubernetes service。</li><li><a href=/zh/docs/concepts/cluster-administration/logging/>记录和监控集群活动</a>
+阐述了 Kubernetes 的日志如何工作以及怎样实现。</li></ul></div></div><div class=td-content style=page-break-before:always><h1 id=pg-2bf9a93ab5ba014fb6ff70b22c29d432>1 - 证书</h1><p>要了解如何为集群生成证书，参阅<a href=/zh/docs/tasks/administer-cluster/certificates/>证书</a>。</p></div><div class=td-content style=page-break-before:always><h1 id=pg-3aeeecf7cdb2a21eb4b31db7a71c81e2>2 - 管理资源</h1><p>你已经部署了应用并通过服务暴露它。然后呢？
+Kubernetes 提供了一些工具来帮助管理你的应用部署，包括扩缩容和更新。
+我们将更深入讨论的特性包括
+<a href=/zh/docs/concepts/configuration/overview/>配置文件</a>和
+<a href=/zh/docs/concepts/overview/working-with-objects/labels/>标签</a>。</p><h2 id=组织资源配置>组织资源配置</h2><p>许多应用需要创建多个资源，例如 Deployment 和 Service。
+可以通过将多个资源组合在同一个文件中（在 YAML 中以 <code>---</code> 分隔）
+来简化对它们的管理。例如：</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/zh/examples/application/nginx-app.yaml download=application/nginx-app.yaml><code>application/nginx-app.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('application-nginx-app-yaml')" title="Copy application/nginx-app.yaml to clipboard"></img></div><div class=includecode id=application-nginx-app-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Service<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>my-nginx-svc<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>type</span>:<span style=color:#bbb> </span>LoadBalancer<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>ports</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>port</span>:<span style=color:#bbb> </span><span style=color:#666>80</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:#00f;font-weight:700>---</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>apps/v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Deployment<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>my-nginx<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>replicas</span>:<span style=color:#bbb> </span><span style=color:#666>3</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>matchLabels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>template</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx:1.14.2<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>ports</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>containerPort</span>:<span style=color:#bbb> </span><span style=color:#666>80</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>可以用创建单个资源相同的方式来创建多个资源：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/application/nginx-app.yaml
+</code></pre></div><pre><code>service/my-nginx-svc created
+deployment.apps/my-nginx created
+</code></pre><p>资源将按照它们在文件中的顺序创建。
+因此，最好先指定服务，这样在控制器（例如 Deployment）创建 Pod 时能够
+确保调度器可以将与服务关联的多个 Pod 分散到不同节点。</p><p><code>kubectl create</code> 也接受多个 <code>-f</code> 参数:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/application/nginx/nginx-svc.yaml -f https://k8s.io/examples/application/nginx/nginx-deployment.yaml
+</code></pre></div><p>还可以指定目录路径，而不用添加多个单独的文件：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/application/nginx/
+</code></pre></div><p><code>kubectl</code> 将读取任何后缀为 <code>.yaml</code>、<code>.yml</code> 或者 <code>.json</code> 的文件。</p><p>建议的做法是，将同一个微服务或同一应用层相关的资源放到同一个文件中，
+将同一个应用相关的所有文件按组存放到同一个目录中。
+如果应用的各层使用 DNS 相互绑定，那么你可以将堆栈的所有组件一起部署。</p><p>还可以使用 URL 作为配置源，便于直接使用已经提交到 Github 上的配置文件进行部署：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://raw.githubusercontent.com/kubernetes/website/master/content/zh/examples/application/nginx/nginx-deployment.yaml
+</code></pre></div><pre><code>deployment.apps/my-nginx created
+</code></pre><h2 id=kubectl-中的批量操作>kubectl 中的批量操作</h2><p>资源创建并不是 <code>kubectl</code> 可以批量执行的唯一操作。
+<code>kubectl</code> 还可以从配置文件中提取资源名，以便执行其他操作，
+特别是删除你之前创建的资源：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl delete -f https://k8s.io/examples/application/nginx-app.yaml
+</code></pre></div><pre><code>deployment.apps &quot;my-nginx&quot; deleted
+service &quot;my-nginx-svc&quot; deleted
+</code></pre><p>在仅有两种资源的情况下，可以使用"资源类型/资源名"的语法在命令行中
+同时指定这两个资源：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl delete deployments/my-nginx services/my-nginx-svc
+</code></pre></div><p>对于资源数目较大的情况，你会发现使用 <code>-l</code> 或 <code>--selector</code>
+指定筛选器（标签查询）能很容易根据标签筛选资源：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl delete deployment,services -l <span style=color:#b8860b>app</span><span style=color:#666>=</span>nginx
+</code></pre></div><pre><code>deployment.apps &quot;my-nginx&quot; deleted
+service &quot;my-nginx-svc&quot; deleted
+</code></pre><p>由于 <code>kubectl</code> 用来输出资源名称的语法与其所接受的资源名称语法相同，
+你可以使用 <code>$()</code> 或 <code>xargs</code> 进行链式操作：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get <span style=color:#a2f;font-weight:700>$(</span>kubectl create -f docs/concepts/cluster-administration/nginx/ -o name | grep service<span style=color:#a2f;font-weight:700>)</span>
+kubectl create -f docs/concepts/cluster-administration/nginx/ -o name | grep service | xargs -i kubectl get <span style=color:#666>{}</span>
+</code></pre></div><pre><code>NAME           TYPE           CLUSTER-IP   EXTERNAL-IP   PORT(S)      AGE
+my-nginx-svc   LoadBalancer   10.0.0.208   &lt;pending&gt;     80/TCP       0s
+</code></pre><p>上面的命令中，我们首先使用 <code>examples/application/nginx/</code> 下的配置文件创建资源，
+并使用 <code>-o name</code> 的输出格式（以"资源/名称"的形式打印每个资源）打印所创建的资源。
+然后，我们通过 <code>grep</code> 来过滤 "service"，最后再打印 <code>kubectl get</code> 的内容。</p><p>如果你碰巧在某个路径下的多个子路径中组织资源，那么也可以递归地在所有子路径上
+执行操作，方法是在 <code>--filename,-f</code> 后面指定 <code>--recursive</code> 或者 <code>-R</code>。</p><p>例如，假设有一个目录路径为 <code>project/k8s/development</code>，它保存开发环境所需的
+所有清单，并按资源类型组织：</p><pre><code>project/k8s/development
+├── configmap
+│   └── my-configmap.yaml
+├── deployment
+│   └── my-deployment.yaml
+└── pvc
+    └── my-pvc.yaml
+</code></pre><p>默认情况下，对 <code>project/k8s/development</code> 执行的批量操作将停止在目录的第一级，
+而不是处理所有子目录。
+如果我们试图使用以下命令在此目录中创建资源，则会遇到一个错误：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f project/k8s/development
+</code></pre></div><pre><code>error: you must provide one or more resources by argument or filename (.json|.yaml|.yml|stdin)
+</code></pre><p>正确的做法是，在 <code>--filename,-f</code> 后面标明 <code>--recursive</code> 或者 <code>-R</code> 之后：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f project/k8s/development --recursive
+</code></pre></div><pre><code>configmap/my-config created
+deployment.apps/my-deployment created
+persistentvolumeclaim/my-pvc created
+</code></pre><p><code>--recursive</code> 可以用于接受 <code>--filename,-f</code> 参数的任何操作，例如：
+<code>kubectl {create,get,delete,describe,rollout}</code> 等。</p><p>有多个 <code>-f</code> 参数出现的时候，<code>--recursive</code> 参数也能正常工作：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f project/k8s/namespaces -f project/k8s/development --recursive
+</code></pre></div><pre><code>namespace/development created
+namespace/staging created
+configmap/my-config created
+deployment.apps/my-deployment created
+persistentvolumeclaim/my-pvc created
+</code></pre><p>如果你有兴趣进一步学习关于 <code>kubectl</code> 的内容，请阅读
+<a href=/zh/docs/reference/kubectl/overview/>kubectl 概述</a>。</p><h2 id=有效地使用标签>有效地使用标签</h2><p>到目前为止我们使用的示例中的资源最多使用了一个标签。
+在许多情况下，应使用多个标签来区分集合。</p><p>例如，不同的应用可能会为 <code>app</code> 标签设置不同的值。
+但是，类似 <a href=https://github.com/kubernetes/examples/tree/v1.20.15/guestbook/>guestbook 示例</a>
+这样的多层应用，还需要区分每一层。前端可以带以下标签：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#bbb>     </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>guestbook<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>tier</span>:<span style=color:#bbb> </span>frontend<span style=color:#bbb>
+</span></code></pre></div><p>Redis 的主节点和从节点会有不同的 <code>tier</code> 标签，甚至还有一个额外的 <code>role</code> 标签：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#bbb>     </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>guestbook<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>tier</span>:<span style=color:#bbb> </span>backend<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>role</span>:<span style=color:#bbb> </span>master<span style=color:#bbb>
+</span></code></pre></div><p>以及</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#bbb>     </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>guestbook<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>tier</span>:<span style=color:#bbb> </span>backend<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>role</span>:<span style=color:#bbb> </span>slave<span style=color:#bbb>
+</span></code></pre></div><p>标签允许我们按照标签指定的任何维度对我们的资源进行切片和切块：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f examples/guestbook/all-in-one/guestbook-all-in-one.yaml
+kubectl get pods -Lapp -Ltier -Lrole
+</code></pre></div><pre><code>NAME                           READY     STATUS    RESTARTS   AGE       APP         TIER       ROLE
+guestbook-fe-4nlpb             1/1       Running   0          1m        guestbook   frontend   &lt;none&gt;
+guestbook-fe-ght6d             1/1       Running   0          1m        guestbook   frontend   &lt;none&gt;
+guestbook-fe-jpy62             1/1       Running   0          1m        guestbook   frontend   &lt;none&gt;
+guestbook-redis-master-5pg3b   1/1       Running   0          1m        guestbook   backend    master
+guestbook-redis-slave-2q2yf    1/1       Running   0          1m        guestbook   backend    slave
+guestbook-redis-slave-qgazl    1/1       Running   0          1m        guestbook   backend    slave
+my-nginx-divi2                 1/1       Running   0          29m       nginx       &lt;none&gt;     &lt;none&gt;
+my-nginx-o0ef1                 1/1       Running   0          29m       nginx       &lt;none&gt;     &lt;none&gt;
+</code></pre><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pods -lapp<span style=color:#666>=</span>guestbook,role<span style=color:#666>=</span>slave
+</code></pre></div><pre><code>NAME                          READY     STATUS    RESTARTS   AGE
+guestbook-redis-slave-2q2yf   1/1       Running   0          3m
+guestbook-redis-slave-qgazl   1/1       Running   0          3m
+</code></pre><h2 id=canary-deployments>金丝雀部署（Canary Deployments）</h2><p>另一个需要多标签的场景是用来区分同一组件的不同版本或者不同配置的多个部署。
+常见的做法是部署一个使用<em>金丝雀发布</em>来部署新应用版本
+（在 Pod 模板中通过镜像标签指定），保持新旧版本应用同时运行。
+这样，新版本在完全发布之前也可以接收实时的生产流量。</p><p>例如，你可以使用 <code>track</code> 标签来区分不同的版本。</p><p>主要稳定的发行版将有一个 <code>track</code> 标签，其值为 <code>stable</code>：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#bbb>     </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>frontend<span style=color:#bbb>
+</span><span style=color:#bbb>     </span><span style=color:green;font-weight:700>replicas</span>:<span style=color:#bbb> </span><span style=color:#666>3</span><span style=color:#bbb>
+</span><span style=color:#bbb>     </span>...<span style=color:#bbb>
+</span><span style=color:#bbb>     </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>guestbook<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>tier</span>:<span style=color:#bbb> </span>frontend<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>track</span>:<span style=color:#bbb> </span>stable<span style=color:#bbb>
+</span><span style=color:#bbb>     </span>...<span style=color:#bbb>
+</span><span style=color:#bbb>     </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>gb-frontend:v3<span style=color:#bbb>
+</span></code></pre></div><p>然后，你可以创建 guestbook 前端的新版本，让这些版本的 <code>track</code> 标签带有不同的值
+（即 <code>canary</code>），以便两组 Pod 不会重叠：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#bbb>     </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>frontend-canary<span style=color:#bbb>
+</span><span style=color:#bbb>     </span><span style=color:green;font-weight:700>replicas</span>:<span style=color:#bbb> </span><span style=color:#666>1</span><span style=color:#bbb>
+</span><span style=color:#bbb>     </span>...<span style=color:#bbb>
+</span><span style=color:#bbb>     </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>guestbook<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>tier</span>:<span style=color:#bbb> </span>frontend<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>track</span>:<span style=color:#bbb> </span>canary<span style=color:#bbb>
+</span><span style=color:#bbb>     </span>...<span style=color:#bbb>
+</span><span style=color:#bbb>     </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>gb-frontend:v4<span style=color:#bbb>
+</span></code></pre></div><p>前端服务通过选择标签的公共子集（即忽略 <code>track</code> 标签）来覆盖两组副本，
+以便流量可以转发到两个应用：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>     </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>guestbook<span style=color:#bbb>
+</span><span style=color:#bbb>     </span><span style=color:green;font-weight:700>tier</span>:<span style=color:#bbb> </span>frontend<span style=color:#bbb>
+</span></code></pre></div><p>你可以调整 <code>stable</code> 和 <code>canary</code> 版本的副本数量，以确定每个版本将接收
+实时生产流量的比例（在本例中为 3:1）。
+一旦有信心，你就可以将新版本应用的 <code>track</code> 标签的值从
+<code>canary</code> 替换为 <code>stable</code>，并且将老版本应用删除。</p><p>想要了解更具体的示例，请查看
+<a href=https://github.com/kelseyhightower/talks/tree/master/kubecon-eu-2016/demo#deploy-a-canary>Ghost 部署教程</a>。</p><h2 id=updating-labels>更新标签</h2><p>有时，现有的 pod 和其它资源需要在创建新资源之前重新标记。
+这可以用 <code>kubectl label</code> 完成。
+例如，如果想要将所有 nginx pod 标记为前端层，运行：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl label pods -l <span style=color:#b8860b>app</span><span style=color:#666>=</span>nginx <span style=color:#b8860b>tier</span><span style=color:#666>=</span>fe
+</code></pre></div><pre><code>pod/my-nginx-2035384211-j5fhi labeled
+pod/my-nginx-2035384211-u2c7e labeled
+pod/my-nginx-2035384211-u3t6x labeled
+</code></pre><p>首先用标签 "app=nginx" 过滤所有的 Pod，然后用 "tier=fe" 标记它们。
+想要查看你刚才标记的 Pod，请运行：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pods -l <span style=color:#b8860b>app</span><span style=color:#666>=</span>nginx -L tier
+</code></pre></div><pre><code>NAME                        READY     STATUS    RESTARTS   AGE       TIER
+my-nginx-2035384211-j5fhi   1/1       Running   0          23m       fe
+my-nginx-2035384211-u2c7e   1/1       Running   0          23m       fe
+my-nginx-2035384211-u3t6x   1/1       Running   0          23m       fe
+</code></pre><p>这将输出所有 "app=nginx" 的 Pod，并有一个额外的描述 Pod 的 tier 的标签列
+（用参数 <code>-L</code> 或者 <code>--label-columns</code> 标明）。</p><p>想要了解更多信息，请参考
+<a href=/zh/docs/concepts/overview/working-with-objects/labels/>标签</a> 和
+<a href=/docs/reference/generated/kubectl/kubectl-commands/#label><code>kubectl label</code></a>
+命令文档。</p><h2 id=updating-annotations>更新注解</h2><p>有时，你可能希望将注解附加到资源中。注解是 API 客户端（如工具、库等）
+用于检索的任意非标识元数据。这可以通过 <code>kubectl annotate</code> 来完成。例如：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl annotate pods my-nginx-v4-9gw19 <span style=color:#b8860b>description</span><span style=color:#666>=</span><span style=color:#b44>&#39;my frontend running nginx&#39;</span>
+kubectl get pods my-nginx-v4-9gw19 -o yaml
+</code></pre></div><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>apiVersion: v1
+kind: pod
+metadata:
+  annotations:
+    description: my frontend running nginx
+...
+</code></pre></div><p>想要了解更多信息，请参考
+<a href=/zh/docs/concepts/overview/working-with-objects/annotations/>注解</a>和
+<a href=/docs/reference/generated/kubectl/kubectl-commands/#annotate><code>kubectl annotate</code></a>
+命令文档。</p><h2 id=扩缩你的应用>扩缩你的应用</h2><p>当应用上的负载增长或收缩时，使用 <code>kubectl</code> 能够实现应用规模的扩缩。
+例如，要将 nginx 副本的数量从 3 减少到 1，请执行以下操作：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl scale deployment/my-nginx --replicas<span style=color:#666>=</span><span style=color:#666>1</span>
+</code></pre></div><pre><code>deployment.extensions/my-nginx scaled
+</code></pre><p>现在，你的 Deployment 管理的 Pod 只有一个了。</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pods -l <span style=color:#b8860b>app</span><span style=color:#666>=</span>nginx
+</code></pre></div><pre><code>NAME                        READY     STATUS    RESTARTS   AGE
+my-nginx-2035384211-j5fhi   1/1       Running   0          30m
+</code></pre><p>想要让系统自动选择需要 nginx 副本的数量，范围从 1 到 3，请执行以下操作：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl autoscale deployment/my-nginx --min<span style=color:#666>=</span><span style=color:#666>1</span> --max<span style=color:#666>=</span><span style=color:#666>3</span>
+</code></pre></div><pre><code>horizontalpodautoscaler.autoscaling/my-nginx autoscaled
+</code></pre><p>现在，你的 nginx 副本将根据需要自动地增加或者减少。</p><p>想要了解更多信息，请参考
+<a href=/docs/reference/generated/kubectl/kubectl-commands/#scale>kubectl scale</a>命令文档、
+<a href=/docs/reference/generated/kubectl/kubectl-commands/#autoscale>kubectl autoscale</a> 命令文档和
+<a href=/zh/docs/tasks/run-application/horizontal-pod-autoscale/>水平 Pod 自动伸缩</a> 文档。</p><h2 id=in-place-updates-of-resources>就地更新资源</h2><p>有时，有必要对你所创建的资源进行小范围、无干扰地更新。</p><h3 id=kubectl-apply>kubectl apply</h3><p>建议在源代码管理中维护一组配置文件
+（参见<a href=https://martinfowler.com/bliki/InfrastructureAsCode.html>配置即代码</a>），
+这样，它们就可以和应用代码一样进行维护和版本管理。
+然后，你可以用 <a href=/docs/reference/generated/kubectl/kubectl-commands/#apply><code>kubectl apply</code></a>
+将配置变更应用到集群中。</p><p>这个命令将会把推送的版本与以前的版本进行比较，并应用你所做的更改，
+但是不会自动覆盖任何你没有指定更改的属性。</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/application/nginx/nginx-deployment.yaml
+deployment.apps/my-nginx configured
+</code></pre></div><p>注意，<code>kubectl apply</code> 将为资源增加一个额外的注解，以确定自上次调用以来对配置的更改。
+执行时，<code>kubectl apply</code> 会在以前的配置、提供的输入和资源的当前配置之间
+找出三方差异，以确定如何修改资源。</p><p>目前，新创建的资源是没有这个注解的，所以，第一次调用 <code>kubectl apply</code> 时
+将使用提供的输入和资源的当前配置双方之间差异进行比较。
+在第一次调用期间，它无法检测资源创建时属性集的删除情况。
+因此，kubectl 不会删除它们。</p><p>所有后续的 <code>kubectl apply</code> 操作以及其他修改配置的命令，如 <code>kubectl replace</code>
+和 <code>kubectl edit</code>，都将更新注解，并允许随后调用的 <code>kubectl apply</code>
+使用三方差异进行检查和执行删除。</p><blockquote class="note callout"><div><strong>说明：</strong> 想要使用 apply，请始终使用 <code>kubectl apply</code> 或 <code>kubectl create --save-config</code> 创建资源。</div></blockquote><h3 id=kubectl-edit>kubectl edit</h3><p>或者，你也可以使用 <code>kubectl edit</code> 更新资源：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl edit deployment/my-nginx
+</code></pre></div><p>这相当于首先 <code>get</code> 资源，在文本编辑器中编辑它，然后用更新的版本 <code>apply</code> 资源：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get deployment my-nginx -o yaml &gt; /tmp/nginx.yaml
+vi /tmp/nginx.yaml
+<span style=color:#080;font-style:italic># do some edit, and then save the file</span>
+
+kubectl apply -f /tmp/nginx.yaml
+deployment.apps/my-nginx configured
+
+rm /tmp/nginx.yaml
+</code></pre></div><p>这使你可以更加容易地进行更重大的更改。
+请注意，可以使用 <code>EDITOR</code> 或 <code>KUBE_EDITOR</code> 环境变量来指定编辑器。</p><p>想要了解更多信息，请参考
+<a href=/docs/reference/generated/kubectl/kubectl-commands/#edit>kubectl edit</a> 文档。</p><h3 id=kubectl-patch>kubectl patch</h3><p>你可以使用 <code>kubectl patch</code> 来更新 API 对象。此命令支持 JSON patch、
+JSON merge patch、以及 strategic merge patch。 请参考
+<a href=/zh/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/>使用 kubectl patch 更新 API 对象</a>
+和
+<a href=/docs/reference/generated/kubectl/kubectl-commands/#patch>kubectl patch</a>.</p><h2 id=disruptive-updates>破坏性的更新</h2><p>在某些情况下，你可能需要更新某些初始化后无法更新的资源字段，或者你可能只想立即进行递归更改，
+例如修复 Deployment 创建的不正常的 Pod。若要更改这些字段，请使用 <code>replace --force</code>，
+它将删除并重新创建资源。在这种情况下，你可以修改原始配置文件：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl replace -f https://k8s.io/examples/application/nginx/nginx-deployment.yaml --force
+</code></pre></div><pre><code>deployment.apps/my-nginx deleted
+deployment.apps/my-nginx replaced
+</code></pre><h2 id=在不中断服务的情况下更新应用>在不中断服务的情况下更新应用</h2><p>在某些时候，你最终需要更新已部署的应用，通常都是通过指定新的镜像或镜像标签，
+如上面的金丝雀发布的场景中所示。<code>kubectl</code> 支持几种更新操作，
+每种更新操作都适用于不同的场景。</p><p>我们将指导你通过 Deployment 如何创建和更新应用。</p><p>假设你正运行的是 1.14.2 版本的 nginx：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl create deployment my-nginx --image<span style=color:#666>=</span>nginx:1.14.2
+</code></pre></div><pre><code>deployment.apps/my-nginx created
+</code></pre><p>要更新到 1.16.1 版本，只需使用我们前面学到的 kubectl 命令将
+<code>.spec.template.spec.containers[0].image</code> 从 <code>nginx:1.14.2</code> 修改为 <code>nginx:1.16.1</code>。</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl edit deployment/my-nginx
+</code></pre></div><p>没错，就是这样！Deployment 将在后台逐步更新已经部署的 nginx 应用。
+它确保在更新过程中，只有一定数量的旧副本被开闭，并且只有一定基于所需 Pod 数量的新副本被创建。
+想要了解更多细节，请参考 <a href=/zh/docs/concepts/workloads/controllers/deployment/>Deployment</a>。</p><h2 id=接下来>接下来</h2><ul><li>学习<a href=/zh/docs/tasks/debug-application-cluster/debug-application-introspection/>如何使用 <code>kubectl</code> 观察和调试应用</a></li><li>阅读<a href=/zh/docs/concepts/configuration/overview/>配置最佳实践和技巧</a></li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-d649067a69d8d5c7e71564b42b96909e>3 - 集群网络系统</h1><p>集群网络系统是 Kubernetes 的核心部分，但是想要准确了解它的工作原理可是个不小的挑战。
+下面列出的是网络系统的的四个主要问题：</p><ol><li>高度耦合的容器间通信：这个已经被 <a class=glossary-tooltip title="Pod 表示您的集群上一组正在运行的容器。" data-toggle=tooltip data-placement=top href=/docs/concepts/workloads/pods/pod-overview/ target=_blank aria-label=Pods>Pods</a>
+和 <code>localhost</code> 通信解决了。</li><li>Pod 间通信：这个是本文档的重点要讲述的。</li><li>Pod 和服务间通信：这个已经在<a href=/zh/docs/concepts/services-networking/service/>服务</a>里讲述过了。</li><li>外部和服务间通信：这也已经在<a href=/zh/docs/concepts/services-networking/service/>服务</a>讲述过了。</li></ol><p>Kubernetes 的宗旨就是在应用之间共享机器。
+通常来说，共享机器需要两个应用之间不能使用相同的端口，但是在多个应用开发者之间
+去大规模地协调端口是件很困难的事情，尤其是还要让用户暴露在他们控制范围之外的集群级别的问题上。</p><p>动态分配端口也会给系统带来很多复杂度 - 每个应用都需要设置一个端口的参数，
+而 API 服务器还需要知道如何将动态端口数值插入到配置模块中，服务也需要知道如何找到对方等等。
+与其去解决这些问题，Kubernetes 选择了其他不同的方法。</p><h2 id=the-kubernetes-network-model>Kubernetes 网络模型</h2><p>每一个 <code>Pod</code> 都有它自己的IP地址，这就意味着你不需要显式地在每个 <code>Pod</code> 之间创建链接，
+你几乎不需要处理容器端口到主机端口之间的映射。
+这将创建一个干净的、向后兼容的模型，在这个模型里，从端口分配、命名、服务发现、
+负载均衡、应用配置和迁移的角度来看，<code>Pod</code> 可以被视作虚拟机或者物理主机。</p><p>Kubernetes 对所有网络设施的实施，都需要满足以下的基本要求（除非有设置一些特定的网络分段策略）：</p><ul><li>节点上的 Pod 可以不通过 NAT 和其他任何节点上的 Pod 通信</li><li>节点上的代理（比如：系统守护进程、kubelet）可以和节点上的所有Pod通信</li></ul><p>备注：仅针对那些支持 <code>Pods</code> 在主机网络中运行的平台（比如：Linux）：</p><ul><li>那些运行在节点的主机网络里的 Pod 可以不通过 NAT 和所有节点上的 Pod 通信</li></ul><p>这个模型不仅不复杂，而且还和 Kubernetes 的实现廉价的从虚拟机向容器迁移的初衷相兼容，
+如果你的工作开始是在虚拟机中运行的，你的虚拟机有一个 IP ，
+这样就可以和其他的虚拟机进行通信，这是基本相同的模型。</p><p>Kubernetes 的 IP 地址存在于 <code>Pod</code> 范围内 - 容器共享它们的网络命名空间 - 包括它们的 IP 地址和 MAC 地址。
+这就意味着 <code>Pod</code> 内的容器都可以通过 <code>localhost</code> 到达各个端口。
+这也意味着 <code>Pod</code> 内的容器都需要相互协调端口的使用，但是这和虚拟机中的进程似乎没有什么不同，
+这也被称为“一个 Pod 一个 IP”模型。</p><p>如何实现这一点是正在使用的容器运行时的特定信息。</p><p>也可以在 <code>node</code> 本身通过端口去请求你的 <code>Pod</code>（称之为主机端口），
+但这是一个很特殊的操作。转发方式如何实现也是容器运行时的细节。
+<code>Pod</code> 自己并不知道这些主机端口是否存在。</p><h2 id=如何实现-kubernetes-的网络模型>如何实现 Kubernetes 的网络模型</h2><p>有很多种方式可以实现这种网络模型，本文档并不是对各种实现技术的详细研究，
+但是希望可以作为对各种技术的详细介绍，并且成为你研究的起点。</p><p>接下来的网络技术是按照首字母排序，顺序本身并无其他意义。</p><blockquote class="callout caution" role=alert><strong>注意：</strong>
+本部分链接到提供 Kubernetes 所需功能的第三方项目。Kubernetes 项目作者不负责这些项目。此页面遵循<a href=https://github.com/cncf/foundation/blob/master/website-guidelines.md target=_blank>CNCF 网站指南</a>，按字母顺序列出项目。要将项目添加到此列表中，请在提交更改之前阅读<a href=/docs/contribute/style/content-guide/#third-party-content>内容指南</a>。</blockquote><h3 id=aci>ACI</h3><p><a href=https://www.cisco.com/c/en/us/solutions/data-center-virtualization/application-centric-infrastructure/index.html>Cisco Application Centric Infrastructure</a>
+提供了一个集成覆盖网络和底层 SDN 的解决方案来支持容器、虚拟机和其他裸机服务器。
+<a href=https://www.github.com/noironetworks/aci-containers>ACI</a> 为 ACI 提供了容器网络集成。
+点击<a href=https://www.cisco.com/c/dam/en/us/solutions/collateral/data-center-virtualization/application-centric-infrastructure/solution-overview-c22-739493.pdf>这里</a>查看概述。</p><h3 id=antrea>Antrea</h3><p><a href=https://github.com/vmware-tanzu/antrea>Antrea</a> 项目是一个开源的联网解决方案，旨在成为
+Kubernetes 原生的网络解决方案。它利用 Open vSwitch 作为网络数据平面。
+Open vSwitch 是一个高性能可编程的虚拟交换机，支持 Linux 和 Windows 平台。
+Open vSwitch 使 Antrea 能够以高性能和高效的方式实现 Kubernetes 的网络策略。
+借助 Open vSwitch 可编程的特性，Antrea 能够在 Open vSwitch 之上实现广泛的联网、安全功能和服务。</p><h3 id=apstra-的-aos>Apstra 的 AOS</h3><p><a href=https://www.apstra.com/products/aos/>AOS</a> 是一个基于意图的网络系统，
+可以通过一个简单的集成平台创建和管理复杂的数据中心环境。
+AOS 利用高度可扩展的分布式设计来消除网络中断，同时将成本降至最低。</p><p>AOS 参考设计当前支持三层连接的主机，这些主机消除了旧的两层连接的交换问题。
+这些三层连接的主机可以是 Linux（Debian、Ubuntu、CentOS）系统，
+它们直接在机架式交换机（TOR）的顶部创建 BGP 邻居关系。
+AOS 自动执行路由邻接，然后提供对 Kubernetes 部署中常见的路由运行状况注入（RHI）的精细控制。</p><p>AOS 具有一组丰富的 REST API 端点，这些端点使 Kubernetes 能够根据应用程序需求快速更改网络策略。
+进一步的增强功能将用于网络设计的 AOS Graph 模型与工作负载供应集成在一起，
+从而为私有云和公共云提供端到端管理系统。</p><p>AOS 支持使用包括 Cisco、Arista、Dell、Mellanox、HPE 在内的制造商提供的通用供应商设备，
+以及大量白盒系统和开放网络操作系统，例如 Microsoft SONiC、Dell OPX 和 Cumulus Linux。</p><p>想要更详细地了解 AOS 系统是如何工作的可以点击这里：https://www.apstra.com/products/how-it-works/</p><h3 id=kubernetes-的-aws-vpc-cni>Kubernetes 的 AWS VPC CNI</h3><p><a href=https://github.com/aws/amazon-vpc-cni-k8s>AWS VPC CNI</a> 为 Kubernetes 集群提供了集成的
+AWS 虚拟私有云（VPC）网络。该 CNI 插件提供了高吞吐量和可用性，低延迟以及最小的网络抖动。
+此外，用户可以使用现有的 AWS VPC 网络和安全最佳实践来构建 Kubernetes 集群。
+这包括使用 VPC 流日志、VPC 路由策略和安全组进行网络流量隔离的功能。</p><p>使用该 CNI 插件，可使 Kubernetes Pod 拥有与在 VPC 网络上相同的 IP 地址。
+CNI 将 AWS 弹性网络接口（ENI）分配给每个 Kubernetes 节点，并将每个 ENI 的辅助 IP 范围用于该节点上的 Pod 。
+CNI 包含用于 ENI 和 IP 地址的预分配的控件，以便加快 Pod 的启动时间，并且能够支持多达 2000 个节点的大型集群。</p><p>此外，CNI 可以与
+<a href=https://docs.aws.amazon.com/eks/latest/userguide/calico.html>用于执行网络策略的 Calico</a> 一起运行。
+AWS VPC CNI 项目是开源的，请查看 <a href=https://github.com/aws/amazon-vpc-cni-k8s>GitHub 上的文档</a>。</p><h3 id=kubernetes-的-azure-cni>Kubernetes 的 Azure CNI</h3><p><a href=https://docs.microsoft.com/en-us/azure/virtual-network/container-networking-overview>Azure CNI</a>
+是一个<a href=https://github.com/Azure/azure-container-networking/blob/master/docs/cni.md>开源插件</a>，
+将 Kubernetes Pods 和 Azure 虚拟网络（也称为 VNet）集成在一起，可提供与 VM 相当的网络性能。
+Pod 可以通过 Express Route 或者 站点到站点的 VPN 来连接到对等的 VNet ，
+也可以从这些网络来直接访问 Pod。Pod 可以访问受服务端点或者受保护链接的 Azure 服务，比如存储和 SQL。
+你可以使用 VNet 安全策略和路由来筛选 Pod 流量。
+该插件通过利用在 Kubernetes 节点的网络接口上预分配的辅助 IP 池将 VNet 分配给 Pod 。</p><p>Azure CNI 可以在
+<a href=https://docs.microsoft.com/en-us/azure/aks/configure-azure-cni>Azure Kubernetes Service (AKS)</a> 中获得。</p><h3 id=big-switch-networks-的-big-cloud-fabric>Big Switch Networks 的 Big Cloud Fabric</h3><p><a href=https://www.bigswitch.com/container-network-automation>Big Cloud Fabric</a> 是一个基于云原生的网络架构，
+旨在在私有云或者本地环境中运行 Kubernetes。
+它使用统一的物理和虚拟 SDN，Big Cloud Fabric 解决了固有的容器网络问题，
+比如负载均衡、可见性、故障排除、安全策略和容器流量监控。</p><p>在 Big Cloud Fabric 的虚拟 Pod 多租户架构的帮助下，容器编排系统
+（比如 Kubernetes、RedHat OpenShift、Mesosphere DC/OS 和 Docker Swarm）
+将与 VM 本地编排系统（比如 VMware、OpenStack 和 Nutanix）进行本地集成。
+客户将能够安全地互联任意数量的这些集群，并且在需要时启用他们之间的租户间通信。</p><p>在最新的 <a href=https://go.bigswitch.com/17GatedDocuments-MagicQuadrantforDataCenterNetworking_Reg.html>Magic Quadrant</a> 上，
+BCF 被 Gartner 认为是非常有远见的。
+而 BCF 的一条关于 Kubernetes 的本地部署（其中包括 Kubernetes、DC/OS 和在不同地理区域的多个
+DC 上运行的 VMware）也在<a href=https://portworx.com/architects-corner-kubernetes-satya-komala-nio/>这里</a>被引用。</p><h3 id=calico>Calico</h3><p><a href=https://docs.projectcalico.org/>Calico</a> 是一个开源的联网及网络安全方案，
+用于基于容器、虚拟机和本地主机的工作负载。
+Calico 支持多个数据面，包括：纯 Linux eBPF 的数据面、标准的 Linux 联网数据面
+以及 Windwos HNS 数据面。Calico 在提供完整的联网堆栈的同时，还可与
+<a href=https://docs.projectcalico.org/networking/determine-best-networking#calico-compatible-cni-plugins-and-cloud-provider-integrations>云驱动 CNIs</a> 联合使用，以保证网络策略实施。</p><h3 id=cilium>Cilium</h3><p><a href=https://github.com/cilium/cilium>Cilium</a> 是一个开源软件，用于提供并透明保护应用容器间的网络连接。
+Cilium 支持 L7/HTTP，可以在 L3-L7 上通过使用与网络分离的基于身份的安全模型寻址来实施网络策略，
+并且可以与其他 CNI 插件结合使用。</p><h3 id=华为的-cni-genie>华为的 CNI-Genie</h3><p><a href=https://github.com/Huawei-PaaS/CNI-Genie>CNI-Genie</a> 是一个 CNI 插件，
+可以让 Kubernetes 在运行时使用不同的<a href=#the-kubernetes-network-model>网络模型</a>的
+<a href=https://github.com/Huawei-PaaS/CNI-Genie/blob/master/docs/multiple-cni-plugins/README.md#what-cni-genie-feature-1-multiple-cni-plugins-enables>实现同时被访问</a>。
+这包括以
+<a href=https://github.com/containernetworking/cni#3rd-party-plugins>CNI 插件</a>运行的任何实现，比如
+<a href=https://github.com/coreos/flannel#flannel>Flannel</a>、
+<a href=https://docs.projectcalico.org/>Calico</a>、
+<a href=https://romana.io>Romana</a>、
+<a href=https://www.weave.works/products/weave-net/>Weave-net</a>。</p><p>CNI-Genie 还支持<a href=https://github.com/Huawei-PaaS/CNI-Genie/blob/master/docs/multiple-ips/README.md#feature-2-extension-cni-genie-multi-ip-addresses-per-pod>将多个 IP 地址分配给 Pod</a>，
+每个都来自不同的 CNI 插件。</p><h3 id=cni-ipvlan-vpc-k8s>cni-ipvlan-vpc-k8s</h3><p><a href=https://github.com/lyft/cni-ipvlan-vpc-k8s>cni-ipvlan-vpc-k8s</a>
+包含了一组 CNI 和 IPAM 插件来提供一个简单的、本地主机、低延迟、高吞吐量
+以及通过使用 Amazon 弹性网络接口（ENI）并使用 Linux 内核的 IPv2 驱动程序
+以 L2 模式将 AWS 管理的 IP 绑定到 Pod 中，
+在 Amazon Virtual Private Cloud（VPC）环境中为 Kubernetes 兼容的网络堆栈。</p><p>这些插件旨在直接在 VPC 中进行配置和部署，Kubelets 先启动，
+然后根据需要进行自我配置和扩展它们的 IP 使用率，而无需经常建议复杂的管理
+覆盖网络、BGP、禁用源/目标检查或调整 VPC 路由表以向每个主机提供每个实例子网的
+复杂性（每个 VPC 限制为50-100个条目）。
+简而言之，cni-ipvlan-vpc-k8s 大大降低了在 AWS 中大规模部署 Kubernetes 所需的网络复杂性。</p><h3 id=coil>Coil</h3><p><a href=https://github.com/cybozu-go/coil>Coil</a> 是一个为易于集成、提供灵活的出站流量网络而设计的 CNI 插件。
+与裸机相比，Coil 的额外操作开销低，并允许针对外部网络的出站流量任意定义 NAT 网关。</p><h3 id=contiv>Contiv</h3><p><a href=https://github.com/contiv/netplugin>Contiv</a>
+为各种使用情况提供了一个可配置网络（使用了 BGP 的本地 L3，
+使用 vxlan 、经典 L2 或 Cisco-SDN/ACI 的覆盖网络）。
+<a href=https://contiv.io>Contiv</a> 是完全开源的。</p><h3 id=contrail-tungsten-fabric>Contrail/Tungsten Fabric</h3><p><a href=https://www.juniper.net/us/en/products-services/sdn/contrail/contrail-networking/>Contrail</a>
+是基于 <a href=https://tungsten.io>Tungsten Fabric</a> 的，真正开放的多云网络虚拟化和策略管理平台。
+Contrail 和 Tungsten Fabric 与各种编排系统集成在一起，例如 Kubernetes、OpenShift、OpenStack 和 Mesos，
+并为虚拟机、容器或 Pods 以及裸机工作负载提供了不同的隔离模式。</p><h3 id=danm>DANM</h3><p><a href=https://github.com/nokia/danm>DANM</a> 是一个针对在 Kubernetes 集群中运行的电信工作负载的网络解决方案。
+它由以下几个组件构成：</p><ul><li>能够配置具有高级功能的 IPVLAN 接口的 CNI 插件</li><li>一个内置的 IPAM 模块，能够管理多个、群集内的、不连续的 L3 网络，并按请求提供动态、静态或无 IP 分配方案</li><li>CNI 元插件能够通过自己的 CNI 或通过将任务授权给其他任何流行的 CNI 解决方案（例如 SRI-OV 或 Flannel）来实现将多个网络接口连接到容器</li><li>Kubernetes 控制器能够集中管理所有 Kubernetes 主机的 VxLAN 和 VLAN 接口</li><li>另一个 Kubernetes 控制器扩展了 Kubernetes 的基于服务的服务发现概念，以在 Pod 的所有网络接口上工作</li></ul><p>通过这个工具集，DANM 可以提供多个分离的网络接口，可以为 Pod 使用不同的网络后端和高级 IPAM 功能。</p><h3 id=flannel>Flannel</h3><p><a href=https://github.com/coreos/flannel#flannel>Flannel</a> 是一个非常简单的能够满足
+Kubernetes 所需要的覆盖网络。已经有许多人报告了使用 Flannel 和 Kubernetes 的成功案例。</p><h3 id=google-compute-engine-gce>Google Compute Engine (GCE)</h3><p>对于 Google Compute Engine 的集群配置脚本，
+<a href=https://cloud.google.com/vpc/docs/routes>高级路由器</a> 用于为每个虚机分配一个子网（默认是 <code>/24</code> - 254个 IP），
+绑定到该子网的任何流量都将通过 GCE 网络结构直接路由到虚机。
+这是除了分配给虚机的“主” IP 地址之外的一个补充，该 IP 地址经过 NAT 转换以用于访问外网。
+Linux 网桥（称为“cbr0”）被配置为存在于该子网中，并被传递到 Docker 的 --bridge 参数上。</p><p>Docker 会以这样的参数启动：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#b8860b>DOCKER_OPTS</span><span style=color:#666>=</span><span style=color:#b44>&#34;--bridge=cbr0 --iptables=false --ip-masq=false&#34;</span>
+</code></pre></div><p>这个网桥是由 Kubelet（由 <code>--network-plugin=kubenet</code> 参数控制）根据节点的 <code>.spec.podCIDR</code> 参数创建的。</p><p>Docker 将会从 <code>cbr-cidr</code> 块分配 IP。
+容器之间可以通过 <code>cbr0</code> 网桥相互访问，也可以访问节点。
+这些 IP 都可以在 GCE 的网络中被路由。
+而 GCE 本身并不知道这些 IP，所以不会对访问外网的流量进行 NAT。
+为了实现此目的，使用了 <code>iptables</code> 规则来伪装（又称为 SNAT，使数据包看起来好像是来自“节点”本身），
+将通信绑定到 GCE 项目网络（10.0.0.0/8）之外的 IP。</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>iptables -t nat -A POSTROUTING ! -d 10.0.0.0/8 -o eth0 -j MASQUERADE
+</code></pre></div><p>最后，在内核中启用了 IP 转发（因此内核将处理桥接容器的数据包）：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>sysctl net.ipv4.ip_forward<span style=color:#666>=</span><span style=color:#666>1</span>
+</code></pre></div><p>所有这些的结果是所有 Pod 都可以互相访问，并且可以将流量发送到互联网。</p><h3 id=jaguar>Jaguar</h3><p><a href=https://gitlab.com/sdnlab/jaguar>Jaguar</a> 是一个基于 OpenDaylight 的 Kubernetes 网络开源解决方案。
+Jaguar 使用 vxlan 提供覆盖网络，而 Jaguar CNIPlugin 为每个 Pod 提供一个 IP 地址。</p><h3 id=k-vswitch>k-vswitch</h3><p><a href=https://github.com/k-vswitch/k-vswitch>k-vswitch</a> 是一个基于
+<a href=https://www.openvswitch.org/>Open vSwitch</a> 的简易 Kubernetes 网络插件。
+它利用 Open vSwitch 中现有的功能来提供强大的网络插件，该插件易于操作，高效且安全。</p><h3 id=knitter>Knitter</h3><p><a href=https://github.com/ZTE/Knitter/>Knitter</a> 是一个支持 Kubernetes 中实现多个网络系统的解决方案。
+它提供了租户管理和网络管理的功能。除了多个网络平面外，Knitter 还包括一组端到端的 NFV 容器网络解决方案，
+例如为应用程序保留 IP 地址、IP 地址迁移等。</p><h3 id=kube-ovn>Kube-OVN</h3><p><a href=https://github.com/alauda/kube-ovn>Kube-OVN</a> 是一个基于 OVN 的用于企业的 Kubernetes 网络架构。
+借助于 OVN/OVS ，它提供了一些高级覆盖网络功能，例如子网、QoS、静态 IP 分配、流量镜像、网关、
+基于 openflow 的网络策略和服务代理。</p><h3 id=kube-router>Kube-router</h3><p><a href=https://github.com/cloudnativelabs/kube-router>Kube-router</a> 是 Kubernetes 的专用网络解决方案，
+旨在提供高性能和易操作性。
+Kube-router 提供了一个基于 Linux <a href=https://www.linuxvirtualserver.org/software/ipvs.html>LVS/IPVS</a>
+的服务代理、一个基于 Linux 内核转发的无覆盖 Pod-to-Pod 网络解决方案和基于 iptables/ipset 的网络策略执行器。</p><h3 id=l2-networks-and-linux-bridging>L2 networks and linux bridging</h3><p>如果你具有一个“哑”的L2网络，例如“裸机”环境中的简单交换机，则应该能够执行与上述 GCE 设置类似的操作。
+请注意，这些说明仅是非常简单的尝试过-似乎可行，但尚未经过全面测试。
+如果您使用此技术并完善了流程，请告诉我们。</p><p>根据 Lars Kellogg-Stedman 的这份非常不错的“Linux 网桥设备”
+<a href=https://blog.oddbit.com/2014/08/11/four-ways-to-connect-a-docker/>使用说明</a>来进行操作。</p><h3 id=multus-a-multi-network-plugin>Multus (a Multi Network plugin)</h3><p><a href=https://github.com/Intel-Corp/multus-cni>Multus</a> 是一个多 CNI 插件，
+使用 Kubernetes 中基于 CRD 的网络对象来支持实现 Kubernetes 多网络系统。</p><p>Multus 支持所有<a href=https://github.com/containernetworking/plugins>参考插件</a>（比如：
+<a href=https://github.com/containernetworking/plugins/tree/master/plugins/meta/flannel>Flannel</a>、
+<a href=https://github.com/containernetworking/plugins/tree/master/plugins/ipam/dhcp>DHCP</a>、
+<a href=https://github.com/containernetworking/plugins/tree/master/plugins/main/macvlan>Macvlan</a> ）
+来实现 CNI 规范和第三方插件（比如：
+<a href=https://github.com/projectcalico/cni-plugin>Calico</a>、
+<a href=https://github.com/weaveworks/weave>Weave</a>、
+<a href=https://github.com/cilium/cilium>Cilium</a>、
+<a href=https://github.com/contiv/netplugin>Contiv</a>）。
+除此之外， Multus 还支持
+<a href=https://github.com/hustcat/sriov-cni>SRIOV</a>、
+<a href=https://github.com/Intel-Corp/sriov-cni>DPDK</a>、
+<a href=https://github.com/intel/vhost-user-net-plugin>OVS-DPDK & VPP</a> 的工作负载，
+以及 Kubernetes 中基于云的本机应用程序和基于 NFV 的应用程序。</p><h3 id=nsx-t>NSX-T</h3><p><a href=https://docs.vmware.com/en/VMware-NSX-T/index.html>VMware NSX-T</a> 是一个网络虚拟化和安全平台。
+NSX-T 可以为多云及多系统管理程序环境提供网络虚拟化，并专注于具有异构端点和技术堆栈的新兴应用程序框架和体系结构。
+除了 vSphere 管理程序之外，这些环境还包括其他虚拟机管理程序，例如 KVM、容器和裸机。</p><p><a href=https://docs.vmware.com/en/VMware-NSX-T/2.0/nsxt_20_ncp_kubernetes.pdf>NSX-T Container Plug-in (NCP)</a>
+提供了 NSX-T 与容器协调器（例如 Kubernetes）之间的结合，
+以及 NSX-T 与基于容器的 CaaS/PaaS 平台（例如 Pivotal Container Service（PKS）和 OpenShift）之间的集成。</p><h3 id=nuage-networks-vcs-virtualized-cloud-services>Nuage Networks VCS (Virtualized Cloud Services)</h3><p><a href=https://www.nuagenetworks.net>Nuage</a> 提供了一个高度可扩展的基于策略的软件定义网络（SDN）平台。
+Nuage 使用开源的 Open vSwitch 作为数据平面，以及基于开放标准构建具有丰富功能的 SDN 控制器。</p><p>Nuage 平台使用覆盖层在 Kubernetes Pod 和非 Kubernetes 环境（VM 和裸机服务器）之间提供基于策略的无缝联网。
+Nuage 的策略抽象模型在设计时就考虑到了应用程序，并且可以轻松声明应用程序的细粒度策略。
+该平台的实时分析引擎可为 Kubernetes 应用程序提供可见性和安全性监控。</p><h3 id=openvswitch>OpenVSwitch</h3><p><a href=https://www.openvswitch.org/>OpenVSwitch</a> 是一个较为成熟的解决方案，但同时也增加了构建覆盖网络的复杂性。
+这也得到了几个网络系统的“大商店”的拥护。</p><h3 id=ovn-开放式虚拟网络>OVN (开放式虚拟网络)</h3><p>OVN 是一个由 Open vSwitch 社区开发的开源的网络虚拟化解决方案。
+它允许创建逻辑交换器、逻辑路由、状态 ACL、负载均衡等等来建立不同的虚拟网络拓扑。
+该项目有一个特定的Kubernetes插件和文档 <a href=https://github.com/openvswitch/ovn-kubernetes>ovn-kubernetes</a>。</p><h3 id=romana>Romana</h3><p><a href=https://romana.io>Romana</a> 是一个开源网络和安全自动化解决方案。
+它可以让你在没有覆盖网络的情况下部署 Kubernetes。
+Romana 支持 Kubernetes <a href=/zh/docs/concepts/services-networking/network-policies/>网络策略</a>，
+来提供跨网络命名空间的隔离。</p><h3 id=weaveworks-的-weave-net>Weaveworks 的 Weave Net</h3><p><a href=https://www.weave.works/products/weave-net/>Weave Net</a> 是 Kubernetes 及其
+托管应用程序的弹性且易于使用的网络系统。
+Weave Net 可以作为 <a href=https://www.weave.works/docs/net/latest/cni-plugin/>CNI 插件</a> 运行或者独立运行。
+在这两种运行方式里，都不需要任何配置或额外的代码即可运行，并且在两种情况下，
+网络都为每个 Pod 提供一个 IP 地址 -- 这是 Kubernetes 的标准配置。</p><h2 id=接下来>接下来</h2><p>网络模型的早期设计、运行原理以及未来的一些计划，都在
+<a href=https://git.k8s.io/community/contributors/design-proposals/network/networking.md>联网设计文档</a>
+里有更详细的描述。</p></div><div class=td-content style=page-break-before:always><h1 id=pg-cbfd3654996eae9fcdef009f70fa83f0>4 - Kubernetes 系统组件指标</h1><p>系统组件指标可以更好地了解系统内部发生的情况。指标对于构建仪表板和告警特别有用。</p><p>Kubernetes 组件以 <a href=https://prometheus.io/docs/instrumenting/exposition_formats/>Prometheus 格式</a>
+生成度量值。
+这种格式是结构化的纯文本，旨在使人和机器都可以阅读。</p><h2 id=kubernetes-中的指标>Kubernetes 中的指标</h2><p>在大多数情况下，可以在 HTTP 服务器的 <code>/metrics</code> 端点上访问度量值。
+对于默认情况下不公开端点的组件，可以使用 <code>--bind-address</code> 标志启用。</p><p>这些组件的示例：</p><ul><li><a class=glossary-tooltip title=主节点上运行控制器的组件。 data-toggle=tooltip data-placement=top href=/docs/reference/generated/kube-controller-manager/ target=_blank aria-label=kube-controller-manager>kube-controller-manager</a></li><li><a class=glossary-tooltip title="kube-proxy 是集群中每个节点上运行的网络代理。" data-toggle=tooltip data-placement=top href=/zh/docs/reference/command-line-tools-reference/kube-proxy/ target=_blank aria-label=kube-proxy>kube-proxy</a></li><li><a class=glossary-tooltip title="提供 Kubernetes API 服务的控制面组件。" data-toggle=tooltip data-placement=top href=/zh/docs/reference/command-line-tools-reference/kube-apiserver/ target=_blank aria-label=kube-apiserver>kube-apiserver</a></li><li><a class=glossary-tooltip title="控制平面组件，负责监视新创建的、未指定运行节点的 Pod，选择节点让 Pod 在上面运行。" data-toggle=tooltip data-placement=top href=/docs/reference/generated/kube-scheduler/ target=_blank aria-label=kube-scheduler>kube-scheduler</a></li><li><a class=glossary-tooltip title="一个在集群中每个节点上运行的代理。它保证容器都运行在 Pod 中。" data-toggle=tooltip data-placement=top href=/docs/reference/generated/kubelet target=_blank aria-label=kubelet>kubelet</a></li></ul><p>在生产环境中，你可能需要配置 <a href=https://prometheus.io/>Prometheus 服务器</a> 或
+某些其他指标搜集器以定期收集这些指标，并使它们在某种时间序列数据库中可用。</p><p>请注意，<a class=glossary-tooltip title="一个在集群中每个节点上运行的代理。它保证容器都运行在 Pod 中。" data-toggle=tooltip data-placement=top href=/docs/reference/generated/kubelet target=_blank aria-label=kubelet>kubelet</a> 还会在 <code>/metrics/cadvisor</code>，
+<code>/metrics/resource</code> 和 <code>/metrics/probes</code> 端点中公开度量值。这些度量值的生命周期各不相同。</p><p>如果你的集群使用了 <a class=glossary-tooltip title="管理授权决策，允许管理员通过 Kubernetes API 动态配置访问策略。" data-toggle=tooltip data-placement=top href=/zh/docs/reference/access-authn-authz/rbac/ target=_blank aria-label=RBAC>RBAC</a>，
+则读取指标需要通过基于用户、组或 ServiceAccount 的鉴权，要求具有允许访问
+<code>/metrics</code> 的 ClusterRole。
+例如：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>rbac.authorization.k8s.io/v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>ClusterRole<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>prometheus<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>rules</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>nonResourceURLs</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:#b44>&#34;/metrics&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>verbs</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- get<span style=color:#bbb>
+</span></code></pre></div><h2 id=指标生命周期>指标生命周期</h2><p>Alpha 指标 → 稳定的指标 → 弃用的指标 → 隐藏的指标 → 删除的指标</p><p>Alpha 指标没有稳定性保证。这些指标可以随时被修改或者删除。</p><p>稳定的指标可以保证不会改变。这意味着：</p><ul><li>稳定的、不包含已弃用（deprecated）签名的指标不会被删除（或重命名）</li><li>稳定的指标的类型不会被更改</li></ul><p>已弃用的指标最终将被删除，不过仍然可用。
+这类指标包含注解，标明其被废弃的版本。</p><p>例如：</p><ul><li><p>被弃用之前：</p><pre><code># HELP some_counter this counts things
+# TYPE some_counter counter
+some_counter 0
+</code></pre></li></ul><ul><li><p>被启用之后：</p><pre><code># HELP some_counter (Deprecated since 1.15.0) this counts things
+# TYPE some_counter counter
+some_counter 0
+</code></pre></li></ul><p>隐藏的指标不会再被发布以供抓取，但仍然可用。
+要使用隐藏指标，请参阅<a href=#show-hidden-metrics>显式隐藏指标</a>节。</p><p>删除的指标不再被发布，亦无法使用。</p><h2 id=show-hidden-metrics>显示隐藏指标</h2><p>如上所述，管理员可以通过设置可执行文件的命令行参数来启用隐藏指标，
+如果管理员错过了上一版本中已经弃用的指标的迁移，则可以把这个用作管理员的逃生门。</p><p><code>show-hidden-metrics-for-version</code> 标志接受版本号作为取值，版本号给出
+你希望显示该发行版本中已弃用的指标。
+版本表示为 x.y，其中 x 是主要版本，y 是次要版本。补丁程序版本不是必须的，
+即使指标可能会在补丁程序发行版中弃用，原因是指标弃用策略规定仅针对次要版本。</p><p>该参数只能使用前一个次要版本。如果管理员将先前版本设置为 <code>show-hidden-metrics-for-version</code>，
+则先前版本中隐藏的度量值会再度生成。不允许使用过旧的版本，因为那样会违反指标弃用策略。</p><p>以指标 <code>A</code> 为例，此处假设 <code>A</code> 在 1.n 中已弃用。根据指标弃用策略，我们可以得出以下结论：</p><ul><li>在版本 <code>1.n</code> 中，这个指标已经弃用，且默认情况下可以生成。</li><li>在版本 <code>1.n+1</code> 中，这个指标默认隐藏，可以通过命令行参数 <code>show-hidden-metrics-for-version=1.n</code> 来再度生成。</li><li>在版本 <code>1.n+2</code> 中，这个指标就将被从代码中移除，不会再有任何逃生窗口。</li></ul><p>如果你要从版本 <code>1.12</code> 升级到 <code>1.13</code>，但仍依赖于 <code>1.12</code> 中弃用的指标 <code>A</code>，则应通过命令行设置隐藏指标：
+<code>--show-hidden-metrics=1.12</code>，并记住在升级到 <code>1.14</code> 版本之前删除此指标依赖项。</p><h2 id=禁用加速器指标>禁用加速器指标</h2><p>kubelet 通过 cAdvisor 收集加速器指标。为了收集这些指标，对于 NVIDIA GPU 之类的加速器，
+kubelet 在驱动程序上保持打开状态。这意味着为了执行基础结构更改（例如更新驱动程序），
+集群管理员需要停止 kubelet 代理。</p><p>现在，收集加速器指标的责任属于供应商，而不是 kubelet。供应商必须提供一个收集指标的容器，
+并将其公开给指标服务（例如 Prometheus）。</p><p><a href=/zh/docs/reference/command-line-tools-reference/feature-gates/><code>DisableAcceleratorUsageMetrics</code> 特性门控</a>
+禁止由 kubelet 收集的指标。
+关于<a href=https://github.com/kubernetes/enhancements/tree/411e51027db842355bd489691af897afc1a41a5e/keps/sig-node/1867-disable-accelerator-usage-metrics#graduation-criteria>何时会在默认情况下启用此功能也有一定规划</a>。</p><h2 id=组件指标>组件指标</h2><h3 id=kube-controller-manager-指标>kube-controller-manager 指标</h3><p>控制器管理器指标可提供有关控制器管理器性能和运行状况的重要洞察。
+这些指标包括通用的 Go 语言运行时指标（例如 go_routine 数量）和控制器特定的度量指标，
+例如可用于评估集群运行状况的 etcd 请求延迟或云提供商（AWS、GCE、OpenStack）的 API 延迟等。</p><p>从 Kubernetes 1.7 版本开始，详细的云提供商指标可用于 GCE、AWS、Vsphere 和 OpenStack 的存储操作。
+这些指标可用于监控持久卷操作的运行状况。</p><p>比如，对于 GCE，这些指标称为：</p><pre><code>cloudprovider_gce_api_request_duration_seconds { request = &quot;instance_list&quot;}
+cloudprovider_gce_api_request_duration_seconds { request = &quot;disk_insert&quot;}
+cloudprovider_gce_api_request_duration_seconds { request = &quot;disk_delete&quot;}
+cloudprovider_gce_api_request_duration_seconds { request = &quot;attach_disk&quot;}
+cloudprovider_gce_api_request_duration_seconds { request = &quot;detach_disk&quot;}
+cloudprovider_gce_api_request_duration_seconds { request = &quot;list_disk&quot;}
+</code></pre><h3 id=kube-scheduler-metrics>kube-scheduler 指标</h3><div style=margin-top:10px;margin-bottom:10px><b>FEATURE STATE:</b> <code>Kubernetes v1.20 [alpha]</code></div><p>调度器会暴露一些可选的指标，报告所有运行中 Pods 所请求的资源和期望的约束值。
+这些指标可用来构造容量规划监控面板、访问调度约束的当前或历史数据、
+快速发现因为缺少资源而无法被调度的负载，或者将 Pod 的实际资源用量
+与其请求值进行比较。</p><p>kube-scheduler 组件能够辩识各个 Pod 所配置的资源
+<a href=/zh/docs/concepts/configuration/manage-resources-containers/>请求和约束</a>。
+在 Pod 的资源请求值或者约束值非零时，kube-scheduler 会以度量值时间序列的形式
+生成报告。该时间序列值包含以下标签：</p><ul><li>名字空间</li><li>Pod 名称</li><li>Pod 调度所处节点，或者当 Pod 未被调度时用空字符串表示</li><li>优先级</li><li>为 Pod 所指派的调度器</li><li>资源的名称（例如，<code>cpu</code>）</li><li>资源的单位，如果知道的话（例如，<code>cores</code>）</li></ul><p>一旦 Pod 进入完成状态（其 <code>restartPolicy</code> 为 <code>Never</code> 或 <code>OnFailure</code>，且
+其处于 <code>Succeeded</code> 或 <code>Failed</code> Pod 阶段，或者已经被删除且所有容器都具有
+终止状态），该时间序列停止报告，因为调度器现在可以调度其它 Pod 来执行。
+这两个指标称作 <code>kube_pod_resource_request</code> 和 <code>kube_pod_resource_limit</code>。</p><p>指标暴露在 HTTP 端点 <code>/metrics/resources</code>，与调度器上的 <code>/metrics</code> 端点
+一样要求相同的访问授权。你必须使用
+<code>--show-hidden-metrics-for-version=1.20</code> 标志才能暴露那些稳定性为 Alpha
+的指标。</p><h2 id=接下来>接下来</h2><ul><li>阅读有关指标的 <a href=https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exposition_formats.md#text-based-format>Prometheus 文本格式</a></li><li>阅读有关 <a href=/zh/docs/reference/using-api/deprecation-policy/#deprecating-a-feature-or-behavior>Kubernetes 弃用策略</a></li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-c4b1e87a84441f8a90699a345ce48d68>5 - 日志架构</h1><p>应用日志可以让你了解应用内部的运行状况。日志对调试问题和监控集群活动非常有用。
+大部分现代化应用都有某种日志记录机制。同样地，容器引擎也被设计成支持日志记录。
+针对容器化应用，最简单且最广泛采用的日志记录方式就是写入标准输出和标准错误流。</p><p>但是，由容器引擎或运行时提供的原生功能通常不足以构成完整的日志记录方案。
+例如，如果发生容器崩溃、Pod 被逐出或节点宕机等情况，你可能想访问应用日志。
+在集群中，日志应该具有独立的存储和生命周期，与节点、Pod 或容器的生命周期相独立。
+这个概念叫 <em>集群级的日志</em> 。</p><p>集群级日志架构需要一个独立的后端用来存储、分析和查询日志。
+Kubernetes 并不为日志数据提供原生的存储解决方案。
+相反，有很多现成的日志方案可以集成到 Kubernetes 中。
+下面各节描述如何在节点上处理和存储日志。</p><h2 id=kubernetes-中的基本日志记录>Kubernetes 中的基本日志记录</h2><p>这里的示例使用包含一个容器的 Pod 规约，每秒钟向标准输出写入数据。</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/zh/examples/debug/counter-pod.yaml download=debug/counter-pod.yaml><code>debug/counter-pod.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('debug-counter-pod-yaml')" title="Copy debug/counter-pod.yaml to clipboard"></img></div><div class=includecode id=debug-counter-pod-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>counter<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>count<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>busybox<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>args</span>:<span style=color:#bbb> </span>[/bin/sh, -c,<span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:#b44>&#39;i=0; while true; do echo &#34;$i: $(date)&#34;; i=$((i+1)); sleep 1; done&#39;</span>]<span style=color:#bbb>
+</span></code></pre></div></div></div><p>用下面的命令运行 Pod：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://k8s.io/examples/debug/counter-pod.yaml
+</code></pre></div><p>输出结果为：</p><pre><code>pod/counter created
+</code></pre><p>像下面这样，使用 <code>kubectl logs</code> 命令获取日志:</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl logs counter
+</code></pre></div><p>输出结果为：</p><pre><code>0: Mon Jan  1 00:00:00 UTC 2001
+1: Mon Jan  1 00:00:01 UTC 2001
+2: Mon Jan  1 00:00:02 UTC 2001
+...
+</code></pre><p>你可以使用命令 <code>kubectl logs --previous</code> 检索之前容器实例的日志。
+如果 Pod 中有多个容器，你应该为该命令附加容器名以访问对应容器的日志。
+详见 <a href=/docs/reference/generated/kubectl/kubectl-commands#logs><code>kubectl logs</code> 文档</a>。</p><h2 id=节点级日志记录>节点级日志记录</h2><p><img src=/images/docs/user-guide/logging/logging-node-level.png alt=节点级别的日志记录></p><p>容器化应用写入 <code>stdout</code> 和 <code>stderr</code> 的任何数据，都会被容器引擎捕获并被重定向到某个位置。
+例如，Docker 容器引擎将这两个输出流重定向到某个
+<a href=https://docs.docker.com/engine/admin/logging/overview>日志驱动（Logging Driver）</a> ，
+该日志驱动在 Kubernetes 中配置为以 JSON 格式写入文件。</p><blockquote class="note callout"><div><strong>说明：</strong> Docker JSON 日志驱动将日志的每一行当作一条独立的消息。
+该日志驱动不直接支持多行消息。你需要在日志代理级别或更高级别处理多行消息。</div></blockquote><p>默认情况下，如果容器重启，kubelet 会保留被终止的容器日志。
+如果 Pod 在工作节点被驱逐，该 Pod 中所有的容器也会被驱逐，包括容器日志。</p><p>节点级日志记录中，需要重点考虑实现日志的轮转，以此来保证日志不会消耗节点上全部可用空间。
+Kubernetes 并不负责轮转日志，而是通过部署工具建立一个解决问题的方案。
+例如，在用 <code>kube-up.sh</code> 部署的 Kubernetes 集群中，存在一个
+<a href=https://linux.die.net/man/8/logrotate><code>logrotate</code></a>，每小时运行一次。
+你也可以设置容器运行时来自动地轮转应用日志。</p><p>例如，你可以找到关于 <code>kube-up.sh</code> 为 GCP 环境的 COS 镜像设置日志的详细信息，
+脚本为
+<a href=https://github.com/kubernetes/kubernetes/blob/v1.20.15/cluster/gce/gci/configure-helper.sh><code>configure-helper</code> 脚本</a>。</p><p>当运行 <a href=/docs/reference/generated/kubectl/kubectl-commands#logs><code>kubectl logs</code></a> 时，
+节点上的 kubelet 处理该请求并直接读取日志文件，同时在响应中返回日志文件内容。</p><blockquote class="note callout"><div><strong>说明：</strong> 如果有外部系统执行日志轮转，那么 <code>kubectl logs</code> 仅可查询到最新的日志内容。
+比如，对于一个 10MB 大小的文件，通过 <code>logrotate</code> 执行轮转后生成两个文件，
+一个 10MB 大小，一个为空，<code>kubectl logs</code> 返回最新的日志文件，而该日志文件
+在这个例子中为空。</div></blockquote><h3 id=系统组件日志>系统组件日志</h3><p>系统组件有两种类型：在容器中运行的和不在容器中运行的。例如：</p><ul><li>在容器中运行的 kube-scheduler 和 kube-proxy。</li><li>不在容器中运行的 kubelet 和容器运行时。</li></ul><p>在使用 systemd 机制的服务器上，kubelet 和容器容器运行时将日志写入到 journald 中。
+如果没有 systemd，它们将日志写入到 <code>/var/log</code> 目录下的 <code>.log</code> 文件中。
+容器中的系统组件通常将日志写到 <code>/var/log</code> 目录，绕过了默认的日志机制。
+他们使用 <a href=https://github.com/kubernetes/klog>klog</a> 日志库。
+你可以在<a href=https://github.com/kubernetes/community/blob/master/contributors/devel/sig-instrumentation/logging.md>日志开发文档</a>
+找到这些组件的日志告警级别约定。</p><p>和容器日志类似，<code>/var/log</code> 目录中的系统组件日志也应该被轮转。
+通过脚本 <code>kube-up.sh</code> 启动的 Kubernetes 集群中，日志被工具 <code>logrotate</code>
+执行每日轮转，或者日志大小超过 100MB 时触发轮转。</p><h2 id=集群级日志架构>集群级日志架构</h2><p>虽然Kubernetes没有为集群级日志记录提供原生的解决方案，但你可以考虑几种常见的方法。
+以下是一些选项：</p><ul><li>使用在每个节点上运行的节点级日志记录代理。</li><li>在应用程序的 Pod 中，包含专门记录日志的边车（Sidecar）容器。</li><li>将日志直接从应用程序中推送到日志记录后端。</li></ul><h3 id=使用节点级日志代理>使用节点级日志代理</h3><p><img src=/images/docs/user-guide/logging/logging-with-node-agent.png alt=使用节点日志记录代理></p><p>你可以通过在每个节点上使用 <em>节点级的日志记录代理</em> 来实现群集级日志记录。
+日志记录代理是一种用于暴露日志或将日志推送到后端的专用工具。
+通常，日志记录代理程序是一个容器，它可以访问包含该节点上所有应用程序容器的日志文件的目录。</p><p>由于日志记录代理必须在每个节点上运行，通常可以用 <code>DaemonSet</code> 的形式运行该代理。
+节点级日志在每个节点上仅创建一个代理，不需要对节点上的应用做修改。</p><p>容器向标准输出和标准错误输出写出数据，但在格式上并不统一。
+节点级代理
+收集这些日志并将其进行转发以完成汇总。</p><h3 id=sidecar-container-with-logging-agent>使用 sidecar 容器运行日志代理</h3><p>你可以通过以下方式之一使用边车（Sidecar）容器：</p><ul><li>边车容器将应用程序日志传送到自己的标准输出。</li><li>边车容器运行一个日志代理，配置该日志代理以便从应用容器收集日志。</li></ul><h4 id=传输数据流的-sidecar-容器>传输数据流的 sidecar 容器</h4><p><img src=/images/docs/user-guide/logging/logging-with-streaming-sidecar.png alt=带数据流容器的边车容器></p><p>利用边车容器向自己的 <code>stdout</code> 和 <code>stderr</code> 传输流的方式，
+你就可以利用每个节点上的 kubelet 和日志代理来处理日志。
+边车容器从文件、套接字或 journald 读取日志。
+每个边车容器向自己的 <code>stdout</code> 和 <code>stderr</code> 流中输出日志。</p><p>这种方法允许你将日志流从应用程序的不同部分分离开，其中一些可能缺乏对写入
+<code>stdout</code> 或 <code>stderr</code> 的支持。重定向日志背后的逻辑是最小的，因此它的开销几乎可以忽略不计。
+另外，因为 <code>stdout</code>、<code>stderr</code> 由 kubelet 处理，你可以使用内置的工具 <code>kubectl logs</code>。</p><p>例如，某 Pod 中运行一个容器，该容器向两个文件写不同格式的日志。
+下面是这个 pod 的配置文件:</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/zh/examples/admin/logging/two-files-counter-pod.yaml download=admin/logging/two-files-counter-pod.yaml><code>admin/logging/two-files-counter-pod.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-logging-two-files-counter-pod-yaml')" title="Copy admin/logging/two-files-counter-pod.yaml to clipboard"></img></div><div class=includecode id=admin-logging-two-files-counter-pod-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>counter<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>count<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>busybox<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>args</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- /bin/sh<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- -c<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- &gt;<span style=color:#b44;font-style:italic>
+</span><span style=color:#b44;font-style:italic>      i=0;
+</span><span style=color:#b44;font-style:italic>      while true;
+</span><span style=color:#b44;font-style:italic>      do
+</span><span style=color:#b44;font-style:italic>        echo &#34;$i: $(date)&#34; &gt;&gt; /var/log/1.log;
+</span><span style=color:#b44;font-style:italic>        echo &#34;$(date) INFO $i&#34; &gt;&gt; /var/log/2.log;
+</span><span style=color:#b44;font-style:italic>        i=$((i+1));
+</span><span style=color:#b44;font-style:italic>        sleep 1;
+</span><span style=color:#b44;font-style:italic>      done</span><span style=color:#bbb>      
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>volumeMounts</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>varlog<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>mountPath</span>:<span style=color:#bbb> </span>/var/log<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>volumes</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>varlog<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>emptyDir</span>:<span style=color:#bbb> </span>{}<span style=color:#bbb>
+</span></code></pre></div></div></div><p>不建议在同一个日志流中写入不同格式的日志条目，即使你成功地将其重定向到容器的
+<code>stdout</code> 流。相反，你可以创建两个边车容器。每个边车容器可以从共享卷
+跟踪特定的日志文件，并将文件内容重定向到各自的 <code>stdout</code> 流。</p><p>下面是运行两个边车容器的 Pod 的配置文件：</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/zh/examples/admin/logging/two-files-counter-pod-streaming-sidecar.yaml download=admin/logging/two-files-counter-pod-streaming-sidecar.yaml><code>admin/logging/two-files-counter-pod-streaming-sidecar.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-logging-two-files-counter-pod-streaming-sidecar-yaml')" title="Copy admin/logging/two-files-counter-pod-streaming-sidecar.yaml to clipboard"></img></div><div class=includecode id=admin-logging-two-files-counter-pod-streaming-sidecar-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>counter<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>count<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>busybox<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>args</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- /bin/sh<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- -c<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- &gt;<span style=color:#b44;font-style:italic>
+</span><span style=color:#b44;font-style:italic>      i=0;
+</span><span style=color:#b44;font-style:italic>      while true;
+</span><span style=color:#b44;font-style:italic>      do
+</span><span style=color:#b44;font-style:italic>        echo &#34;$i: $(date)&#34; &gt;&gt; /var/log/1.log;
+</span><span style=color:#b44;font-style:italic>        echo &#34;$(date) INFO $i&#34; &gt;&gt; /var/log/2.log;
+</span><span style=color:#b44;font-style:italic>        i=$((i+1));
+</span><span style=color:#b44;font-style:italic>        sleep 1;
+</span><span style=color:#b44;font-style:italic>      done</span><span style=color:#bbb>      
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>volumeMounts</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>varlog<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>mountPath</span>:<span style=color:#bbb> </span>/var/log<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>count-log-1<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>busybox<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>args</span>:<span style=color:#bbb> </span>[/bin/sh, -c, &#39;tail -n+1 -f /var/log/1.log&#39;]<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>volumeMounts</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>varlog<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>mountPath</span>:<span style=color:#bbb> </span>/var/log<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>count-log-2<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>busybox<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>args</span>:<span style=color:#bbb> </span>[/bin/sh, -c, &#39;tail -n+1 -f /var/log/2.log&#39;]<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>volumeMounts</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>varlog<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>mountPath</span>:<span style=color:#bbb> </span>/var/log<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>volumes</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>varlog<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>emptyDir</span>:<span style=color:#bbb> </span>{}<span style=color:#bbb>
+</span></code></pre></div></div></div><p>现在当你运行这个 Pod 时，你可以运行如下命令分别访问每个日志流：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl logs counter count-log-1
+</code></pre></div><p>输出为：</p><pre><code class=language-console data-lang=console>0: Mon Jan  1 00:00:00 UTC 2001
+1: Mon Jan  1 00:00:01 UTC 2001
+2: Mon Jan  1 00:00:02 UTC 2001
+...
+</code></pre><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl logs counter count-log-2
+</code></pre></div><p>输出为：</p><pre><code class=language-console data-lang=console>Mon Jan  1 00:00:00 UTC 2001 INFO 0
+Mon Jan  1 00:00:01 UTC 2001 INFO 1
+Mon Jan  1 00:00:02 UTC 2001 INFO 2
+...
+</code></pre><p>集群中安装的节点级代理会自动获取这些日志流，而无需进一步配置。
+如果你愿意，你也可以配置代理程序来解析源容器的日志行。</p><p>注意，尽管 CPU 和内存使用率都很低（以多个 CPU 毫核指标排序或者按内存的兆字节排序），
+向文件写日志然后输出到 <code>stdout</code> 流仍然会成倍地增加磁盘使用率。
+如果你的应用向单一文件写日志，通常最好设置 <code>/dev/stdout</code> 作为目标路径，
+而不是使用流式的边车容器方式。</p><p>应用本身如果不具备轮转日志文件的功能，可以通过边车容器实现。
+该方式的一个例子是运行一个小的、定期轮转日志的容器。
+然而，还是推荐直接使用 <code>stdout</code> 和 <code>stderr</code>，将日志的轮转和保留策略
+交给 kubelet。</p><h3 id=具有日志代理功能的边车容器>具有日志代理功能的边车容器</h3><p><img src=/images/docs/user-guide/logging/logging-with-sidecar-agent.png alt=含日志代理的边车容器></p><p>如果节点级日志记录代理程序对于你的场景来说不够灵活，你可以创建一个
+带有单独日志记录代理的边车容器，将代理程序专门配置为与你的应用程序一起运行。</p><blockquote class="note callout"><div><strong>说明：</strong><p>在边车容器中使用日志代理会带来严重的资源损耗。
+此外，你不能使用 <code>kubectl logs</code> 命令访问日志，因为日志并没有被 kubelet 管理。</div></blockquote><p>下面是两个配置文件，可以用来实现一个带日志代理的边车容器。
+第一个文件包含用来配置 fluentd 的
+<a href=/zh/docs/tasks/configure-pod-container/configure-pod-configmap/>ConfigMap</a>。</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/zh/examples/admin/logging/fluentd-sidecar-config.yaml download=admin/logging/fluentd-sidecar-config.yaml><code>admin/logging/fluentd-sidecar-config.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-logging-fluentd-sidecar-config-yaml')" title="Copy admin/logging/fluentd-sidecar-config.yaml to clipboard"></img></div><div class=includecode id=admin-logging-fluentd-sidecar-config-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>ConfigMap<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>fluentd-config<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>data</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>fluentd.conf</span>:<span style=color:#bbb> </span>|<span style=color:#b44;font-style:italic>
+</span><span style=color:#b44;font-style:italic>    &lt;source&gt;
+</span><span style=color:#b44;font-style:italic>      type tail
+</span><span style=color:#b44;font-style:italic>      format none
+</span><span style=color:#b44;font-style:italic>      path /var/log/1.log
+</span><span style=color:#b44;font-style:italic>      pos_file /var/log/1.log.pos
+</span><span style=color:#b44;font-style:italic>      tag count.format1
+</span><span style=color:#b44;font-style:italic>    &lt;/source&gt;
+</span><span style=color:#b44;font-style:italic>
+</span><span style=color:#b44;font-style:italic>    &lt;source&gt;
+</span><span style=color:#b44;font-style:italic>      type tail
+</span><span style=color:#b44;font-style:italic>      format none
+</span><span style=color:#b44;font-style:italic>      path /var/log/2.log
+</span><span style=color:#b44;font-style:italic>      pos_file /var/log/2.log.pos
+</span><span style=color:#b44;font-style:italic>      tag count.format2
+</span><span style=color:#b44;font-style:italic>    &lt;/source&gt;
+</span><span style=color:#b44;font-style:italic>
+</span><span style=color:#b44;font-style:italic>    &lt;match **&gt;
+</span><span style=color:#b44;font-style:italic>      type google_cloud
+</span><span style=color:#b44;font-style:italic>    &lt;/match&gt;</span><span style=color:#bbb>    
+</span></code></pre></div></div></div><blockquote class="note callout"><div><strong>说明：</strong><p>要进一步了解如何配置 fluentd，请参考 <a href=https://docs.fluentd.org/>fluentd 官方文档</a>。</div></blockquote><p>第二个文件描述了运行 fluentd 边车容器的 Pod 。
+flutend 通过 Pod 的挂载卷获取它的配置数据。</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/zh/examples/admin/logging/two-files-counter-pod-agent-sidecar.yaml download=admin/logging/two-files-counter-pod-agent-sidecar.yaml><code>admin/logging/two-files-counter-pod-agent-sidecar.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('admin-logging-two-files-counter-pod-agent-sidecar-yaml')" title="Copy admin/logging/two-files-counter-pod-agent-sidecar.yaml to clipboard"></img></div><div class=includecode id=admin-logging-two-files-counter-pod-agent-sidecar-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>counter<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>count<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>busybox<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>args</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- /bin/sh<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- -c<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- &gt;<span style=color:#b44;font-style:italic>
+</span><span style=color:#b44;font-style:italic>      i=0;
+</span><span style=color:#b44;font-style:italic>      while true;
+</span><span style=color:#b44;font-style:italic>      do
+</span><span style=color:#b44;font-style:italic>        echo &#34;$i: $(date)&#34; &gt;&gt; /var/log/1.log;
+</span><span style=color:#b44;font-style:italic>        echo &#34;$(date) INFO $i&#34; &gt;&gt; /var/log/2.log;
+</span><span style=color:#b44;font-style:italic>        i=$((i+1));
+</span><span style=color:#b44;font-style:italic>        sleep 1;
+</span><span style=color:#b44;font-style:italic>      done</span><span style=color:#bbb>      
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>volumeMounts</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>varlog<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>mountPath</span>:<span style=color:#bbb> </span>/var/log<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>count-agent<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>k8s.gcr.io/fluentd-gcp:1.30<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>env</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>FLUENTD_ARGS<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span>-c /etc/fluentd-config/fluentd.conf<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>volumeMounts</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>varlog<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>mountPath</span>:<span style=color:#bbb> </span>/var/log<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>config-volume<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>mountPath</span>:<span style=color:#bbb> </span>/etc/fluentd-config<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>volumes</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>varlog<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>emptyDir</span>:<span style=color:#bbb> </span>{}<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>config-volume<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>configMap</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>fluentd-config<span style=color:#bbb>
+</span></code></pre></div></div></div><p>在示例配置中，你可以将 fluentd 替换为任何日志代理，从应用容器内
+的任何来源读取数据。</p><h3 id=从应用中直接暴露日志目录>从应用中直接暴露日志目录</h3><p><img src=/images/docs/user-guide/logging/logging-from-application.png alt=直接从应用程序暴露日志></p><p>从各个应用中直接暴露和推送日志数据的集群日志机制
+已超出 Kubernetes 的范围。</p></div><div class=td-content style=page-break-before:always><h1 id=pg-5cc31ecfba86467f8884856412cfb6b2>6 - 系统日志</h1><p>系统组件的日志记录集群中发生的事件，这对于调试非常有用。
+你可以配置日志的精细度，以展示更多或更少的细节。
+日志可以是粗粒度的，如只显示组件内的错误，
+也可以是细粒度的，如显示事件的每一个跟踪步骤（比如 HTTP 访问日志、pod 状态更新、控制器动作或调度器决策）。</p><h2 id=klog>Klog</h2><p>klog 是 Kubernetes 的日志库。
+<a href=https://github.com/kubernetes/klog>klog</a>
+为 Kubernetes 系统组件生成日志消息。</p><p>有关 klog 配置的更多信息，请参见<a href=/zh/docs/reference/command-line-tools-reference/>命令行工具参考</a>。</p><p>klog 原始格式的示例：</p><pre><code>I1025 00:15:15.525108       1 httplog.go:79] GET /api/v1/namespaces/kube-system/pods/metrics-server-v0.3.1-57c75779f-9p8wg: (1.512ms) 200 [pod_nanny/v0.0.0 (linux/amd64) kubernetes/$Format 10.56.1.19:51756]
+</code></pre><h3 id=结构化日志>结构化日志</h3><div style=margin-top:10px;margin-bottom:10px><b>FEATURE STATE:</b> <code>Kubernetes v1.19 [alpha]</code></div><blockquote class="warning callout"><div><strong>警告：</strong><p>到结构化日志消息的迁移是一个持续的过程。
+在此版本中，并非所有日志消息都是结构化的。
+解析日志文件时，你也必须要处理非结构化日志消息。</p><p>日志格式和值的序列化可能会发生变化。</p></div></blockquote><p>结构化日志记录旨在日志消息中引入统一结构，以便以编程方式提取信息。
+你可以方便地用更小的开销来处理结构化日志。
+新的消息格式向后兼容，并默认启用。</p><p>结构化日志的格式：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ini data-lang=ini><span style=color:#b44>&lt;klog header&gt; &#34;&lt;message&gt;&#34; &lt;key1&gt;</span><span style=color:#666>=</span><span style=color:#b44>&#34;&lt;value1&gt;&#34; &lt;key2&gt;=&#34;&lt;value2&gt;&#34; ...</span>
+</code></pre></div><p>示例：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ini data-lang=ini><span style=color:#b44>I1025 00:15:15.525108       1 controller_utils.go:116] &#34;Pod status updated&#34; pod</span><span style=color:#666>=</span><span style=color:#b44>&#34;kube-system/kubedns&#34; status=&#34;ready&#34;</span>
+</code></pre></div><h3 id=json-日志格式>JSON 日志格式</h3><div style=margin-top:10px;margin-bottom:10px><b>FEATURE STATE:</b> <code>Kubernetes v1.19 [alpha]</code></div><blockquote class="warning callout"><div><strong>警告：</strong><p>JSON 输出并不支持太多标准 klog 参数。
+对于不受支持的 klog 参数的列表，请参见
+<a href=/zh/docs/reference/command-line-tools-reference/>命令行工具参考</a>。</p><p>并不是所有日志都保证写成 JSON 格式（例如，在进程启动期间）。
+如果你打算解析日志，请确保可以处理非 JSON 格式的日志行。</p><p>字段名和 JSON 序列化可能会发生变化。</p></div></blockquote><p><code>--logging-format=json</code> 参数将日志格式从 klog 原生格式改为 JSON 格式。
+JSON 日志格式示例（美化输出）：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+   <span style=color:green;font-weight:700>&#34;ts&#34;</span>: <span style=color:#666>1580306777.04728</span>,
+   <span style=color:green;font-weight:700>&#34;v&#34;</span>: <span style=color:#666>4</span>,
+   <span style=color:green;font-weight:700>&#34;msg&#34;</span>: <span style=color:#b44>&#34;Pod status updated&#34;</span>,
+   <span style=color:green;font-weight:700>&#34;pod&#34;</span>:{
+      <span style=color:green;font-weight:700>&#34;name&#34;</span>: <span style=color:#b44>&#34;nginx-1&#34;</span>,
+      <span style=color:green;font-weight:700>&#34;namespace&#34;</span>: <span style=color:#b44>&#34;default&#34;</span>
+   },
+   <span style=color:green;font-weight:700>&#34;status&#34;</span>: <span style=color:#b44>&#34;ready&#34;</span>
+}
+</code></pre></div><p>具有特殊意义的 key：</p><ul><li><code>ts</code> - Unix 时间风格的时间戳（必选项，浮点值）</li><li><code>v</code> - 精细度（必选项，整数，默认值 0）</li><li><code>err</code> - 错误字符串（可选项，字符串）</li><li><code>msg</code> - 消息（必选项，字符串）</li></ul><p>当前支持JSON格式的组件列表：</p><ul><li><a class=glossary-tooltip title=主节点上运行控制器的组件。 data-toggle=tooltip data-placement=top href=/docs/reference/generated/kube-controller-manager/ target=_blank aria-label=kube-controller-manager>kube-controller-manager</a></li><li><a class=glossary-tooltip title="提供 Kubernetes API 服务的控制面组件。" data-toggle=tooltip data-placement=top href=/zh/docs/reference/command-line-tools-reference/kube-apiserver/ target=_blank aria-label=kube-apiserver>kube-apiserver</a></li><li><a class=glossary-tooltip title="控制平面组件，负责监视新创建的、未指定运行节点的 Pod，选择节点让 Pod 在上面运行。" data-toggle=tooltip data-placement=top href=/docs/reference/generated/kube-scheduler/ target=_blank aria-label=kube-scheduler>kube-scheduler</a></li><li><a class=glossary-tooltip title="一个在集群中每个节点上运行的代理。它保证容器都运行在 Pod 中。" data-toggle=tooltip data-placement=top href=/docs/reference/generated/kubelet target=_blank aria-label=kubelet>kubelet</a></li></ul><h3 id=日志清理>日志清理</h3><div style=margin-top:10px;margin-bottom:10px><b>FEATURE STATE:</b> <code>Kubernetes v1.20 [alpha]</code></div><blockquote class="warning callout"><div><strong>警告：</strong> 日志清理可能会导致大量的计算开销，因此不应启用在生产环境中。</div></blockquote><p><code>--experimental-logging-sanitization</code> 参数可用来启用 klog 清理过滤器。
+如果启用后，将检查所有日志参数中是否有标记为敏感数据的字段（比如：密码，密钥，令牌），并且将阻止这些字段的记录。</p><p>当前支持日志清理的组件列表：</p><ul><li>kube-controller-manager</li><li>kube-apiserver</li><li>kube-scheduler</li><li>kubelet</li></ul><blockquote class="note callout"><div><strong>说明：</strong> 日志清理过滤器不会阻止用户工作负载日志泄漏敏感数据。</div></blockquote><h3 id=日志精细度级别>日志精细度级别</h3><p>参数 <code>-v</code> 控制日志的精细度。增大该值会增大日志事件的数量。
+减小该值可以减小日志事件的数量。
+增大精细度会记录更多的不太严重的事件。
+精细度设置为 0 时只记录关键（critical）事件。</p><h3 id=日志位置>日志位置</h3><p>有两种类型的系统组件：运行在容器中的组件和不运行在容器中的组件。例如：</p><ul><li>Kubernetes 调度器和 kube-proxy 在容器中运行。</li><li>kubelet 和容器运行时，例如 Docker，不在容器中运行。</li></ul><p>在使用 systemd 的系统中，kubelet 和容器运行时写入 journald。
+在别的系统中，日志写入 <code>/var/log</code> 目录下的 <code>.log</code> 文件中。
+容器中的系统组件总是绕过默认的日志记录机制，写入 <code>/var/log</code> 目录下的 <code>.log</code> 文件。
+与容器日志类似，你应该轮转 <code>/var/log</code> 目录下系统组件日志。
+在 <code>kube-up.sh</code> 脚本创建的 Kubernetes 集群中，日志轮转由 <code>logrotate</code> 工具配置。
+<code>logrotate</code> 工具，每天或者当日志大于 100MB 时，轮转日志。</p><h2 id=接下来>接下来</h2><ul><li>阅读 <a href=/zh/docs/concepts/cluster-administration/logging/>Kubernetes 日志架构</a></li><li>阅读 <a href=https://github.com/kubernetes/enhancements/tree/master/keps/sig-instrumentation/1602-structured-logging>Structured Logging</a></li><li>阅读 <a href=https://github.com/kubernetes/community/blob/master/contributors/devel/sig-instrumentation/logging.md>Conventions for logging severity</a></li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-2e05a56491965ae320c2662590b2ca18>7 - 容器镜像的垃圾收集</h1><p>垃圾回收是 kubelet 的一个有用功能，它将清理未使用的<a href=/zh/docs/concepts/containers/#container-images>镜像</a>和<a href=/zh/docs/concepts/containers/>容器</a>。
+Kubelet 将每分钟对容器执行一次垃圾回收，每五分钟对镜像执行一次垃圾回收。</p><p>不建议使用外部垃圾收集工具，因为这些工具可能会删除原本期望存在的容器进而破坏 kubelet 的行为。</p><h2 id=image-collection>镜像回收</h2><p>Kubernetes 借助于 cadvisor 通过 imageManager 来管理所有镜像的生命周期。</p><p>镜像垃圾回收策略只考虑两个因素：<code>HighThresholdPercent</code> 和 <code>LowThresholdPercent</code>。
+磁盘使用率超过上限阈值（HighThresholdPercent）将触发垃圾回收。
+垃圾回收将删除最近最少使用的镜像，直到磁盘使用率满足下限阈值（LowThresholdPercent）。</p><h2 id=container-collection>容器回收</h2><p>容器垃圾回收策略考虑三个用户定义变量。
+<code>MinAge</code> 是容器可以被执行垃圾回收的最小生命周期。
+<code>MaxPerPodContainer</code> 是每个 pod 内允许存在的死亡容器的最大数量。
+<code>MaxContainers</code> 是全部死亡容器的最大数量。
+可以分别独立地通过将 <code>MinAge</code> 设置为 0，以及将 <code>MaxPerPodContainer</code> 和 <code>MaxContainers</code>
+设置为小于 0 来禁用这些变量。</p><p><code>kubelet</code> 将处理无法辨识的、已删除的以及超出前面提到的参数所设置范围的容器。
+最老的容器通常会先被移除。
+<code>MaxPerPodContainer</code> 和 <code>MaxContainer</code> 在某些场景下可能会存在冲突，
+例如在保证每个 pod 内死亡容器的最大数量（<code>MaxPerPodContainer</code>）的条件下可能会超过
+允许存在的全部死亡容器的最大数量（<code>MaxContainer</code>）。
+<code>MaxPerPodContainer</code> 在这种情况下会被进行调整：
+最坏的情况是将 <code>MaxPerPodContainer</code> 降级为 1，并驱逐最老的容器。
+此外，pod 内已经被删除的容器一旦年龄超过 <code>MinAge</code> 就会被清理。</p><p>不被 kubelet 管理的容器不受容器垃圾回收的约束。</p><h2 id=user-configuration>用户配置</h2><p>用户可以使用以下 kubelet 参数调整相关阈值来优化镜像垃圾回收：</p><ol><li><code>image-gc-high-threshold</code>，触发镜像垃圾回收的磁盘使用率百分比。默认值为 85%。</li><li><code>image-gc-low-threshold</code>，镜像垃圾回收试图释放资源后达到的磁盘使用率百分比。默认值为 80%。</li></ol><p>我们还允许用户通过以下 kubelet 参数自定义垃圾收集策略：</p><ol><li><p><code>minimum-container-ttl-duration</code>，完成的容器在被垃圾回收之前的最小年龄，默认是 0 分钟。
+这意味着每个完成的容器都会被执行垃圾回收。</p></li><li><p><code>maximum-dead-containers-per-container</code>，每个容器要保留的旧实例的最大数量。默认值为 1。</p></li><li><p><code>maximum-dead-containers</code>，要全局保留的旧容器实例的最大数量。
+默认值是 -1，意味着没有全局限制。</p></li></ol><p>容器可能会在其效用过期之前被垃圾回收。这些容器可能包含日志和其他对故障诊断有用的数据。
+强烈建议为 <code>maximum-dead-containers-per-container</code> 设置一个足够大的值，以便每个预期容器至少保留一个死亡容器。
+由于同样的原因，<code>maximum-dead-containers</code> 也建议使用一个足够大的值。</p><p>查阅<a href=https://github.com/kubernetes/kubernetes/issues/13287>这个 Issue</a> 获取更多细节。</p><h2 id=deprecation>弃用</h2><p>这篇文档中的一些 kubelet 垃圾收集（Garbage Collection）功能将在未来被 kubelet 驱逐回收（eviction）所替代。</p><p>包括:</p><table><thead><tr><th>现存参数</th><th>新参数</th><th>解释</th></tr></thead><tbody><tr><td><code>--image-gc-high-threshold</code></td><td><code>--eviction-hard</code> 或 <code>--eviction-soft</code></td><td>现存的驱逐回收信号可以触发镜像垃圾回收</td></tr><tr><td><code>--image-gc-low-threshold</code></td><td><code>--eviction-minimum-reclaim</code></td><td>驱逐回收实现相同行为</td></tr><tr><td><code>--maximum-dead-containers</code></td><td></td><td>一旦旧日志存储在容器上下文之外，就会被弃用</td></tr><tr><td><code>--maximum-dead-containers-per-container</code></td><td></td><td>一旦旧日志存储在容器上下文之外，就会被弃用</td></tr><tr><td><code>--minimum-container-ttl-duration</code></td><td></td><td>一旦旧日志存储在容器上下文之外，就会被弃用</td></tr><tr><td><code>--low-diskspace-threshold-mb</code></td><td><code>--eviction-hard</code> or <code>eviction-soft</code></td><td>驱逐回收将磁盘阈值泛化到其他资源</td></tr><tr><td><code>--outofdisk-transition-frequency</code></td><td><code>--eviction-pressure-transition-period</code></td><td>驱逐回收将磁盘压力转换到其他资源</td></tr></tbody></table><h2 id=接下来>接下来</h2><p>查阅<a href=/zh/docs/tasks/administer-cluster/out-of-resource/>配置资源不足情况的处理</a>了解更多细节。</p></div><div class=td-content style=page-break-before:always><h1 id=pg-08e94e6a480e0d6b2de72d84a1b97617>8 - Kubernetes 中的代理</h1><p>本文讲述了 Kubernetes 中所使用的代理。</p><h2 id=proxies>代理</h2><p>用户在使用 Kubernetes 的过程中可能遇到几种不同的代理（proxy）：</p><ol><li><p><a href=/zh/docs/tasks/access-application-cluster/access-cluster/#directly-accessing-the-rest-api>kubectl proxy</a>：</p><ul><li>运行在用户的桌面或 pod 中</li><li>从本机地址到 Kubernetes apiserver 的代理</li><li>客户端到代理使用 HTTP 协议</li><li>代理到 apiserver 使用 HTTPS 协议</li><li>指向 apiserver</li><li>添加认证头信息</li></ul></li></ol><ol start=2><li><p><a href=/zh/docs/tasks/access-application-cluster/access-cluster/#discovering-builtin-services>apiserver proxy</a>：</p><ul><li>是一个建立在 apiserver 内部的“堡垒”</li><li>将集群外部的用户与群集 IP 相连接，这些IP是无法通过其他方式访问的</li><li>运行在 apiserver 进程内</li><li>客户端到代理使用 HTTPS 协议 (如果配置 apiserver 使用 HTTP 协议，则使用 HTTP 协议)</li><li>通过可用信息进行选择，代理到目的地可能使用 HTTP 或 HTTPS 协议</li><li>可以用来访问 Node、 Pod 或 Service</li><li>当用来访问 Service 时，会进行负载均衡</li></ul></li></ol><ol start=3><li><p><a href=/zh/docs/concepts/services-networking/service/#ips-and-vips>kube proxy</a>：</p><ul><li>在每个节点上运行</li><li>代理 UDP、TCP 和 SCTP</li><li>不支持 HTTP</li><li>提供负载均衡能力</li><li>只用来访问 Service</li></ul></li></ol><ol start=4><li><p>apiserver 之前的代理/负载均衡器：</p><ul><li>在不同集群中的存在形式和实现不同 (如 nginx)</li><li>位于所有客户端和一个或多个 API 服务器之间</li><li>存在多个 API 服务器时，扮演负载均衡器的角色</li></ul></li></ol><ol start=5><li><p>外部服务的云负载均衡器：</p><ul><li>由一些云供应商提供 (如 AWS ELB、Google Cloud Load Balancer)</li><li>Kubernetes 服务类型为 <code>LoadBalancer</code> 时自动创建</li><li>通常仅支持 UDP/TCP 协议</li><li>SCTP 支持取决于云供应商的负载均衡器实现</li><li>不同云供应商的云负载均衡器实现不同</li></ul></li></ol><p>Kubernetes 用户通常只需要关心前两种类型的代理，集群管理员通常需要确保后面几种类型的代理设置正确。</p><h2 id=请求重定向>请求重定向</h2><p>代理已经取代重定向功能，重定向功能已被弃用。</p></div><div class=td-content style=page-break-before:always><h1 id=pg-31c9327d2332c585341b64ddafa19cdd>9 - API 优先级和公平性</h1><div style=margin-top:10px;margin-bottom:10px><b>FEATURE STATE:</b> <code>Kubernetes v1.20 [beta]</code></div><p>对于集群管理员来说，控制 Kubernetes API 服务器在过载情况下的行为是一项关键任务。
+<a class=glossary-tooltip title="提供 Kubernetes API 服务的控制面组件。" data-toggle=tooltip data-placement=top href=/zh/docs/reference/command-line-tools-reference/kube-apiserver/ target=_blank aria-label=kube-apiserver>kube-apiserver</a>
+有一些控件（例如：命令行标志 <code>--max-requests-inflight</code> 和 <code>--max-mutating-requests-inflight</code> ）,
+可以限制将要接受的未处理的请求，从而防止过量请求入站，潜在导致 API 服务器崩溃。
+但是这些标志不足以保证在高流量期间，最重要的请求仍能被服务器接受。</p><p>API 优先级和公平性（ APF ）是一种替代方案，可提升上述最大并发限制。
+APF 以更细粒度的方式对请求进行分类和隔离。
+它还引入了空间有限的排队机制，因此在非常短暂的突发情况下，API 服务器不会拒绝任何请求。
+通过使用公平排队技术从队列中分发请求，这样，
+一个行为不佳的 <a class=glossary-tooltip title="控制器通过 apiserver 监控集群的公共状态，并致力于将当前状态转变为期望的状态。" data-toggle=tooltip data-placement=top href=/zh/docs/concepts/architecture/controller/ target=_blank aria-label=控制器>控制器</a>
+就不会饿死其他控制器（即使优先级相同）。</p><blockquote class="caution callout"><div><strong>注意：</strong> 属于“长时间运行”类型的请求（主要是 watch ）不受 API 优先级和公平性过滤器的约束。
+如果未启用 APF 特性，即便设置 <code>--max-requests-inflight</code> 标志，该类请求也不受约束。</div></blockquote><h2 id=enabling-api-priority-and-fairness>启用/禁用 API 优先级和公平性</h2><p>API 优先级与公平性（APF）特性由特性门控控制，默认情况下启用。
+有关特性门控的一般性描述以及如何启用和禁用特性门控，
+请参见<a href=/zh/docs/reference/command-line-tools-reference/feature-gates/>特性门控</a>。
+APF 的特性门控称为 <code>APIPriorityAndFairness</code>。
+此特性也与某个 <a class=glossary-tooltip title="Kubernetes API 中的一组相关路径" data-toggle=tooltip data-placement=top href=/zh/docs/concepts/overview/kubernetes-api/#api-groups-and-versioning target=_blank aria-label="API 组">API 组</a>
+相关：
+(a) 一个 <code>v1alpha1</code> 版本，默认被禁用；
+(b) 一个 <code>v1beta1</code> 版本，默认被启用。
+你可以在启动 <code>kube-apiserver</code> 时，添加以下命令行标志来禁用此功能门控
+及 v1beta1 API 组：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kube-apiserver <span style=color:#b62;font-weight:700>\
+</span><span style=color:#b62;font-weight:700></span>--feature-gates<span style=color:#666>=</span><span style=color:#b8860b>APIPriorityAndFairness</span><span style=color:#666>=</span><span style=color:#a2f>false</span> <span style=color:#b62;font-weight:700>\
+</span><span style=color:#b62;font-weight:700></span>--runtime-config<span style=color:#666>=</span>flowcontrol.apiserver.k8s.io/v1beta1<span style=color:#666>=</span><span style=color:#a2f>false</span> <span style=color:#b62;font-weight:700>\
+</span><span style=color:#b62;font-weight:700></span>  <span style=color:#080;font-style:italic># ...其他配置不变</span>
+</code></pre></div><p>或者，你也可以通过
+<code>--runtime-config=flowcontrol.apiserver.k8s.io/v1alpha1=true</code>
+启用 API 组的 v1alpha1 版本。</p><p>命令行标志 <code>--enable-priority-fairness=false</code> 将彻底禁用 APF 特性，即使其他标志启用它也是无效。</p><h2 id=concepts>概念</h2><p>APF 特性包含几个不同的功能。
+传入的请求通过 <em>FlowSchema</em> 按照其属性分类，并分配优先级。
+每个优先级维护自定义的并发限制，加强了隔离度，这样不同优先级的请求，就不会相互饿死。
+在同一个优先级内，公平排队算法可以防止来自不同 <em>flow</em> 的请求相互饿死。
+该算法将请求排队，通过排队机制，防止在平均负载较低时，通信量突增而导致请求失败。</p><h3 id=Priority-Levels>优先级</h3><p>如果未启用 APF，API 服务器中的整体并发量将受到 <code>kube-apiserver</code> 的参数
+<code>--max-requests-inflight</code> 和 <code>--max-mutating-requests-inflight</code> 的限制。
+启用 APF 后，将对这些参数定义的并发限制进行求和，然后将总和分配到一组可配置的 <em>优先级</em> 中。
+每个传入的请求都会分配一个优先级；每个优先级都有各自的配置，设定允许分发的并发请求数。</p><p>例如，默认配置包括针对领导者选举请求、内置控制器请求和 Pod 请求都单独设置优先级。
+这表示即使异常的 Pod 向 API 服务器发送大量请求，也无法阻止领导者选举或内置控制器的操作执行成功。</p><h3 id=Queuing>排队</h3><p>即使在同一优先级内，也可能存在大量不同的流量源。
+在过载情况下，防止一个请求流饿死其他流是非常有价值的
+（尤其是在一个较为常见的场景中，一个有故障的客户端会疯狂地向 kube-apiserver 发送请求，
+理想情况下，这个有故障的客户端不应对其他客户端产生太大的影响）。
+公平排队算法在处理具有相同优先级的请求时，实现了上述场景。
+每个请求都被分配到某个 <em>流</em> 中，该 <em>流</em> 由对应的 FlowSchema 的名字加上一个
+<em>流区分项（Flow Distinguisher）</em> 来标识。
+这里的流区分项可以是发出请求的用户、目标资源的名称空间或什么都不是。
+系统尝试为不同流中具有相同优先级的请求赋予近似相等的权重。</p><p>将请求划分到流中之后，APF 功能将请求分配到队列中。
+分配时使用一种称为 <a class=glossary-tooltip title=一种将请求指派给队列的技术，其隔离性好过对队列个数哈希取模的方式。 data-toggle=tooltip data-placement=top href="/zh/docs/reference/glossary/?all=true#term-shuffle-sharding" target=_blank aria-label=混洗分片（Shuffle-Sharding）>混洗分片（Shuffle-Sharding）</a>
+的技术。
+该技术可以相对有效地利用队列隔离低强度流与高强度流。</p><p>排队算法的细节可针对每个优先等级进行调整，并允许管理员在内存占用、
+公平性（当总流量超标时，各个独立的流将都会取得进展）、
+突发流量的容忍度以及排队引发的额外延迟之间进行权衡。</p><h3 id=Exempt-requests>豁免请求</h3><p>某些特别重要的请求不受制于此特性施加的任何限制。这些豁免可防止不当的流控配置完全禁用 API 服务器。</p><h2 id=defaults>默认值</h2><p>APF 特性附带推荐配置，该配置对实验场景应该足够；
+如果你的集群有可能承受较大的负载，那么你应该考虑哪种配置最有效。
+推荐配置将请求分为五个优先级：</p><ul><li><code>system</code> 优先级用于 <code>system:nodes</code> 组（即 Kubelets ）的请求；
+kubelets 必须能连上 API 服务器，以便工作负载能够调度到其上。</li></ul><ul><li><code>leader-election</code> 优先级用于内置控制器的领导选举的请求
+（特别是来自 <code>kube-system</code> 名称空间中 <code>system:kube-controller-manager</code> 和
+<code>system:kube-scheduler</code> 用户和服务账号，针对 <code>endpoints</code>、<code>configmaps</code> 或 <code>leases</code> 的请求）。
+将这些请求与其他流量相隔离非常重要，因为领导者选举失败会导致控制器发生故障并重新启动，
+这反过来会导致新启动的控制器在同步信息时，流量开销更大。</li></ul><ul><li><code>workload-high</code> 优先级用于内置控制器的请求。</li><li><code>workload-low</code> 优先级适用于来自任何服务帐户的请求，通常包括来自 Pods
+中运行的控制器的所有请求。</li><li><code>global-default</code> 优先级可处理所有其他流量，例如：非特权用户运行的交互式 <code>kubectl</code> 命令。</li></ul><p>系统内置了两个 PriorityLevelConfiguration 和两个 FlowSchema，它们是不可重载的：</p><ul><li>特殊的 <code>exempt</code> 优先级的请求完全不受流控限制：它们总是立刻被分发。
+特殊的 <code>exempt</code> FlowSchema 把 <code>system:masters</code> 组的所有请求都归入该优先级组。
+如果合适，你可以定义新的 FlowSchema，将其他请求定向到该优先级。</li></ul><ul><li>特殊的 <code>catch-all</code> 优先级与特殊的 <code>catch-all</code> FlowSchema 结合使用，以确保每个请求都分类。
+一般地，你不应该依赖于 <code>catch-all</code> 的配置，而应适当地创建自己的 <code>catch-all</code>
+FlowSchema 和 PriorityLevelConfigurations（或使用默认安装的 <code>global-default</code> 配置）。
+为了帮助捕获部分请求未分类的配置错误，强制要求 <code>catch-all</code> 优先级仅允许一个并发份额，
+并且不对请求进行排队，使得仅与 <code>catch-all</code> FlowSchema 匹配的流量被拒绝的可能性更高，
+并显示 HTTP 429 错误。</li></ul><h2 id=Health-check-concurrency-exemption>健康检查并发豁免</h2><p>推荐配置没有为本地 kubelet 对 kube-apiserver 执行健康检查的请求进行任何特殊处理
+——它们倾向于使用安全端口，但不提供凭据。
+在推荐配置中，这些请求将分配 <code>global-default</code> FlowSchema 和 <code>global-default</code> 优先级，
+这样其他流量可以排除健康检查。</p><p>如果添加以下 FlowSchema，健康检查请求不受速率限制。</p><blockquote class="caution callout"><div><strong>注意：</strong> 进行此更改后，任何敌对方都可以发送与此 FlowSchema 匹配的任意数量的健康检查请求。
+如果你有 Web 流量过滤器或类似的外部安全机制保护集群的 API 服务器免受常规网络流量的侵扰，
+则可以配置规则，阻止所有来自集群外部的健康检查请求。</div></blockquote><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/master/content/zh/examples/priority-and-fairness/health-for-strangers.yaml download=priority-and-fairness/health-for-strangers.yaml><code>priority-and-fairness/health-for-strangers.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('priority-and-fairness-health-for-strangers-yaml')" title="Copy priority-and-fairness/health-for-strangers.yaml to clipboard"></img></div><div class=includecode id=priority-and-fairness-health-for-strangers-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>flowcontrol.apiserver.k8s.io/v1alpha1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>FlowSchema<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>health-for-strangers<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>matchingPrecedence</span>:<span style=color:#bbb> </span><span style=color:#666>1000</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>priorityLevelConfiguration</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>exempt<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>rules</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>nonResourceRules</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>nonResourceURLs</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:#b44>&#34;/healthz&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:#b44>&#34;/livez&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:#b44>&#34;/readyz&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>verbs</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:#b44>&#34;*&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>subjects</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Group<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>group</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>system:unauthenticated<span style=color:#bbb>
+</span></code></pre></div></div></div><h2 id=Resources>资源</h2><p>流控 API 涉及两种资源。
+<a href=/docs/reference/generated/kubernetes-api/v1.20/#prioritylevelconfiguration-v1alpha1-flowcontrol-apiserver-k8s-io>PriorityLevelConfigurations</a>
+定义隔离类型和可处理的并发预算量，还可以微调排队行为。
+<a href=/docs/reference/generated/kubernetes-api/v1.20/#flowschema-v1alpha1-flowcontrol-apiserver-k8s-io>FlowSchemas</a>
+用于对每个入站请求进行分类，并与一个 PriorityLevelConfigurations 相匹配。
+此外同一 API 组还有一个 <code>v1alpha1</code> 版本，其中包含语法和语义都相同的资源类别。</p><h3 id=PriorityLevelConfiguration>PriorityLevelConfiguration</h3><p>一个 PriorityLevelConfiguration 表示单个隔离类型。每个 PriorityLevelConfigurations
+对未完成的请求数有各自的限制，对排队中的请求数也有限制。</p><p>PriorityLevelConfigurations 的并发限制不是指定请求绝对数量，而是在“并发份额”中指定。
+API 服务器的总并发量限制通过这些份额按例分配到现有 PriorityLevelConfigurations 中。
+集群管理员可以更改 <code>--max-requests-inflight</code> （或 <code>--max-mutating-requests-inflight</code> ）的值，
+再重新启动 <code>kube-apiserver</code> 来增加或减小服务器的总流量，
+然后所有的 PriorityLevelConfigurations 将看到其最大并发增加（或减少）了相同的比例。</p><blockquote class="caution callout"><div><strong>注意：</strong> 启用 APF 功能后，服务器的总并发量限制将设置为
+<code>--max-requests-inflight</code> 和 <code>--max-mutating-requests-inflight</code> 之和。
+可变请求和不可变请求之间不再有任何区别；
+如果对于某种资源，你需要区别对待不同请求，请创建不同的 FlowSchema 分别匹配可变请求和不可变请求。</div></blockquote><p>当入站请求的数量大于分配的 PriorityLevelConfigurations 中允许的并发级别时， <code>type</code> 字段将确定对额外请求的处理方式。
+<code>Reject</code> 类型，表示多余的流量将立即被 HTTP 429（请求过多）错误所拒绝。
+<code>Queue</code> 类型，表示对超过阈值的请求进行排队，将使用阈值分片和公平排队技术来平衡请求流之间的进度。</p><p>公平排队算法支持通过排队配置对优先级微调。 可以在<a href=#whats-next>增强建议</a>中阅读算法的详细信息，但总之：</p><ul><li><code>queues</code> 递增能减少不同流之间的冲突概率，但代价是增加了内存使用量。
+值为 1 时，会禁用公平排队逻辑，但仍允许请求排队。</li></ul><ul><li><code>queueLengthLimit</code> 递增可以在不丢弃任何请求的情况下支撑更大的突发流量，
+但代价是增加了等待时间和内存使用量。</li></ul><ul><li><p>修改 <code>handSize</code> 允许你调整过载情况下不同流之间的冲突概率以及单个流可用的整体并发性。</p><blockquote class="note callout"><div><strong>说明：</strong> 较大的 <code>handSize</code> 使两个单独的流程发生碰撞的可能性较小（因此，一个流可以饿死另一个流），
+但是更有可能的是少数流可以控制 apiserver。
+较大的 <code>handSize</code> 还可能增加单个高并发流的延迟量。
+单个流中可能排队的请求的最大数量为 <code>handSize *queueLengthLimit</code> 。</div></blockquote></li></ul><p>下表显示了有趣的随机分片配置集合，
+每行显示给定的老鼠（低强度流）被不同数量的大象挤压（高强度流）的概率。
+表来源请参阅： <a href=https://play.golang.org/p/Gi0PLgVHiUg>https://play.golang.org/p/Gi0PLgVHiUg</a></p><table><caption style=display:none>Example Shuffle Sharding Configurations</caption><thead><tr><th>随机分片</th><th>队列数</th><th>1 个大象</th><th>4 个大象</th><th>16 个大象</th></tr></thead><tbody><tr><td>12</td><td>32</td><td>4.428838398950118e-09</td><td>0.11431348830099144</td><td>0.9935089607656024</td></tr><tr><td>10</td><td>32</td><td>1.550093439632541e-08</td><td>0.0626479840223545</td><td>0.9753101519027554</td></tr><tr><td>10</td><td>64</td><td>6.601827268370426e-12</td><td>0.00045571320990370776</td><td>0.49999929150089345</td></tr><tr><td>9</td><td>64</td><td>3.6310049976037345e-11</td><td>0.00045501212304112273</td><td>0.4282314876454858</td></tr><tr><td>8</td><td>64</td><td>2.25929199850899e-10</td><td>0.0004886697053040446</td><td>0.35935114681123076</td></tr><tr><td>8</td><td>128</td><td>6.994461389026097e-13</td><td>3.4055790161620863e-06</td><td>0.02746173137155063</td></tr><tr><td>7</td><td>128</td><td>1.0579122850901972e-11</td><td>6.960839379258192e-06</td><td>0.02406157386340147</td></tr><tr><td>7</td><td>256</td><td>7.597695465552631e-14</td><td>6.728547142019406e-08</td><td>0.0006709661542533682</td></tr><tr><td>6</td><td>256</td><td>2.7134626662687968e-12</td><td>2.9516464018476436e-07</td><td>0.0008895654642000348</td></tr><tr><td>6</td><td>512</td><td>4.116062922897309e-14</td><td>4.982983350480894e-09</td><td>2.26025764343413e-05</td></tr><tr><td>6</td><td>1024</td><td>6.337324016514285e-16</td><td>8.09060164312957e-11</td><td>4.517408062903668e-07</td></tr></tbody></table><h3 id=FlowSchema>FlowSchema</h3><p>FlowSchema 匹配一些入站请求，并将它们分配给优先级。
+每个入站请求都会对所有 FlowSchema 测试是否匹配，
+首先从 <code>matchingPrecedence</code> 数值最低的匹配开始（我们认为这是逻辑上匹配度最高），
+然后依次进行，直到首个匹配出现。</p><blockquote class="caution callout"><div><strong>注意：</strong> 对一个请求来说，只有首个匹配的 FlowSchema 才有意义。
+如果一个入站请求与多个 FlowSchema 匹配，则将基于 <code>matchingPrecedence</code> 值最高的请求进行筛选。
+如果一个请求匹配多个 FlowSchema 且 <code>matchingPrecedence</code> 的值相同，则按 <code>name</code> 的字典序选择最小，
+但是最好不要依赖它，而是确保不存在两个 FlowSchema 具有相同的 <code>matchingPrecedence</code> 值。</div></blockquote><p>当给定的请求与某个 FlowSchema 的 <code>rules</code> 的其中一条匹配，那么就认为该请求与该 FlowSchema 匹配。
+判断规则与该请求是否匹配，<strong>不仅</strong>要求该条规则的 <code>subjects</code> 字段至少存在一个与该请求相匹配，
+<strong>而且</strong>要求该条规则的 <code>resourceRules</code> 或 <code>nonResourceRules</code>
+（取决于传入请求是针对资源URL还是非资源URL）字段至少存在一个与该请求相匹配。</p><p>对于 <code>subjects</code> 中的 <code>name</code> 字段和资源和非资源规则的
+<code>verbs</code>，<code>apiGroups</code>，<code>resources</code>，<code>namespaces</code> 和 <code>nonResourceURLs</code> 字段，
+可以指定通配符 <code>*</code> 来匹配任意值，从而有效地忽略该字段。</p><p>FlowSchema 的 <code>distinguisherMethod.type</code> 字段决定了如何把与该模式匹配的请求分散到各个流中。
+可能是 <code>ByUser</code> ，在这种情况下，一个请求用户将无法饿死其他容量的用户；
+或者是 <code>ByNamespace</code> ，在这种情况下，一个名称空间中的资源请求将无法饿死其它名称空间的资源请求；
+或者它可以为空（或者可以完全省略 <code>distinguisherMethod</code> ），
+在这种情况下，与此 FlowSchema 匹配的请求将被视为单个流的一部分。
+资源和你的特定环境决定了如何选择正确一个 FlowSchema。</p><h2 id=diagnostics>问题诊断</h2><p>启用了 APF 的 API 服务器，它每个 HTTP 响应都有两个额外的 HTTP 头：
+<code>X-Kubernetes-PF-FlowSchema-UID</code> 和 <code>X-Kubernetes-PF-PriorityLevel-UID</code>，
+注意与请求匹配的 FlowSchema 和已分配的优先级。
+如果请求用户没有查看这些对象的权限，则这些 HTTP 头中将不包含 API 对象的名称，
+因此在调试时，你可以使用类似如下的命令：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get flowschemas -o custom-columns<span style=color:#666>=</span><span style=color:#b44>&#34;uid:{metadata.uid},name:{metadata.name}&#34;</span>
+kubectl get prioritylevelconfigurations -o custom-columns<span style=color:#666>=</span><span style=color:#b44>&#34;uid:{metadata.uid},name:{metadata.name}&#34;</span>
+</code></pre></div><p>来获取 UID 到 FlowSchema 的名称和 UID 到 PriorityLevelConfigurations 的名称的映射。</p><h2 id=Observability>可观察性</h2><h3 id=Metrics>指标</h3><blockquote class="note callout"><div><strong>说明：</strong> 在 Kubernetes v1.20 之前的版本中，标签 <code>flow_schema</code> 和 <code>priority_level</code>
+的命名有时被写作 <code>flowSchema</code> 和 <code>priorityLevel</code>，即存在不一致的情况。
+如果你在运行 Kubernetes v1.19 或者更早版本，你需要参考你所使用的集群
+版本对应的文档。</div></blockquote><p>当你开启了 APF 后，kube-apiserver 会暴露额外指标。
+监视这些指标有助于判断你的配置是否不当地限制了重要流量，
+或者发现可能会损害系统健康的，行为不良的工作负载。</p><ul><li><p><code>apiserver_flowcontrol_rejected_requests_total</code> 是一个计数器向量，
+记录被拒绝的请求数量（自服务器启动以来累计值），
+由标签 <code>flow_chema</code> （表示与请求匹配的 FlowSchema ），<code>priority_evel</code>
+（表示分配给请该求的优先级）和 <code>reason</code> 来区分。
+<code>reason</code> 标签将具有以下值之一：</p><ul><li><code>queue-full</code> ，表明已经有太多请求排队，</li><li><code>concurrency-limit</code> ，表示将 PriorityLevelConfiguration 配置为 <code>Reject</code> 而不是 <code>Queue</code> ，或者</li><li><code>time-out</code>, 表示在其排队时间超期的请求仍在队列中。</li></ul></li></ul><ul><li><code>apiserver_flowcontrol_dispatched_requests_total</code> 是一个计数器向量，
+记录开始执行的请求数量（自服务器启动以来的累积值），
+由标签 <code>flow_schema</code> （表示与请求匹配的 FlowSchema ）和
+<code>priority_level</code>（表示分配给该请求的优先级）来区分。</li></ul><ul><li><code>apiserver_current_inqueue_requests</code> 是一个表向量，
+记录最近排队请求数量的高水位线，
+由标签 <code>request_kind</code> 分组，标签的值为 <code>mutating</code> 或 <code>readOnly</code>。
+这些高水位线表示在最近一秒钟内看到的最大数字。
+它们补充说明了老的表向量 <code>apiserver_current_inflight_requests</code>
+（该量保存了最后一个窗口中，正在处理的请求数量的高水位线）。</li></ul><ul><li><code>apiserver_flowcontrol_read_vs_write_request_count_samples</code> 是一个直方图向量，
+记录当前请求数量的观察值，
+由标签 <code>phase</code> （取值为 <code>waiting</code> 和 <code>executing</code> ）和 <code>request_kind</code>
+（取值 <code>mutating</code> 和 <code>readOnly</code> ）拆分。定期以高速率观察该值。</li></ul><ul><li><code>apiserver_flowcontrol_read_vs_write_request_count_watermarks</code> 是一个直方图向量，
+记录请求数量的高/低水位线，
+由标签 <code>phase</code> （取值为 <code>waiting</code> 和 <code>executing</code> ）和 <code>request_kind</code>
+（取值为 <code>mutating</code> 和 <code>readOnly</code> ）拆分；标签 <code>mark</code> 取值为 <code>high</code> 和 <code>low</code> 。
+<code>apiserver_flowcontrol_read_vs_write_request_count_samples</code> 向量观察到有值新增，
+则该向量累积。这些水位线显示了样本值的范围。</li></ul><ul><li><code>apiserver_flowcontrol_current_inqueue_requests</code> 是一个表向量，
+记录包含排队中的（未执行）请求的瞬时数量，
+由标签 <code>priorityLevel</code> 和 <code>flowSchema</code> 拆分。</li></ul><ul><li><code>apiserver_flowcontrol_current_executing_requests</code> 是一个表向量，
+记录包含执行中（不在队列中等待）请求的瞬时数量，
+由标签 <code>priority_level</code> 和 <code>flow_schema</code> 进一步区分。</li></ul><ul><li><code>apiserver_flowcontrol_priority_level_request_count_samples</code> 是一个直方图向量，
+记录当前请求的观测值，由标签 <code>phase</code> （取值为<code>waiting</code> 和 <code>executing</code>）和
+<code>priority_level</code> 进一步区分。
+每个直方图都会定期进行观察，直到相关类别的最后活动为止。观察频率高。</li></ul><ul><li><code>apiserver_flowcontrol_priority_level_request_count_watermarks</code> 是一个直方图向量，
+记录请求数的高/低水位线，由标签 <code>phase</code> （取值为 <code>waiting</code> 和 <code>executing</code> ）和
+<code>priority_level</code> 拆分；
+标签 <code>mark</code> 取值为 <code>high</code> 和 <code>low</code> 。
+<code>apiserver_flowcontrol_priority_level_request_count_samples</code> 向量观察到有值新增，
+则该向量累积。这些水位线显示了样本值的范围。</li></ul><ul><li><code>apiserver_flowcontrol_request_queue_length_after_enqueue</code> 是一个直方图向量，
+记录请求队列的长度，由标签 <code>priority_level</code> 和 <code>flow_schema</code> 进一步区分。
+每个排队中的请求都会为其直方图贡献一个样本，并在添加请求后立即上报队列的长度。
+请注意，这样产生的统计数据与无偏调查不同。<blockquote class="note callout"><div><strong>说明：</strong> 直方图中的离群值在这里表示单个流（即，一个用户或一个名称空间的请求，
+具体取决于配置）正在疯狂地向 API 服务器发请求，并受到限制。
+相反，如果一个优先级的直方图显示该优先级的所有队列都比其他优先级的队列长，
+则增加 PriorityLevelConfigurations 的并发份额是比较合适的。</div></blockquote></li></ul><ul><li><code>apiserver_flowcontrol_request_concurrency_limit</code> 是一个表向量，
+记录并发限制的计算值（基于 API 服务器的总并发限制和 PriorityLevelConfigurations
+的并发份额），并按标签 <code>priority_level</code> 进一步区分。</li></ul><ul><li><code>apiserver_flowcontrol_request_wait_duration_seconds</code> 是一个直方图向量，
+记录请求排队的时间，
+由标签 <code>flow_schema</code> （表示与请求匹配的 FlowSchema ），
+<code>priority_level</code> （表示分配该请求的优先级）
+和 <code>execute</code> （表示请求是否开始执行）进一步区分。<blockquote class="note callout"><div><strong>说明：</strong> 由于每个 FlowSchema 总会给请求分配 PriorityLevelConfigurations，
+因此你可以为一个优先级添加所有 FlowSchema 的直方图，以获取分配给
+该优先级的请求的有效直方图。</div></blockquote></li></ul><ul><li><code>apiserver_flowcontrol_request_execution_seconds</code> 是一个直方图向量，
+记录请求实际执行需要花费的时间，
+由标签 <code>flow_schema</code> （表示与请求匹配的 FlowSchema ）和
+<code>priority_level</code> （表示分配给该请求的优先级）进一步区分。</li></ul><h3 id=Debug-endpoints>调试端点</h3><p>启用 APF 特性后， kube-apiserver 会在其 HTTP/HTTPS 端口提供以下路径：</p><ul><li><p><code>/debug/api_priority_and_fairness/dump_priority_levels</code> ——
+所有优先级及其当前状态的列表。你可以这样获取：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get --raw /debug/api_priority_and_fairness/dump_priority_levels
+</code></pre></div><p>输出类似于：</p><pre><code>PriorityLevelName, ActiveQueues, IsIdle, IsQuiescing, WaitingRequests, ExecutingRequests,
+workload-low,      0,            true,   false,       0,               0,
+global-default,    0,            true,   false,       0,               0,
+exempt,            &lt;none&gt;,       &lt;none&gt;, &lt;none&gt;,      &lt;none&gt;,          &lt;none&gt;,
+catch-all,         0,            true,   false,       0,               0,
+system,            0,            true,   false,       0,               0,
+leader-election,   0,            true,   false,       0,               0,
+workload-high,     0,            true,   false,       0,               0,
+</code></pre></li></ul><ul><li><p><code>/debug/api_priority_and_fairness/dump_queues</code> —— 所有队列及其当前状态的列表。
+你可以这样获取：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get --raw /debug/api_priority_and_fairness/dump_queues
+</code></pre></div><p>输出类似于：</p><pre><code>PriorityLevelName, Index,  PendingRequests, ExecutingRequests, VirtualStart,
+workload-high,     0,      0,               0,                 0.0000,
+workload-high,     1,      0,               0,                 0.0000,
+workload-high,     2,      0,               0,                 0.0000,
+...
+leader-election,   14,     0,               0,                 0.0000,
+leader-election,   15,     0,               0,                 0.0000,
+</code></pre></li></ul><ul><li><p><code>/debug/api_priority_and_fairness/dump_requests</code> ——当前正在队列中等待的所有请求的列表。
+你可以这样获取：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get --raw /debug/api_priority_and_fairness/dump_requests
+</code></pre></div><p>输出类似于：</p><pre><code>PriorityLevelName, FlowSchemaName, QueueIndex, RequestIndexInQueue, FlowDistingsher,       ArriveTime,
+exempt,            &lt;none&gt;,         &lt;none&gt;,     &lt;none&gt;,              &lt;none&gt;,                &lt;none&gt;,
+system,            system-nodes,   12,         0,                   system:node:127.0.0.1, 2020-07-23T15:26:57.179170694Z,
+</code></pre><p>针对每个优先级别，输出中还包含一条虚拟记录，对应豁免限制。</p><p>你可以使用以下命令获得更详细的清单：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get --raw <span style=color:#b44>&#39;/debug/api_priority_and_fairness/dump_requests?includeRequestDetails=1&#39;</span>
+</code></pre></div><p>输出类似于：</p><pre><code>PriorityLevelName, FlowSchemaName, QueueIndex, RequestIndexInQueue, FlowDistingsher,       ArriveTime,                     UserName,              Verb,   APIPath,                                                     Namespace, Name,   APIVersion, Resource, SubResource,
+system,            system-nodes,   12,         0,                   system:node:127.0.0.1, 2020-07-23T15:31:03.583823404Z, system:node:127.0.0.1, create, /api/v1/namespaces/scaletest/configmaps,
+system,            system-nodes,   12,         1,                   system:node:127.0.0.1, 2020-07-23T15:31:03.594555947Z, system:node:127.0.0.1, create, /api/v1/namespaces/scaletest/configmaps,
+</code></pre></li></ul><h2 id=接下来>接下来</h2><p>有关API优先级和公平性的设计细节的背景信息，
+请参阅<a href=https://github.com/kubernetes/enhancements/blob/master/keps/sig-api-machinery/20190228-priority-and-fairness.md>增强建议</a>。
+你可以通过 <a href=https://github.com/kubernetes/community/tree/master/sig-api-machinery/>SIG APIMachinery</a>
+或特性的 <a href=https://kubernetes.slack.com/messages/api-priority-and-fairness/>Slack 频道</a>
+提出建议和特性请求。</p></div><div class=td-content style=page-break-before:always><h1 id=pg-85d633ae590aa20ec024f1b7af1d74fc>10 - 安装扩展（Addons）</h1><blockquote class="callout caution" role=alert><strong>注意：</strong>
+本部分链接到提供 Kubernetes 所需功能的第三方项目。Kubernetes 项目作者不负责这些项目。此页面遵循<a href=https://github.com/cncf/foundation/blob/master/website-guidelines.md target=_blank>CNCF 网站指南</a>，按字母顺序列出项目。要将项目添加到此列表中，请在提交更改之前阅读<a href=/docs/contribute/style/content-guide/#third-party-content>内容指南</a>。</blockquote><p>Add-ons 扩展了 Kubernetes 的功能。</p><p>本文列举了一些可用的 add-ons 以及到它们各自安装说明的链接。</p><p>每个 Add-ons 按字母顺序排序 - 顺序不代表任何优先地位。</p><h2 id=网络和网络策略>网络和网络策略</h2><ul><li><a href=https://www.github.com/noironetworks/aci-containers>ACI</a> 通过 Cisco ACI 提供集成的容器网络和安全网络。</li><li><a href=https://docs.projectcalico.org/v3.11/getting-started/kubernetes/installation/calico>Calico</a>
+是一个安全的 L3 网络和网络策略驱动。</li><li><a href=https://github.com/tigera/canal/tree/master/k8s-install>Canal</a> 结合 Flannel 和 Calico，提供网络和网络策略。</li><li><a href=https://github.com/cilium/cilium>Cilium</a> 是一个 L3 网络和网络策略插件，能够透明的实施 HTTP/API/L7 策略。
+同时支持路由（routing）和覆盖/封装（overlay/encapsulation）模式。</li><li><a href=https://github.com/Huawei-PaaS/CNI-Genie>CNI-Genie</a> 使 Kubernetes 无缝连接到一种 CNI 插件，
+例如：Flannel、Calico、Canal、Romana 或者 Weave。</li><li><a href=https://contiv.github.io>Contiv</a> 为多种用例提供可配置网络（使用 BGP 的原生 L3，使用 vxlan 的覆盖网络，
+经典 L2 和 Cisco-SDN/ACI）和丰富的策略框架。Contiv 项目完全<a href=https://github.com/contiv>开源</a>。
+<a href=https://github.com/contiv/install>安装工具</a>同时提供基于和不基于 kubeadm 的安装选项。</li><li>基于 <a href=https://tungsten.io>Tungsten Fabric</a> 的
+<a href=https://www.juniper.net/us/en/products-services/sdn/contrail/contrail-networking/>Contrail</a>
+是一个开源的多云网络虚拟化和策略管理平台，Contrail 和 Tungsten Fabric 与业务流程系统
+（例如 Kubernetes、OpenShift、OpenStack和Mesos）集成在一起，
+为虚拟机、容器或 Pod 以及裸机工作负载提供了隔离模式。</li><li><a href=https://github.com/coreos/flannel/blob/master/Documentation/kube-flannel.yml>Flannel</a>
+是一个可以用于 Kubernetes 的 overlay 网络提供者。</li><li><a href=https://github.com/ZTE/Knitter/>Knitter</a> 是为 kubernetes 提供复合网络解决方案的网络组件。</li><li><a href=https://github.com/Intel-Corp/multus-cni>Multus</a> 是一个多插件，可在 Kubernetes 中提供多种网络支持，
+以支持所有 CNI 插件（例如 Calico，Cilium，Contiv，Flannel），
+而且包含了在 Kubernetes 中基于 SRIOV、DPDK、OVS-DPDK 和 VPP 的工作负载。</li><li><a href=https://github.com/ovn-org/ovn-kubernetes/>OVN-Kubernetes</a> 是一个 Kubernetes 网络驱动，
+基于 <a href=https://github.com/ovn-org/ovn/>OVN（Open Virtual Network）</a>实现，是从 Open vSwitch (OVS)
+项目衍生出来的虚拟网络实现。
+OVN-Kubernetes 为 Kubernetes 提供基于覆盖网络的网络实现，包括一个基于 OVS 实现的负载均衡器
+和网络策略。</li><li><a href=https://github.com/opnfv/ovn4nfv-k8s-plugin>OVN4NFV-K8S-Plugin</a> 是一个基于 OVN 的 CNI
+控制器插件，提供基于云原生的服务功能链条（Service Function Chaining，SFC）、多种 OVN 覆盖
+网络、动态子网创建、动态虚拟网络创建、VLAN 驱动网络、直接驱动网络，并且可以
+驳接其他的多网络插件，适用于基于边缘的、多集群联网的云原生工作负载。</li><li><a href=https://docs.vmware.com/en/VMware-NSX-T/2.0/nsxt_20_ncp_kubernetes.pdf>NSX-T</a> 容器插件（NCP）
+提供了 VMware NSX-T 与容器协调器（例如 Kubernetes）之间的集成，以及 NSX-T 与基于容器的
+CaaS / PaaS 平台（例如关键容器服务（PKS）和 OpenShift）之间的集成。</li><li><a href=https://github.com/nuagenetworks/nuage-kubernetes/blob/v5.1.1-1/docs/kubernetes-1-installation.rst>Nuage</a>
+是一个 SDN 平台，可在 Kubernetes Pods 和非 Kubernetes 环境之间提供基于策略的联网，并具有可视化和安全监控。</li><li><a href=https://romana.io>Romana</a> 是一个 pod 网络的第三层解决方案，并支持<a href=/zh/docs/concepts/services-networking/network-policies/>
+NetworkPolicy API</a>。
+Kubeadm add-on 安装细节可以在<a href=https://github.com/romana/romana/tree/master/containerize>这里</a>找到。</li><li><a href=https://www.weave.works/docs/net/latest/kubernetes/kube-addon/>Weave Net</a>
+提供在网络分组两端参与工作的网络和网络策略，并且不需要额外的数据库。</li></ul><h2 id=服务发现>服务发现</h2><ul><li><a href=https://coredns.io>CoreDNS</a> 是一种灵活的，可扩展的 DNS 服务器，可以
+<a href=https://github.com/coredns/deployment/tree/master/kubernetes>安装</a>为集群内的 Pod 提供 DNS 服务。</li></ul><h2 id=可视化管理>可视化管理</h2><ul><li><a href=https://github.com/kubernetes/dashboard#kubernetes-dashboard>Dashboard</a> 是一个 Kubernetes 的 Web 控制台界面。</li><li><a href=https://www.weave.works/documentation/scope-latest-installing/#k8s>Weave Scope</a> 是一个图形化工具，
+用于查看你的容器、Pod、服务等。请和一个 <a href=https://cloud.weave.works/>Weave Cloud 账号</a> 一起使用，
+或者自己运行 UI。</li></ul><h2 id=基础设施>基础设施</h2><ul><li><a href=https://kubevirt.io/user-guide/#/installation/installation>KubeVirt</a> 是可以让 Kubernetes
+运行虚拟机的 add-ons。通常运行在裸机集群上。</li></ul><h2 id=遗留-add-ons>遗留 Add-ons</h2><p>还有一些其它 add-ons 归档在已废弃的 <a href=https://git.k8s.io/kubernetes/cluster/addons>cluster/addons</a> 路径中。</p><p>维护完善的 add-ons 应该被链接到这里。欢迎提出 PRs！</p></div></main></div></div><footer class=d-print-none><div class=footer__links><nav><a class=text-white href=/zh/docs/home/>主页</a>
+<a class=text-white href=/zh/blog/>博客</a>
+<a class=text-white href=/zh/training/>培训</a>
+<a class=text-white href=/zh/partners/>合作伙伴</a>
+<a class=text-white href=/zh/community/>社区</a>
+<a class=text-white href=/zh/case-studies/>案例分析</a></nav></div><div class=container-fluid><div class=row><div class="col-6 col-sm-2 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="User mailing list" aria-label="User mailing list"><a class=text-white target=_blank href=https://discuss.kubernetes.io><i class="fa fa-envelope"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank href=https://twitter.com/kubernetesio><i class="fab fa-twitter"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Calendar aria-label=Calendar><a class=text-white target=_blank href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io"><i class="fas fa-calendar-alt"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Youtube aria-label=Youtube><a class=text-white target=_blank href=https://youtube.com/kubernetescommunity><i class="fab fa-youtube"></i></a></li></ul></div><div class="col-6 col-sm-2 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank href=https://github.com/kubernetes/kubernetes><i class="fab fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Slack aria-label=Slack><a class=text-white target=_blank href=https://slack.k8s.io><i class="fab fa-slack"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Contribute aria-label=Contribute><a class=text-white target=_blank href=https://git.k8s.io/community/contributors/guide><i class="fas fa-edit"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="Stack Overflow" aria-label="Stack Overflow"><a class=text-white target=_blank href=https://stackoverflow.com/questions/tagged/kubernetes><i class="fab fa-stack-overflow"></i></a></li></ul></div><div class="col-12 col-sm-8 text-center order-sm-2"><small class=text-white>&copy; 2026 The Kubernetes 作者 | 文档发布基于 <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a> 授权许可</small><br><small class=text-white>Copyright &copy; 2026 Linux 基金会&reg;。保留所有权利。Linux 基金会已注册并使用商标。如需了解 Linux 基金会的商标列表，请访问<a href=https://www.linuxfoundation.org/trademark-usage class=light-text>商标使用页面</a></small><br><small class=text-white><a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></small></div></div></div></footer></div><script src=/js/popper-1.14.3.min.js integrity=sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49 crossorigin=anonymous></script><script src=/js/bootstrap-4.3.1.min.js integrity=sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM crossorigin=anonymous></script><script src=/js/main.min.223905d4acc5f7b370e2af585c8a5b56ce39b2fddddd6dffb6f6c3428927fe2c.js integrity="sha256-IjkF1KzF97Nw4q9YXIpbVs45sv3d3W3/tvbDQokn/iw=" crossorigin=anonymous></script></body></html>

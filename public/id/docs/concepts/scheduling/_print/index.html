@@ -1,0 +1,257 @@
+<!doctype html><html lang=id class=no-js><head><meta name=ROBOTS content="NOINDEX, NOFOLLOW"><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','UA-36037335-10')</script><script type=text/javascript>(function(a,e,b,f,g,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},c=e.createElement(f),c.async=1,c.src="https://www.clarity.ms/tag/"+g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d)})(window,document,"clarity","script","yn9rpyjul2")</script><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.82.0"><link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/id/docs/concepts/scheduling/><link rel="shortcut icon" type=image/png href=/images/favicon.png><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=manifest href=/manifest.webmanifest><link rel=apple-touch-icon href=/images/kubernetes-192x192.png><title>Penjadwalan | Kubernetes</title><meta property="og:title" content="Penjadwalan"><meta property="og:description" content="Orkestrasi Kontainer dengan Skala Produksi"><meta property="og:type" content="website"><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/id/docs/concepts/scheduling/"><meta property="og:site_name" content="Kubernetes"><meta itemprop=name content="Penjadwalan"><meta itemprop=description content="Orkestrasi Kontainer dengan Skala Produksi"><meta name=twitter:card content="summary"><meta name=twitter:title content="Penjadwalan"><meta name=twitter:description content="Orkestrasi Kontainer dengan Skala Produksi"><link rel=preload href=/scss/main.min.ed63f113a0b4af323a0aa55cc07086aca653953991514680addf11d30c63bcf4.css as=style><link href=/scss/main.min.ed63f113a0b4af323a0aa55cc07086aca653953991514680addf11d30c63bcf4.css rel=stylesheet integrity><script src=/js/jquery-3.3.1.min.js integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin=anonymous></script><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png"}</script><meta name=theme-color content="#326ce5"><link rel=stylesheet href=/css/feature-states.css><meta name=description content><meta property="og:description" content><meta name=twitter:description content><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/id/docs/concepts/scheduling/"><meta property="og:title" content="Penjadwalan"><meta name=twitter:title content="Penjadwalan"><meta name=twitter:image content="https://kubernetes.io/images/favicon.png"><meta name=twitter:image:alt content="Kubernetes"><meta property="og:image" content="/images/kubernetes-horizontal-color.png"><meta property="og:type" content="article"><script src=/js/script.js></script></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-row td-navbar" data-auto-burger=primary><a class=navbar-brand href=/id/></a><div class="td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0"><li class="nav-item mr-2 mb-lg-0"><a class="nav-link active" href=/id/docs/>Dokumentasi</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/id/community/>Komunitas</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/id/case-studies/>Studi kasus</span></a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>Versi</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=https://xuxiaowei.io/t/1320/id/docs/concepts/scheduling/>Kubernetes 文档说明</a>
+<a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn/id/docs/concepts/scheduling/>v1.38</a>
+<a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn/id/docs/concepts/scheduling/>v1.37</a>
+<a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn/id/docs/concepts/scheduling/>v1.36</a>
+<a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn/id/docs/concepts/scheduling/>v1.35</a>
+<a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn/id/docs/concepts/scheduling/>v1.34</a>
+<a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn/id/docs/concepts/scheduling/>v1.33</a>
+<a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn/id/docs/concepts/scheduling/>v1.32</a>
+<a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn/id/docs/concepts/scheduling/>v1.31</a>
+<a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn/id/docs/concepts/scheduling/>v1.30</a>
+<a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn/id/docs/concepts/scheduling/>v1.29</a>
+<a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn/id/docs/concepts/scheduling/>v1.28</a>
+<a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn/id/docs/concepts/scheduling/>v1.27</a>
+<a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn/id/docs/concepts/scheduling/>v1.26</a>
+<a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn/id/docs/concepts/scheduling/>v1.25</a>
+<a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn/id/docs/concepts/scheduling/>v1.24</a>
+<a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn/id/docs/concepts/scheduling/>v1.23</a>
+<a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn/id/docs/concepts/scheduling/>v1.22</a>
+<a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn/id/docs/concepts/scheduling/>v1.21</a>
+<a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn/id/docs/concepts/scheduling/>v1.20</a></div></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdownMenuLink role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>Bahasa Indonesia</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/>English</a>
+<a class=dropdown-item href=/zh/>中文 Chinese</a>
+<a class=dropdown-item href=/ko/>한국어 Korean</a>
+<a class=dropdown-item href=/ja/>日本語 Japanese</a>
+<a class=dropdown-item href=/fr/>Français</a>
+<a class=dropdown-item href=/it/>Italiano</a>
+<a class=dropdown-item href=/de/>Deutsch</a>
+<a class=dropdown-item href=/es/>Español</a>
+<a class=dropdown-item href=/pt/>Português</a>
+<a class=dropdown-item href=/vi/>Tiếng Việt</a>
+<a class=dropdown-item href=/ru/>Русский</a>
+<a class=dropdown-item href=/pl/>Polski</a>
+<a class=dropdown-item href=/uk/>Українська</a></div></li></ul></div><button id=hamburger onclick=kub.toggleMenu() data-auto-burger-exclude><div></div></button></nav></header><div class="container-fluid td-outer"><div class=td-main><div class="row flex-xl-nowrap"><div class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none"></div><div class="d-none d-xl-block col-xl-2 td-toc d-print-none"></div><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><div class=td-content><div class="pageinfo pageinfo-primary d-print-none"><p>This the multi-page printable view of this section.
+<a href=# onclick="return print(),!1">Click here to print</a>.</p><p><a href=/id/docs/concepts/scheduling/>Return to the regular view of this page</a>.</p></div><h1 class=title>Penjadwalan</h1><ul><li>1: <a href=#pg-b9332cbff77e089bdb59c912d5aa3a91>Penjadwal Kubernetes</a></li><li>2: <a href=#pg-6aa31213d72c0e4e89a77a75579d5710>Kerangka Kerja Penjadwalan (Scheduling Framework)</a></li><li>3: <a href=#pg-d3c2640240f6a0148c47a8e57359779b>Penyetelan Kinerja Penjadwal</a></li></ul><div class=content></div></div><div class=td-content><h1 id=pg-b9332cbff77e089bdb59c912d5aa3a91>1 - Penjadwal Kubernetes</h1><p>Dalam Kubernetes, <em>scheduling</em> atau penjadwalan ditujukan untuk memastikan
+<a class=glossary-tooltip title="Unit Kubernetes yang paling sederhana dan kecil. Sebuah Pod merepresentasikan sebuah set kontainer yang dijalankan pada kluster kamu." data-toggle=tooltip data-placement=top href=/docs/concepts/workloads/pods/pod-overview/ target=_blank aria-label=Pod>Pod</a> mendapatkan
+<a class=glossary-tooltip title="A node is a worker machine in Kubernetes." data-toggle=tooltip data-placement=top href=/docs/concepts/architecture/nodes/ target=_blank aria-label=Node>Node</a> sehingga
+<a class=glossary-tooltip title="Agen yang dijalankan pada setiap node di klaster yang bertugas untuk memastikan kontainer dijalankan di dalam Pod." data-toggle=tooltip data-placement=top href=/docs/reference/generated/kubelet target=_blank aria-label=Kubelet>Kubelet</a> dapat menjalankannya.</p><h2 id=penjadwalan>Ikhtisar Penjadwalan</h2><p>Sebuah penjadwal mengawasi Pod yang baru saja dibuat dan belum ada Node yang
+dialokasikan untuknya. Untuk setiap Pod yang ditemukan oleh penjadwal, maka
+penjadwal tersebut bertanggung jawab untuk menemukan Node terbaik untuk
+menjalankan Pod. Penjadwal dapat menetapkan keputusan penempatan ini dengan
+mempertimbangkan prinsip-prinsip penjadwalan yang dijelaskan di bawah ini.</p><p>Jika kamu ingin memahami mengapa Pod ditempatkan pada Node tertentu, atau jika
+kamu berencana untuk mengimplementasikan penjadwal kustom sendiri, halaman ini
+akan membantu kamu belajar tentang penjadwalan.</p><h2 id=kube-scheduler>Kube-scheduler</h2><p><a href=https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler/><em>Kube-scheduler</em></a>
+adalah penjadwal standar untuk Kubernetes dan dijalankan sebagai bagian dari
+<a class=glossary-tooltip title="Merupakan lapisan orkestrasi Container yang mengekspos API dan antarmuka untuk mendefinisikan, menggelar, dan mengelola siklus hidup suatu Container." data-toggle=tooltip data-placement=top href="/id/docs/reference/glossary/?all=true#term-control-plane" target=_blank aria-label="_control plane_">_control plane_</a>.
+<em>Kube-scheduler</em> dirancang agar jika kamu mau dan perlu, kamu bisa menulis
+komponen penjadwalan kamu sendiri dan menggunakannya.</p><p>Untuk setiap Pod yang baru dibuat atau Pod yang tak terjadwal lainnya,
+<em>kube-scheduler</em> memilih Node yang optimal untuk menjalankannya. Namun, setiap
+kontainer masuk Pod memiliki persyaratan sumber daya yang berbeda dan setiap Pod
+juga memiliki persyaratan yang berbeda juga. Oleh karena itu, Node yang ada
+perlu dipilih sesuai dengan persyaratan khusus penjadwalan.</p><p>Dalam sebuah Klaster, Node yang memenuhi persyaratan penjadwalan untuk suatu Pod
+disebut Node <em>feasible</em>. Jika tidak ada Node yang cocok, maka Pod tetap tidak
+terjadwal sampai penjadwal yang mampu menempatkannya.</p><p>Penjadwal menemukan Node-Node yang layak untuk sebuah Pod dan kemudian
+menjalankan sekumpulan fungsi untuk menilai Node-Node yang layak dan mengambil
+satu Node dengan skor tertinggi di antara Node-Node yang layak untuk menjalankan
+Pod. Penjadwal kemudian memberi tahu server API tentang keputusan ini dalam
+proses yang disebut dengan <em>binding</em>.</p><p>Beberapa faktor yang perlu dipertimbangkan untuk keputusan penjadwalan termasuk
+persyaratan sumber daya individu dan kolektif, aturan kebijakan / perangkat keras /
+lunak, spesifikasi persamaan dan anti-persamaan, lokalitas data, interferensi
+antar Workloads, dan sebagainya.</p><h3 id=kube-scheduler-implementation>Pemilihan node pada kube-scheduler</h3><p><em>Kube-scheduler</em> memilih node untuk pod dalam 2 langkah operasi:</p><ol><li>Filtering</li><li>Scoring</li></ol><p>Langkah <em>filtering</em> menemukan sekumpulan Nodes yang layak untuk menjadwalkan
+Pod. Misalnya, penyarin PodFitsResources memeriksa apakah Node kandidat
+memiliki sumber daya yang cukup untuk memenuhi permintaan spesifik sumber daya dari
+Pod. Setelah langkah ini, daftar Node akan berisi Node-node yang sesuai;
+seringkali, akan terisi lebih dari satu. Jika daftar itu kosong, maka Pod itu
+tidak (belum) dapat dijadwalkan.</p><p>Pada langkah <em>scoring</em>, penjadwal memberi peringkat pada Node-node yang tersisa
+untuk memilih penempatan paling cocok untuk Pod. Penjadwal memberikan skor
+untuk setiap Node yang sudah tersaring, memasukkan skor ini pada aturan
+penilaian yang aktif.</p><p>Akhirnya, <em>kube-scheduler</em> memberikan Pod ke Node dengan peringkat tertinggi.
+Jika ada lebih dari satu node dengan skor yang sama, maka <em>kube-scheduler</em>
+memilih salah satunya secara acak.</p><p>Ada dua cara yang didukung untuk mengkonfigurasi perilaku penyaringan dan
+penilaian oleh penjadwal:</p><ol><li><a href=/docs/reference/scheduling/policies>Aturan Penjadwalan</a> yang memungkinkan
+kamu untuk mengkonfigurasi <em>Predicates</em> untuk pemfilteran dan <em>Priorities</em>
+untuk penilaian.</li><li><a href=/docs/reference/scheduling/profiles>Profil Penjadwalan</a> yang memungkinkan
+kamu mengkonfigurasi <em>Plugin</em> yang menerapkan tahapan penjadwalan berbeda,
+termasuk: <code>QueueSort</code>, <code>Filter</code>, <code>Score</code>, <code>Bind</code>, <code>Reserve</code>, <code>Permit</code>, dan
+lainnya. Kamu juga bisa mengonfigurasi <em>kube-scheduler</em> untuk menjalankan
+profil yang berbeda.</li></ol><h2 id=selanjutnya>Selanjutnya</h2><ul><li>Baca tentang <a href=/id/docs/concepts/scheduling/scheduler-perf-tuning/>penyetelan performa penjadwal</a></li><li>Baca tentang <a href=/id/docs/concepts/workloads/pods/pod-topology-spread-constraints/>pertimbangan penyebarang topologi pod</a></li><li>Baca <a href=/docs/reference/command-line-tools-reference/kube-scheduler/>referensi dokumentasi</a> untuk <em>kube-scheduler</em></li><li>Pelajari tentang <a href=/docs/tasks/administer-cluster/configure-multiple-schedulers/>mengkonfigurasi beberapa penjadwal</a></li><li>Pelajari tentang <a href=/docs/tasks/administer-cluster/topology-manager/>aturan manajemen topologi</a></li><li>Pelajari tentang <a href=/id/docs/concepts/configuration/pod-overhead/>pengeluaran tambahan Pod</a></li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-6aa31213d72c0e4e89a77a75579d5710>2 - Kerangka Kerja Penjadwalan (Scheduling Framework)</h1><div style=margin-top:10px;margin-bottom:10px><b>FEATURE STATE:</b> <code>Kubernetes 1.15 [alpha]</code></div><p>Kerangka kerja penjadwalan (<em>Scheduling Framework</em>) adalah arsitektur yang dapat
+dipasang (<em>pluggable</em>) pada penjadwal Kubernetes untuk membuat kustomisasi
+penjadwal lebih mudah. Hal itu dilakukan dengan menambahkan satu kumpulan "plugin"
+API ke penjadwal yang telah ada. <em>Plugin</em> dikompilasi ke dalam penjadwal.
+Beberapa API memungkinkan sebagian besar fitur penjadwalan diimplementasikan
+sebagai <em>plugin</em>, sambil tetap mempertahankan penjadwalan "inti" sederhana dan
+terpelihara. Silahkan merujuk pada [proposal desain dari kerangka penjadwalan]
+<a href=https://github.com/kubernetes/enhancements/blob/master/keps/sig-scheduling/20180409-scheduling-framework.md>kep</a> untuk informasi teknis lebih lanjut tentang desain kerangka kerja
+tersebut.</p><h1 id=alur-kerja-kerangka-kerja>Alur kerja kerangka kerja</h1><p>Kerangka kerja penjadwalan mendefinisikan beberapa titik ekstensi. <em>Plugin</em> penjadwal
+mendaftar untuk dipanggil di satu atau lebih titik ekstensi. Beberapa <em>plugin</em> ini
+dapat mengubah keputusan penjadwalan dan beberapa hanya bersifat informasi.</p><p>Setiap upaya untuk menjadwalkan satu Pod dibagi menjadi dua fase, <strong>Siklus Penjadwalan (<em>Scheduling Cycle</em>)</strong> dan <strong>Siklus Pengikatan (<em>Binding Cycle</em>)</strong>.</p><h2 id=siklus-penjadwalan-dan-siklus-pengikatan>Siklus Penjadwalan dan Siklus Pengikatan</h2><p>Siklus penjadwalan memilih sebuah Node untuk Pod, dan siklus pengikatan menerapkan
+keputusan tersebut ke klaster. Secara bersama-sama, siklus penjadwalan dan siklus
+pengikatan diartikan sebagai sebuah "konteks penjadwalan (<em>scheduling context</em>)".</p><p>Siklus penjadwalan dijalankan secara serial, sementara siklus pengikatan dapat
+berjalan secara bersamaan.</p><p>Siklus penjadwalan atau pengikatan dapat dibatalkan jika Pod telah ditentukan
+untuk tidak terjadwalkan atau jika terdapat kesalahan internal. Pod akan
+dikembalikan ke antrian dan dicoba lagi.</p><h2 id=titik-titik-ekstensi>Titik-titik ekstensi</h2><p>Gambar berikut menunjukkan konteks penjadwalan Pod dan titik-titik ekstensi
+yang diperlihatkan oleh kerangka penjadwalan. Dalam gambar ini "Filter"
+setara dengan "Predicate" dan "Scoring" setara dengan "Priority Function".</p><p>Satu <em>plugin</em> dapat mendaftar di beberapa titik ekstensi untuk melakukan pekerjaan
+yang lebih kompleks atau <em>stateful</em>.</p><figure><img src=/images/docs/scheduling-framework-extensions.png><figcaption><h4>Titik-titik ekstensi dari kerangka kerja Penjadwalan</h4></figcaption></figure><h3 id=queue-sort>QueueSort</h3><p><em>Plugin</em> ini digunakan untuk mengurutkan Pod-Pod dalam antrian penjadwalan. <em>Plugin</em>
+QueueSort pada dasarnya menyediakan fungsi <code>Less (Pod1, Pod2)</code>. Hanya satu jenis
+<em>plugin</em> QueueSort yang dapat diaktifkan dalam waktu yang bersamaan.</p><h3 id=pre-filter>PreFilter</h3><p><em>Plugin</em> ini digunakan untuk melakukan pra-proses informasi tentang Pod, atau untuk
+memeriksa tertentu kondisi yang harus dipenuhi oleh klaster atau Pod. Jika
+<em>plugin</em> PreFilter menghasilkan hasil yang salah, siklus penjadwalan dibatalkan.</p><h3 id=filter>Filter</h3><p><em>Plugin</em> ini digunakan untuk menyaring Node yang tidak dapat menjalankan Pod.
+Untuk setiap Node, penjadwal akan memanggil <em>plugin</em> Filter sesuai dengan urutan
+mereka dikonfigurasi. Jika ada <em>plugin</em> Filter menandai Node menjadi <em>infeasible</em>,
+maka <em>plugin</em> yang lainnya tidak akan dipanggil untuk Node itu. Node-Node dapat dievaluasi
+secara bersamaan.</p><h3 id=post-filter>PostFilter</h3><p>Plugin ini disebut setelah fase Filter, tetapi hanya ketika tidak ada node yang layak
+ditemukan untuk pod. Plugin dipanggil dalam urutan yang dikonfigurasi. Jika
+plugin postFilter menandai node sebagai 'Schedulable', plugin yang tersisa
+tidak akan dipanggil. Implementasi PostFilter yang khas adalah preemption, yang
+mencoba membuat pod dapat di menjadwalkan dengan mendahului Pod lain.</p><h3 id=pre-score>PreScore</h3><p><em>Plugin</em> ini digunakan untuk melakukan pekerjaan "pra-penilaian", yang
+menghasilkan keadaan yang dapat dibagi untuk digunakan oleh <em>plugin-plugin</em> Score.
+Jika <em>plugin</em> PreScore mengeluarkan hasil salah, maka siklus penjadwalan dibatalkan.</p><h3 id=score>Score</h3><p><em>Plugin</em> ini digunakan untuk menentukan peringkat Node yang telah melewati fase
+penyaringan. Penjadwal akan memanggil setiap <em>plugin</em> Score untuk setiap Node.
+Akan ada kisaran bilangan bulat yang telah ditetapkan untuk mewakili skor
+minimum dan maksimum. Setelah fase <a href=#normalize-scoring>NormalizeScore</a>,
+penjadwal akan menggabungkan skor Node dari semua <em>plugin</em> sesuai dengan bobot
+<em>plugin</em> yang telah dikonfigurasi.</p><h3 id=normalize-score>NormalizeScore</h3><p><em>Plugin</em> ini digunakan untuk memodifikasi skor sebelum penjadwal menghitung
+peringkat akhir Node-Node. <em>Plugin</em> yang mendaftar untuk titik ekstensi ini akan
+dipanggil dengan hasil <a href=#score>Score</a> dari <em>plugin</em> yang sama. Hal ini dilakukan
+sekali untuk setiap <em>plugin</em> dan setiap siklus penjadwalan.</p><p>Sebagai contoh, anggaplah sebuah <em>plugin</em> <code>BlinkingLightScorer</code> memberi peringkat
+pada Node-Node berdasarkan berapa banyak kedipan lampu yang mereka miliki.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a2f;font-weight:700>func</span> <span style=color:#00a000>ScoreNode</span>(_ <span style=color:#666>*</span>v1.pod, n <span style=color:#666>*</span>v1.Node) (<span style=color:#0b0;font-weight:700>int</span>, <span style=color:#0b0;font-weight:700>error</span>) {
+    <span style=color:#a2f;font-weight:700>return</span> <span style=color:#00a000>getBlinkingLightCount</span>(n)
+}
+</code></pre></div><p>Namun, jumlah maksimum kedipan lampu mungkin kecil jika dibandingkan dengan
+<code>NodeScoreMax</code>. Untuk memperbaikinya, <code>BlinkingLightScorer</code> juga harus mendaftar
+untuk titik ekstensi ini.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a2f;font-weight:700>func</span> <span style=color:#00a000>NormalizeScores</span>(scores <span style=color:#a2f;font-weight:700>map</span>[<span style=color:#0b0;font-weight:700>string</span>]<span style=color:#0b0;font-weight:700>int</span>) {
+    highest <span style=color:#666>:=</span> <span style=color:#666>0</span>
+    <span style=color:#a2f;font-weight:700>for</span> _, score <span style=color:#666>:=</span> <span style=color:#a2f;font-weight:700>range</span> scores {
+        highest = <span style=color:#00a000>max</span>(highest, score)
+    }
+    <span style=color:#a2f;font-weight:700>for</span> node, score <span style=color:#666>:=</span> <span style=color:#a2f;font-weight:700>range</span> scores {
+        scores[node] = score<span style=color:#666>*</span>NodeScoreMax<span style=color:#666>/</span>highest
+    }
+}
+</code></pre></div><p>Jika ada <em>plugin</em> NormalizeScore yang menghasilkan hasil yang salah, maka siklus
+penjadwalan dibatalkan.</p><blockquote class="note callout"><div><strong>Catatan:</strong> <em>Plugin</em> yang ingin melakukan pekerjaan "pra-pemesanan" harus menggunakan
+titik ekstensi NormalizeScore.</div></blockquote><h3 id=reserve>Reserve</h3><p>Ini adalah titik ekstensi yang bersifat informasi. <em>Plugin</em> yang mempertahankan
+keadaan <em>runtime</em> (alias "<em>stateful plugins</em>") harus menggunakan titik ekstensi ini
+untuk diberitahukan oleh penjadwal ketika sumber daya pada suatu Node dicadangkan
+untuk Pod yang telah disiapkan. Proses ini terjadi sebelum penjadwal benar-benar
+mengikat Pod ke Node, dan itu ada untuk mencegah kondisi balapan (<em>race conditions</em>)
+ketika penjadwal menunggu agar pengikatan berhasil.</p><p>Ini adalah langkah terakhir dalam siklus penjadwalan. Setelah Pod berada dalam
+status dicadangkan, maka itu akan memicu <em>plugin</em> <a href=#unreserve>Unreserve</a>
+(apabila gagal) atau <em>plugin</em> <a href=#post-bind>PostBind</a> (apabila sukses)
+di akhir siklus pengikatan.</p><h3 id=permit>Permit</h3><p><em>Plugin</em> Permit dipanggil pada akhir siklus penjadwalan untuk setiap Pod
+untuk mencegah atau menunda pengikatan ke Node kandidat. <em>Plugin</em> Permit dapat
+melakukan salah satu dari ketiga hal ini:</p><ol><li><p><strong>approve</strong><br>     Setelah semua <em>plugin</em> Permit menyetujui sebuah Pod, Pod tersebut akan dikirimkan untuk diikat.</p></li><li><p><strong>deny</strong><br>     Jika ada <em>plugin</em> Permit yang menolak sebuah Pod, Pod tersebut akan dikembalikan ke
+antrian penjadwalan. Hal ini akan memicu <em>plugin</em> <a href=#unreserve>Unreserve</a>.</p></li><li><p><strong>wait</strong> (dengan batas waktu)<br>     Jika <em>plugin</em> Permit menghasilkan "wait", maka Pod disimpan dalam
+     daftar Pod "yang menunggu" internal, dan siklus pengikatan Pod ini dimulai tetapi akan langsung diblokir
+     sampai mendapatkan <a href=#frameworkhandle><em>approved</em></a>. Jika waktu tunggu habis, ** wait ** menjadi ** deny **
+     dan Pod dikembalikan ke antrian penjadwalan, yang memicu <em>plugin</em> <a href=#unreserve>Unreserve</a>.</p></li></ol><blockquote class="note callout"><div><strong>Catatan:</strong> Ketika setiap <em>plugin</em> dapat mengakses daftar Pod-Pod "yang menunggu" dan menyetujuinya
+(silahkan lihat <a href=#frameworkhandle><code>FrameworkHandle</code></a>), kami hanya mengharapkan
+<em>plugin</em> Permit untuk menyetujui pengikatan Pod dalam kondisi "menunggu" yang
+telah dipesan. Setelah Pod disetujui, akan dikirim ke fase <a href=#pre-bind>PreBind</a>.</div></blockquote><h3 id=pre-bind>PreBind</h3><p><em>Plugin</em> ini digunakan untuk melakukan pekerjaan apa pun yang diperlukan sebelum
+Pod terikat. Sebagai contoh, <em>plugin</em> PreBind dapat menyediakan <em>network volume</em>
+dan melakukan <em>mounting</em> pada Node target sebelum mengizinkan Pod berjalan di
+sana.</p><p>Jika ada <em>plugin</em> PreBind yang menghasilkan kesalahan, maka Pod <a href=#unreserve>ditolak</a>
+dan kembali ke antrian penjadwalan.</p><h3 id=bind>Bind</h3><p><em>Plugin</em> ini digunakan untuk mengikat Pod ke Node. <em>Plugin-plugin</em> Bind tidak akan
+dipanggil sampai semua <em>plugin</em> PreBind selesai. Setiap <em>plugin</em> Bind dipanggil
+sesuai urutan saat dikonfigurasi. <em>Plugin</em> Bind dapat memilih untuk menangani
+atau tidak Pod yang diberikan. Jika <em>plugin</em> Bind memilih untuk menangani Pod,
+** <em>plugin</em> Bind yang tersisa dilewati **.</p><h3 id=post-bind>PostBind</h3><p>Ini adalah titik ekstensi bersifat informasi. <em>Plugin-plugin</em> PostBind dipanggil
+setelah sebuah Pod berhasil diikat. Ini adalah akhir dari siklus pengikatan, dan
+dapat digunakan untuk membersihkan sumber daya terkait.</p><h3 id=unreserve>Unreserve</h3><p>Ini adalah titik ekstensi bersifat informasi. Jika sebuah Pod telah dipesan dan
+kemudian ditolak di tahap selanjutnya, maka <em>plugin-plugin</em> Unreserve akan
+diberitahu. <em>Plugin</em> Unreserve harus membersihkan status yang terkait dengan Pod
+yang dipesan.</p><p><em>Plugin</em> yang menggunakan titik ekstensi ini sebaiknya juga harus digunakan
+<a href=#unreserve>Reserve</a>.</p><h2 id=plugin-api><em>Plugin</em> API</h2><p>Ada dua langkah untuk <em>plugin</em> API. Pertama, <em>plugin</em> harus mendaftar dan mendapatkan
+konfigurasi, kemudian mereka menggunakan antarmuka titik ekstensi. Antarmuka (<em>interface</em>)
+titik ekstensi memiliki bentuk sebagai berikut.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a2f;font-weight:700>type</span> Plugin <span style=color:#a2f;font-weight:700>interface</span> {
+    <span style=color:#00a000>Name</span>() <span style=color:#0b0;font-weight:700>string</span>
+}
+
+<span style=color:#a2f;font-weight:700>type</span> QueueSortPlugin <span style=color:#a2f;font-weight:700>interface</span> {
+    Plugin
+    <span style=color:#00a000>Less</span>(<span style=color:#666>*</span>v1.pod, <span style=color:#666>*</span>v1.pod) <span style=color:#0b0;font-weight:700>bool</span>
+}
+
+<span style=color:#a2f;font-weight:700>type</span> PreFilterPlugin <span style=color:#a2f;font-weight:700>interface</span> {
+    Plugin
+    <span style=color:#00a000>PreFilter</span>(context.Context, <span style=color:#666>*</span>framework.CycleState, <span style=color:#666>*</span>v1.pod) <span style=color:#0b0;font-weight:700>error</span>
+}
+
+<span style=color:#080;font-style:italic>// ...
+</span></code></pre></div><h2 id=konfigurasi-plugin>Konfigurasi <em>plugin</em></h2><p>Kamu dapat mengaktifkan atau menonaktifkan <em>plugin</em> dalam konfigurasi penjadwal.
+Jika kamu menggunakan Kubernetes v1.18 atau yang lebih baru, kebanyakan
+<a href=/docs/reference/scheduling/profiles/#scheduling-plugins>plugin-plugin penjadwalan</a>
+sudah digunakan dan diaktifkan secara bawaan.</p><p>Selain <em>plugin-plugin</em> bawaan, kamu juga dapat mengimplementasikan <em>plugin-plugin</em> penjadwalan
+kamu sendiri dan mengonfigurasinya bersama-sama dengan <em>plugin-plugin</em> bawaan.
+Kamu bisa mengunjungi <a href=https://github.com/kubernetes-sigs/scheduler-plugins>plugin-plugin penjadwalan</a>
+untuk informasi lebih lanjut.</p><p>Jika kamu menggunakan Kubernetes v1.18 atau yang lebih baru, kamu dapat
+mengonfigurasi sekumpulan <em>plugin</em> sebagai profil penjadwal dan kemudian menetapkan
+beberapa profil agar sesuai dengan berbagai jenis beban kerja. Pelajari lebih
+lanjut di <a href=/docs/reference/scheduling/profiles/#multiple-profiles>multi profil</a>.</p></div><div class=td-content style=page-break-before:always><h1 id=pg-d3c2640240f6a0148c47a8e57359779b>3 - Penyetelan Kinerja Penjadwal</h1><div style=margin-top:10px;margin-bottom:10px><b>FEATURE STATE:</b> <code>Kubernetes v1.14 [beta]</code></div><p><a href=/id/docs/concepts/scheduling/kube-scheduler/#kube-scheduler>kube-scheduler</a>
+merupakan penjadwal (<em>scheduler</em>) Kubernetes bawaan yang bertanggung jawab
+terhadap penempatan Pod-Pod pada seluruh Node di dalam sebuah klaster.</p><p>Node-Node di dalam klaster yang sesuai dengan syarat-syarat penjadwalan dari
+sebuah Pod disebut sebagai Node-Node layak (<em>feasible</em>). Penjadwal mencari Node-Node
+layak untuk sebuah Pod dan kemudian menjalankan fungsi-fungsi untuk menskor Node-Node tersebut, memilih sebuah Node dengan skor tertinggi di antara
+Node-Node layak lainnya, di mana Pod akan dijalankan. Penjadwal kemudian memberitahu
+API server soal keputusan ini melalui sebuah proses yang disebut <em>Binding</em>.</p><p>Laman ini menjelaskan optimasi penyetelan (<em>tuning</em>) kinerja yang relevan
+untuk klaster Kubernetes berskala besar.</p><p>Pada klaster berskala besar, kamu bisa menyetel perilaku penjadwal
+untuk menyeimbangkan hasil akhir penjadwalan antara latensi (seberapa cepat Pod-Pod baru ditempatkan)
+dan akurasi (seberapa akurat penjadwal membuat keputusan penjadwalan yang tepat).</p><p>Kamu bisa mengonfigurasi setelan ini melalui pengaturan <code>percentageOfNodesToScore</code> pada kube-scheduler.
+Pengaturan KubeSchedulerConfiguration ini menentukan sebuah ambang batas untuk
+penjadwalan Node-Node di dalam klaster kamu.</p><h3 id=pengaturan-ambang-batas>Pengaturan Ambang Batas</h3><p>Opsi <code>percentageOfNodesToScore</code> menerima semua angka numerik antara 0 dan 100.
+Angka 0 adalah angka khusus yang menandakan bahwa kube-scheduler harus menggunakan
+nilai bawaan.
+Jika kamu mengatur <code>percentageOfNodesToScore</code> dengan angka di atas 100, kube-scheduler
+akan membulatkan ke bawah menjadi 100.</p><p>Untuk mengubah angkanya, sunting berkas konfigurasi kube-scheduler (biasanya <code>/etc/kubernetes/config/kube-scheduler.yaml</code>),
+lalu <em>ulang kembali</em> kube-scheduler.</p><p>Setelah kamu selesai menyunting, jalankan perintah</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>kubectl get componentstatuses
+</code></pre></div><p>untuk memverifikasi komponen kube-scheduler berjalan dengan baik (<em>healthy</em>). Keluarannya kira-kira seperti ini:</p><pre><code>NAME                 STATUS    MESSAGE             ERROR
+controller-manager   Healthy   ok
+scheduler            Healthy   ok
+...
+</code></pre><h2 id=persentase-penskoran-node>Ambang Batas Penskoran Node</h2><p>Untuk meningkatan kinerja penjadwalan, kube-scheduler dapat berhenti mencari
+Node-Node yang layak saat sudah berhasil menemukannya. Pada klaster berskala besar,
+hal ini menghemat waktu dibandingkan dengan pendekatan awam yang mengecek setiap Node.</p><p>Kamu bisa mengatur ambang batas untuk menentukan berapa banyak jumlah Node minimal yang dibutuhkan, sebagai
+persentase bagian dari seluruh Node di dalam klaster kamu. kube-scheduler akan mengubahnya menjadi
+bilangan bulat berisi jumlah Node. Saat penjadwalan, jika kube-scheduler mengidentifikasi
+cukup banyak Node-Node layak untuk melewati jumlah persentase yang diatur, maka kube-scheduler
+akan berhenti mencari Node-Node layak dan lanjut ke [fase penskoran] (/id/docs/concepts/scheduling/kube-scheduler/#kube-scheduler-implementation).</p><p><a href=#bagaimana-penjadwal-mengecek-node>Bagaimana penjadwal mengecek Node</a> menjelaskan proses ini secara detail.</p><h3 id=ambang-batas-bawaan>Ambang Batas Bawaan</h3><p>Jika kamu tidak mengatur sebuah ambang batas, maka Kubernetes akan
+menghitung sebuah nilai menggunakan pendekatan linier, yaitu 50% untuk klaster dengan 100 Node,
+serta 10% untuk klaster dengan 5000 Node.</p><p>Artinya, kube-scheduler selalu menskor paling tidak 5% dari klaster kamu, terlepas dari
+seberapa besar klasternya, kecuali kamu secara eksplisit mengatur <code>percentageOfNodesToScore</code>
+menjadi lebih kecil dari 5.</p><p>Jika kamu ingin penjadwal untuk memasukkan seluruh Node di dalam klaster ke dalam penskoran,
+maka aturlah <code>percentageOfNodesToScore</code> menjadi 100.</p><h2 id=contoh>Contoh</h2><p>Contoh konfigurasi di bawah ini mengatur <code>percentageOfNodesToScore</code> menjadi 50%.</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>kubescheduler.config.k8s.io/v1alpha1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>KubeSchedulerConfiguration<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>algorithmSource</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>provider</span>:<span style=color:#bbb> </span>DefaultProvider<span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:#00f;font-weight:700>...</span><span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>percentageOfNodesToScore</span>:<span style=color:#bbb> </span><span style=color:#666>50</span><span style=color:#bbb>
+</span></code></pre></div><h2 id=menyetel-percentageofnodestoscore>Menyetel percentageOfNodesToScore</h2><p><code>percentageOfNodesToScore</code> merupakan angka 1 sampai 100 dengan
+nilai bawaan yang dihitung berdasarkan ukuran klaster. Di sini juga terdapat
+batas bawah yang telah ditetapkan, yaitu 50 Node.</p><blockquote class="note callout"><div><strong>Catatan:</strong><p>Pada klaster dengan kurang dari 50 Node layak, penjadwal masih
+terus memeriksa seluruh Node karena Node-Node layak belum mencukupi supaya
+penjadwal dapat menghentikan proses pencarian lebih awal.</p><p>Pada klaster kecil, jika kamu mengatur <code>percentageOfNodesToScore</code> dengan angka kecil,
+pengaturan ini hampir atau sama sekali tidak berpengaruh, karena alasan yang sama.</p><p>Jika klaster kamu punya ratusan Node, gunakan angka bawaan untuk opsi konfigurasi ini.
+Mengubah angkanya kemungkinan besar tidak akan mengubah kinerja penjadwal secara berarti.</p></div></blockquote><p>Sebuah catatan penting yang perlu dipertimbangkan saat mengatur angka ini adalah
+ketika klaster dengan jumlah Node sedikit diperiksa untuk kelayakan, beberapa Node
+tidak dikirim untuk diskor bagi sebuah Pod. Hasilnya, sebuah Node yang mungkin memiliki
+nilai lebih tinggi untuk menjalankan Pod tersebut bisa saja tidak diteruskan ke fase penskoran.
+Hal ini berdampak pada penempatan Pod yang kurang ideal.</p><p>Kamu sebaiknya menghindari pengaturan <code>percentageOfNodesToScore</code> menjadi sangat rendah,
+agar kube-scheduler tidak seringkali membuat keputusan penempatan Pod yang buruk.
+Hindari pengaturan persentase di bawah 10%, kecuali <em>throughput</em> penjadwal sangat penting
+untuk aplikasi kamu dan skor dari Node tidak begitu penting. Dalam kata lain, kamu
+memilih untuk menjalankan Pod pada Node manapun selama Node tersebut layak.</p><h2 id=bagaimana-penjadwal-mengecek-node>Bagaimana Penjadwal Mengecek Node</h2><p>Bagian ini ditujukan untuk kamu yang ingin mengerti bagaimana fitur ini bekerja secara internal.</p><p>Untuk memberikan semua Node di dalam klaster sebuah kesempatan yang adil untuk
+dipertimbangkan dalam menjalankan Pod, penjadwal mengecek Node satu persatu
+secara <em>round robin</em>. Kamu dapat membayangkan Node-Node ada di dalam sebuah array.
+Penjadwal mulai dari indeks array pertama dan mengecek kelayakan dari Node sampai
+jumlahnya telah mencukupi sesuai dengan <code>percentageOfNodesToScore</code>. Untuk Pod berikutnya,
+penjadwal melanjutkan dari indeks array Node yang terhenti ketika memeriksa
+kelayakan Node-Node untuk Pod sebelumnya.</p><p>Jika Node-Node berada di beberapa zona, maka penjadwal akan mengecek Node satu persatu
+pada seluruh zona untuk memastikan bahwa Node-Node dari zona berbeda masuk dalam pertimbangan
+kelayakan. Sebagai contoh, ada 6 Node di dalam 2 zona:</p><pre><code>Zona 1: Node 1, Node 2, Node 3, Node 4
+Zona 2: Node 5, Node 6
+</code></pre><p>Penjadwal mempertimbangkan kelayakan dari Node-Node tersebut dengan urutan berikut:</p><pre><code>Node 1, Node 5, Node 2, Node 6, Node 3, Node 4
+</code></pre><p>Setelah semua Node telah dicek, penjadwal akan kembali pada Node 1.</p></div></main></div></div><footer class=d-print-none><div class=footer__links><nav><a class=text-white href=/id/docs/home/>Home</a>
+<a class=text-white href=/id/community/>Komunitas</a>
+<a class=text-white href=/id/case-studies/>Studi kasus</a></nav></div><div class=container-fluid><div class=row><div class="col-6 col-sm-2 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="User mailing list" aria-label="User mailing list"><a class=text-white target=_blank href=https://discuss.kubernetes.io><i class="fa fa-envelope"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank href=https://twitter.com/kubernetesio><i class="fab fa-twitter"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Calendar aria-label=Calendar><a class=text-white target=_blank href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io"><i class="fas fa-calendar-alt"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Youtube aria-label=Youtube><a class=text-white target=_blank href=https://youtube.com/kubernetescommunity><i class="fab fa-youtube"></i></a></li></ul></div><div class="col-6 col-sm-2 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank href=https://github.com/kubernetes/kubernetes><i class="fab fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Slack aria-label=Slack><a class=text-white target=_blank href=https://slack.k8s.io><i class="fab fa-slack"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Contribute aria-label=Contribute><a class=text-white target=_blank href=https://git.k8s.io/community/contributors/guide><i class="fas fa-edit"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="Stack Overflow" aria-label="Stack Overflow"><a class=text-white target=_blank href=https://stackoverflow.com/questions/tagged/kubernetes><i class="fab fa-stack-overflow"></i></a></li></ul></div><div class="col-12 col-sm-8 text-center order-sm-2"><small class=text-white>&copy; 2026 Para Pencipta Kubernetes | Dokumentasi didistribusikan di bawah <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a></small><br><small class=text-white>Copyright &copy; 2026 Linux Foundation &reg;. Hak cipta dilindungi. Linux Foundation telah mendaftarkan merek dagang dan pengunaannya. Perinciannya bisa dilihat pada <a href=https://www.linuxfoundation.org/trademark-usage class=light-text>halaman penggunaan merek dagang</a></small><br><small class=text-white><a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></small></div></div></div></footer></div><script src=/js/popper-1.14.3.min.js integrity=sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49 crossorigin=anonymous></script><script src=/js/bootstrap-4.3.1.min.js integrity=sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM crossorigin=anonymous></script><script src=/js/main.min.223905d4acc5f7b370e2af585c8a5b56ce39b2fddddd6dffb6f6c3428927fe2c.js integrity="sha256-IjkF1KzF97Nw4q9YXIpbVs45sv3d3W3/tvbDQokn/iw=" crossorigin=anonymous></script></body></html>
