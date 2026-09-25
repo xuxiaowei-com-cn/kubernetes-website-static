@@ -1,0 +1,579 @@
+<!doctype html><html lang=ja class=no-js><head><meta name=robots content="noindex, nofollow"><link rel=alternate hreflang=en href=https://kubernetes.xuxiaowei.com.cn/docs/tutorials/services/><link rel=alternate hreflang=zh-cn href=https://kubernetes.xuxiaowei.com.cn/zh-cn/docs/tutorials/services/><link rel=alternate hreflang=fr href=https://kubernetes.xuxiaowei.com.cn/fr/docs/tutorials/services/><link rel=alternate hreflang=ko href=https://kubernetes.xuxiaowei.com.cn/ko/docs/tutorials/services/><link rel=alternate hreflang=es href=https://kubernetes.xuxiaowei.com.cn/es/docs/tutorials/services/><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.121.2"><link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/ja/docs/tutorials/services/><link rel="shortcut icon" type=image/png href=/images/favicon.png><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=manifest href=/manifest.webmanifest><link rel=apple-touch-icon href=/images/kubernetes-192x192.png><title>Service | Kubernetes</title><meta property="og:title" content="Service">
+<meta property="og:description" content="プロダクショングレードのコンテナ管理基盤"><meta property="og:type" content="website"><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/ja/docs/tutorials/services/"><meta itemprop=name content="Service"><meta itemprop=description content="プロダクショングレードのコンテナ管理基盤"><meta name=twitter:card content="summary"><meta name=twitter:title content="Service"><meta name=twitter:description content="プロダクショングレードのコンテナ管理基盤"><link href=/scss/main.css rel=stylesheet><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png"}</script><meta name=theme-color content="#326ce5"><style>.gutter{background-color:#eee;background-repeat:no-repeat;background-position:50%}.gutter.gutter-horizontal{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==);cursor:col-resize}#sidebarnav,#maindoc{max-width:100%}#maindoc{overflow-wrap:break-word}@media(max-width:768px){#sidebarnav{padding-left:15px;padding-right:15px}}</style><link rel=stylesheet href=/css/feature-states.css><meta name=description content><meta property="og:description" content><meta name=twitter:description content><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/ja/docs/tutorials/services/"><meta property="og:title" content="Service"><meta name=twitter:title content="Service"><meta name=twitter:image content="https://kubernetes.io/images/favicon.png"><meta name=twitter:image:alt content="Kubernetes"><meta property="og:image" content="/images/kubernetes-horizontal-color.png"><meta property="og:type" content="article"><script src=/js/jquery-3.6.0.min.js intregrity=sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK crossorigin=anonymous></script><script src=/js/split-1.6.0.js intregrity=sha384-0blL3GqHy6+9fw0cyY2Aoiwg4onHAtslAs4OkqZY7UQBrR65/K4gI+hxLdWDrjpz></script><script defer src=/js/dismiss_banner.js></script><link type=text/css rel=stylesheet href=/css/custom.css><script type=text/javascript>(function(e,t,n,s,o,i,a){e[n]=e[n]||function(){(e[n].q=e[n].q||[]).push(arguments)},i=t.createElement(s),i.async=1,i.src="https://www.clarity.ms/tag/"+o,a=t.getElementsByTagName(s)[0],a.parentNode.insertBefore(i,a)})(window,document,"clarity","script","ym5uznpd9c")</script></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-column flex-md-row td-navbar" data-auto-burger=primary><a class="navbar-brand img-fluid" href=/ja/></a><div class="td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0"><li class="nav-item mr-2 mb-lg-0"><a class="nav-link active" href=/ja/docs/>ドキュメント</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/ja/blog/>Kubernetesブログ</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/ja/training/>トレーニング</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/ja/partners/>パートナー</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/ja/community/>コミュニティ</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/ja/case-studies/>ケーススタディ</a></li><li class="nav-item mr-n3 mr-lg-0 dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>バージョン</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/ja/releases>Release Information</a>
+<a class=dropdown-item href=https://xuxiaowei.io/t/1320/ja/docs/tutorials/services/>Kubernetes 文档说明</a>
+<a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn/ja/docs/tutorials/services/>v1.38</a>
+<a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn/ja/docs/tutorials/services/>v1.37</a>
+<a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn/ja/docs/tutorials/services/>v1.36</a>
+<a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn/ja/docs/tutorials/services/>v1.35</a>
+<a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn/ja/docs/tutorials/services/>v1.34</a>
+<a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn/ja/docs/tutorials/services/>v1.33</a>
+<a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn/ja/docs/tutorials/services/>v1.32</a>
+<a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn/ja/docs/tutorials/services/>v1.31</a>
+<a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn/ja/docs/tutorials/services/>v1.30</a>
+<a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn/ja/docs/tutorials/services/>v1.29</a>
+<a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn/ja/docs/tutorials/services/>v1.28</a>
+<a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn/ja/docs/tutorials/services/>v1.27</a>
+<a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn/ja/docs/tutorials/services/>v1.26</a>
+<a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn/ja/docs/tutorials/services/>v1.25</a>
+<a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn/ja/docs/tutorials/services/>v1.24</a>
+<a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn/ja/docs/tutorials/services/>v1.23</a>
+<a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn/ja/docs/tutorials/services/>v1.22</a>
+<a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn/ja/docs/tutorials/services/>v1.21</a>
+<a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn/ja/docs/tutorials/services/>v1.20</a></div></li><li class="nav-item mr-n4 mr-lg-0 dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdownMenuLink role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>日本語 (Japanese)</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/tutorials/services/>English</a>
+<a class=dropdown-item href=/zh-cn/docs/tutorials/services/>中文 (Chinese)</a>
+<a class=dropdown-item href=/fr/docs/tutorials/services/>Français (French)</a>
+<a class=dropdown-item href=/ko/docs/tutorials/services/>한국어 (Korean)</a>
+<a class=dropdown-item href=/es/docs/tutorials/services/>Español (Spanish)</a></div></li><li class="search-item nav-item mr-n4 mr-lg-0"><div class=search-bar><i class="search-icon fas fa-search"></i>
+<input type=search name=q class="search-input td-search-input" placeholder=検索 aria-label=検索 autocomplete=off></div></li></ul></div><button id=hamburger onclick=kub.toggleMenu() data-auto-burger-exclude><div></div></button></nav></header><div class="container-fluid td-outer"><div class=td-main><div class="row flex-xl-nowrap"><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><div class=td-content><div class="pageinfo pageinfo-primary d-print-none"><p>これは、このセクションの複数ページの印刷可能なビューです。
+<a href=# onclick="return print(),!1">印刷するには、ここをクリックしてください</a>.</p><p><a href=/ja/docs/tutorials/services/>このページの通常のビューに戻る</a>.</p></div><h1 class=title>Service</h1><ul><li>1: <a href=#pg-bc0a2760d2865e91c501bc2467cd1a4b>アプリケーションをServiceに接続する</a></li><li>2: <a href=#pg-5642e8c51749e4fe2e6a2ccc207f1fab>送信元IPを使用する</a></li><li>3: <a href=#pg-3cecc68ef365a9d2ee0b4860dc74cacc>Podとそのエンドポイントの終了動作を探る</a></li></ul><div class=content></div></div><div class=td-content><h1 id=pg-bc0a2760d2865e91c501bc2467cd1a4b>1 - アプリケーションをServiceに接続する</h1><h2 id=コンテナに接続するためのkubernetesモデル>コンテナに接続するためのKubernetesモデル</h2><p>さて、継続的に実行され、複製されたアプリケーションができたので、これをネットワーク上に公開できます。</p><p>Kubernetesは、Podがどのホストに配置されているかにかかわらず、ほかのPodと通信できることを引き受けます。
+Kubernetesは各Podにそれぞれ固有のクラスタープライベートなIPアドレスを付与するので、Pod間のリンクや、コンテナのポートとホストのポートのマップを明示的に作成する必要はありません。
+これは、Pod内のコンテナは全てlocalhost上でお互いのポートに到達でき、クラスター内の全てのPodはNATなしに互いを見られるということを意味します。このドキュメントの残りの部分では、このようなネットワークモデルの上で信頼性のあるServiceを実行する方法について、詳しく述べていきます。</p><p>このチュートリアルでは概念のデモンストレーションのために、シンプルなnginx Webサーバーを例として使います。</p><h2 id=podをクラスターへ公開>Podをクラスターへ公開</h2><p>これは前出の例でも行いましたが、もう一度やってみて、ネットワークからの観点に着目してみましょう。
+nginx Podを作成し、コンテナのポート指定も記載します:</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.29/content/ja/examples/service/networking/run-my-nginx.yaml download=service/networking/run-my-nginx.yaml><code>service/networking/run-my-nginx.yaml</code>
+</a><img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick='copyCode("service-networking-run-my-nginx-yaml")' title="Copy service/networking/run-my-nginx.yaml to clipboard"></img></div><div class=includecode id=service-networking-run-my-nginx-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>apps/v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Deployment<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>my-nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>matchLabels</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>run</span>:<span style=color:#bbb> </span>my-nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>replicas</span>:<span style=color:#bbb> </span><span style=color:#666>2</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>template</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>run</span>:<span style=color:#bbb> </span>my-nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>my-nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>ports</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>containerPort</span>:<span style=color:#bbb> </span><span style=color:#666>80</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><p>この設定で、あなたのクラスターにはどのノードからもアクセス可能になります。Podを実行中のノードを確認してみましょう:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl apply -f ./run-my-nginx.yaml
+</span></span><span style=display:flex><span>kubectl get pods -l <span style=color:#b8860b>run</span><span style=color:#666>=</span>my-nginx -o wide
+</span></span></code></pre></div><pre tabindex=0><code>NAME                        READY     STATUS    RESTARTS   AGE       IP            NODE
+my-nginx-3800858182-jr4a2   1/1       Running   0          13s       10.244.3.4    kubernetes-minion-905m
+my-nginx-3800858182-kna2y   1/1       Running   0          13s       10.244.2.5    kubernetes-minion-ljyd
+</code></pre><p>PodのIPアドレスを確認します:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get pods -l <span style=color:#b8860b>run</span><span style=color:#666>=</span>my-nginx -o custom-columns<span style=color:#666>=</span>POD_IP:.status.podIPs
+</span></span><span style=display:flex><span>    POD_IP
+</span></span><span style=display:flex><span>    <span style=color:#666>[</span>map<span style=color:#666>[</span>ip:10.244.3.4<span style=color:#666>]]</span>
+</span></span><span style=display:flex><span>    <span style=color:#666>[</span>map<span style=color:#666>[</span>ip:10.244.2.5<span style=color:#666>]]</span>
+</span></span></code></pre></div><p>あなたのクラスター内のどのノードにもsshで入ることができて、双方のIPアドレスに対して問い合わせるために<code>curl</code>のようなツールを使えるようにしておくのがよいでしょう。
+各コンテナはノード上でポート80を<em>使っておらず</em>、トラフィックをPodに流すための特別なNATルールもなんら存在しないことに注意してください。
+つまり、全て同じ<code>containerPort</code>を使った同じノード上で複数のnginx Podを実行でき、Serviceに割り当てられたIPアドレスを使って、クラスター内のほかのどのPodあるいはノードからもそれらにアクセスできます。
+背後にあるPodにフォワードするためにホストNode上の特定のポートを充てたいというのであれば、それも可能です。とはいえ、ネットワークモデルではそのようなことをする必要がありません。</p><p>興味があれば、さらなる詳細について
+<a href=/ja/docs/concepts/cluster-administration/networking/#the-kubernetes-network-model>Kubernetesネットワークモデル</a>
+を読んでください。</p><h2 id=serviceの作成>Serviceの作成</h2><p>さて、フラットなクラスター全体のアドレス空間内でnginxを実行中のPodが得られました。
+理論的にはこれらのPodと直接対話することは可能ですが、ノードが死んでしまった時には何が起きるでしょうか？
+ノードと一緒にPodは死に、Deploymentが新しいPodを異なるIPアドレスで作成します。
+これがServiceが解決する問題です。</p><p>KubernetesのServiceは、全て同じ機能を提供する、クラスター内のどこかで実行するPodの論理的な集合を定義した抽象物です。
+作成時に各Serviceは固有のIPアドレス(clusterIPとも呼ばれます)を割り当てられます。
+このアドレスはServiceのライフスパンと結び付けられており、Serviceが生きている間は変わりません。
+PodはServiceと対話できるよう設定され、Serviceのメンバーである複数のPodへ自動的に負荷分散されたServiceへ通信する方法を知っています。</p><p><code>kubectl expose</code>を使って、2つのnginxレプリカのためのServiceを作成できます:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl expose deployment/my-nginx
+</span></span></code></pre></div><pre tabindex=0><code>service/my-nginx exposed
+</code></pre><p>これは<code>kubectl apply -f</code>を以下のyamlに対して実行するのと同じです:</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.29/content/ja/examples/service/networking/nginx-svc.yaml download=service/networking/nginx-svc.yaml><code>service/networking/nginx-svc.yaml</code>
+</a><img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick='copyCode("service-networking-nginx-svc-yaml")' title="Copy service/networking/nginx-svc.yaml to clipboard"></img></div><div class=includecode id=service-networking-nginx-svc-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Service<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>my-nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>run</span>:<span style=color:#bbb> </span>my-nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>ports</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>port</span>:<span style=color:#bbb> </span><span style=color:#666>80</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>protocol</span>:<span style=color:#bbb> </span>TCP<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>run</span>:<span style=color:#bbb> </span>my-nginx<span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><p>この指定は、<code>run: my-nginx</code>ラベルの付いた任意のPod上のTCPポート80を宛先とし、それを抽象化されたServiceポート(<code>targetPort</code>はコンテナがトラフィックを許可するポート、<code>port</code>は抽象化されたServiceポートで、ほかのPodがServiceにアクセスするのに使う任意のポートです)で公開するServiceを作成します。
+Service定義内でサポートされているフィールドのリストを見るには、<a href=/docs/reference/generated/kubernetes-api/v1.29/#service-v1-core>Service</a> APIオブジェクトを参照してください。
+Serviceを確認してみましょう:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get svc my-nginx
+</span></span></code></pre></div><pre tabindex=0><code>NAME       TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE
+my-nginx   ClusterIP   10.0.162.149   &lt;none&gt;        80/TCP    21s
+</code></pre><p>前述したとおり、ServiceはPodのグループに支えられています。
+これらのPodは<a class=glossary-tooltip title='A way to group network endpoints together with Kubernetes resources.' data-toggle=tooltip data-placement=top href=/docs/concepts/services-networking/endpoint-slices/ target=_blank aria-label=EndpointSlices>EndpointSlices</a>を通して公開されています。
+Serviceのセレクターは継続的に評価され、その結果はServiceに接続されているEndpointSliceに<a class=glossary-tooltip title=ユーザーにとって意味があり関連性のある識別属性を、オブジェクトにタグ付けするものです。 data-toggle=tooltip data-placement=top href=/docs/concepts/overview/working-with-objects/labels target=_blank aria-label=labels>labels</a>を使って「投稿(POST)」されます。</p><p>Podが死ぬと、エンドポイントとして含まれていたEndpointSliceからそのPodは自動的に削除されます。
+Serviceのセレクターにマッチする新しいPodが、Serviceのために自動的にEndpointSliceに追加されます。
+エンドポイントを確認し、IPアドレスが最初のステップで作成したPodと同じであることに注目してください:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl describe svc my-nginx
+</span></span></code></pre></div><pre tabindex=0><code>Name:                my-nginx
+Namespace:           default
+Labels:              run=my-nginx
+Annotations:         &lt;none&gt;
+Selector:            run=my-nginx
+Type:                ClusterIP
+IP Family Policy:    SingleStack
+IP Families:         IPv4
+IP:                  10.0.162.149
+IPs:                 10.0.162.149
+Port:                &lt;unset&gt; 80/TCP
+TargetPort:          80/TCP
+Endpoints:           10.244.2.5:80,10.244.3.4:80
+Session Affinity:    None
+Events:              &lt;none&gt;
+</code></pre><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get endpointslices -l kubernetes.io/service-name<span style=color:#666>=</span>my-nginx
+</span></span></code></pre></div><pre tabindex=0><code>NAME             ADDRESSTYPE   PORTS   ENDPOINTS               AGE
+my-nginx-7vzhx   IPv4          80      10.244.2.5,10.244.3.4   21s
+</code></pre><p>今や、あなたのクラスター内のどのノードからもnginx Serviceに<code>&lt;CLUSTER-IP>:&lt;PORT></code>でcurlを使用してアクセスできるはずです。Service IPは完全に仮想であり、物理的なケーブルで接続されるものではありません。どのように動作しているのか興味があれば、さらなる詳細について<a href=/ja/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies>サービスプロキシ</a>を読んでください。</p><h2 id=serviceへのアクセス>Serviceへのアクセス</h2><p>KubernetesはServiceを探す2つの主要なモードとして、環境変数とDNSをサポートしています。
+前者はすぐに動かせるのに対し、後者は<a href=https://releases.k8s.io/v1.29.3/cluster/addons/dns/coredns>CoreDNSクラスターアドオン</a>が必要です。</p><div class="alert alert-info note callout" role=alert><strong>備考:</strong> もしServiceの環境変数が望ましくないなら(想定しているプログラムの環境変数と競合する可能性がある、処理する変数が多すぎる、DNSだけ使いたい、など)、<a href=/docs/reference/generated/kubernetes-api/v1.29/#pod-v1-core>pod spec</a>で<code>enableServiceLinks</code>のフラグを<code>false</code>にすることで、このモードを無効化できます。</div><h3 id=環境変数>環境変数</h3><p>PodをNode上で実行する時、kubeletはアクティブなServiceのそれぞれに環境変数のセットを追加します。
+これは順序問題を生みます。なぜそうなるかの理由を見るために、実行中のnginx Podの環境を調査してみましょう(Podの名前は環境によって異なります):</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl <span style=color:#a2f>exec</span> my-nginx-3800858182-jr4a2 -- printenv | grep SERVICE
+</span></span></code></pre></div><pre tabindex=0><code>KUBERNETES_SERVICE_HOST=10.0.0.1
+KUBERNETES_SERVICE_PORT=443
+KUBERNETES_SERVICE_PORT_HTTPS=443
+</code></pre><p>Serviceについて何も言及がないことに注意してください。
+これは、Serviceの前にレプリカを作成したからです。
+このようにすることでの不利益のもう1つは、スケジューラーが同一のマシンに両方のPodを置く可能性があることです(もしそのマシンが死ぬと全Serviceがダウンしてしまいます)。
+2つのPodを殺し、Deploymentがそれらを再作成するのを待つことで、これを正しいやり方にできます。
+今回は、レプリカの<em>前に</em>Serviceが存在します。
+これにより、正しい環境変数だけでなく、(全てのノードで等量のキャパシティを持つ場合)Podに広がった、スケジューラーレベルのServiceが得られます:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl scale deployment my-nginx --replicas<span style=color:#666>=</span>0; kubectl scale deployment my-nginx --replicas<span style=color:#666>=</span>2;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>kubectl get pods -l <span style=color:#b8860b>run</span><span style=color:#666>=</span>my-nginx -o wide
+</span></span></code></pre></div><pre tabindex=0><code>NAME                        READY     STATUS    RESTARTS   AGE     IP            NODE
+my-nginx-3800858182-e9ihh   1/1       Running   0          5s      10.244.2.7    kubernetes-minion-ljyd
+my-nginx-3800858182-j4rm4   1/1       Running   0          5s      10.244.3.8    kubernetes-minion-905m
+</code></pre><p>Podが、いったん殺されて再作成された後、異なる名前を持ったことに気付いたでしょうか。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl <span style=color:#a2f>exec</span> my-nginx-3800858182-e9ihh -- printenv | grep SERVICE
+</span></span></code></pre></div><pre tabindex=0><code>KUBERNETES_SERVICE_PORT=443
+MY_NGINX_SERVICE_HOST=10.0.162.149
+KUBERNETES_SERVICE_HOST=10.0.0.1
+MY_NGINX_SERVICE_PORT=80
+KUBERNETES_SERVICE_PORT_HTTPS=443
+</code></pre><h3 id=dns>DNS</h3><p>Kubernetesは、DNS名をほかのServiceに自動的に割り当てる、DNSクラスターアドオンServiceを提供しています。
+クラスター上でそれを実行しているならば、確認できます:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get services kube-dns --namespace<span style=color:#666>=</span>kube-system
+</span></span></code></pre></div><pre tabindex=0><code>NAME       TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)         AGE
+kube-dns   ClusterIP   10.0.0.10    &lt;none&gt;        53/UDP,53/TCP   8m
+</code></pre><p>本セクションの以降では、長寿命のIPアドレス(my-nginx)を持つServiceと、そのIPアドレスに名前を割り当てているDNSサーバーがあることを想定しています。
+ここではCoreDNSクラスターアドオン(アプリケーション名<code>kube-dns</code>)を使い、標準的な手法(例えば<code>gethostbyname()</code>)を使ってクラスター内の任意のPodからServiceと対話してみます。
+CoreDNSが動作していない時には、
+<a href=https://github.com/coredns/deployment/tree/master/kubernetes>CoreDNS README</a>
+や<a href=/ja/docs/tasks/administer-cluster/coredns/#installing-coredns>CoreDNSのインストール</a>を参照して有効化してください。
+テストするために、別のcurlアプリケーションを実行してみましょう:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl run curl --image<span style=color:#666>=</span>radial/busyboxplus:curl -i --tty
+</span></span></code></pre></div><pre tabindex=0><code>Waiting for pod default/curl-131556218-9fnch to be running, status is Pending, pod ready: false
+Hit enter for command prompt
+</code></pre><p>次にenterを押し、<code>nslookup my-nginx</code>を実行します:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#666>[</span> root@curl-131556218-9fnch:/ <span style=color:#666>]</span>$ nslookup my-nginx
+</span></span><span style=display:flex><span>Server:    10.0.0.10
+</span></span><span style=display:flex><span>Address 1: 10.0.0.10
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Name:      my-nginx
+</span></span><span style=display:flex><span>Address 1: 10.0.162.149
+</span></span></code></pre></div><h2 id=serviceのセキュア化>Serviceのセキュア化</h2><p>これまではクラスター内からnginxサーバーだけにアクセスしてきました。
+Serviceをインターネットに公開する前に、通信経路がセキュアかどうかを確かめたいところです。
+そのためには次のようなものが必要です:</p><ul><li>https用の自己署名証明書(まだ本人証明を用意していない場合)</li><li>証明書を使うよう設定されたnginxサーバー</li><li>証明書をPodからアクセスできるようにする<a href=/ja/docs/concepts/configuration/secret/>Secret</a></li></ul><p>これら全ては<a href=https://github.com/kubernetes/examples/tree/master/staging/https-nginx/>nginx https example</a>から取得できます。
+go環境とmakeツールのインストールが必要です
+(もしこれらをインストールしたくないときには、後述の手動手順に従ってください)。簡潔には:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>make keys <span style=color:#b8860b>KEY</span><span style=color:#666>=</span>/tmp/nginx.key <span style=color:#b8860b>CERT</span><span style=color:#666>=</span>/tmp/nginx.crt
+</span></span><span style=display:flex><span>kubectl create secret tls nginxsecret --key /tmp/nginx.key --cert /tmp/nginx.crt
+</span></span></code></pre></div><pre tabindex=0><code>secret/nginxsecret created
+</code></pre><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get secrets
+</span></span></code></pre></div><pre tabindex=0><code>NAME                  TYPE                                  DATA      AGE
+nginxsecret           kubernetes.io/tls                     2         1m
+</code></pre><p>configmapも同様:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl create configmap nginxconfigmap --from-file<span style=color:#666>=</span>default.conf
+</span></span></code></pre></div><pre tabindex=0><code>configmap/nginxconfigmap created
+</code></pre><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get configmaps
+</span></span></code></pre></div><pre tabindex=0><code>NAME             DATA   AGE
+nginxconfigmap   1      114s
+</code></pre><p>以下に示すのは、makeを実行したときに問題が発生する場合(例えばWindowsなど)の手動手順です:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># 公開鍵と秘密鍵のペアを作成する</span>
+</span></span><span style=display:flex><span>openssl req -x509 -nodes -days <span style=color:#666>365</span> -newkey rsa:2048 -keyout /d/tmp/nginx.key -out /d/tmp/nginx.crt -subj <span style=color:#b44>&#34;/CN=my-nginx/O=my-nginx&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#080;font-style:italic># 鍵をbase64エンコーディングに変換する</span>
+</span></span><span style=display:flex><span>cat /d/tmp/nginx.crt | base64
+</span></span><span style=display:flex><span>cat /d/tmp/nginx.key | base64
+</span></span></code></pre></div><p>以下のようなyamlファイルを作成するために、前のコマンドからの出力を使います。
+base64エンコードされた値は、全て1行で記述する必要があります。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;v1&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;Secret&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;nginxsecret&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>namespace</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;default&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>type</span>:<span style=color:#bbb> </span>kubernetes.io/tls<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>data</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>tls.crt</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURIekNDQWdlZ0F3SUJBZ0lKQUp5M3lQK0pzMlpJTUEwR0NTcUdTSWIzRFFFQkJRVUFNQ1l4RVRBUEJnTlYKQkFNVENHNW5hVzU0YzNaak1SRXdEd1lEVlFRS0V3aHVaMmx1ZUhOMll6QWVGdzB4TnpFd01qWXdOekEzTVRKYQpGdzB4T0RFd01qWXdOekEzTVRKYU1DWXhFVEFQQmdOVkJBTVRDRzVuYVc1NGMzWmpNUkV3RHdZRFZRUUtFd2h1CloybHVlSE4yWXpDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBSjFxSU1SOVdWM0IKMlZIQlRMRmtobDRONXljMEJxYUhIQktMSnJMcy8vdzZhU3hRS29GbHlJSU94NGUrMlN5ajBFcndCLzlYTnBwbQppeW1CL3JkRldkOXg5UWhBQUxCZkVaTmNiV3NsTVFVcnhBZW50VWt1dk1vLzgvMHRpbGhjc3paenJEYVJ4NEo5Ci82UVRtVVI3a0ZTWUpOWTVQZkR3cGc3dlVvaDZmZ1Voam92VG42eHNVR0M2QURVODBpNXFlZWhNeVI1N2lmU2YKNHZpaXdIY3hnL3lZR1JBRS9mRTRqakxCdmdONjc2SU90S01rZXV3R0ljNDFhd05tNnNTSzRqYUNGeGpYSnZaZQp2by9kTlEybHhHWCtKT2l3SEhXbXNhdGp4WTRaNVk3R1ZoK0QrWnYvcW1mMFgvbVY0Rmo1NzV3ajFMWVBocWtsCmdhSXZYRyt4U1FVQ0F3RUFBYU5RTUU0d0hRWURWUjBPQkJZRUZPNG9OWkI3YXc1OUlsYkROMzhIYkduYnhFVjcKTUI4R0ExVWRJd1FZTUJhQUZPNG9OWkI3YXc1OUlsYkROMzhIYkduYnhFVjdNQXdHQTFVZEV3UUZNQU1CQWY4dwpEUVlKS29aSWh2Y05BUUVGQlFBRGdnRUJBRVhTMW9FU0lFaXdyMDhWcVA0K2NwTHI3TW5FMTducDBvMm14alFvCjRGb0RvRjdRZnZqeE04Tzd2TjB0clcxb2pGSW0vWDE4ZnZaL3k4ZzVaWG40Vm8zc3hKVmRBcStNZC9jTStzUGEKNmJjTkNUekZqeFpUV0UrKzE5NS9zb2dmOUZ3VDVDK3U2Q3B5N0M3MTZvUXRUakViV05VdEt4cXI0Nk1OZWNCMApwRFhWZmdWQTRadkR4NFo3S2RiZDY5eXM3OVFHYmg5ZW1PZ05NZFlsSUswSGt0ejF5WU4vbVpmK3FqTkJqbWZjCkNnMnlwbGQ0Wi8rUUNQZjl3SkoybFIrY2FnT0R4elBWcGxNSEcybzgvTHFDdnh6elZPUDUxeXdLZEtxaUMwSVEKQ0I5T2wwWW5scE9UNEh1b2hSUzBPOStlMm9KdFZsNUIyczRpbDlhZ3RTVXFxUlU9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>tls.key</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2UUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktjd2dnU2pBZ0VBQW9JQkFRQ2RhaURFZlZsZHdkbFIKd1V5eFpJWmVEZWNuTkFhbWh4d1NpeWF5N1AvOE9ta3NVQ3FCWmNpQ0RzZUh2dGtzbzlCSzhBZi9WemFhWm9zcApnZjYzUlZuZmNmVUlRQUN3WHhHVFhHMXJKVEVGSzhRSHA3VkpMcnpLUC9QOUxZcFlYTE0yYzZ3MmtjZUNmZitrCkU1bEVlNUJVbUNUV09UM3c4S1lPNzFLSWVuNEZJWTZMMDUrc2JGQmd1Z0ExUE5JdWFubm9UTWtlZTRuMG4rTDQKb3NCM01ZUDhtQmtRQlAzeE9JNHl3YjREZXUraURyU2pKSHJzQmlIT05Xc0RadXJFaXVJMmdoY1kxeWIyWHI2UAozVFVOcGNSbC9pVG9zQngxcHJHclk4V09HZVdPeGxZZmcvbWIvNnBuOUYvNWxlQlkrZStjSTlTMkQ0YXBKWUdpCkwxeHZzVWtGQWdNQkFBRUNnZ0VBZFhCK0xkbk8ySElOTGo5bWRsb25IUGlHWWVzZ294RGQwci9hQ1Zkank4dlEKTjIwL3FQWkUxek1yall6Ry9kVGhTMmMwc0QxaTBXSjdwR1lGb0xtdXlWTjltY0FXUTM5SjM0VHZaU2FFSWZWNgo5TE1jUHhNTmFsNjRLMFRVbUFQZytGam9QSFlhUUxLOERLOUtnNXNrSE5pOWNzMlY5ckd6VWlVZWtBL0RBUlBTClI3L2ZjUFBacDRuRWVBZmI3WTk1R1llb1p5V21SU3VKdlNyblBESGtUdW1vVlVWdkxMRHRzaG9reUxiTWVtN3oKMmJzVmpwSW1GTHJqbGtmQXlpNHg0WjJrV3YyMFRrdWtsZU1jaVlMbjk4QWxiRi9DSmRLM3QraTRoMTVlR2ZQegpoTnh3bk9QdlVTaDR2Q0o3c2Q5TmtEUGJvS2JneVVHOXBYamZhRGR2UVFLQmdRRFFLM01nUkhkQ1pKNVFqZWFKClFGdXF4cHdnNzhZTjQyL1NwenlUYmtGcVFoQWtyczJxWGx1MDZBRzhrZzIzQkswaHkzaE9zSGgxcXRVK3NHZVAKOWRERHBsUWV0ODZsY2FlR3hoc0V0L1R6cEdtNGFKSm5oNzVVaTVGZk9QTDhPTm1FZ3MxMVRhUldhNzZxelRyMgphRlpjQ2pWV1g0YnRSTHVwSkgrMjZnY0FhUUtCZ1FEQmxVSUUzTnNVOFBBZEYvL25sQVB5VWs1T3lDdWc3dmVyClUycXlrdXFzYnBkSi9hODViT1JhM05IVmpVM25uRGpHVHBWaE9JeXg5TEFrc2RwZEFjVmxvcG9HODhXYk9lMTAKMUdqbnkySmdDK3JVWUZiRGtpUGx1K09IYnRnOXFYcGJMSHBzUVpsMGhucDBYSFNYVm9CMUliQndnMGEyOFVadApCbFBtWmc2d1BRS0JnRHVIUVV2SDZHYTNDVUsxNFdmOFhIcFFnMU16M2VvWTBPQm5iSDRvZUZKZmcraEppSXlnCm9RN3hqWldVR3BIc3AyblRtcHErQWlSNzdyRVhsdlhtOElVU2FsbkNiRGlKY01Pc29RdFBZNS9NczJMRm5LQTQKaENmL0pWb2FtZm1nZEN0ZGtFMXNINE9MR2lJVHdEbTRpb0dWZGIwMllnbzFyb2htNUpLMUI3MkpBb0dBUW01UQpHNDhXOTVhL0w1eSt5dCsyZ3YvUHM2VnBvMjZlTzRNQ3lJazJVem9ZWE9IYnNkODJkaC8xT2sybGdHZlI2K3VuCnc1YytZUXRSTHlhQmd3MUtpbGhFZDBKTWU3cGpUSVpnQWJ0LzVPbnlDak9OVXN2aDJjS2lrQ1Z2dTZsZlBjNkQKckliT2ZIaHhxV0RZK2Q1TGN1YSt2NzJ0RkxhenJsSlBsRzlOZHhrQ2dZRUF5elIzT3UyMDNRVVV6bUlCRkwzZAp4Wm5XZ0JLSEo3TnNxcGFWb2RjL0d5aGVycjFDZzE2MmJaSjJDV2RsZkI0VEdtUjZZdmxTZEFOOFRwUWhFbUtKCnFBLzVzdHdxNWd0WGVLOVJmMWxXK29xNThRNTBxMmk1NVdUTThoSDZhTjlaMTltZ0FGdE5VdGNqQUx2dFYxdEYKWSs4WFJkSHJaRnBIWll2NWkwVW1VbGc9Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K&#34;</span><span style=color:#bbb>
+</span></span></span></code></pre></div><p>では、このファイルを使ってSecretを作成します:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl apply -f nginxsecrets.yaml
+</span></span><span style=display:flex><span>kubectl get secrets
+</span></span></code></pre></div><pre tabindex=0><code>NAME                  TYPE                                  DATA      AGE
+nginxsecret           kubernetes.io/tls                     2         1m
+</code></pre><p>Secretにある証明書を使ってhttpsサーバーを開始するために、nginxレプリカを変更します。また、Serviceは(80および443の)両方のポートを公開するようにします:</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.29/content/ja/examples/service/networking/nginx-secure-app.yaml download=service/networking/nginx-secure-app.yaml><code>service/networking/nginx-secure-app.yaml</code>
+</a><img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick='copyCode("service-networking-nginx-secure-app-yaml")' title="Copy service/networking/nginx-secure-app.yaml to clipboard"></img></div><div class=includecode id=service-networking-nginx-secure-app-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Service<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>my-nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>run</span>:<span style=color:#bbb> </span>my-nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>type</span>:<span style=color:#bbb> </span>NodePort<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>ports</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>port</span>:<span style=color:#bbb> </span><span style=color:#666>8080</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>targetPort</span>:<span style=color:#bbb> </span><span style=color:#666>80</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>protocol</span>:<span style=color:#bbb> </span>TCP<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>http<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>port</span>:<span style=color:#bbb> </span><span style=color:#666>443</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>protocol</span>:<span style=color:#bbb> </span>TCP<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>https<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>run</span>:<span style=color:#bbb> </span>my-nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:#00f;font-weight:700>---</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>apps/v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Deployment<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>my-nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>matchLabels</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>run</span>:<span style=color:#bbb> </span>my-nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>replicas</span>:<span style=color:#bbb> </span><span style=color:#666>1</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>template</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>run</span>:<span style=color:#bbb> </span>my-nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>volumes</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>secret-volume<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>secret</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>secretName</span>:<span style=color:#bbb> </span>nginxsecret<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>nginxhttps<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>bprashanth/nginxhttps:1.0<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>ports</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>containerPort</span>:<span style=color:#bbb> </span><span style=color:#666>443</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>containerPort</span>:<span style=color:#bbb> </span><span style=color:#666>80</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>volumeMounts</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>mountPath</span>:<span style=color:#bbb> </span>/etc/nginx/ssl<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>secret-volume<span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><p>nginx-secure-appマニフェストの注目すべきポイント:</p><ul><li>DeploymentとServiceの指定の両方が同じファイルに含まれています。</li><li><a href=https://github.com/kubernetes/examples/tree/master/staging/https-nginx/default.conf>nginxサーバー</a>は、ポート80でHTTPトラフィック、ポート443でHTTPSトラフィックをサービスし、nginx Serviceは両方のポートを公開します。</li><li>各コンテナは、<code>/etc/nginx/ssl</code>にマウントされたボリューム経由で鍵にアクセスできます。
+これはnginxサーバーが開始する<em>前</em>にセットアップされます。</li></ul><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl delete deployments,svc my-nginx; kubectl create -f ./nginx-secure-app.yaml
+</span></span></code></pre></div><p>この時点で、任意のノードからnginxサーバーに到達できます。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get pods -l <span style=color:#b8860b>run</span><span style=color:#666>=</span>my-nginx -o custom-columns<span style=color:#666>=</span>POD_IP:.status.podIPs
+</span></span><span style=display:flex><span>    POD_IP
+</span></span><span style=display:flex><span>    <span style=color:#666>[</span>map<span style=color:#666>[</span>ip:10.244.3.5<span style=color:#666>]]</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>node $ curl -k https://10.244.3.5
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span>&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
+</span></span></code></pre></div><p>最後の手順でcurlに<code>-k</code>パラメーターを与えていることに注意してください。
+これは、証明書の生成時点ではnginxを実行中のPodについて何もわからないので、curlにCNameのミスマッチを無視するよう指示する必要があるからです。
+Serviceを作成することで、証明書で使われているCNameと、PodがServiceルックアップ時に使う実際のDNS名とがリンクされます。
+Podからこれをテストしてみましょう(単純化のため同じSecretが再利用されるので、ServiceにアクセスするのにPodが必要なのはnginx.crtだけです):</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.29/content/ja/examples/service/networking/curlpod.yaml download=service/networking/curlpod.yaml><code>service/networking/curlpod.yaml</code>
+</a><img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick='copyCode("service-networking-curlpod-yaml")' title="Copy service/networking/curlpod.yaml to clipboard"></img></div><div class=includecode id=service-networking-curlpod-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>apps/v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Deployment<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>curl-deployment<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>matchLabels</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>curlpod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>replicas</span>:<span style=color:#bbb> </span><span style=color:#666>1</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>template</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>curlpod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>volumes</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>secret-volume<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>secret</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>secretName</span>:<span style=color:#bbb> </span>nginxsecret<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>curlpod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>command</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- sh<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- -c<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- while true; do sleep 1; done<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>radial/busyboxplus:curl<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>volumeMounts</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>mountPath</span>:<span style=color:#bbb> </span>/etc/nginx/ssl<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>secret-volume<span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl apply -f ./curlpod.yaml
+</span></span><span style=display:flex><span>kubectl get pods -l <span style=color:#b8860b>app</span><span style=color:#666>=</span>curlpod
+</span></span></code></pre></div><pre tabindex=0><code>NAME                               READY     STATUS    RESTARTS   AGE
+curl-deployment-1515033274-1410r   1/1       Running   0          1m
+</code></pre><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl <span style=color:#a2f>exec</span> curl-deployment-1515033274-1410r -- curl https://my-nginx --cacert /etc/nginx/ssl/tls.crt
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span>&lt;title&gt;Welcome to nginx!&lt;/title&gt;
+</span></span><span style=display:flex><span>...
+</span></span></code></pre></div><h2 id=serviceの公開>Serviceの公開</h2><p>アプリケーションのいくつかの部分においては、Serviceを外部IPアドレスで公開したいと思うかもしれません。
+Kubernetesはこれに対して2つのやり方をサポートしています: NodePortとLoadBalancerです。
+前のセクションで作成したServiceではすでに<code>NodePort</code>を使っていたので、ノードにパブリックIPアドレスがあれば、nginx HTTPSレプリカもトラフィックをインターネットでサービスする準備がすでに整っています。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get svc my-nginx -o yaml | grep nodePort -C <span style=color:#666>5</span>
+</span></span><span style=display:flex><span>  uid: 07191fb3-f61a-11e5-8ae5-42010af00002
+</span></span><span style=display:flex><span>spec:
+</span></span><span style=display:flex><span>  clusterIP: 10.0.162.149
+</span></span><span style=display:flex><span>  ports:
+</span></span><span style=display:flex><span>  - name: http
+</span></span><span style=display:flex><span>    nodePort: <span style=color:#666>31704</span>
+</span></span><span style=display:flex><span>    port: <span style=color:#666>8080</span>
+</span></span><span style=display:flex><span>    protocol: TCP
+</span></span><span style=display:flex><span>    targetPort: <span style=color:#666>80</span>
+</span></span><span style=display:flex><span>  - name: https
+</span></span><span style=display:flex><span>    nodePort: <span style=color:#666>32453</span>
+</span></span><span style=display:flex><span>    port: <span style=color:#666>443</span>
+</span></span><span style=display:flex><span>    protocol: TCP
+</span></span><span style=display:flex><span>    targetPort: <span style=color:#666>443</span>
+</span></span><span style=display:flex><span>  selector:
+</span></span><span style=display:flex><span>    run: my-nginx
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get nodes -o yaml | grep ExternalIP -C <span style=color:#666>1</span>
+</span></span><span style=display:flex><span>    - address: 104.197.41.11
+</span></span><span style=display:flex><span>      type: ExternalIP
+</span></span><span style=display:flex><span>    allocatable:
+</span></span><span style=display:flex><span>--
+</span></span><span style=display:flex><span>    - address: 23.251.152.56
+</span></span><span style=display:flex><span>      type: ExternalIP
+</span></span><span style=display:flex><span>    allocatable:
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>$ curl https://&lt;EXTERNAL-IP&gt;:&lt;NODE-PORT&gt; -k
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span>&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
+</span></span></code></pre></div><p>では、クラウドロードバランサーを使うために、Serviceを再作成してみましょう。
+<code>my-nginx</code>の<code>Type</code>を<code>NodePort</code>から<code>LoadBalancer</code>に変更してください:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl edit svc my-nginx
+</span></span><span style=display:flex><span>kubectl get svc my-nginx
+</span></span></code></pre></div><pre tabindex=0><code>NAME       TYPE           CLUSTER-IP     EXTERNAL-IP        PORT(S)               AGE
+my-nginx   LoadBalancer   10.0.162.149     xx.xxx.xxx.xxx     8080:30163/TCP        21s
+</code></pre><pre tabindex=0><code>curl https://&lt;EXTERNAL-IP&gt; -k
+...
+&lt;title&gt;Welcome to nginx!&lt;/title&gt;
+</code></pre><p><code>EXTERNAL-IP</code>列のIPアドレスが、パブリックインターネットで利用可能なものになっています。
+<code>CLUSTER-IP</code>はクラスター/プライベートクラウドネットワーク内でのみ利用可能なものです。</p><p>AWSにおいては、<code>LoadBalancer</code>タイプは、IPアドレスではなく(長い)ホスト名を使うELBを作成することに注意してください。
+これは標準の<code>kubectl get svc</code>の出力に合わせるには長すぎ、実際それを見るには<code>kubectl describe service my-nginx</code>を使う必要があります。
+これは以下のような見た目になります:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl describe service my-nginx
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span>LoadBalancer Ingress:   a320587ffd19711e5a37606cf4a74574-1142138393.us-east-1.elb.amazonaws.com
+</span></span><span style=display:flex><span>...
+</span></span></code></pre></div><h2 id=次の項目>次の項目</h2><ul><li><a href=/ja/docs/tasks/access-application-cluster/service-access-application-cluster/>Serviceを利用したクラスター内のアプリケーションへのアクセス</a>を学びます。</li><li><a href=/ja/docs/tasks/access-application-cluster/connecting-frontend-backend/>Serviceを使用してフロントエンドをバックエンドに接続する</a>方法を学びます。</li><li><a href=/docs/tasks/access-application-cluster/create-external-load-balancer/>Creating an External Load Balancer</a>を学びます。</li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-5642e8c51749e4fe2e6a2ccc207f1fab>2 - 送信元IPを使用する</h1><p>Kubernetesクラスター内で実行されているアプリケーションは、Serviceという抽象化を経由して、他のアプリケーションや外の世界との発見や通信を行います。このドキュメントでは、異なる種類のServiceに送られたパケットの送信元IPに何が起こるのか、そして必要に応じてこの振る舞いを切り替える方法について説明します。</p><h2 id=始める前に>始める前に</h2><h3 id=用語>用語</h3><p>このドキュメントでは、以下の用語を使用します。</p><dl><dt><a href=https://ja.wikipedia.org/wiki/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%A2%E3%83%89%E3%83%AC%E3%82%B9%E5%A4%89%E6%8F%9B>NAT</a></dt><dd>ネットワークアドレス変換(network address translation)</dd><dt><a href=https://en.wikipedia.org/wiki/Network_address_translation#SNAT>送信元NAT</a></dt><dd>パケットの送信元のIPを置換します。このページでは、通常ノードのIPアドレスを置換することを意味します。</dd><dt><a href=https://en.wikipedia.org/wiki/Network_address_translation#DNAT>送信先NAT</a></dt><dd>パケットの送信先のIPを置換します。このページでは、通常<a class=glossary-tooltip title='一番小さく一番シンプルな Kubernetes のオブジェクト。Pod とはクラスターで動作しているいくつかのコンテナのまとまりです。' data-toggle=tooltip data-placement=top href=/ja/docs/concepts/workloads/pods/ target=_blank aria-label=Pod>Pod</a>のIPアドレスを置換することを意味します。</dd><dt><a href=/ja/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies>VIP</a></dt><dd>Kubernetes内のすべての<a class=glossary-tooltip title=Podの集合で実行されているアプリケーションをネットワークサービスとして公開する方法。 data-toggle=tooltip data-placement=top href=/ja/docs/concepts/services-networking/service/ target=_blank aria-label=Service>Service</a>などに割り当てられる仮想IPアドレス(virtual IP address)です。</dd><dt><a href=/ja/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies>kube-proxy</a></dt><dd>すべてのノード上でServiceのVIPを管理するネットワークデーモンです。</dd></dl><h3 id=前提条件>前提条件</h3><p>Kubernetesクラスターが必要、かつそのクラスターと通信するためにkubectlコマンドラインツールが設定されている必要があります。
+このチュートリアルは、コントロールプレーンのホストとして動作していない少なくとも2つのノードを持つクラスターで実行することをおすすめします。
+まだクラスターがない場合、<a href=https://minikube.sigs.k8s.io/docs/tutorials/multi_node/>minikube</a>を使って作成するか、
+以下のいずれかのKubernetesプレイグラウンドも使用できます:</p><ul><li><a href=https://killercoda.com/playgrounds/scenario/kubernetes>Killercoda</a></li><li><a href=https://labs.play-with-k8s.com/>Play with Kubernetes</a></li></ul><p>以下の例では、HTTPヘッダー経由で受け取ったリクエストの送信元IPをエコーバックする、小さなnginxウェブサーバーを使用します。次のコマンドでウェブサーバーを作成できます。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl create deployment source-ip-app --image<span style=color:#666>=</span>registry.k8s.io/echoserver:1.4
+</span></span></code></pre></div><p>出力は次のようになります。</p><pre tabindex=0><code>deployment.apps/source-ip-app created
+</code></pre><h2 id=目標>目標</h2><ul><li>単純なアプリケーションを様々な種類のService経由で公開する</li><li>それぞれの種類のServiceがどのように送信元IPのNATを扱うかを理解する</li><li>送信元IPを保持することに関わるトレードオフを理解する</li></ul><h2 id=type-clusterip-を使用したserviceでの送信元ip><code>Type=ClusterIP</code>を使用したServiceでの送信元IP</h2><p>kube-proxyが<a href=/ja/docs/concepts/services-networking/service/#proxy-mode-iptables>iptablesモード</a>(デフォルト)で実行されている場合、クラスター内部からClusterIPに送られたパケットに送信元のNATが行われることは決してありません。kube-proxyが実行されているノード上で<code>http://localhost:10249/proxyMode</code>にリクエストを送って、kube-proxyのモードを問い合わせてみましょう。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-console data-lang=console><span style=display:flex><span><span style=color:#888>kubectl get nodes
+</span></span></span></code></pre></div><p>出力は次のようになります。</p><pre tabindex=0><code>NAME                           STATUS     ROLES    AGE     VERSION
+kubernetes-node-6jst   Ready      &lt;none&gt;   2h      v1.13.0
+kubernetes-node-cx31   Ready      &lt;none&gt;   2h      v1.13.0
+kubernetes-node-jj1t   Ready      &lt;none&gt;   2h      v1.13.0
+</code></pre><p>これらのノードの1つでproxyモードを取得します(kube-proxyはポート10249をlistenしています)。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># このコマンドは、問い合わせを行いたいノード上のシェルで実行してください。</span>
+</span></span><span style=display:flex><span>curl http://localhost:10249/proxyMode
+</span></span></code></pre></div><p>出力は次のようになります。</p><pre tabindex=0><code>iptables
+</code></pre><p>source IPアプリのServiceを作成することで、送信元IPが保持されているかテストできます。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl expose deployment source-ip-app --name<span style=color:#666>=</span>clusterip --port<span style=color:#666>=</span><span style=color:#666>80</span> --target-port<span style=color:#666>=</span><span style=color:#666>8080</span>
+</span></span></code></pre></div><p>出力は次のようになります。</p><pre tabindex=0><code>service/clusterip exposed
+</code></pre><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get svc clusterip
+</span></span></code></pre></div><p>出力は次のようになります。</p><pre tabindex=0><code>NAME         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
+clusterip    ClusterIP   10.0.170.92   &lt;none&gt;        80/TCP    51s
+</code></pre><p>そして、同じクラスター上のPodから<code>ClusterIP</code>にアクセスします。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl run busybox -it --image<span style=color:#666>=</span>busybox --restart<span style=color:#666>=</span>Never --rm
+</span></span></code></pre></div><p>出力は次のようになります。</p><pre tabindex=0><code>Waiting for pod default/busybox to be running, status is Pending, pod ready: false
+If you don&#39;t see a command prompt, try pressing enter.
+</code></pre><p>これで、Podの内部でコマンドが実行できます。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># このコマンドは、&#34;kubectl run&#34; のターミナルの内部で実行してください</span>
+</span></span><span style=display:flex><span>ip addr
+</span></span></code></pre></div><pre tabindex=0><code>1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+3: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1460 qdisc noqueue
+    link/ether 0a:58:0a:f4:03:08 brd ff:ff:ff:ff:ff:ff
+    inet 10.244.3.8/24 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::188a:84ff:feb0:26a5/64 scope link
+       valid_lft forever preferred_lft forever
+</code></pre><p>そして、<code>wget</code>を使用してローカルのウェブサーバーに問い合わせます。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># &#34;10.0.170.92&#34; の部分をService名が&#34;clusterip&#34;のIPv4アドレスに置き換えてください</span>
+</span></span><span style=display:flex><span>wget -qO - 10.0.170.92
+</span></span></code></pre></div><pre tabindex=0><code>CLIENT VALUES:
+client_address=10.244.3.8
+command=GET
+...
+</code></pre><p><code>client_address</code>は常にクライアントのPodのIPアドレスになります。これは、クライアントのPodとサーバーのPodが同じノード内にあっても異なるノードにあっても変わりません。</p><h2 id=type-nodeport-を使用したserviceでの送信元ip><code>Type=NodePort</code>を使用したServiceでの送信元IP</h2><p><a href=/ja/docs/concepts/services-networking/service/#nodeport><code>Type=NodePort</code></a>を使用したServiceに送られたパケットは、デフォルトで送信元のNATが行われます。<code>NodePort</code> Serviceを作ることでテストできます。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl expose deployment source-ip-app --name<span style=color:#666>=</span>nodeport --port<span style=color:#666>=</span><span style=color:#666>80</span> --target-port<span style=color:#666>=</span><span style=color:#666>8080</span> --type<span style=color:#666>=</span>NodePort
+</span></span></code></pre></div><p>出力は次のようになります。</p><pre tabindex=0><code>service/nodeport exposed
+</code></pre><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#b8860b>NODEPORT</span><span style=color:#666>=</span><span style=color:#a2f;font-weight:700>$(</span>kubectl get -o <span style=color:#b8860b>jsonpath</span><span style=color:#666>=</span><span style=color:#b44>&#34;{.spec.ports[0].nodePort}&#34;</span> services nodeport<span style=color:#a2f;font-weight:700>)</span>
+</span></span><span style=display:flex><span><span style=color:#b8860b>NODES</span><span style=color:#666>=</span><span style=color:#a2f;font-weight:700>$(</span>kubectl get nodes -o <span style=color:#b8860b>jsonpath</span><span style=color:#666>=</span><span style=color:#b44>&#39;{ $.items[*].status.addresses[?(@.type==&#34;InternalIP&#34;)].address }&#39;</span><span style=color:#a2f;font-weight:700>)</span>
+</span></span></code></pre></div><p>クラウドプロバイダーで実行する場合、上に示した<code>nodes:nodeport</code>に対してファイアウォールのルールを作成する必要があるかもしれません。それでは、上で割り当てたノードポート経由で、クラスターの外部からServiceにアクセスしてみましょう。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#a2f;font-weight:700>for</span> node in <span style=color:#b8860b>$NODES</span>; <span style=color:#a2f;font-weight:700>do</span> curl -s <span style=color:#b8860b>$node</span>:<span style=color:#b8860b>$NODEPORT</span> | grep -i client_address; <span style=color:#a2f;font-weight:700>done</span>
+</span></span></code></pre></div><p>出力は次のようになります。</p><pre tabindex=0><code>client_address=10.180.1.1
+client_address=10.240.0.5
+client_address=10.240.0.3
+</code></pre><p>これらは正しいクライアントIPではなく、クラスターのinternal IPであることがわかります。ここでは、次のようなことが起こっています。</p><ul><li>クライアントがパケットを<code>node2:nodePort</code>に送信する</li><li><code>node2</code>は、パケット内の送信元IPアドレスを自ノードのIPアドレスに置換する(SNAT)</li><li><code>node2</code>は、パケット内の送信先IPアドレスをPodのIPアドレスに置換する</li><li>パケットはnode1にルーティングされ、endpointにルーティングされる</li><li>Podからの応答がnode2にルーティングされて戻ってくる</li><li>Podからの応答がクライアントに送り返される</li></ul><p>図で表すと次のようになります。</p><figure><div class=mermaid>graph LR;
+client(client)-->node2[Node 2];
+node2-->client;
+node2-. SNAT .->node1[Node 1];
+node1-. SNAT .->node2;
+node1-->endpoint(Endpoint);
+classDef plain fill:#ddd,stroke:#fff,stroke-width:4px,color:#000;
+classDef k8s fill:#326ce5,stroke:#fff,stroke-width:4px,color:#fff;
+class node1,node2,endpoint k8s;
+class client plain;</div></figure><noscript><div class="alert alert-secondary callout" role=alert><em class=javascript-required>JavaScript must be <a href=https://www.enable-javascript.com/>enabled</a> to view this content</em></div></noscript><p>クライアントのIPが失われることを回避するために、Kubernetesには<a href=/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip>クライアントの送信元IPを保持する</a>機能があります。<code>service.spec.externalTrafficPolicy</code>の値を<code>Local</code>に設定すると、kube-proxyはローカルに存在するエンドポイントへのプロキシリクエストだけをプロキシし、他のノードへはトラフィックを転送しなくなります。このアプローチでは、オリジナルの送信元IPアドレスが保持されます。ローカルにエンドポイントが存在しない場合には、そのノードに送信されたパケットは損失します。そのため、エンドポイントに到達するパケットに適用する可能性のあるパケット処理ルールでは、送信元IPが正しいことを信頼できます。</p><p>次のようにして<code>service.spec.externalTrafficPolicy</code>フィールドを設定します。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl patch svc nodeport -p <span style=color:#b44>&#39;{&#34;spec&#34;:{&#34;externalTrafficPolicy&#34;:&#34;Local&#34;}}&#39;</span>
+</span></span></code></pre></div><p>出力は次のようになります。</p><pre tabindex=0><code>service/nodeport patched
+</code></pre><p>そして、再度テストしてみます。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#a2f;font-weight:700>for</span> node in <span style=color:#b8860b>$NODES</span>; <span style=color:#a2f;font-weight:700>do</span> curl --connect-timeout <span style=color:#666>1</span> -s <span style=color:#b8860b>$node</span>:<span style=color:#b8860b>$NODEPORT</span> | grep -i client_address; <span style=color:#a2f;font-weight:700>done</span>
+</span></span></code></pre></div><p>出力は次のようになります。</p><pre tabindex=0><code>client_address=198.51.100.79
+</code></pre><p>今度は、<em>正しい</em>クライアントIPが含まれる応答が1つだけ得られました。これは、エンドポイントのPodが実行されているノードから来たものです。</p><p>ここでは、次のようなことが起こっています。</p><ul><li>クライアントがパケットをエンドポイントが存在しない<code>node2:nodePort</code>に送信する</li><li>パケットが損失する</li><li>クライアントがパケットをエンドポイントが<em>存在する</em><code>node1:nodePort</code>に送信する</li><li>node1は、正しい送信元IPを持つパケットをエンドポイントにルーティングする</li></ul><p>図で表すと次のようになります。</p><figure><div class=mermaid>graph TD;
+client --> node1[Node 1];
+client(client) --x node2[Node 2];
+node1 --> endpoint(endpoint);
+endpoint --> node1;
+classDef plain fill:#ddd,stroke:#fff,stroke-width:4px,color:#000;
+classDef k8s fill:#326ce5,stroke:#fff,stroke-width:4px,color:#fff;
+class node1,node2,endpoint k8s;
+class client plain;</div></figure><noscript><div class="alert alert-secondary callout" role=alert><em class=javascript-required>JavaScript must be <a href=https://www.enable-javascript.com/>enabled</a> to view this content</em></div></noscript><h2 id=type-loadbalancer-を使用したserviceでの送信元ip><code>Type=LoadBalancer</code>を使用したServiceでの送信元IP</h2><p><a href=/ja/docs/concepts/services-networking/service/#loadbalancer><code>Type=LoadBalancer</code></a>を使用したServiceに送られたパケットは、デフォルトで送信元のNATが行われます。<code>Ready</code>状態にあるすべてのスケジュール可能なKubernetesのNodeは、ロードバランサーからのトラフィックを受付可能であるためです。そのため、エンドポイントが存在しないノードにパケットが到達した場合、システムはエンドポイントが<em>存在する</em>ノードにパケットをプロシキーします。このとき、(前のセクションで説明したように)パケットの送信元IPがノードのIPに置換されます。</p><p>ロードバランサー経由でsource-ip-appを公開することで、これをテストできます。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl expose deployment source-ip-app --name<span style=color:#666>=</span>loadbalancer --port<span style=color:#666>=</span><span style=color:#666>80</span> --target-port<span style=color:#666>=</span><span style=color:#666>8080</span> --type<span style=color:#666>=</span>LoadBalancer
+</span></span></code></pre></div><p>出力は次のようになります。</p><pre tabindex=0><code>service/loadbalancer exposed
+</code></pre><p>ServiceのIPアドレスを表示します。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-console data-lang=console><span style=display:flex><span><span style=color:#888>kubectl get svc loadbalancer
+</span></span></span></code></pre></div><p>出力は次のようになります。</p><pre tabindex=0><code>NAME           TYPE           CLUSTER-IP    EXTERNAL-IP       PORT(S)   AGE
+loadbalancer   LoadBalancer   10.0.65.118   203.0.113.140     80/TCP    5m
+</code></pre><p>次に、Serviceのexternal-ipにリクエストを送信します。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>curl 203.0.113.140
+</span></span></code></pre></div><p>出力は次のようになります。</p><pre tabindex=0><code>CLIENT VALUES:
+client_address=10.240.0.5
+...
+</code></pre><p>しかし、Google Kubernetes EngineやGCE上で実行している場合、同じ<code>service.spec.externalTrafficPolicy</code>フィールドを<code>Local</code>に設定すると、ロードバランサーからのトラフィックを受け付け可能なノードのリストから、Serviceエンドポイントが<em>存在しない</em>ノードが強制的に削除されます。この動作は、ヘルスチェックを意図的に失敗させることによって実現されています。</p><p>図で表すと次のようになります。</p><p><img src=/images/docs/sourceip-externaltrafficpolicy.svg alt="Source IP with externalTrafficPolicy"></p><p>アノテーションを設定することで動作をテストできます。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl patch svc loadbalancer -p <span style=color:#b44>&#39;{&#34;spec&#34;:{&#34;externalTrafficPolicy&#34;:&#34;Local&#34;}}&#39;</span>
+</span></span></code></pre></div><p>Kubernetesにより割り当てられた<code>service.spec.healthCheckNodePort</code>フィールドをすぐに確認します。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get svc loadbalancer -o yaml | grep -i healthCheckNodePort
+</span></span></code></pre></div><p>出力は次のようになります。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>healthCheckNodePort</span>:<span style=color:#bbb> </span><span style=color:#666>32122</span><span style=color:#bbb>
+</span></span></span></code></pre></div><p><code>service.spec.healthCheckNodePort</code>フィールドは、<code>/healthz</code>でhealth checkを配信しているすべてのノード上のポートを指しています。次のコマンドでテストできます。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get pod -o wide -l <span style=color:#b8860b>run</span><span style=color:#666>=</span>source-ip-app
+</span></span></code></pre></div><p>出力は次のようになります。</p><pre tabindex=0><code>NAME                            READY     STATUS    RESTARTS   AGE       IP             NODE
+source-ip-app-826191075-qehz4   1/1       Running   0          20h       10.180.1.136   kubernetes-node-6jst
+</code></pre><p><code>curl</code>を使用して、さまざまなノード上の<code>/healthz</code>エンドポイントからデータを取得します。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># このコマンドは選んだノードのローカル上で実行してください</span>
+</span></span><span style=display:flex><span>curl localhost:32122/healthz
+</span></span></code></pre></div><pre tabindex=0><code>1 Service Endpoints found
+</code></pre><p>ノードが異なると、得られる結果も異なる可能性があります。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># このコマンドは、選んだノード上でローカルに実行してください</span>
+</span></span><span style=display:flex><span>curl localhost:32122/healthz
+</span></span></code></pre></div><pre tabindex=0><code>No Service Endpoints Found
+</code></pre><p><a class=glossary-tooltip title=コンテナのライフサイクルを定義、展開、管理するためのAPIとインターフェースを公開するコンテナオーケストレーションレイヤーです。 data-toggle=tooltip data-placement=top href='/ja/docs/reference/glossary/?all=true#term-control-plane' target=_blank aria-label=コントロールプレーン>コントロールプレーン</a>上で実行中のコントローラーは、クラウドのロードバランサーを割り当てる責任があります。同じコントローラーは、各ノード上のポートやパスを指すHTTPのヘルスチェックも割り当てます。エンドポイントが存在しない2つのノードがヘルスチェックに失敗するまで約10秒待った後、<code>curl</code>を使用してロードバランサーのIPv4アドレスに問い合わせます。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>curl 203.0.113.140
+</span></span></code></pre></div><p>出力は次のようになります。</p><pre tabindex=0><code>CLIENT VALUES:
+client_address=198.51.100.79
+...
+</code></pre><h2 id=クロスプラットフォームのサポート>クロスプラットフォームのサポート</h2><p><code>Type=LoadBalancer</code>を使用したServiceで送信元IPを保持する機能を提供しているのは一部のクラウドプロバイダだけです。実行しているクラウドプロバイダによっては、以下のように異なる方法でリクエストを満たす場合があります。</p><ol><li><p>クライアントとのコネクションをプロキシが終端し、ノードやエンドポイントとの接続には新しいコネクションが開かれる。このような場合、送信元IPは常にクラウドのロードバランサーのものになり、クライアントのIPにはなりません。</p></li><li><p>クライアントからロードバランサーのVIPに送信されたリクエストが、中間のプロキシではなく、クライアントの送信元IPとともにノードまで到達するようなパケット転送が使用される。</p></li></ol><p>1つめのカテゴリーのロードバランサーの場合、真のクライアントIPと通信するために、 HTTPの<a href=https://tools.ietf.org/html/rfc7239#section-5.2>Forwarded</a>ヘッダーや<a href=https://ja.wikipedia.org/wiki/X-Forwarded-For>X-FORWARDED-FOR</a>ヘッダー、<a href=https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt>proxy protocol</a>などの、ロードバランサーとバックエンドの間で合意されたプロトコルを使用する必要があります。2つ目のカテゴリーのロードバランサーの場合、Serviceの<code>service.spec.healthCheckNodePort</code>フィールドに保存されたポートを指すHTTPのヘルスチェックを作成することで、上記の機能を活用できます。</p><h2 id=クリーンアップ>クリーンアップ</h2><p>Serviceを削除します。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl delete svc -l <span style=color:#b8860b>app</span><span style=color:#666>=</span>source-ip-app
+</span></span></code></pre></div><p>Deployment、ReplicaSet、Podを削除します。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl delete deployment source-ip-app
+</span></span></code></pre></div><h2 id=次の項目>次の項目</h2><ul><li><a href=/ja/docs/concepts/services-networking/connect-applications-service/>Service経由でアプリケーションに接続する</a>方法についてさらに学ぶ。</li><li><a href=/docs/tasks/access-application-cluster/create-external-load-balancer/>External Load Balancerを作成する</a>方法について学ぶ。</li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-3cecc68ef365a9d2ee0b4860dc74cacc>3 - Podとそのエンドポイントの終了動作を探る</h1><p><a href=/docs/tutorials/services/connect-applications-service/>アプリケーションをServiceに接続する</a>で概略を示したステップに従ってアプリケーションをServiceに接続すると、ネットワーク上で公開され、継続的に実行されて、複製されたアプリケーションが得られます。
+このチュートリアルでは、Podを終了する流れを見て、gracefulな(猶予のある)接続ドレインを実装する手法を模索するための手助けをします。</p><h2 id=podの終了手続きとそのエンドポイント>Podの終了手続きとそのエンドポイント</h2><p>アップグレードやスケールダウンのために、Podを終了しなければならない場面はままあります。
+アプリケーションの可用性を高めるために、適切なアクティブ接続ドレインを実装することは重要でしょう。</p><p>このチュートリアルでは概念のデモンストレーションのために、シンプルなnginx Webサーバーを例として、対応するエンドポイントの状態に関連したPodの終了および削除の流れを説明します。</p><h2 id=エンドポイント終了の流れの例>エンドポイント終了の流れの例</h2><p>以下は、<a href=/ja/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination>Podの終了</a>ドキュメントに記載されている流れの例です。</p><p>1つの<code>nginx</code>レプリカを含むDeployment(純粋にデモンストレーション目的です)とServiceがあるとします:</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.29/content/ja/examples/service/pod-with-graceful-termination.yaml download=service/pod-with-graceful-termination.yaml><code>service/pod-with-graceful-termination.yaml</code>
+</a><img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick='copyCode("service-pod-with-graceful-termination-yaml")' title="Copy service/pod-with-graceful-termination.yaml to clipboard"></img></div><div class=includecode id=service-pod-with-graceful-termination-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>apps/v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Deployment<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>nginx-deployment<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>replicas</span>:<span style=color:#bbb> </span><span style=color:#666>1</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>matchLabels</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>template</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>terminationGracePeriodSeconds</span>:<span style=color:#bbb> </span><span style=color:#666>120</span><span style=color:#bbb> </span><span style=color:#080;font-style:italic># 非常に長い猶予期間</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx:latest<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>ports</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>containerPort</span>:<span style=color:#bbb> </span><span style=color:#666>80</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>lifecycle</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>preStop</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>exec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:#080;font-style:italic># 実際の活動終了はterminationGracePeriodSecondsまでかかる可能性がある。</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:#080;font-style:italic># この例においては、少なくともterminationGracePeriodSecondsの間は待機し、</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:#080;font-style:italic># 120秒経過すると、コンテナは強制的に終了される。</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:#080;font-style:italic># この間ずっとnginxはリクエストを処理し続けていることに注意。</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>command</span>:<span style=color:#bbb> </span>[<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>                </span><span style=color:#b44>&#34;/bin/sh&#34;</span>,<span style=color:#bbb> </span><span style=color:#b44>&#34;-c&#34;</span>,<span style=color:#bbb> </span><span style=color:#b44>&#34;sleep 180&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span>]<span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>apps/v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Deployment<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>nginx-deployment<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>replicas</span>:<span style=color:#bbb> </span><span style=color:#666>1</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>matchLabels</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>template</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>terminationGracePeriodSeconds</span>:<span style=color:#bbb> </span><span style=color:#666>120</span><span style=color:#bbb> </span><span style=color:#080;font-style:italic># 非常に長い猶予期間</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx:latest<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>ports</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>containerPort</span>:<span style=color:#bbb> </span><span style=color:#666>80</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>lifecycle</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>preStop</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>exec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:#080;font-style:italic># 実際の活動終了はterminationGracePeriodSecondsまでかかる可能性がある。</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:#080;font-style:italic># この例においては、少なくともterminationGracePeriodSecondsの間は待機し、</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:#080;font-style:italic># 120秒経過すると、コンテナは強制終了される。</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:#080;font-style:italic># この間ずっとnginxはリクエストを処理し続けていることに注意。</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>command</span>:<span style=color:#bbb> </span>[<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>                </span><span style=color:#b44>&#34;/bin/sh&#34;</span>,<span style=color:#bbb> </span><span style=color:#b44>&#34;-c&#34;</span>,<span style=color:#bbb> </span><span style=color:#b44>&#34;sleep 180&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span>]<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:#00f;font-weight:700>---</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Service<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>nginx-service<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>ports</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>protocol</span>:<span style=color:#bbb> </span>TCP<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>port</span>:<span style=color:#bbb> </span><span style=color:#666>80</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>targetPort</span>:<span style=color:#bbb> </span><span style=color:#666>80</span><span style=color:#bbb>
+</span></span></span></code></pre></div><p>PodとServiceが実行中になったら、関連付けられたEndpointSliceの名前を得られます:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get endpointslice
+</span></span></code></pre></div><p>この出力は以下のようなものになります:</p><pre tabindex=0><code class=language-none data-lang=none>NAME                  ADDRESSTYPE   PORTS   ENDPOINTS                 AGE
+nginx-service-6tjbr   IPv4          80      10.12.1.199,10.12.1.201   22m
+</code></pre><p>状態からわかるように、1つのエンドポイントが登録されていることが確認できます:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get endpointslices -o json -l kubernetes.io/service-name<span style=color:#666>=</span>nginx-service
+</span></span></code></pre></div><p>この出力は以下のようなものになります:</p><pre tabindex=0><code class=language-none data-lang=none>{
+    &#34;addressType&#34;: &#34;IPv4&#34;,
+    &#34;apiVersion&#34;: &#34;discovery.k8s.io/v1&#34;,
+    &#34;endpoints&#34;: [
+        {
+            &#34;addresses&#34;: [
+                &#34;10.12.1.201&#34;
+            ],
+            &#34;conditions&#34;: {
+                &#34;ready&#34;: true,
+                &#34;serving&#34;: true,
+                &#34;terminating&#34;: false
+</code></pre><p>では、Podを終了し、そのPodがgracefulな終了期間設定を守って終了されていることを確認してみましょう:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl delete pod nginx-deployment-7768647bf9-b4b9s
+</span></span></code></pre></div><p>全Podについて調べます:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get pods
+</span></span></code></pre></div><p>この出力は以下のようなものになります:</p><pre tabindex=0><code class=language-none data-lang=none>NAME                                READY   STATUS        RESTARTS      AGE
+nginx-deployment-7768647bf9-b4b9s   1/1     Terminating   0             4m1s
+nginx-deployment-7768647bf9-rkxlw   1/1     Running       0             8s
+</code></pre><p>新しいPodがスケジュールされたことを見てとれます。</p><p>新しいPodのために新しいエンドポイントが作成される間、古いエンドポイントは終了中の状態のまま残っています:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get endpointslice -o json nginx-service-6tjbr
+</span></span></code></pre></div><p>この出力は以下のようなものになります:</p><pre tabindex=0><code class=language-none data-lang=none>{
+    &#34;addressType&#34;: &#34;IPv4&#34;,
+    &#34;apiVersion&#34;: &#34;discovery.k8s.io/v1&#34;,
+    &#34;endpoints&#34;: [
+        {
+            &#34;addresses&#34;: [
+                &#34;10.12.1.201&#34;
+            ],
+            &#34;conditions&#34;: {
+                &#34;ready&#34;: false,
+                &#34;serving&#34;: true,
+                &#34;terminating&#34;: true
+            },
+            &#34;nodeName&#34;: &#34;gke-main-default-pool-dca1511c-d17b&#34;,
+            &#34;targetRef&#34;: {
+                &#34;kind&#34;: &#34;Pod&#34;,
+                &#34;name&#34;: &#34;nginx-deployment-7768647bf9-b4b9s&#34;,
+                &#34;namespace&#34;: &#34;default&#34;,
+                &#34;uid&#34;: &#34;66fa831c-7eb2-407f-bd2c-f96dfe841478&#34;
+            },
+            &#34;zone&#34;: &#34;us-central1-c&#34;
+        },
+        {
+            &#34;addresses&#34;: [
+                &#34;10.12.1.202&#34;
+            ],
+            &#34;conditions&#34;: {
+                &#34;ready&#34;: true,
+                &#34;serving&#34;: true,
+                &#34;terminating&#34;: false
+            },
+            &#34;nodeName&#34;: &#34;gke-main-default-pool-dca1511c-d17b&#34;,
+            &#34;targetRef&#34;: {
+                &#34;kind&#34;: &#34;Pod&#34;,
+                &#34;name&#34;: &#34;nginx-deployment-7768647bf9-rkxlw&#34;,
+                &#34;namespace&#34;: &#34;default&#34;,
+                &#34;uid&#34;: &#34;722b1cbe-dcd7-4ed4-8928-4a4d0e2bbe35&#34;
+            },
+            &#34;zone&#34;: &#34;us-central1-c&#34;
+</code></pre><p>これを使うと、終了中のアプリケーションがその状態について、接続ドレイン機能の実装目的でクライアント(ロードバランサーなど)と通信する、ということが可能です。
+これらのクライアントではエンドポイントの終了を検出し、そのための特別なロジックを実装できます。</p><p>Kubernetesでは、終了中のエンドポイントの<code>ready</code>状態は全て<code>false</code>にセットされます。
+これは後方互換性のために必要な措置で、既存のロードバランサーは通常のトラフィックにはそれを使用しません。
+Podの終了時にトラフィックのドレインが必要な場合、実際に準備できているかは<code>serving</code>状態として調べられます。</p><p>Podが削除される時には、古いエンドポイントも削除されます。</p><h2 id=次の項目>次の項目</h2><ul><li><a href=/docs/tutorials/services/connect-applications-service/>アプリケーションをServiceに接続する</a>方法を学びます。</li><li><a href=/ja/docs/tasks/access-application-cluster/service-access-application-cluster/>Serviceを利用したクラスター内のアプリケーションへのアクセス</a>を学びます。</li><li><a href=/ja/docs/tasks/access-application-cluster/connecting-frontend-backend/>Serviceを使用してフロントエンドをバックエンドに接続する</a>を学びます。</li><li><a href=/docs/tasks/access-application-cluster/create-external-load-balancer/>外部ロードバランサーの作成</a>を学びます。</li></ul></div></main></div></div><footer class=d-print-none><div class=footer__links><nav><a class=text-white href=/ja/docs/home/>ドキュメント</a>
+<a class=text-white href=/ja/blog/>ブログ</a>
+<a class=text-white href=/ja/training/>トレーニング</a>
+<a class=text-white href=/ja/partners/>パートナー</a>
+<a class=text-white href=/ja/community/>コミュニティ</a>
+<a class=text-white href=/ja/case-studies/>ケーススタディ</a></nav></div><div class=container-fluid><div class=row><div class="col-6 col-sm-2 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="User mailing list" aria-label="User mailing list"><a class=text-white target=_blank href=https://discuss.kubernetes.io><i class="fa fa-envelope"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=X(Twitter) aria-label=X(Twitter)><a class=text-white target=_blank href=https://twitter.com/kubernetesio><i class="fab fa-x-twitter"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Calendar aria-label=Calendar><a class=text-white target=_blank href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io"><i class="fas fa-calendar-alt"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Youtube aria-label=Youtube><a class=text-white target=_blank href=https://youtube.com/kubernetescommunity><i class="fab fa-youtube"></i></a></li></ul></div><div class="col-6 col-sm-2 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank href=https://github.com/kubernetes/kubernetes><i class="fab fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Slack aria-label=Slack><a class=text-white target=_blank href=https://slack.k8s.io><i class="fab fa-slack"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Contribute aria-label=Contribute><a class=text-white target=_blank href=https://git.k8s.io/community/contributors/guide><i class="fas fa-edit"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="Stack Overflow" aria-label="Stack Overflow"><a class=text-white target=_blank href=https://stackoverflow.com/questions/tagged/kubernetes><i class="fab fa-stack-overflow"></i></a></li></ul></div><div class="col-12 col-sm-8 text-center order-sm-2"><small class=text-white>&copy; 2026 The Kubernetes Authors | Documentation Distributed under <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a></small><br><small class=text-white>Copyright &copy; 2026 The Linux Foundation &reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href=https://www.linuxfoundation.org/trademark-usage class=light-text>Trademark Usage page</a></small><br><small class=text-white><a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></small></div></div></div></footer></div><script src=/js/jquery-3.6.0.min.js integrity=sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK crossorigin=anonymous></script><script src=/js/popper-1.16.1.min.js intregrity=sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN crossorigin=anonymous></script><script src=/js/bootstrap-4.6.1.min.js integrity=sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2 crossorigin=anonymous></script><script src=/js/script.js></script><script src=/js/main.min.f675c5c4c54b6b5388e8b068c737501040fb82c5372a14c00c002fe79b2e53fb.js integrity="sha256-9nXFxMVLa1OI6LBoxzdQEED7gsU3KhTADAAv55suU/s=" crossorigin=anonymous></script><script>let splitInstance=null;function enableSplitter(e){e.matches?splitInstance||(splitInstance=Split(["#sidebarnav","#maindoc"],{sizes:[20,80],minSize:100})):splitInstance&&(splitInstance.destroy(),splitInstance=null)}const screenWidthMediaQuery=window.matchMedia("(min-width: 768px)"),eleNav=document.getElementById("sidebarnav");eleNav!==null&&(enableSplitter(screenWidthMediaQuery),screenWidthMediaQuery.addListener(enableSplitter))</script></body></html>

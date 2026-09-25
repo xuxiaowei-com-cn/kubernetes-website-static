@@ -1,0 +1,817 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kubernetes Blog</title><link>https://kubernetes.xuxiaowei.com.cn/ja/</link><description>The Kubernetes blog is used by the project to communicate new features, community reports, and any news that might be relevant to the Kubernetes community.</description><generator>Hugo -- gohugo.io</generator><language>ja</language><image><url>https://raw.githubusercontent.com/kubernetes/kubernetes/master/logo/logo.png</url><title>The Kubernetes project logo</title><link>https://kubernetes.xuxiaowei.com.cn/ja/</link></image><atom:link href="https://kubernetes.xuxiaowei.com.cn/ja/feed.xml" rel="self" type="application/rss+xml"/><item><title>Kubernetesブッククラブを覗く</title><link>https://kubernetes.xuxiaowei.com.cn/ja/blog/2024/02/22/k8s-book-club/</link><pubDate>Thu, 22 Feb 2024 00:00:00 +0000</pubDate><guid>https://kubernetes.xuxiaowei.com.cn/ja/blog/2024/02/22/k8s-book-club/</guid><description>
+&lt;p>&lt;strong>著者&lt;/strong>: Frederico Muñoz (SAS Institute)&lt;/p>
+&lt;p>Kubernetesとそれを取り巻く技術のエコシステム全体を学ぶことは、課題がないわけではありません。
+このインタビューでは、&lt;a href="https://www.linkedin.com/in/csantanapr/">AWSのCarlos Santana&lt;/a>さんに、コミュニティベースの学習体験を利用するために、彼がどのようにして&lt;a href="https://community.cncf.io/kubernetes-virtual-book-club/">Kubernetesブッククラブ&lt;/a>を作ったのか、その会がどのような活動をするのか、そしてどのようにして参加するのかについて伺います。&lt;/p>
+&lt;p>&lt;img src="csantana_k8s_book_club.jpg" alt="KubeCon NA 2023で話すCarlos Santanaさん">&lt;/p>
+&lt;p>&lt;strong>Frederico Muñoz (FSM)&lt;/strong>: こんにちはCarlosさん、時間をとってくれてありがとう。
+まずはじめに、ご自身のことを少し教えていただけますか？&lt;/p>
+&lt;p>&lt;strong>Carlos Santana (CS)&lt;/strong>: もちろんです。
+6年前に本番環境でKubernetesをデプロイした経験が、&lt;a href="https://knative.dev/">Knative&lt;/a>に参加するきっかけとなり、その後リリースチームを通じてKubernetesに貢献しました。
+アップストリームのKubernetesでの作業は、私がオープンソースで得た最高の経験のひとつです。
+過去2年間、AWSのシニア・スペシャリスト・ソリューション・アーキテクトとしての役割で、私は大企業がKubernetes上に内部開発者プラットフォーム(IDP)を構築することを支援してきました。
+今後、私のオープンソースへの貢献は、&lt;a href="https://github.com/argoproj">Argo&lt;/a>や&lt;a href="https://www.crossplane.io/">Crossplane&lt;/a>、&lt;a href="https://www.cncf.io/projects/backstage/">Backstage&lt;/a>のようなCNCFのプロジェクトや&lt;a href="https://cnoe.io/">CNOE&lt;/a>を対象にしています。&lt;/p>
+&lt;h2 id="ブッククラブの創設">ブッククラブの創設&lt;/h2>
+&lt;p>&lt;strong>FSM&lt;/strong>: それであなたがKubernetesに辿り着いたわけですが、その時点でブッククラブを始めた動機は何だったのでしょうか？&lt;/p>
+&lt;p>&lt;strong>CS&lt;/strong>: Kubernetesブッククラブのアイデアは、&lt;a href="https://github.com/vmware-archive/tgik">TGIK&lt;/a>のライブ配信での何気ない提案から生まれました。
+私にとって、それは単に本を読むということ以上に、学習コミュニティを作るということでした。
+このプラットフォームは知識の源であるだけでなく、特にパンデミックの困難な時期にはサポートシステムでもありました。
+この取り組みが、メンバーたちの対処と成長に役立っていることを目の当たりにして、喜ばしいと思っています。
+最初の本&lt;a href="https://www.oreilly.com/library/view/production-kubernetes/9781492092292/">Production Kubernetes&lt;/a>は、2021年3月5日に始めて36週間かかりました。
+現在は、1冊の本をカバーするのにそれほど時間はかからず、1週間に1章か2章です。&lt;/p>
+&lt;p>&lt;strong>FSM&lt;/strong>: Kubernetesブッククラブの仕組みについて教えてください。どのように本を選び、どのように読み進めるのですか？&lt;/p>
+&lt;p>&lt;strong>CS&lt;/strong>: 私たちは、グループの関心とニーズに基づいて本を共同で選んでいます。
+この実践的なアプローチは、メンバー、とくに初心者が複雑な概念をより簡単に理解するのに役立ちます。
+毎週2つのシリーズがあり、EMEAのタイムゾーンのものと、私がUSで組織しているものです。
+各オーガナイザーは共同ホストと協力してSlack上で本を選び、各章の議論するために、数週間に渡りホストのラインナップを整えます。&lt;/p>
+&lt;p>&lt;strong>FSM&lt;/strong>: 私の記憶が間違っていなければ、Kubernetesブッククラブは17冊目に突入しています。
+物事を活発に保つための秘密のレシピがあるのですか？&lt;/p>
+&lt;p>&lt;strong>CS&lt;/strong>: ブッククラブを活発で魅力的なものに保つ秘訣は、いくつかの重要な要素にあります。&lt;/p>
+&lt;p>まず、一貫性が重要です。
+休みの日やKubeConのような大きなイベントの時だけミーティングをキャンセルして、定期的なスケジュールを維持するよう努力しています。
+この規則性は、メンバーの参加を維持し、信頼できるコミュニティを築くのに役立っています。&lt;/p>
+&lt;p>次に、セッションを面白く、対話式のものにすることが重要です。
+たとえば、ミートアップ中にポップアップ・クイズを頻繁に導入します。これはメンバーの理解度をテストするだけでなく、楽しみの要素も加えています。
+このアプローチによって内容の関連性が維持され、理論的な概念が実社会のシナリオでどのように適用されるかをメンバーが理解するのに役立ちます。&lt;/p>
+&lt;h2 id="ブッククラブで扱うトピック">ブッククラブで扱うトピック&lt;/h2>
+&lt;p>&lt;strong>FSM&lt;/strong>: 書籍の主なトピックは、Kubernetes、GitOps、セキュリティ、SRE、オブザーバビリティになっています。
+これはとくに人気という観点で、Cloud Native Landscapeの反映でしょうか？&lt;/p>
+&lt;p>&lt;strong>CS&lt;/strong>: 私たちの旅は『Production Kubernetes』から始まり、実用的な本番環境向けのソリューションに焦点を当てる方向性を設定しました。
+それ以来、私たちはCNCF Landscapeのさまざまな側面を掘り下げ、異なるテーマに沿って本を揃えています。
+各テーマは、それがセキュリティであれ、オブザーバビリティであれ、サービスメッシュであれ、コミュニティ内の関連性と需要にもとづいて選択されています。
+たとえば、Kubernetes認定に関する最近のテーマでは、書籍の著者を積極的なホストとして参加させ、彼らの専門知識で議論を充実させました。&lt;/p>
+&lt;p>&lt;strong>FSM&lt;/strong>: プロジェクトに最近変化があったことは知っています。&lt;a href="https://community.cncf.io/">Cloud Native Community Group&lt;/a>としてCNCFに統合されたことです。
+この変更について少しお話いただけますか？&lt;/p>
+&lt;p>&lt;strong>CS&lt;/strong>: CNCFはブッククラブをCloud Native Community Groupとして快く受け入れてくれました。
+これは私たちの運営を合理化し、影響範囲を拡大する重要な進展です。
+この連携はKubernetes Community Days (KCD)のミートアップで使用されているものと同様に、管理機能の強化に役立っています。
+現在では、メンバーシップ、イベントのスケジューリング、メーリングリスト、Webカンファレンスの開催、セッションの記録など、より強固な体制が整っています。&lt;/p>
+&lt;p>&lt;strong>FSM&lt;/strong>: CNCFとの関わりは、この半年間のKubernetesブッククラブの成長やエンゲージメントにどのような影響を与えましたか？&lt;/p>
+&lt;p>&lt;strong>CS&lt;/strong>: 半年前にCNCFコミュニティの一員になって以来、Kubernetesブッククラブでは大きな定量的な変化を目の当たりにしてきました。
+会員数は600人以上に急増し、この間に40以上のイベントを企画・実施することに成功しました。
+さらに期待されるのは、1回のイベントに平均30人が参加するという安定した動員数です。
+この成長とエンゲージメントは、コミュニティにおける影響やKubernetesブッククラブの影響範囲に関して、私たちのCNCF加盟が肯定的な影響である明確な指標です。&lt;/p>
+&lt;h2 id="ブッククラブに参加する">ブッククラブに参加する&lt;/h2>
+&lt;p>&lt;strong>FSM&lt;/strong>: 参加を希望する人は、どうすればいいのでしょうか？&lt;/p>
+&lt;p>&lt;strong>CS&lt;/strong>: 参加するためには3つの段階があります。&lt;/p>
+&lt;ul>
+&lt;li>まず、&lt;a href="https://community.cncf.io/kubernetes-virtual-book-club/">Kubernetesブッククラブコミュニティ&lt;/a>に参加します&lt;/li>
+&lt;li>次に、コミュニティページ上の&lt;a href="https://community.cncf.io/kubernetes-virtual-book-club/">イベント&lt;/a>に出欠連絡をします&lt;/li>
+&lt;li>最後に、CNCFのSlackチャンネル&lt;a href="https://cloud-native.slack.com/archives/C05EYA14P37">#kubernetes-book-club&lt;/a>に参加します&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>FSM&lt;/strong>: 素晴らしい、ありがとうございます！最後に何かコメントをお願いします。&lt;/p>
+&lt;p>&lt;strong>CS&lt;/strong>: Kubernetesブッククラブは、単に本について議論する専門家のグループというだけではなく、それ以上です。
+それは、&lt;a href="https://www.linkedin.com/in/neependra/">Neependra Khare&lt;/a>さん、&lt;a href="https://www.linkedin.com/in/ericsmalling/">Eric Smalling&lt;/a>さん、&lt;a href="https://www.linkedin.com/in/sevikarakulak/">Sevi Karakulak&lt;/a>さん、&lt;a href="https://www.linkedin.com/in/chadmcrowell/">Chad M. Crowell&lt;/a>さん、そして&lt;a href="https://www.linkedin.com/in/walidshaari/">Walid (CNJ) Shaari&lt;/a>さんの主催と企画を手伝ってくれる素晴らしいボランティアであり、活気のあるコミュニティです。
+KubeConで私たちを見て、Kubernetesブッククラブのステッカーをゲットしてください！&lt;/p></description></item><item><title>Kubernetesでコンテナを別ファイルシステムに格納する設定方法</title><link>https://kubernetes.xuxiaowei.com.cn/ja/blog/2024/01/23/kubernetes-separate-image-filesystem/</link><pubDate>Tue, 23 Jan 2024 00:00:00 +0000</pubDate><guid>https://kubernetes.xuxiaowei.com.cn/ja/blog/2024/01/23/kubernetes-separate-image-filesystem/</guid><description>
+&lt;p>&lt;strong>著者:&lt;/strong> Kevin Hannon (Red Hat)&lt;/p>
+&lt;p>&lt;strong>翻訳者:&lt;/strong> Taisuke Okamoto (IDC Frontier Inc), Junya Okabe (University of Tsukuba), nasa9084 (LY Corporation)&lt;/p>
+&lt;p>Kubernetesクラスターの稼働、運用する上でよくある問題は、ディスク容量が不足することです。
+ノードがプロビジョニングされる際には、コンテナイメージと実行中のコンテナのために十分なストレージスペースを確保することが重要です。
+通常、&lt;a href="https://kubernetes.xuxiaowei.com.cn/ja/docs/setup/production-environment/container-runtimes/">コンテナランタイム&lt;/a>は&lt;code>/var&lt;/code>に書き込みます。
+これは別のパーティションとして、ルートファイルシステム上に配置できます。
+CRI-Oはデフォルトで、コンテナとイメージを&lt;code>/var/lib/containers&lt;/code>に書き込みますが、containerdはコンテナとイメージを&lt;code>/var/lib/containerd&lt;/code>に書き込みます。&lt;/p>
+&lt;p>このブログ記事では、コンテナランタイムがデフォルトのパーティションとは別にコンテンツを保存する方法に注目したいと思います。
+これにより、Kubernetesの設定をより柔軟に行うことができ、デフォルトのファイルシステムはそのままに、コンテナストレージ用に大きなディスクを追加する方法が提供されます。&lt;/p>
+&lt;p>もう少し説明が必要な領域は、Kubernetesがディスクに書き込む場所/内容です。&lt;/p>
+&lt;h2 id="kubernetesディスク使用状況を理解する">Kubernetesディスク使用状況を理解する&lt;/h2>
+&lt;p>Kubernetesには永続(persistent)データと一時(ephemeral)データがあります。
+kubeletとローカルのKubernetes固有ストレージのベースパスは設定可能ですが、通常は&lt;code>/var/lib/kubelet&lt;/code>と想定されています。
+Kubernetesのドキュメントでは、これは時々ルートファイルシステムまたはノードファイルシステムと呼ばれます。
+このデータの大部分は、次のようにカテゴリー分けされます。&lt;/p>
+&lt;ul>
+&lt;li>エフェメラルストレージ&lt;/li>
+&lt;li>ログ&lt;/li>
+&lt;li>コンテナランタイム&lt;/li>
+&lt;/ul>
+&lt;p>ルート/ノード・ファイルシステムは&lt;code>/&lt;/code>ではなく、&lt;code>/var/lib/kubelet&lt;/code>があるディスクのため、ほとんどのPOSIXシステムとは異なります。&lt;/p>
+&lt;h3 id="エフェメラルストレージ">エフェメラルストレージ&lt;/h3>
+&lt;p>Podやコンテナは、動作に一時的または短期的なローカルストレージを必要とする場合があります。
+エフェメラルストレージの寿命は個々のPodの寿命を超えず、エフェメラルストレージはPod間で共有することはできません。&lt;/p>
+&lt;h3 id="ログ">ログ&lt;/h3>
+&lt;p>デフォルトでは、Kubernetesは各実行中のコンテナのログを&lt;code>/var/log&lt;/code>内のファイルとして保存します。
+これらのログは一時的であり、ポッドが実行されている間に大きくなりすぎないようにkubeletによって監視されます。&lt;/p>
+&lt;p>各ノードの&lt;a href="https://kubernetes.xuxiaowei.com.cn/ja/docs/concepts/cluster-administration/logging/#log-rotation">ログローテーション&lt;/a>設定をカスタマイズしてこれらのログのサイズを管理し、ノードローカルストレージに依存しないためにログの配信を設定することができます(サードパーティーのソリューションを使用)。&lt;/p>
+&lt;h3 id="コンテナランタイム">コンテナランタイム&lt;/h3>
+&lt;p>コンテナランタイムには、コンテナとイメージのための2つの異なるストレージ領域があります。&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>読み取り専用レイヤー:イメージは通常、コンテナが実行されている間に変更されないため、読み取り専用レイヤーとして表されます。読み取り専用レイヤーには、複数のレイヤーが組み合わされて単一の読み取り専用レイヤーになることがあります。コンテナがファイルシステムに書き込んでいる場合、コンテナの上にはエフェメラルストレージを提供する薄いレイヤーがあります。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>書き込み可能レイヤー:コンテナランタイムによっては、ローカルの書き込みがレイヤー化された書き込みメカニズム(たとえば、Linux上の&lt;code>overlayfs&lt;/code>やWindows上のCimFS)として実装されることがあります。これは書き込み可能レイヤーと呼ばれます。ローカルの書き込みは、コンテナイメージの完全なクローンで初期化された書き込み可能なファイルシステムを使用する場合もあります。これは、ハイパーバイザ仮想化に基づく一部のランタイムで使用されます。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>コンテナランタイムのファイルシステムには、読み取り専用レイヤーと書き込み可能レイヤーの両方が含まれます。これはKubernetesドキュメントでは&lt;code>imagefs&lt;/code>と見なされています。&lt;/p>
+&lt;h2 id="コンテナランタイムの構成">コンテナランタイムの構成&lt;/h2>
+&lt;h3 id="cri-o">CRI-O&lt;/h3>
+&lt;p>CRI-Oは、コンテナランタイムが永続データと一時データをどのように保存するかを制御するためのTOML形式のストレージ構成ファイルを使用します。
+CRI-Oは&lt;a href="https://github.com/containers/storage">ストレージライブラリ&lt;/a>を利用します。
+一部のLinuxディストリビューションには、ストレージに関するマニュアルエントリ(&lt;code>man 5 containers-storage.conf&lt;/code>)があります。
+ストレージの主な設定は、&lt;code>/etc/containers/storage.conf&lt;/code>にあり、一時データの場所やルートディレクトリを制御することができます。
+ルートディレクトリは、CRI-Oが永続データを保存する場所です。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>[storage]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#080;font-style:italic"># Default storage driver&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>driver = &lt;span style="color:#b44">&amp;#34;overlay&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#080;font-style:italic"># Temporary storage location&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>runroot = &lt;span style="color:#b44">&amp;#34;/var/run/containers/storage&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#080;font-style:italic"># Primary read/write location of container storage&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>graphroot = &lt;span style="color:#b44">&amp;#34;/var/lib/containers/storage&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>graphroot&lt;/code>
+&lt;ul>
+&lt;li>コンテナランタイムから保存される永続データを指します&lt;/li>
+&lt;li>SELinuxが有効になっている場合、これは&lt;code>/var/lib/containers/storage&lt;/code>と一致させる必要があります&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;code>runroot&lt;/code>
+&lt;ul>
+&lt;li>コンテナに対する一時的な読み書きアクセスを提供します&lt;/li>
+&lt;li>これは一時ファイルシステムに配置することを推奨します&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>ここでは、&lt;code>/var/lib/containers/storage&lt;/code>に合うようにgraphrootディレクトリのラベルを変更する簡単な方法を紹介します:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>semanage fcontext -a -e /var/lib/containers/storage &amp;lt;YOUR-STORAGE-PATH&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>restorecon -R -v &amp;lt;YOUR-STORAGE-PATH&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="containerd">containerd&lt;/h3>
+&lt;p>コンテナランタイムであるcontainerdは、永続データと一時データの保存先を制御するためのTOML形式の構成ファイルを使用します。構成ファイルのデフォルトパスは、&lt;code>/etc/containerd/config.toml&lt;/code>にあります。&lt;/p>
+&lt;p>containerdストレージの関連フィールドは、&lt;code>root&lt;/code>と&lt;code>state&lt;/code>です。&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>root&lt;/code>
+&lt;ul>
+&lt;li>containerdのメタデータのルートディレクトリ&lt;/li>
+&lt;li>デフォルトは&lt;code>/var/lib/containerd&lt;/code>です&lt;/li>
+&lt;li>また、OSがそれを要求する場合は、ルートにSELinuxラベルも必要です&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;code>state&lt;/code>
+&lt;ul>
+&lt;li>containerdの一時データ&lt;/li>
+&lt;li>デフォルトは、&lt;code>/run/containerd&lt;/code>です&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="kubernetesノードの圧迫による退避">Kubernetesノードの圧迫による退避&lt;/h2>
+&lt;p>Kubernetesは、コンテナファイルシステムがノードファイルシステムと分離されているかどうかを自動的に検出します。
+ファイルシステムを分離する場合、Kubernetesはノードファイルシステムとコンテナランタイムファイルシステムの両方を監視する責任があります。
+Kubernetesドキュメントでは、ノードファイルシステムとコンテナランタイムファイルシステムをそれぞれnodefsとimagefsと呼んでいます。
+nodefsまたはimagefsのいずれかがディスク容量不足になると、ノード全体がディスク圧迫があると見なされます。
+Kubernetesは、まず未使用のコンテナやイメージを削除してスペースを回収し、その後にポッドを追い出すことでスペースを再利用します。
+nodefsとimagefsの両方を持つノードでは、kubeletはimagefs上の未使用のコンテナイメージを&lt;a href="https://kubernetes.xuxiaowei.com.cn/ja/docs/concepts/architecture/garbage-collection/#containers-images">ガベージコレクト&lt;/a>し、nodefsからは終了したポッドとそれらのコンテナを削除します。
+nodefsのみが存在する場合、Kubernetesのガベージコレクションには、終了したコンテナ、ポッド、そして未使用のイメージが含まれます。&lt;/p>
+&lt;p>Kubernetesでは、ディスクがいっぱいかどうかを判断するためのより多くの構成が可能です。
+kubelet内の退避マネージャーには、関連する閾値を制御するいくつかの構成設定があります。
+ファイルシステムの場合、関連する測定値は&lt;code>nodefs.available&lt;/code>、&lt;code>nodefs.inodesfree&lt;/code>、&lt;code>imagefs.available&lt;/code>、および&lt;code>imagefs.inodesfree&lt;/code>です。
+コンテナランタイム用に専用のディスクがない場合、imagefsは無視されます。&lt;/p>
+&lt;p>ユーザーは、既存のデフォルト値を使用できます:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>memory.available&lt;/code> &amp;lt; 100MiB&lt;/li>
+&lt;li>&lt;code>nodefs.available&lt;/code> &amp;lt; 10%&lt;/li>
+&lt;li>&lt;code>imagefs.available&lt;/code> &amp;lt; 15%&lt;/li>
+&lt;li>&lt;code>nodefs.inodesFree&lt;/code> &amp;lt; 5% (Linuxノード)&lt;/li>
+&lt;/ul>
+&lt;p>Kubernetesでは、kubeletの構成ファイル内の&lt;code>EvictionHard&lt;/code>と&lt;code>EvictionSoft&lt;/code>にユーザー定義の値を設定することができます。&lt;/p>
+&lt;p>&lt;code>EvictionHard&lt;/code>
+限界値を定義します。これらの限界値を超えると、Grace Periodなしでポッドが追い出されます。&lt;/p>
+&lt;p>&lt;code>EvictionSoft&lt;/code>
+限界値を定義します。これらの限界値を超えると、Grace Periodが設定されたシグナルごとにポッドが追い出されます。&lt;/p>
+&lt;p>&lt;code>EvictionHard&lt;/code>の値を指定すると、デフォルト値が置き換えられます。
+したがって、すべてのシグナルを設定することが重要です。&lt;/p>
+&lt;p>たとえば、次に示すkubeletの設定は、&lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals-and-thresholds">退避シグナル&lt;/a>と猶予期間オプションを設定するために使用できます。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#008000;font-weight:bold">apiVersion&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>kubelet.config.k8s.io/v1beta1&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#008000;font-weight:bold">kind&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>KubeletConfiguration&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#008000;font-weight:bold">address&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#b44">&amp;#34;192.168.0.8&amp;#34;&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#008000;font-weight:bold">port&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#666">20250&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#008000;font-weight:bold">serializeImagePulls&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#a2f;font-weight:bold">false&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#008000;font-weight:bold">evictionHard&lt;/span>:&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">memory.available&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#b44">&amp;#34;100Mi&amp;#34;&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">nodefs.available&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#b44">&amp;#34;10%&amp;#34;&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">nodefs.inodesFree&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#b44">&amp;#34;5%&amp;#34;&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">imagefs.available&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#b44">&amp;#34;15%&amp;#34;&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">imagefs.inodesFree&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#b44">&amp;#34;5%&amp;#34;&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#008000;font-weight:bold">evictionSoft&lt;/span>:&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">memory.available&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#b44">&amp;#34;100Mi&amp;#34;&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">nodefs.available&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#b44">&amp;#34;10%&amp;#34;&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">nodefs.inodesFree&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#b44">&amp;#34;5%&amp;#34;&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">imagefs.available&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#b44">&amp;#34;15%&amp;#34;&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">imagefs.inodesFree&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#b44">&amp;#34;5%&amp;#34;&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#008000;font-weight:bold">evictionSoftGracePeriod&lt;/span>:&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">memory.available&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#b44">&amp;#34;1m30s&amp;#34;&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">nodefs.available&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#b44">&amp;#34;2m&amp;#34;&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">nodefs.inodesFree&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#b44">&amp;#34;2m&amp;#34;&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">imagefs.available&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#b44">&amp;#34;2m&amp;#34;&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">imagefs.inodesFree&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#b44">&amp;#34;2m&amp;#34;&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#008000;font-weight:bold">evictionMaxPodGracePeriod&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>60s&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="問題点">問題点&lt;/h2>
+&lt;p>Kubernetesプロジェクトでは、退避のデフォルト設定を使用するか、退避に関連するすべてのフィールドを設定することをお勧めしています。
+デフォルト設定を使用するか、独自の&lt;code>evictionHard&lt;/code>設定を指定できます。
+シグナルの設定を忘れると、Kubernetesはそのリソースを監視しません。
+管理者やユーザーが遭遇する可能性のある一般的な設定ミスの1つは、新しいファイルシステムを&lt;code>/var/lib/containers/storage&lt;/code>または&lt;code>/var/lib/containerd&lt;/code>にマウントすることです。
+Kubernetesは別のファイルシステムを検出するため、これを行った場合は&lt;code>imagefs.inodesfree&lt;/code>と&lt;code>imagefs.available&lt;/code>が必要に応じて設定に一致していることを確認する必要があります。&lt;/p>
+&lt;p>もう一つの混乱の領域は、イメージファイルシステムをノードに定義した場合でも、エフェメラルストレージの報告が変わらないことです。
+イメージファイルシステム(&lt;code>imagefs&lt;/code>)は、コンテナイメージのレイヤーを保存するために使用されます。
+コンテナが自分自身のルートファイルシステムに書き込む場合、そのローカルな書き込みはコンテナイメージのサイズには含まれません。
+コンテナランタイムがこれらのローカルな変更を保存する場所は、ランタイムによって定義されますが、通常はイメージファイルシステムです。
+Pod内のコンテナがファイルシステムをバックエンドとする&lt;code>emptyDir&lt;/code>ボリュームに書き込んでいる場合、これはノードファイルシステムからスペースを使用します。
+kubeletは常に、&lt;code>nodefs&lt;/code>で表されるファイルシステムに基づいてエフェメラルストレージの容量と割り当てを報告します。
+これは、実際には一時的な書き込みがイメージファイルシステムに行われている場合に混乱の原因となる可能性があります。&lt;/p>
+&lt;h2 id="今後の課題">今後の課題&lt;/h2>
+&lt;p>&lt;a href="https://github.com/kubernetes/enhancements/issues/4191">KEP-4191&lt;/a>に取り組むことで、エフェメラルの報告の制限を解消し、コンテナランタイムにより多くの構成オプションを提供することが期待されています。
+この提案では、Kubernetesは書き込み可能なレイヤーが読み取り専用のレイヤー(イメージ)と分離されているかどうかを検出します。
+これにより、書き込み可能なレイヤーを含むすべてのエフェメラルストレージを同じディスクに配置することが可能になります。
+また、イメージ用に別のディスクを使用することも可能になります。&lt;/p>
+&lt;h2 id="参加するためにはどうすればよいですか">参加するためにはどうすればよいですか？&lt;/h2>
+&lt;p>参加したい場合は、Kubernetesの&lt;a href="https://github.com/kubernetes/community/tree/master/sig-node">SIG Node&lt;/a>に参加することができます。&lt;/p>
+&lt;p>フィードバックを共有したい場合は、Slackチャンネルの&lt;a href="https://kubernetes.slack.com/archives/C0BP8PW9G">#sig-node&lt;/a>で行うことができます。
+まだそのSlackワークスペースに参加していない場合は、&lt;a href="https://slack.k8s.io/">https://slack.k8s.io/&lt;/a>から招待状を取得できます。&lt;/p>
+&lt;p>素晴らしいレビューを提供し、貴重な洞察を共有し、トピックのアイデアを提案してくれたすべてのコントリビューターに特別な感謝を捧げます。&lt;/p>
+&lt;ul>
+&lt;li>Peter Hunt&lt;/li>
+&lt;li>Mrunal Patel&lt;/li>
+&lt;li>Ryan Phillips&lt;/li>
+&lt;li>Gaurav Singh&lt;/li>
+&lt;/ul></description></item><item><title>SIG Releaseスポットライト(リリース・チーム・サブプロジェクト)</title><link>https://kubernetes.xuxiaowei.com.cn/ja/blog/2024/01/15/sig-release-spotlight-2023/</link><pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate><guid>https://kubernetes.xuxiaowei.com.cn/ja/blog/2024/01/15/sig-release-spotlight-2023/</guid><description>
+&lt;p>&lt;strong>筆者:&lt;/strong> Nitish Kumar&lt;/p>
+&lt;p>リリース・スペシャル・インタレスト・グループ(SIG Release)は、Kubernetesが4ヶ月ごとに最先端の機能とバグ修正でその刃を研ぐ場所です。Kubernetesのような大きなプロジェクトが、新バージョンをリリースするまでのタイムラインをどのように効率的に管理しているのか、またリリースチームの内部はどのようになっているのか、考えたことはありますか？このような疑問に興味がある方、もっと知りたい方、SIG Releaseの仕事に関わりたい方は、ぜひ読んでみてください！&lt;/p>
+&lt;p>SIG ReleaseはKubernetesの開発と進化において重要な役割を担っています。その主な責任は、Kubernetesの新バージョンのリリースプロセスを管理することです。&lt;a href="https://www.kubernetes.dev/resources/release/">通常3〜4ヶ月ごと&lt;/a>の定期的なリリースサイクルで運営されています。このサイクルの間、Kubernetesリリースチームは他のSIGやコントリビューターと密接に連携し、円滑でうまく調整されたリリースを保証します。これには、リリーススケジュールの計画、コードフリーズとテストフェーズの期限の設定、バイナリ、ドキュメント、リリースノートなどのリリース成果物の作成が含まれます。&lt;/p>
+&lt;p>さらに読み進める前に、SIG Releaseにはリリース・エンジニアリングとリリース・チームという2つのサブプロジェクトがあることに注意してください。&lt;/p>
+&lt;p>このブログ記事では、&lt;a href="https://twitter.com/nitishfy">Nitish Kumar&lt;/a>がSIG Releaseのテクニカル・リーダーであるVerónica López (PlanetScale)にインタビューし、Release Teamサブプロジェクトにスポットライトを当て、リリース・プロセスがどのように見えるか、そして参加する方法について説明します。&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>最初の計画から最終的なリリースまで、Kubernetesの新バージョンの典型的なリリースプロセスはどのようなものですか？スムーズなリリースを保証するために使用している特定の方法論やツールはありますか？&lt;/strong>&lt;/p>
+&lt;p>Kubernetesの新バージョンのリリースプロセスは、十分に構造化されたコミュニティ主導の取り組みです。私たちが従う特定の方法論やツールはありませんが、物事を整理しておくための一連の手順を記載したカレンダーはあります。完全なリリースプロセスは次のようになります：&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;strong>リリースチームの立ち上げ&lt;/strong>： 新しいリリースのさまざまなコンポーネントの管理を担当するKubernetesコミュニティのボランティアを含むリリースチームの結成から始めます。これは通常、前のリリースが終了する前に行われます。チームが結成されると、リリースチームリーダーとブランチマネージャーが通常の成果物のカレンダーを提案する間に、新しいメンバーがオンボードされます。例として、SIG Releaseのリポジトリに作成された&lt;a href="https://github.com/kubernetes/sig-release/issues/2307">v1.29チーム結成のissue&lt;/a>を見てください。コントリビューターがリリースチームの一員になるには、通常リリースシャドウプログラムを通りますが、それがSIG Releaseに参加する唯一の方法というわけではありません。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>初期段階&lt;/strong>： 各リリースサイクルの最初の数週間で、SIG ReleaseはKubernetes機能強化提案(KEPs)で概説された新機能や機能強化の進捗を熱心に追跡します。これらの機能のすべてがまったく新しいものではありませんが、多くの場合、アルファ段階から始まり、その後ベータ段階に進み、最終的には安定したステータスに到達します。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>機能の成熟段階&lt;/strong>： 通常、コミュニティからのフィードバックを集めるため、実験的な新機能を含むアルファ・リリースを2、3回行い、その後、機能がより安定し、バグの修正が中心となるベータ・リリースを2、3回行います。この段階でのユーザーからのフィードバックは非常に重要で、この段階で発生する可能性のあるバグやその他の懸念に対処するために、追加のベータ・リリースを作成しなければならないこともあります。これがクリアされると、実際のリリースの前にリリース候補(RC)を作成します。このサイクルを通じて、リリースノートやユーザーガイドなどのドキュメントの更新や改善に努めます。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>安定化段階&lt;/strong>： 新リリースの数週間前にコードフリーズを実施し、この時点以降は新機能の追加を禁止します。メインリリースと並行して、私たちはKubernetesの古い公式サポートバージョンのパッチを毎月作成し続けているので、Kubernetesバージョンのライフサイクルはその後数ヶ月に及ぶと言えます。完全なリリースサイクル全体を通して、リリースノートやユーザーガイドを含むドキュメントの更新と改善に努めます。&lt;/p>
+&lt;figure>
+&lt;img src="https://kubernetes.xuxiaowei.com.cn/ja/blog/2024/01/15/sig-release-spotlight-2023/sig-release-overview.png"
+alt="リリースチームのオンボーディング; 初期段階; 機能の成熟段階; 安定化段階"/>
+&lt;/figure>
+&lt;/li>
+&lt;/ul>
+&lt;ol start="2">
+&lt;li>
+&lt;p>&lt;strong>各リリースで安定性と新機能の導入のバランスをどのように扱っていますか？どのような基準で、どの機能をリリースに含めるかを決定するのですか？&lt;/strong>&lt;/p>
+&lt;p>終わりのないミッションですが、重要なのは私たちのプロセスとガイドラインを尊重することだと考えています。私たちのガイドラインは、このプロジェクトに豊富な知識と経験をもたらしてくれるコミュニティの何十人ものメンバーから、何時間にもわたって議論とフィードバックを重ねた結果です。もし厳格なガイドラインがなかったら、私たちの注意を必要とするもっと生産的な議題に時間を使う代わりに、同じ議論を何度も繰り返してしまうでしょう。すべての重要な例外は、チームメンバーの大半の合意を必要とするため、品質を確保することができます。&lt;/p>
+&lt;p>何がリリースになるかを決定するプロセスは、リリースチームがワークフローを引き継ぐずっと前から始まっています。各SIGと経験豊富なコントリビューターが、機能や変更を含めるかどうかを決定します。その後、リリースチームが、それらの貢献がドキュメント、テスト、後方互換性などの要件を満たしていることを確認し、正式に許可します。同様のプロセスは月例パッチリリースのチェリーピックでも行われ、完全なKEPを必要とするPRや、影響を受けるすべてのブランチを含まない修正は受け入れないという厳しいポリシーがあります。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Kubernetesの開発とリリース中に遭遇した最も大きな課題は何ですか？これらの課題をどのように克服しましたか？&lt;/strong>&lt;/p>
+&lt;p>リリースのサイクルごとに、さまざまな課題が発生します。新たに発見されたCVE(Common Vulnerabilities and Exposures)のような土壇場の問題に取り組んだり、内部ツール内のバグを解決したり、以前のリリースの機能によって引き起こされた予期せぬリグレッションに対処したりすることもあります。私たちがしばしば直面するもう1つの障害は、私たちのチームは大規模ですが、私たちのほとんどがボランティアベースで貢献していることです。時には人手が足りないと感じることもありますが、私たちは常に組織化し、うまくやりくりしています。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>新しい貢献者として、SIG Releaseに参加するための理想的な道はどのようなものでしょうか？誰もが自分のタスクに忙殺されているコミュニティで、効果的に貢献するために適切なタスクを見つけるにはどうすればいいのでしょうか？&lt;/strong>&lt;/p>
+&lt;p>オープンソースコミュニティへの関わり方は人それぞれです。SIG Releaseは、リリースを出荷できるように自分たちでツールを書くという、自分勝手なチームです。&lt;a href="https://github.com/kubernetes/community/blob/master/sig-k8s-infra/README.md">SIG K8s Infra&lt;/a>のような他のSIGとのコラボレーションも多いのですが、私たちが使用するツールはすべて、コストを削減しつつ、私たちの大規模な技術的ニーズに合わせて作られたものでなければなりません。このため、「単に」リリースを作成するだけでなく、さまざまなタイプのプロジェクトを手伝ってくれるボランティアを常に探しています。&lt;/p>
+&lt;p>私たちの現在のプロジェクトでは、&lt;a href="https://go.dev/">Go&lt;/a>プログラミング、Kubernetes内部の理解、Linuxパッケージング、サプライチェーンセキュリティ、テクニカルライティング、一般的なオープンソースプロジェクトのメンテナンスなどのスキルが必要です。このスキルセットは、プロジェクトの成長とともに常に進化しています。&lt;/p>
+&lt;p>理想的な道筋として、私たちはこう提案します:&lt;/p>
+&lt;ul>
+&lt;li>どのように機能が管理されているか、リリースカレンダー、リリースチームの全体的な構造など、コードに慣れる。&lt;/li>
+&lt;li>&lt;a href="https://communityinviter.com/apps/kubernetes/community">Slack&lt;/a>(#sig-release)などのKubernetesコミュニティのコミュニケーションチャンネルに参加する。&lt;/li>
+&lt;li>コミュニティ全員が参加できる&lt;a href="https://github.com/kubernetes/community/tree/master/sig-release#meetings">SIG Releaseウィークリーミーティング&lt;/a>に参加する。これらのミーティングに参加することは、あなたのスキルセットや興味に関連すると思われる進行中のプロジェクトや将来のプロジェクトについて学ぶ素晴らしい方法です。&lt;/li>
+&lt;/ul>
+&lt;p>経験豊富な貢献者は皆、かつてあなたのような立場にあったことを忘れないでください。遠慮せずに質問し、議論に参加し、貢献するための小さな一歩を踏み出しましょう。&lt;/p>
+&lt;figure>
+&lt;img src="https://kubernetes.xuxiaowei.com.cn/ja/blog/2024/01/15/sig-release-spotlight-2023/sig-release-meetings.png"
+alt="SIG Releaseに関する質問"/>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>リリースシャドウプログラムとは何ですか？また、他の様々なSIGに含まれるシャドウプログラムとの違いは何ですか？&lt;/strong>&lt;/p>
+&lt;p>リリースシャドウプログラムは、Kubernetesのリリースサイクルを通して、リリースチームの経験豊富なメンバーをシャドウイングする機会を提供します。これは、Kubernetesのリリースに必要な、サブチームにまたがるすべての困難な仕事を見るまたとないチャンスです。多くの人は、私たちの仕事は3ヶ月ごとにリリースを切ることだけだと思っていますが、それは氷山の一角にすぎません。&lt;/p>
+&lt;p>私たちのプログラムは通常、特定のKubernetesリリースサイクルに沿っており、それは約3ヶ月の予測可能なタイムラインを持っています。このプログラムではKubernetesの新機能を書くことはありませんが、リリースチームは新リリースと何千人ものコントリビューターとの最後のステップであるため、高い責任感が求められます。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>一般的に、次のKubernetesリリースのリリースシャドウ/リリースリードとしてボランティアに参加する人に求める資格は何ですか？&lt;/strong>&lt;/p>
+&lt;p>どの役割もある程度の技術的能力を必要としますが、Goの実践的な経験やKubernetes APIに精通していることを必要とするものもあれば、技術的な内容を明確かつ簡潔に伝えるのが得意な人を必要とするものもあります。技術的な専門知識よりも、熱意とコミットメントを重視しています。もしあなたが正しい姿勢を持っていて、Kubernetesやリリース・エンジニアリングの仕事を楽しんでいることが伝われば、たとえそれがあなたが余暇を利用して立ち上げた個人的なプロジェクトであったとしても、チームは必ずあなたを指導します。セルフスターターであること、そして質問をすることを恐れないことは、私たちのチームであなたを大きく前進させます。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>リリースシャドープログラムに何度も不合格になった人に何を勧めますか？&lt;/strong>&lt;/p>
+&lt;p>応募し続けることです。&lt;/p>
+&lt;p>リリースサイクルごとに応募者数が飛躍的に増えているため、選ばれるのが難しくなり、落胆することもありますが、不採用になったからといって、あなたに才能がないというわけではないことを知っておいてください。すべての応募者を受け入れることは現実的に不可能です、しかし、ここに私たちが提案する代替案があります。:&lt;/p>
+&lt;p>毎週開催されるKubernetes SIGのリリースミーティングに参加して、自己紹介をし、チームや私たちが取り組んでいるプロジェクトに慣れてください。&lt;/p>
+&lt;p>リリースチームはSIG Releaseに参加する方法の1つですが、私たちは常に手伝ってくれる人を探しています。繰り返しになりますが、一定の技術的な能力に加えて、私たちが最も求めている特性は、信頼できる人であり、それには時間が必要です。&lt;/p>
+&lt;figure>
+&lt;img src="https://kubernetes.xuxiaowei.com.cn/ja/blog/2024/01/15/sig-release-spotlight-2023/sig-release-motivation.png"
+alt="SIG Releaseのモチベーション"/>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>リリースチームがKubernetes v1.28に特に期待している進行中の取り組みや今後の機能について教えてください。これらの進歩は、Kubernetesの長期的なビジョンとどのように整合しているのでしょうか？&lt;/strong>&lt;/p>
+&lt;p>Kubernetesのパッケージをコミュニティインフラ上でついに公開できることに興奮しています。数年前からやりたいと思っていたことですが、移行する前に整えなければならない技術的な意味合いが多いプロジェクトです。それが終われば、生産性を向上させ、ワークフロー全体をコントロールできるようになります。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="最後に">最後に&lt;/h2>
+&lt;p>さて、この対談はここで終わりですが、学習はこれで終わりではありません。このインタビューが、SIG Releaseが何をしているのか、そしてどのように手助けを始めたらいいのか、ある程度わかっていただけたと思います。重要なこととして、この記事はSIG Releaseの最初のサブプロジェクトであるリリース・チームを取り上げています。次回のSIG Releaseのスポットライトブログでは、Release Engineeringサブプロジェクトにスポットライトを当て、その活動内容や参加方法について紹介します。最後に、SIG Releaseの運営方法についてより深く理解するために、&lt;a href="https://github.com/kubernetes/community/tree/master/sig-release">SIG Release憲章&lt;/a>をご覧ください。&lt;/p></description></item><item><title>フォレンジックコンテナ分析</title><link>https://kubernetes.xuxiaowei.com.cn/ja/blog/2023/03/10/forensic-container-analysis/</link><pubDate>Fri, 10 Mar 2023 00:00:00 +0000</pubDate><guid>https://kubernetes.xuxiaowei.com.cn/ja/blog/2023/03/10/forensic-container-analysis/</guid><description>
+&lt;p>&lt;strong>Authors:&lt;/strong> Adrian Reber (Red Hat)&lt;/p>
+&lt;p>前回投稿した&lt;a href="https://kubernetes.io/ja/blog/2022/12/05/forensic-container-checkpointing-alpha/">Kubernetesにおけるフォレンジックコンテナチェックポイント処理&lt;/a>では、Kubernetesでのチェックポイントの作成や、それがどのようにセットアップされ、どのように使用されるのかを紹介しました。
+機能の名前はフォレンジックコンテナチェックポイントですが、Kubernetesによって作成されたチェックポイントの実際の分析方法については、詳細を説明しませんでした。
+この記事では、チェックポイントがどのように分析されるのかについての詳細を提供します。&lt;/p>
+&lt;p>チェックポイントの作成はまだKubernetesでalpha機能であり、この記事ではその機能が将来どのように動作するのかについてのプレビューを提供します。&lt;/p>
+&lt;h2 id="準備">準備&lt;/h2>
+&lt;p>チェックポイント作成のサポートを有効にするためのKubernetesの設定方法や、基盤となるCRI実装方法についての詳細は&lt;a href="https://kubernetes.io/ja/blog/2022/12/05/forensic-container-checkpointing-alpha/">Kubernetesにおけるフォレンジックコンテナチェックポイント処理&lt;/a>を参照してください。&lt;/p>
+&lt;p>一例として、この記事内でチェックポイントを作成し分析するコンテナイメージ(&lt;code>quay.io/adrianreber/counter:blog&lt;/code>)を準備しました。
+このコンテナはコンテナ内でファイルを作成することができ、後でチェックポイント内で探したい情報をメモリーに格納しておくこともできます。&lt;/p>
+&lt;p>コンテナを実行するためにはPodが必要であり、この例では下記のPodマニフェストを使用します。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#008000;font-weight:bold">apiVersion&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>v1&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#008000;font-weight:bold">kind&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>Pod&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#008000;font-weight:bold">metadata&lt;/span>:&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">name&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>counters&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#008000;font-weight:bold">spec&lt;/span>:&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">containers&lt;/span>:&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>- &lt;span style="color:#008000;font-weight:bold">name&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>counter&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">image&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>quay.io/adrianreber/counter:blog&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>この結果、&lt;code>counter&lt;/code>と呼ばれるコンテナが&lt;code>counters&lt;/code>と呼ばれるPod内で実行されます。&lt;/p>
+&lt;p>一度コンテナが実行されると、コンテナで下記アクションが行えます。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-console" data-lang="console">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> kubectl get pod counters --template &lt;span style="color:#b44">&amp;#39;{{.status.podIP}}&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">10.88.0.25
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">&lt;/span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> curl 10.88.0.25:8088/create?test-file
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> curl 10.88.0.25:8088/secret?RANDOM_1432_KEY
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> curl 10.88.0.25:8088
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>最初のアクセスはコンテナ内で&lt;code>test-file&lt;/code>という内容で&lt;code>test-file&lt;/code>と呼ばれるファイルを作成します。
+次のアクセスで、コンテナのメモリー内のどこかにシークレット情報(&lt;code>RANDOM_1432_KEY&lt;/code>)を記憶します。
+最後のアクセスは内部のログファイルに1行追加するだけです。&lt;/p>
+&lt;p>チェックポイントを分析する前の最後のステップは、チェックポイントを作成することをKubernetesに指示することです。
+前回の記事で説明したように、これには&lt;em>kubelet&lt;/em>限定の&lt;code>チェックポイント&lt;/code>APIエンドポイントへのアクセスを必要とします。&lt;/p>
+&lt;p>&lt;em>default&lt;/em>名前空間内の&lt;em>counters&lt;/em>という名前のPod内の&lt;em>counter&lt;/em>という名前のコンテナに対して、&lt;em>kubelet&lt;/em> APIエンドポイントが次の場所で到達可能です。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#080;font-style:italic"># Podが実行されているNode上で実行する&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>curl -X POST &lt;span style="color:#b44">&amp;#34;https://localhost:10250/checkpoint/default/counters/counter&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>厳密には、&lt;em>kubelet&lt;/em>の自己署名証明書を許容し&lt;em>kubelet&lt;/em> &lt;code>チェックポイント&lt;/code>APIの使用を認可するために、下記の&lt;code>curl&lt;/code>コマンドのオプションが必要です。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>--insecure --cert /var/run/kubernetes/client-admin.crt --key /var/run/kubernetes/client-admin.key
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>チェックポイントの作成が終了すると、&lt;code>/var/lib/kubelet/checkpoints/checkpoint-&amp;lt;pod-name&amp;gt;_&amp;lt;namespace-name&amp;gt;-&amp;lt;container-name&amp;gt;-&amp;lt;timestamp&amp;gt;.tar&lt;/code>でチェックポイントが利用可能になります。&lt;/p>
+&lt;p>この記事の後述のステップでは、チェックポイントアーカイブを分析する際に&lt;code>checkpoint.tar&lt;/code>という名前を使用します。&lt;/p>
+&lt;h2 id="checkpointctl-を使用したチェックポイントアーカイブの分析">&lt;code>checkpointctl&lt;/code>を使用したチェックポイントアーカイブの分析&lt;/h2>
+&lt;p>チェックポイントが作成したコンテナに関するいくつかの初期情報を得るためには、このように&lt;a href="https://github.com/checkpoint-restore/checkpointctl">checkpointctl&lt;/a>を使用します。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-console" data-lang="console">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> checkpointctl show checkpoint.tar --print-stats
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">+-----------+----------------------------------+--------------+---------+---------------------+--------+------------+------------+-------------------+
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">| CONTAINER | IMAGE | ID | RUNTIME | CREATED | ENGINE | IP | CHKPT SIZE | ROOT FS DIFF SIZE |
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">+-----------+----------------------------------+--------------+---------+---------------------+--------+------------+------------+-------------------+
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">| counter | quay.io/adrianreber/counter:blog | 059a219a22e5 | runc | 2023-03-02T06:06:49 | CRI-O | 10.88.0.23 | 8.6 MiB | 3.0 KiB |
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">+-----------+----------------------------------+--------------+---------+---------------------+--------+------------+------------+-------------------+
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">CRIU dump statistics
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">+---------------+-------------+--------------+---------------+---------------+---------------+
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">| FREEZING TIME | FROZEN TIME | MEMDUMP TIME | MEMWRITE TIME | PAGES SCANNED | PAGES WRITTEN |
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">+---------------+-------------+--------------+---------------+---------------+---------------+
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">| 100809 us | 119627 us | 11602 us | 7379 us | 7800 | 2198 |
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">+---------------+-------------+--------------+---------------+---------------+---------------+
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>これによって、チェックポイントアーカイブ内のチェックポイントについてのいくつかの情報が、すでに取得できています。
+コンテナの名前やコンテナランタイムやコンテナエンジンについての情報を見ることができます。
+チェックポイントのサイズ(&lt;code>CHKPT SIZE&lt;/code>)もリスト化されます。
+これは大部分がチェックポイントに含まれるメモリーページのサイズですが、コンテナ内の全ての変更されたファイルのサイズ(&lt;code>ROOT FS DIFF SIZE&lt;/code>)についての情報もあります。&lt;/p>
+&lt;p>追加のパラメーター&lt;code>--print-stats&lt;/code>はチェックポイントアーカイブ内の情報を復号化し、2番目のテーブル(&lt;em>CRIU dump statistics&lt;/em>)で表示します。
+この情報はチェックポイント作成中に収集され、CRIUがコンテナ内のプロセスをチェックポイントするために必要な時間と、チェックポイント作成中に分析され書き込まれたメモリーページ数の概要を示します。&lt;/p>
+&lt;h2 id="より深く掘り下げる">より深く掘り下げる&lt;/h2>
+&lt;p>&lt;code>checkpointctl&lt;/code>の助けを借りて、チェックポイントアーカイブについてのハイレベルな情報を得ることができます。
+チェックポイントアーカイブをさらに分析するには、それを展開する必要があります。
+チェックポイントアーカイブは&lt;em>tar&lt;/em>アーカイブであり、&lt;code>tar xf checkpoint.tar&lt;/code>の助けを借りて展開可能です。&lt;/p>
+&lt;p>チェックポイントアーカイブを展開すると、下記のファイルやディレクトリが作成されます。&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>bind.mounts&lt;/code> - このファイルにはバインドマウントについての情報が含まれており、復元中に全ての外部ファイルとディレクトリを正しい場所にマウントするために必要になります。&lt;/li>
+&lt;li>&lt;code>checkpoint/&lt;/code> - このディレクトリにはCRIUによって作成された実際のチェックポイントが含まれています。&lt;/li>
+&lt;li>&lt;code>config.dump&lt;/code>と&lt;code>spec.dump&lt;/code> - これらのファイルには、復元中に必要とされるコンテナについてのメタデータが含まれています。&lt;/li>
+&lt;li>&lt;code>dump.log&lt;/code> - このファイルにはチェックポイント作成中に作成されたCRIUのデバッグ出力が含まれています。&lt;/li>
+&lt;li>&lt;code>stats-dump&lt;/code> - このファイルには、&lt;code>checkpointctl&lt;/code>が&lt;code>--print-stats&lt;/code>でダンプ統計情報を表示するために使用するデータが含まれています。&lt;/li>
+&lt;li>&lt;code>rootfs-diff.tar&lt;/code> - このファイルには、コンテナのファイルシステム上で変更された全てのファイルが含まれています。&lt;/li>
+&lt;/ul>
+&lt;h3 id="ファイルシステムの変更-rootfs-diff-tar">ファイルシステムの変更 - &lt;code>rootfs-diff.tar&lt;/code>&lt;/h3>
+&lt;p>コンテナのチェックポイントをさらに分析するための最初のステップは、コンテナ内で変更されたファイルを見ることです。
+これは&lt;code>rootfs-diff.tar&lt;/code>ファイルを参照することで行えます。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-console" data-lang="console">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> tar xvf rootfs-diff.tar
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">home/counter/logfile
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">home/counter/test-file
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>これでコンテナ内で変更されたファイルを調べられます。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-console" data-lang="console">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> cat home/counter/logfile
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">10.88.0.1 - - [02/Mar/2023 06:07:29] &amp;#34;GET /create?test-file HTTP/1.1&amp;#34; 200 -
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">10.88.0.1 - - [02/Mar/2023 06:07:40] &amp;#34;GET /secret?RANDOM_1432_KEY HTTP/1.1&amp;#34; 200 -
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">10.88.0.1 - - [02/Mar/2023 06:07:43] &amp;#34;GET / HTTP/1.1&amp;#34; 200 -
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">&lt;/span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> cat home/counter/test-file
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">test-file 
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>このコンテナのベースになっているコンテナイメージ(&lt;code>quay.io/adrianreber/counter:blog&lt;/code>)と比較すると、コンテナが提供するサービスへの全てのアクセス情報を含んだ&lt;code>logfile&lt;/code>や予想通り作成された&lt;code>test-file&lt;/code>ファイルを確認することができます。&lt;/p>
+&lt;p>&lt;code>rootfs-diff.tar&lt;/code>の助けを借りることで、作成または変更された全てのファイルを、コンテナのベースイメージと比較して検査することが可能です。&lt;/p>
+&lt;h3 id="チェックポイント処理したプロセスを分析する-checkpoint">チェックポイント処理したプロセスを分析する - &lt;code>checkpoint/&lt;/code>&lt;/h3>
+&lt;p>ディレクトリ&lt;code>checkpoint/&lt;/code>はコンテナ内でプロセスをチェックポイントしている間にCRIUによって作成されたデータを含んでいます。
+ディレクトリ&lt;code>checkpoint/&lt;/code>の内容は、CRIUの一部として配布されている&lt;a href="https://criu.org/CRIT">CRIT&lt;/a>ツールを使用して分析できるさまざまな&lt;a href="https://criu.org/Images">イメージファイル&lt;/a>で構成されています。&lt;/p>
+&lt;p>まず、コンテナの内部プロセスの概要を取得してみましょう。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-console" data-lang="console">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> crit show checkpoint/pstree.img | jq .entries&lt;span style="color:#666">[]&lt;/span>.pid
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">7
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">8
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>この出力はコンテナのPID名前空間の内部に3つのプロセス(PIDが1と7と8)があることを意味しています。&lt;/p>
+&lt;p>これはコンテナのPID名前空間の内部からの視界を表示しているだけです。
+復元中に正確にそれらのPIDが再作成されます。
+コンテナのPID名前空間の外部からPIDは復元後に変更されます。&lt;/p>
+&lt;p>次のステップは、それらの3つのプロセスについての追加情報を取得することです。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-console" data-lang="console">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> crit show checkpoint/core-1.img | jq .entries&lt;span style="color:#666">[&lt;/span>0&lt;span style="color:#666">]&lt;/span>.tc.comm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">&amp;#34;bash&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">&lt;/span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> crit show checkpoint/core-7.img | jq .entries&lt;span style="color:#666">[&lt;/span>0&lt;span style="color:#666">]&lt;/span>.tc.comm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">&amp;#34;counter.py&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">&lt;/span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> crit show checkpoint/core-8.img | jq .entries&lt;span style="color:#666">[&lt;/span>0&lt;span style="color:#666">]&lt;/span>.tc.comm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">&amp;#34;tee&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>これは、コンテナ内の3つのプロセスが&lt;code>bash&lt;/code>と&lt;code>counter.py&lt;/code>(Pythonインタプリター)と&lt;code>tee&lt;/code>であることを意味しています。
+プロセスの親子関係についての詳細は、&lt;code>checkpoint/pstree.img&lt;/code>に分析するデータがさらにあります。&lt;/p>
+&lt;p>ここまでで収集した情報をまだ実行中のコンテナと比較してみましょう。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-console" data-lang="console">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> crictl inspect --output go-template --template &lt;span style="color:#b44">&amp;#34;{{(index .info.pid)}}&amp;#34;&lt;/span> 059a219a22e56
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">722520
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">&lt;/span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> ps auxf | grep -A &lt;span style="color:#666">2&lt;/span> &lt;span style="color:#666">722520&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">fedora 722520 \_ bash -c /home/counter/counter.py 2&amp;gt;&amp;amp;1 | tee /home/counter/logfile
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">fedora 722541 \_ /usr/bin/python3 /home/counter/counter.py
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">fedora 722542 \_ /usr/bin/coreutils --coreutils-prog-shebang=tee /usr/bin/tee /home/counter/logfile
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">&lt;/span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> cat /proc/722520/comm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">&lt;/span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> cat /proc/722541/comm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">counter.py
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">&lt;/span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> cat /proc/722542/comm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">tee
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>この出力では、まずコンテナ内の最初のプロセスのPIDを取得しています。
+そしてコンテナを実行しているシステム上で、そのPIDと子プロセスを探しています。
+3つのプロセスが表示され、最初のものはコンテナPID名前空間の中でPID 1である&amp;quot;bash&amp;quot;です。
+次に&lt;code>/proc/&amp;lt;PID&amp;gt;/comm&lt;/code>を見ると、チェックポイントイメージと正確に同じ値を見つけることができます。&lt;/p>
+&lt;p>覚えておく重要なことは、チェックポイントはコンテナのPID名前空間内の視界が含まれていることです。
+なぜなら、これらの情報はプロセスを復元するために重要だからです。&lt;/p>
+&lt;p>&lt;code>crit&lt;/code>がコンテナについて教えてくれる最後の例は、UTS名前空間に関する情報です。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-console" data-lang="console">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> crit show checkpoint/utsns-12.img
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">{
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888"> &amp;#34;magic&amp;#34;: &amp;#34;UTSNS&amp;#34;,
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888"> &amp;#34;entries&amp;#34;: [
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888"> {
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888"> &amp;#34;nodename&amp;#34;: &amp;#34;counters&amp;#34;,
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888"> &amp;#34;domainname&amp;#34;: &amp;#34;(none)&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888"> }
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888"> ]
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">}
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>UTS名前空間内のホストネームが&lt;code>counters&lt;/code>であることを教えてくれます。&lt;/p>
+&lt;p>チェックポイント作成中に収集された各リソースCRIUについて、&lt;code>checkpoint/&lt;/code>ディレクトリは対応するイメージファイルを含んでいます。
+このイメージファイルは&lt;code>crit&lt;/code>を使用することで分析可能です。&lt;/p>
+&lt;h4 id="メモリーページを見る">メモリーページを見る&lt;/h4>
+&lt;p>CRITを使用して復号化できるCRIUからの情報に加えて、CRIUがディスクに書き込んだ生のメモリーページを含んでいるファイルもあります。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-console" data-lang="console">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> ls checkpoint/pages-*
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">checkpoint/pages-1.img checkpoint/pages-2.img checkpoint/pages-3.img
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>最初にコンテナを使用した際に、メモリー内のどこかにランダムキー(&lt;code>RANDOM_1432_KEY&lt;/code>)を保存しました。
+見つけることができるかどうか見てみましょう。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-console" data-lang="console">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> grep -ao RANDOM_1432_KEY checkpoint/pages-*
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">checkpoint/pages-2.img:RANDOM_1432_KEY
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>そして実際に、私のデータがあります。
+この方法で、コンテナ内のプロセスの全てのメモリーページの内容を簡単に見ることができます。
+しかし、チェックポイントアーカイブにアクセスできるなら誰でも、コンテナのプロセスのメモリー内に保存された全ての情報にアクセスできることを覚えておくことも重要です。&lt;/p>
+&lt;h4 id="さらなる分析のためにgdbを使用する">さらなる分析のためにgdbを使用する&lt;/h4>
+&lt;p>チェックポイントイメージを見るための他の方法は&lt;code>gdb&lt;/code>です。
+CRIUリポジトリは、チェックポイントをコアダンプファイルに変換する&lt;a href="https://github.com/checkpoint-restore/criu/tree/criu-dev/coredump">coredump&lt;/a>スクリプトを含んでいます。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-console" data-lang="console">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> /home/criu/coredump/coredump-python3
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> ls -al core*
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">core.1 core.7 core.8
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>coredump-python3&lt;/code>スクリプトを実行すると、チェックポイントイメージがコンテナ内の各プロセスに対し1つのコアダンプファイルに変換されます。
+&lt;code>gdb&lt;/code>を使用してプロセスの詳細を見ることもできます。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-console" data-lang="console">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000080;font-weight:bold">$&lt;/span> &lt;span style="color:#a2f">echo&lt;/span> info registers | gdb --core checkpoint/core.1 -q
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="">&lt;/span>&lt;span style="color:#888">[New LWP 1]
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">&lt;/span>&lt;span style="">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="">&lt;/span>&lt;span style="color:#888">Core was generated by `bash -c /home/counter/counter.py 2&amp;gt;&amp;amp;1 | tee /home/counter/logfile&amp;#39;.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">&lt;/span>&lt;span style="">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="">&lt;/span>&lt;span style="color:#000080;font-weight:bold">#&lt;/span>&lt;span style="color:#666">0&lt;/span> 0x00007fefba110198 in ?? &lt;span style="color:#666">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">(gdb)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">rax 0x3d 61
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">rbx 0x8 8
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">rcx 0x7fefba11019a 140667595587994
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">rdx 0x0 0
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">rsi 0x7fffed9c1110 140737179816208
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">rdi 0xffffffff 4294967295
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">rbp 0x1 0x1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">rsp 0x7fffed9c10e8 0x7fffed9c10e8
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">r8 0x1 1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">r9 0x0 0
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">r10 0x0 0
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">r11 0x246 582
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">r12 0x0 0
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">r13 0x7fffed9c1170 140737179816304
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">r14 0x0 0
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">r15 0x0 0
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">rip 0x7fefba110198 0x7fefba110198
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">eflags 0x246 [ PF ZF IF ]
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">cs 0x33 51
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">ss 0x2b 43
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">ds 0x0 0
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">es 0x0 0
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">fs 0x0 0
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#888">gs 0x0 0
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>この例では、チェックポイント中の全てのレジストリの値を見ることができ、コンテナのPID 1のプロセスの完全なコマンドライン(&lt;code>bash -c /home/counter/counter.py 2&amp;gt;&amp;amp;1 | tee /home/counter/logfile&lt;/code>)を見ることもできます。&lt;/p>
+&lt;h2 id="まとめ">まとめ&lt;/h2>
+&lt;p>コンテナチェックポイントを作成することで、コンテナを停止することやチェックポイントが作成されたことを知ることなく、実行中のコンテナのチェックポイントを作成することが可能です。
+Kubernetesにおいてコンテナのチェックポイントを作成した結果がチェックポイントアーカイブです。
+&lt;code>checkpointctl&lt;/code>や&lt;code>tar&lt;/code>、&lt;code>crit&lt;/code>、&lt;code>gdb&lt;/code>のような異なるツールを使用して、チェックポイントを分析できます。
+&lt;code>grep&lt;/code>のようなシンプルなツールでさえ、チェックポイントアーカイブ内の情報を見つけることが可能です。&lt;/p>
+&lt;p>この記事で示したチェックポイントの分析方法のさまざまな例は出発点にすぎません。
+この記事ではチェックポイントの分析を始める方法を紹介しましたが、要件によってはかなり詳細に特定の物事を見ることも可能です。&lt;/p>
+&lt;h2 id="参加するためにはどうすればよいですか">参加するためにはどうすればよいですか？&lt;/h2>
+&lt;p>SIG Nodeにはいくつかの方法でアクセスできます。&lt;/p>
+&lt;ul>
+&lt;li>Slack: &lt;a href="https://kubernetes.slack.com/messages/sig-node">#sig-node&lt;/a>&lt;/li>
+&lt;li>Slack: &lt;a href="https://kubernetes.slack.com/messages/sig-security">#sig-security&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://groups.google.com/forum/#!forum/kubernetes-sig-node">メーリングリスト&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Kubernetes 1.26: PodDisruptionBudgetによって保護された不健全なPodに対する退避ポリシー</title><link>https://kubernetes.xuxiaowei.com.cn/ja/blog/2023/01/06/unhealthy-pod-eviction-policy-for-pdbs/</link><pubDate>Fri, 06 Jan 2023 00:00:00 +0000</pubDate><guid>https://kubernetes.xuxiaowei.com.cn/ja/blog/2023/01/06/unhealthy-pod-eviction-policy-for-pdbs/</guid><description>
+&lt;p>&lt;strong>著者:&lt;/strong> Filip Křepinský (Red Hat), Morten Torkildsen (Google), Ravi Gudimetla (Apple)&lt;/p>
+&lt;p>アプリケーションの中断がその可用性に影響を与えないようにすることは、簡単な作業ではありません。
+先月リリースされたKubernetes v1.26では、&lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/concepts/workloads/pods/disruptions/#pod-disruption-budgets">PodDisruptionBudget&lt;/a> (PDB) に
+&lt;em>不健全なPodの退避ポリシー&lt;/em> を指定して、ノード管理操作中に可用性を維持できるようになりました。
+この記事では、アプリケーション所有者が中断をより柔軟に管理できるようにするために、PDBにどのような変更が導入されたのかを詳しく説明します。&lt;/p>
+&lt;h2 id="what-problem-does-this-solve">これはどのような問題を解決しますか？&lt;/h2>
+&lt;p>APIによって開始されるPodの退避では、PodDisruptionBudget(PDB)が考慮されます。
+これは、退避によるPodへの&lt;a href="https://kubernetes.xuxiaowei.com.cn/ja/docs/concepts/scheduling-eviction/#pod-disruption">自発的な中断&lt;/a>の要求は保護されたアプリケーションを中断してはならず、
+PDBの&lt;code>.status.currentHealthy&lt;/code>が&lt;code>.status.desiredHealthy&lt;/code>を下回ってはいけないことを意味します。
+&lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/tasks/run-application/configure-pdb/#healthiness-of-a-pod">Unhealthy&lt;/a>な実行中のPodはPDBステータスにはカウントされませんが、
+これらの退避はアプリケーションが中断されない場合にのみ可能です。
+これにより、中断されたアプリケーションやまだ開始されていないアプリケーションが、退避によって追加のダウンタイムが発生することなく、できるだけ早く可用性を達成できるようになります。&lt;/p>
+&lt;p>残念ながら、これは手動の介入なしでノードをドレインしたいクラスター管理者にとって問題を引き起こします。
+(バグまたは構成ミスにより)Podが&lt;code>CrashLoopBackOff&lt;/code>状態になっているアプリケーション、または単に準備ができていないPodがあるアプリケーションが誤動作している場合、このタスクはさらに困難になります。
+アプリケーションのすべてのPodが正常でない場合、PDBの違反により退避リクエストは失敗します。その場合、ノードのドレインは進行できません。&lt;/p>
+&lt;p>一方で、次の目的で従来の動作に依存するユーザーもいます。&lt;/p>
+&lt;ul>
+&lt;li>基盤となるリソースまたはストレージを保護しているPodの削除によって引き起こされるデータ損失を防止する&lt;/li>
+&lt;li>アプリケーションに対して可能な限り最高の可用性を実現する&lt;/li>
+&lt;/ul>
+&lt;p>Kubernetes 1.26では、PodDisruptionBudget APIに新しい実験的フィールド&lt;code>.spec.unhealthyPodEvictionPolicy&lt;/code>が導入されました。
+このフィールドを有効にすると、これらの要件の両方をサポートできるようになります。&lt;/p>
+&lt;h2 id="how-does-it-work">どのように機能しますか？&lt;/h2>
+&lt;p>APIによって開始される退避は、Podの安全な終了をトリガーするプロセスです。
+このプロセスは、APIを直接呼び出すか、&lt;code>kubectl drain&lt;/code>コマンドを使用するか、クラスター内の他のアクターを使用して開始できます。
+このプロセス中に、十分な数のPodが常にクラスター内で実行されていることを確認するために、すべてのPodの削除が適切なPDBと照合されます。&lt;/p>
+&lt;p>次のポリシーにより、PDBの作成者は、プロセスが不健全なPodを処理する方法をより詳細に制御できるようになります。&lt;/p>
+&lt;p>&lt;code>IfHealthyBudget&lt;/code>と&lt;code>AlwaysAllow&lt;/code>の2つのポリシーから選択できます。&lt;/p>
+&lt;p>前者の&lt;code>IfHealthyBudget&lt;/code>は、従来の動作に従って、デフォルトで得られる最高の可用性を実現します。
+不健全なPodは、アプリケーションが利用可能な最小数の&lt;code>.status.desiredHealthy&lt;/code>だけPodがある場合にのみ中断できます。&lt;/p>
+&lt;p>PDBの&lt;code>spec.unhealthyPodEvictionPolicy&lt;/code>フィールドを&lt;code>AlwaysAllow&lt;/code>に設定することにより、アプリケーションにとってベストエフォートの可用性を選択することになります。
+このポリシーを使用すると、不健全なPodをいつでも削除できます。これにより、クラスターの保守とアップグレードが容易になります。&lt;/p>
+&lt;p>多くの場合、&lt;code>AlwaysAllow&lt;/code>がより良い選択であると考えられますが、一部の重要なワークロードでは、
+不健全なPodであってもノードドレインやAPIによって開始される他の形式の退避から保護する方が望ましい場合もあります。&lt;/p>
+&lt;h2 id="how-do-i-use-it">どのように利用できますか？&lt;/h2>
+&lt;p>これはアルファ機能であるため、kube-apiserverに対してコマンドライン引数&lt;code>--feature-gates=PDBUnhealthyPodEvictionPolicy=true&lt;/code>を指定して
+&lt;code>PDBUnhealthyPodEvictionPolicy&lt;/code>&lt;a href="https://kubernetes.xuxiaowei.com.cn/ja/docs/reference/command-line-tools-reference/feature-gates/">フィーチャーゲート&lt;/a>を有効にする必要があります。&lt;/p>
+&lt;p>ここに例を示します。クラスターでフィーチャーゲートを有効にし、プレーンなWebサーバーを実行するDeploymentをすでに定義していると仮定します。
+そのDeploymentのPodに&lt;code>app: nginx&lt;/code>というラベルを付けました。
+回避可能な中断を制限したいと考えており、このアプリにはベストエフォートの可用性で十分であることがわかっています。
+WebサーバーのPodが不健全な場合でも、退避を許可することにしました。
+不健全なPodを排除するための&lt;code>AlwaysAllow&lt;/code>ポリシーを使用して、このアプリケーションを保護するPDBを作成します。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#008000;font-weight:bold">apiVersion&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>policy/v1&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#008000;font-weight:bold">kind&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>PodDisruptionBudget&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#008000;font-weight:bold">metadata&lt;/span>:&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">name&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>nginx-pdb&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#008000;font-weight:bold">spec&lt;/span>:&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">selector&lt;/span>:&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">matchLabels&lt;/span>:&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">app&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>nginx&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">maxUnavailable&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#666">1&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">unhealthyPodEvictionPolicy&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>AlwaysAllow&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="how-can-i-learn-more">もっと学ぶには？&lt;/h2>
+&lt;ul>
+&lt;li>KEPを読んでください: &lt;a href="https://github.com/kubernetes/enhancements/tree/master/keps/sig-apps/3017-pod-healthy-policy-for-pdb">Unhealthy Pod Eviction Policy for PDBs&lt;/a>&lt;/li>
+&lt;li>PodDisruptionBudgetについてのドキュメントを読んでください: &lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/tasks/run-application/configure-pdb/#unhealthy-pod-eviction-policy">Unhealthy Pod Eviction Policy&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/concepts/workloads/pods/disruptions/#pod-disruption-budgets">PodDisruptionBudget&lt;/a>、&lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/tasks/administer-cluster/safely-drain-node/">draining of Nodes&lt;/a>および&lt;a href="https://kubernetes.xuxiaowei.com.cn/ja/docs/concepts/scheduling-eviction/api-eviction/">evictions&lt;/a>についてKubernetesドキュメントを確認してください&lt;/li>
+&lt;/ul>
+&lt;h2 id="how-do-i-get-involved">どうすれば参加できますか？&lt;/h2>
+&lt;p>フィードバックがある場合は、Slackの&lt;a href="https://kubernetes.slack.com/archives/C18NZM5K9">#sig-apps&lt;/a> チャンネル(必要な場合は &lt;a href="https://slack.k8s.io/">https://slack.k8s.io/&lt;/a> にアクセスして招待を受けてください)、またはSIG Appsメーリングリストにご連絡ください。kubernetes-sig-apps@googlegroups.com&lt;/p></description></item><item><title>Kubernetesにおけるフォレンジックコンテナチェックポイント処理</title><link>https://kubernetes.xuxiaowei.com.cn/ja/blog/2022/12/05/forensic-container-checkpointing-alpha/</link><pubDate>Mon, 05 Dec 2022 00:00:00 +0000</pubDate><guid>https://kubernetes.xuxiaowei.com.cn/ja/blog/2022/12/05/forensic-container-checkpointing-alpha/</guid><description>
+&lt;p>&lt;strong>Authors:&lt;/strong> Adrian Reber (Red Hat)&lt;/p>
+&lt;p>フォレンジックコンテナチェックポイント処理は&lt;a href="https://criu.org/">Checkpoint/Restore In Userspace&lt;/a> (CRIU)に基づいており、コンテナがチェックポイントされていることを認識することなく、実行中のコンテナのステートフルコピーを作成することができます。
+コンテナのコピーは、元のコンテナに気づかれることなく、サンドボックス環境で複数回の分析やリストアが可能です。
+フォレンジックコンテナチェックポイント処理はKubernetes v1.25でalpha機能として導入されました。&lt;/p>
+&lt;h2 id="どのように機能しますか">どのように機能しますか？&lt;/h2>
+&lt;p>CRIUを使用してコンテナのチェックポイントやリストアを行うことが可能です。
+CRIUはruncやcrun、CRI-O、containerdと統合されており、Kubernetesで実装されているフォレンジックコンテナチェックポイント処理は、既存のCRIU統合を使用します。&lt;/p>
+&lt;h2 id="なぜ重要なのか">なぜ重要なのか？&lt;/h2>
+&lt;p>CRIUと対応する統合機能を使用することで、後でフォレンジック分析を行うために、ディスク上で実行中のコンテナに関する全ての情報と状態を取得することが可能です。
+フォレンジック分析は、疑わしいコンテナを停止したり影響を与えることなく検査するために重要となる場合があります。
+コンテナが本当に攻撃を受けている場合、攻撃者はコンテナを検査する処理を検知するかもしれません。
+チェックポイントを取得しサンドボックス環境でコンテナを分析することは、元のコンテナや、おそらく攻撃者にも検査を認識されることなく、コンテナを検査することができる可能性があります。&lt;/p>
+&lt;p>フォレンジックコンテナチェックポイント処理のユースケースに加えて、内部状態を失うことなく、あるノードから他のノードにコンテナを移行することも可能です。
+特に初期化時間の長いステートフルコンテナの場合、チェックポイントからリストアすることは再起動後の時間が節約されるか、起動時間がより早くなる可能性があります。&lt;/p>
+&lt;h2 id="コンテナチェックポイント処理を利用するには">コンテナチェックポイント処理を利用するには？&lt;/h2>
+&lt;p>機能は&lt;a href="https://kubernetes.io/ja/docs/reference/command-line-tools-reference/feature-gates/">フィーチャーゲート&lt;/a>で制限されているため、新しい機能を使用する前に&lt;code>ContainerCheckpoint&lt;/code>を有効にしてください。&lt;/p>
+&lt;p>ランタイムがコンテナチェックポイント処理をサポートしている必要もあります。&lt;/p>
+&lt;ul>
+&lt;li>containerd: サポートは現在検討中です。詳細はcontainerdプルリクエスト&lt;a href="https://github.com/containerd/containerd/pull/6965">#6965&lt;/a>を見てください。&lt;/li>
+&lt;li>CRI-O: v1.25はフォレンジックコンテナチェックポイント処理をサポートしています。&lt;/li>
+&lt;/ul>
+&lt;h3 id="cri-oでの使用例">CRI-Oでの使用例&lt;/h3>
+&lt;p>CRI-Oとの組み合わせでフォレンジックコンテナチェックポイント処理を使用するためには、ランタイムをコマンドラインオプション&lt;code>--enable-criu-support=true&lt;/code>で起動する必要があります。
+Kubernetesでは、&lt;code>ContainerCheckpoint&lt;/code>フィーチャーゲートを有効にしたクラスターを実行する必要があります。
+チェックポイント処理の機能はCRIUによって提供されているため、CRIUをインストールすることも必要となります。
+通常、runcやcrunはCRIUに依存しているため、自動的にインストールされます。&lt;/p>
+&lt;p>執筆時点ではチェックポイント機能はCRI-OやKubernetesにおいてalpha機能としてみなされており、セキュリティ影響がまだ検討中であることに言及することも重要です。&lt;/p>
+&lt;p>コンテナとPodが実行されると、チェックポイントを作成することが可能になります。
+&lt;a href="https://kubernetes.io/docs/reference/node/kubelet-checkpoint-api/">チェックポイント処理&lt;/a>は&lt;strong>kubelet&lt;/strong>レベルでのみ公開されています。
+コンテナをチェックポイントするためには、コンテナが実行されているノード上で&lt;code>curl&lt;/code>を実行し、チェックポイントをトリガーします。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>curl -X POST &lt;span style="color:#b44">&amp;#34;https://localhost:10250/checkpoint/namespace/podId/container&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;em>default&lt;/em>名前空間内の&lt;em>counters&lt;/em>と呼ばれるPod内の&lt;em>counter&lt;/em>と呼ばれるコンテナに対し、&lt;strong>kubelet&lt;/strong> APIエンドポイントが次の場所で到達可能です。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>curl -X POST &lt;span style="color:#b44">&amp;#34;https://localhost:10250/checkpoint/default/counters/counter&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>厳密には、kubeletの自己署名証明書を許容し、kubeletチェックポイントAPIの使用を認可するために、下記のcurlコマンドのオプションが必要です。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>--insecure --cert /var/run/kubernetes/client-admin.crt --key /var/run/kubernetes/client-admin.key
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>この&lt;strong>kubelet&lt;/strong> APIが実行されると、CRI-Oからチェックポイントの作成をリクエストします。
+CRI-Oは低レベルランタイム(例えば&lt;code>runc&lt;/code>)からチェックポイントをリクエストします。
+そのリクエストを確認すると、&lt;code>runc&lt;/code>は実際のチェックポイントを行うために&lt;code>criu&lt;/code>ツールを呼び出します。&lt;/p>
+&lt;p>チェックポイント処理が終了すると、チェックポイントは&lt;code>/var/lib/kubelet/checkpoints/checkpoint-&amp;lt;pod-name&amp;gt;_&amp;lt;namespace-name&amp;gt;-&amp;lt;container-name&amp;gt;-&amp;lt;timestamp&amp;gt;.tar&lt;/code>で利用可能になります。&lt;/p>
+&lt;p>その後、そのtarアーカイブを使用してコンテナを別の場所にリストアできます。&lt;/p>
+&lt;h3 id="restore-checkpointed-container-standalone">Kubernetesの外部でチェックポイントしたコンテナをリストアする(CRI-Oを使用)&lt;/h3>
+&lt;p>チェックポイントtarアーカイブを使用すると、CRI-Oのサンドボックスインスタンス内のKubernetesの外部にコンテナをリストア可能です。
+リストア中のより良いユーザエクスペリエンスのために、&lt;em>main&lt;/em> CRI-O GitHubブランチからCRI-Oのlatestバージョンを使用することを推奨します。
+CRI-O v1.25を使用している場合、コンテナを開始する前にKubernetesが作成する特定のディレクトリを手動で作成する必要があります。&lt;/p>
+&lt;p>Kubernetesの外部にコンテナをリストアするための最初のステップは、&lt;em>crictl&lt;/em>を使用してPodサンドボックスを作成することです。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>crictl runp pod-config.json
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>次に、さきほどチェックポイントしたコンテナを新しく作成したPodサンドボックスにリストアします。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>crictl create &amp;lt;POD_ID&amp;gt; container-config.json pod-config.json
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>container-config.json&lt;/code>のレジストリでコンテナイメージを指定する代わりに、前に作成したチェックポイントアーカイブへのパスを指定する必要があります。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#008000;font-weight:bold">&amp;#34;metadata&amp;#34;&lt;/span>: {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#008000;font-weight:bold">&amp;#34;name&amp;#34;&lt;/span>: &lt;span style="color:#b44">&amp;#34;counter&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#008000;font-weight:bold">&amp;#34;image&amp;#34;&lt;/span>:{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#008000;font-weight:bold">&amp;#34;image&amp;#34;&lt;/span>: &lt;span style="color:#b44">&amp;#34;/var/lib/kubelet/checkpoints/&amp;lt;checkpoint-archive&amp;gt;.tar&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>次に、そのコンテナを開始するために&lt;code>crictl start &amp;lt;CONTAINER_ID&amp;gt;&lt;/code>を実行すると、さきほどチェックポイントしたコンテナのコピーが実行されているはずです。&lt;/p>
+&lt;h3 id="restore-checkpointed-container-k8s">Kubernetes内でチェックポイントしたコンテナをリストアする&lt;/h3>
+&lt;p>先ほどチェックポイントしたコンテナをKubernetes内で直接リストアするためには、レジストリにプッシュできるイメージにチェックポイントアーカイブを変換する必要があります。&lt;/p>
+&lt;p>ローカルのチェックポイントアーカイブを変換するための方法として、&lt;a href="https://buildah.io/">buildah&lt;/a>を使用した下記のステップが考えられます。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#b8860b">newcontainer&lt;/span>&lt;span style="color:#666">=&lt;/span>&lt;span style="color:#a2f;font-weight:bold">$(&lt;/span>buildah from scratch&lt;span style="color:#a2f;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>buildah add &lt;span style="color:#b8860b">$newcontainer&lt;/span> /var/lib/kubelet/checkpoints/checkpoint-&amp;lt;pod-name&amp;gt;_&amp;lt;namespace-name&amp;gt;-&amp;lt;container-name&amp;gt;-&amp;lt;timestamp&amp;gt;.tar /
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>buildah config --annotation&lt;span style="color:#666">=&lt;/span>io.kubernetes.cri-o.annotations.checkpoint.name&lt;span style="color:#666">=&lt;/span>&amp;lt;container-name&amp;gt; &lt;span style="color:#b8860b">$newcontainer&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>buildah commit &lt;span style="color:#b8860b">$newcontainer&lt;/span> checkpoint-image:latest
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>buildah rm &lt;span style="color:#b8860b">$newcontainer&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>出来上がったイメージは標準化されておらず、CRI-Oとの組み合わせでのみ動作します。
+このイメージはalphaにも満たないフォーマットであると考えてください。
+このようなチェックポイントイメージのフォーマットを標準化するための&lt;a href="https://github.com/opencontainers/image-spec/issues/962">議論&lt;/a>が進行中です。
+これはまだ標準化されたイメージフォーマットではなく、CRI-Oを&lt;code>--enable-criu-support=true&lt;/code>で起動した場合のみ動作することを忘れないでください。
+CRIUサポートでCRI-Oを起動することのセキュリティ影響はまだ明確ではなく、そのため、イメージフォーマットだけでなく機能も気を付けて使用するべきです。&lt;/p>
+&lt;p>さて、そのイメージをコンテナイメージレジストリにプッシュする必要があります。
+例えば以下のような感じです。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>buildah push localhost/checkpoint-image:latest container-image-registry.example/user/checkpoint-image:latest
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>このチェックポイントイメージ(&lt;code>container-image-registry.example/user/checkpoint-image:latest&lt;/code>)をリストアするために、イメージはPodの仕様(Specification)に記載する必要があります。
+以下はマニフェストの例です。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#008000;font-weight:bold">apiVersion&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>v1&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#008000;font-weight:bold">kind&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>Pod&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#008000;font-weight:bold">metadata&lt;/span>:&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">namePrefix&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>example-&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#008000;font-weight:bold">spec&lt;/span>:&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">containers&lt;/span>:&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>- &lt;span style="color:#008000;font-weight:bold">name&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&amp;lt;container-name&amp;gt;&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">image&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>container-image-registry.example/user/checkpoint-image:latest&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#008000;font-weight:bold">nodeName&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&amp;lt;destination-node&amp;gt;&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Kubernetesは新しいPodをノード上にスケジュールします。
+そのノード上のKubeletは、&lt;code>registry/user/checkpoint-image:latest&lt;/code>として指定されたイメージをもとに、コンテナを作成し開始するようにコンテナランタイム(この例ではCRI-O)に指示をします。
+CRI-Oは&lt;code>registry/user/checkpoint-image:latest&lt;/code>がコンテナイメージでなく、チェックポイントデータへの参照であることを検知します。
+その時、コンテナを作成し開始する通常のステップの代わりに、CRI-Oはチェックポイントデータをフェッチし、指定されたチェックポイントからコンテナをリストアします。&lt;/p>
+&lt;p>Pod内のアプリケーションはチェックポイントを取得しなかったかのように実行し続けます。
+コンテナ内では、アプリケーションはチェックポイントからリストアされず通常起動したコンテナのような見た目や動作をします。&lt;/p>
+&lt;p>これらのステップで、あるノードで動作しているPodを、別のノードで動作している新しい同等のPodに置き換えることができ、そのPod内のコンテナの状態を失うことはないです。&lt;/p>
+&lt;h2 id="どのように参加すればよいですか">どのように参加すればよいですか？&lt;/h2>
+&lt;p>SIG Nodeにはいくつかの手段でアクセスすることができます。&lt;/p>
+&lt;ul>
+&lt;li>Slack: &lt;a href="https://kubernetes.slack.com/messages/sig-node">#sig-node&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://groups.google.com/forum/#!forum/kubernetes-sig-node">メーリングリスト&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="さらなる読み物">さらなる読み物&lt;/h2>
+&lt;p>コンテナチェックポイントの分析方法に関する詳細は後続のブログ&lt;a href="https://kubernetes.xuxiaowei.com.cn/blog/2023/03/10/forensic-container-analysis/">Forensic container analysis&lt;/a>を参照してください。&lt;/p></description></item><item><title>更新: dockershimの削除に関するFAQ</title><link>https://kubernetes.xuxiaowei.com.cn/ja/blog/2022/02/17/dockershim-faq/</link><pubDate>Thu, 17 Feb 2022 00:00:00 +0000</pubDate><guid>https://kubernetes.xuxiaowei.com.cn/ja/blog/2022/02/17/dockershim-faq/</guid><description>
+&lt;p>&lt;strong>この記事は2020年の後半に投稿されたオリジナルの記事&lt;a href="https://kubernetes.xuxiaowei.com.cn/blog/2020/12/02/dockershim-faq/">Dockershim Deprecation FAQ&lt;/a>の更新版です。
+この記事にはv1.24のリリースに関する更新を含みます。&lt;/strong>&lt;/p>
+&lt;hr>
+&lt;p>この文書では、Kubernetesからの &lt;em>dockershim&lt;/em> の削除に関するよくある質問について説明します。
+この削除はKubernetes v1.20リリースの一部としてはじめて&lt;a href="https://kubernetes.xuxiaowei.com.cn/blog/2020/12/08/kubernetes-1-20-release-announcement/">発表&lt;/a>されたものです。
+Kubernetes &lt;a href="https://kubernetes.xuxiaowei.com.cn/releases/#release-v1-24">v1.24のリリース&lt;/a>においてdockershimは実際にKubernetesから削除されました。&lt;/p>
+&lt;p>これが何を意味するかについては、ブログ記事&lt;a href="https://kubernetes.xuxiaowei.com.cn/ja/blog/2020/12/02/dont-panic-kubernetes-and-docker/">Don't Panic: Kubernetes and Docker&lt;/a>をご覧ください。&lt;/p>
+&lt;p>&lt;a href="https://kubernetes.xuxiaowei.com.cn/ja/docs/tasks/administer-cluster/migrating-from-dockershim/check-if-dockershim-removal-affects-you/">dockershim削除の影響範囲を確認する&lt;/a>をお読みいただくことで、
+dockershimの削除があなたやあなたの組織に与える影響をご判断いただけます。&lt;/p>
+&lt;p>Kubernetes 1.24リリースに至るまでの間、Kubernetesコントリビューターはこの移行を円滑に行えるようにするために尽力してきました。&lt;/p>
+&lt;ul>
+&lt;li>私たちの&lt;a href="https://kubernetes.xuxiaowei.com.cn/blog/2022/01/07/kubernetes-is-moving-on-from-dockershim/">コミットメントと次のステップ&lt;/a>を詳述したブログ記事。&lt;/li>
+&lt;li>&lt;a href="https://kubernetes.xuxiaowei.com.cn/ja/docs/setup/production-environment/container-runtimes/#container-runtimes">他のコンテナランタイム&lt;/a>への移行に大きな障害があるかどうかのチェック。&lt;/li>
+&lt;li>&lt;a href="https://kubernetes.xuxiaowei.com.cn/ja/docs/tasks/administer-cluster/migrating-from-dockershim/">dockershimからの移行&lt;/a>ガイドの追加。&lt;/li>
+&lt;li>&lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/reference/node/topics-on-dockershim-and-cri-compatible-runtimes/">dockershimの削除とCRI互換ランタイムの使用に関する記事一覧&lt;/a>の作成。
+このリストには、上に示した文書の一部が含まれており、また、厳選された外部の情報(ベンダーによるガイドを含む)もカバーしています。&lt;/li>
+&lt;/ul>
+&lt;h3 id="dockershimはなぜkubernetesから削除されたのですか">dockershimはなぜKubernetesから削除されたのですか？&lt;/h3>
+&lt;p>Kubernetesの初期のバージョンは、特定のコンテナランタイム上でのみ動作しました。
+Docker Engineです。その後、Kubernetesは他のコンテナランタイムと連携するためのサポートを追加しました。
+オーケストレーター(Kubernetesなど)と多くの異なるコンテナランタイムの間の相互運用を可能にするため、
+CRI標準が&lt;a href="https://kubernetes.xuxiaowei.com.cn/blog/2016/12/container-runtime-interface-cri-in-kubernetes/">作成&lt;/a>されました。
+Docker Engineはそのインターフェース(CRI)を実装していないため、Kubernetesプロジェクトは移行を支援する特別なコードを作成し、
+その &lt;em>dockershim&lt;/em> コードをKubernetes自身の一部としました。&lt;/p>
+&lt;p>dockershimコードは常に一時的な解決策であることを意図されていました(このためshimと名付けられています)。
+コミュニティでの議論や計画については、&lt;a href="https://github.com/kubernetes/enhancements/tree/master/keps/sig-node/2221-remove-dockershim">dockershimの削除によるKubernetes改良の提案&lt;/a>にてお読みいただけます。&lt;/p>
+&lt;p>実際、dockershimのメンテナンスはKubernetesメンテナーにとって大きな負担になっていました。&lt;/p>
+&lt;p>さらに、dockershimとほとんど互換性のなかった機能、たとえばcgroups v2やユーザーネームスペースなどが、
+これらの新しいCRIランタイムに実装されています。Kubernetesからdockershimを削除することで、これらの分野でのさらなる開発が可能になります。&lt;/p>
+&lt;h3 id="dockerとコンテナは同じものですか">Dockerとコンテナは同じものですか？&lt;/h3>
+&lt;p>DockerはLinuxのコンテナパターンを普及させ、その基盤技術の発展に寄与してきましたが、
+Linuxのコンテナ技術そのものはかなり以前から存在しています。
+また、コンテナエコシステムはDockerを超えてより広範に発展してきました。
+OCIやCRIのような標準は、Dockerの機能の一部を置き換えたり、既存の機能を強化したりすることで、
+私達のエコシステムの多くのツールの成長と繁栄を助けてきました。&lt;/p>
+&lt;h3 id="既存のコンテナイメージは引き続き使えるのですか">既存のコンテナイメージは引き続き使えるのですか？&lt;/h3>
+&lt;p>はい、&lt;code>docker build&lt;/code>から生成されるイメージは、全てのCRI実装で動作します。
+既存のイメージも全く同じように動作します。&lt;/p>
+&lt;h3 id="プライベートイメージについてはどうでしょうか">プライベートイメージについてはどうでしょうか？&lt;/h3>
+&lt;p>はい、すべてのCRIランタイムはKubernetesで使われているものと同一のpull secretsをサポートしており、
+PodSpecまたはService Accountを通して利用できます。&lt;/p>
+&lt;h3 id="kubernetes-1-23でdocker-engineを引き続き使用できますか">Kubernetes 1.23でDocker Engineを引き続き使用できますか？&lt;/h3>
+&lt;p>はい、1.20で変更されたのは、Docker Engineランタイムを使用している場合に警告ログが&lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/reference/command-line-tools-reference/kubelet/">kubelet&lt;/a>起動時に出るようになったことだけです。
+この警告は、1.23までのすべてのバージョンで表示されます。
+dockershimの削除はKubernetes 1.24で行われました。&lt;/p>
+&lt;p>Kubernetes v1.24以降を実行している場合は、&lt;a href="#can-i-still-use-docker-engine-as-my-container-runtime">Docker Engineを引き続きコンテナランタイムとして利用できますか？&lt;/a>をご覧ください。
+(CRIがサポートされているKubernetesリリースを使用している場合、dockershimから切り替えることができることを忘れないでください。
+リリースv1.24からはKubernetesにdockershimが含まれなくなったため、&lt;strong>必ず&lt;/strong>切り替えなければなりません)。&lt;/p>
+&lt;h3 id="どのcriの実装を使うべきでしょうか">どのCRIの実装を使うべきでしょうか？&lt;/h3>
+&lt;p>これは難しい質問で、様々な要素に依存します。
+もしDocker Engineがうまく動いているのであれば、containerdに移行するのは比較的簡単で、
+性能もオーバーヘッドも確実に改善されるでしょう。
+しかし、他の選択のほうがあなたの環境により適合する場合もありますので、
+&lt;a href="https://landscape.cncf.io/?group=projects-and-products&amp;amp;view-mode=card#runtime--container-runtime">CNCF landscape&lt;/a>にあるすべての選択肢を検討されることをおすすめします。&lt;/p>
+&lt;h4 id="can-i-still-use-docker-engine-as-my-container-runtime">Docker Engineを引き続きコンテナランタイムとして利用できますか？&lt;/h4>
+&lt;p>第一に、ご自身のPCで開発やテスト用途でDockerを使用している場合、何も変わることはありません。
+Kubernetesでどのコンテナランタイムを使っていても、Dockerをローカルで使い続けることができます。
+コンテナではこのような相互運用性を実現できます。&lt;/p>
+&lt;p>MirantisとDockerは、Kubernetesから内蔵のdockershimが削除された後も、
+Docker Engineの代替アダプターを維持することに&lt;a href="https://www.mirantis.com/blog/mirantis-to-take-over-support-of-kubernetes-dockershim-2/">コミット&lt;/a>しています。
+代替アダプターの名前は&lt;a href="https://github.com/Mirantis/cri-dockerd">&lt;code>cri-dockerd&lt;/code>&lt;/a>です。&lt;/p>
+&lt;p>&lt;code>cri-dockerd&lt;/code>をインストールして、kubeletをDocker Engineに接続するために使用することができます。
+詳細については、&lt;a href="https://kubernetes.xuxiaowei.com.cn/docs/tasks/administer-cluster/migrating-from-dockershim/migrate-dockershim-dockerd/">Migrate Docker Engine nodes from dockershim to cri-dockerd&lt;/a>を読んでください。&lt;/p>
+&lt;h3 id="今現在でプロダクション環境に他のランタイムを使用している例はあるのでしょうか">今現在でプロダクション環境に他のランタイムを使用している例はあるのでしょうか？&lt;/h3>
+&lt;p>Kubernetesプロジェクトが生み出したすべての成果物(Kubernetesバイナリ)は、リリースごとに検証されています。&lt;/p>
+&lt;p>また、&lt;a href="https://kind.sigs.k8s.io/">kind&lt;/a>プロジェクトは以前からcontainerdを使っており、プロジェクトのユースケースにおいて安定性が向上してきています。
+kindとcontainerdは、Kubernetesコードベースの変更を検証するために毎日何回も利用されています。
+他の関連プロジェクトも同様のパターンを追っており、他のコンテナランタイムの安定性と使いやすさが示されています。
+例として、OpenShift 4.xは2019年6月以降、CRI-Oランタイムをプロダクション環境で使っています。&lt;/p>
+&lt;p>他の事例や参考資料はについては、
+containerdとCRI-O(Cloud Native Computing Foundation (&lt;a href="https://cncf.io">CNCF&lt;/a>)の2つのコンテナランタイム)の採用例をご覧ください。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/containerd/containerd/blob/master/ADOPTERS.md">containerd&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/cri-o/cri-o/blob/master/ADOPTERS.md">CRI-O&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="ociという単語をよく見るのですが-これは何ですか">OCIという単語をよく見るのですが、これは何ですか？&lt;/h3>
+&lt;p>OCIは&lt;a href="https://opencontainers.org/about/overview/">Open Container Initiative&lt;/a>の略で、コンテナツールとテクノロジー間の数多くのインターフェースの標準化を行った団体です。
+彼らはコンテナイメージをパッケージするための標準仕様(OCI image-spec)と、
+コンテナを実行するための標準仕様(OCI runtime-spec)をメンテナンスしています。
+また、&lt;a href="https://github.com/opencontainers/runc">runc&lt;/a>という形でruntime-specの実装もメンテナンスしており、
+これは&lt;a href="https://containerd.io/">containerd&lt;/a>と&lt;a href="https://cri-o.io/">CRI-O&lt;/a>の両方でデフォルトの下位ランタイムとなっています。
+CRIはこれらの低レベル仕様に基づいて、コンテナを管理するためのエンドツーエンドの標準を提供します。&lt;/p>
+&lt;h3 id="cri実装を変更する際に注意すべきことは何ですか">CRI実装を変更する際に注意すべきことは何ですか？&lt;/h3>
+&lt;p>DockerとほとんどのCRI(containerdを含む)において、下位で使用されるコンテナ化コードは同じものですが、
+いくつかの細かい違いが存在します。移行する際に考慮すべき一般的な事項は次のとおりです。&lt;/p>
+&lt;ul>
+&lt;li>ログ設定&lt;/li>
+&lt;li>ランタイムリソースの制限&lt;/li>
+&lt;li>ノード構成スクリプトでdockerコマンドやコントロールソケット経由でDocker Engineを使用しているもの&lt;/li>
+&lt;li>&lt;code>kubectl&lt;/code>のプラグインで&lt;code>docker&lt;/code> CLIまたはDocker Engineコントロールソケットが必要なもの&lt;/li>
+&lt;li>KubernetesプロジェクトのツールでDocker Engineへの直接アクセスが必要なもの(例:廃止された&lt;code>kube-imagepuller&lt;/code>ツール)&lt;/li>
+&lt;li>&lt;code>registry-mirrors&lt;/code>やinsecureレジストリなどの機能の設定&lt;/li>
+&lt;li>その他の支援スクリプトやデーモンでDocker Engineが利用可能であることを想定していてKubernetes外で実行されるもの(モニタリング・セキュリティエージェントなど)&lt;/li>
+&lt;li>GPUまたは特別なハードウェア、そしてランタイムおよびKubernetesとそれらハードウェアの統合方法&lt;/li>
+&lt;/ul>
+&lt;p>あなたがKubernetesのリソース要求/制限やファイルベースのログ収集DaemonSetを使用しているのであれば、それらは問題なく動作し続けますが、
+&lt;code>dockerd&lt;/code>の設定をカスタマイズしていた場合は、それを新しいコンテナランタイムに適合させる必要があるでしょう。&lt;/p>
+&lt;p>他に注意することとしては、システムメンテナンスを実行するようなものや、コンテナ内でイメージをビルドするようなものが動作しなくなります。
+前者の場合は、&lt;a href="https://github.com/kubernetes-sigs/cri-tools">&lt;code>crictl&lt;/code>&lt;/a>ツールをdrop-inの置き換えとして使用できます(&lt;a href="https://kubernetes.io/ja/docs/tasks/debug/debug-cluster/crictl/#docker-cli%E3%81%8B%E3%82%89crictl%E3%81%B8%E3%81%AE%E3%83%9E%E3%83%83%E3%83%94%E3%83%B3%E3%82%B0">docker cliからcrictlへのマッピング&lt;/a>を参照)。
+後者の場合は、&lt;a href="https://github.com/genuinetools/img">img&lt;/a>、&lt;a href="https://github.com/containers/buildah">buildah&lt;/a>、&lt;a href="https://github.com/GoogleContainerTools/kaniko">kaniko&lt;/a>、&lt;a href="https://github.com/vmware-tanzu/buildkit-cli-for-kubectl">buildkit-cli-for-kubectl&lt;/a>のようなDockerを必要としない新しいコンテナビルドの選択肢を使用できます。&lt;/p>
+&lt;p>containerdを使っているのであれば、&lt;a href="https://github.com/containerd/cri/blob/master/docs/registry.md">ドキュメント&lt;/a>を参照して、移行するのにどのような構成が利用可能かを確認するところから始めるといいでしょう。&lt;/p>
+&lt;p>containerdとCRI-OをKubernetesで使用する方法に関しては、&lt;a href="https://kubernetes.xuxiaowei.com.cn/ja/docs/setup/production-environment/container-runtimes/">コンテナランタイム&lt;/a>に関するKubernetesのドキュメントを参照してください。&lt;/p>
+&lt;h3 id="さらに質問がある場合どうすればいいでしょうか">さらに質問がある場合どうすればいいでしょうか？&lt;/h3>
+&lt;p>ベンダーサポートのKubernetesディストリビューションを使用している場合、彼らの製品に対するアップグレード計画について尋ねることができます。
+エンドユーザーの質問に関しては、&lt;a href="https://discuss.kubernetes.io/">エンドユーザーコミュニティフォーラム&lt;/a>に投稿してください。&lt;/p>
+&lt;p>dockershimの削除に関する決定については、専用の&lt;a href="https://github.com/kubernetes/kubernetes/issues/106917">GitHub issue&lt;/a>で議論することができます。&lt;/p>
+&lt;p>変更点に関するより詳細な技術的な議論は、&lt;a href="https://dev.to/inductor/wait-docker-is-deprecated-in-kubernetes-now-what-do-i-do-e4m">待ってください、DockerはKubernetesで非推奨になったのですか？&lt;/a>という素晴らしいブログ記事も参照してください。&lt;/p>
+&lt;h3 id="dockershimを使っているかどうかを検出できるツールはありますか">dockershimを使っているかどうかを検出できるツールはありますか？&lt;/h3>
+&lt;p>はい！&lt;a href="https://github.com/aws-containers/kubectl-detector-for-docker-socket">Detector for Docker Socket (DDS)&lt;/a>というkubectlプラグインをインストールすることであなたのクラスターを確認していただけます。
+DDSは、アクティブなKubernetesワークロードがDocker Engineソケット(&lt;code>docker.sock&lt;/code>)をボリュームとしてマウントしているかを検出できます。
+さらなる詳細と使用パターンについては、DDSプロジェクトの&lt;a href="https://github.com/aws-containers/kubectl-detector-for-docker-socket">README&lt;/a>を参照してください。&lt;/p>
+&lt;h3 id="ハグしていただけますか">ハグしていただけますか？&lt;/h3>
+&lt;p>はい、私達は引き続きいつでもハグに応じています。🤗🤗🤗&lt;/p></description></item><item><title>Don't Panic: Kubernetes and Docker</title><link>https://kubernetes.xuxiaowei.com.cn/ja/blog/2020/12/02/dont-panic-kubernetes-and-docker/</link><pubDate>Wed, 02 Dec 2020 00:00:00 +0000</pubDate><guid>https://kubernetes.xuxiaowei.com.cn/ja/blog/2020/12/02/dont-panic-kubernetes-and-docker/</guid><description>
+&lt;p>&lt;strong>著者:&lt;/strong> Jorge Castro, Duffie Cooley, Kat Cosgrove, Justin Garrison, Noah Kantrowitz, Bob Killen, Rey Lejano, Dan “POP” Papandrea, Jeffrey Sica, Davanum “Dims” Srinivas&lt;/p>
+&lt;p>Kubernetesはv1.20より新しいバージョンで、コンテナランタイムとして&lt;a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.20.md#deprecation">Dockerをサポートしません&lt;/a>。&lt;/p>
+&lt;p>&lt;strong>パニックを起こす必要はありません。これはそれほど抜本的なものではないのです。&lt;/strong>&lt;/p>
+&lt;p>概要: ランタイムとしてのDockerは、Kubernetesのために開発された&lt;a href="https://kubernetes.io/blog/2016/12/container-runtime-interface-cri-in-kubernetes/">Container Runtime Interface(CRI)&lt;/a>を利用しているランタイムを選んだ結果としてサポートされなくなります。しかし、Dockerによって生成されたイメージはこれからも、今までもそうだったように、みなさんのクラスターで使用可能です。&lt;/p>
+&lt;p>もし、あなたがKubernetesのエンドユーザーであるならば、多くの変化はないでしょう。これはDockerの死を意味するものではありませんし、開発ツールとして今後Dockerを使用するべきでない、使用することは出来ないと言っているのでもありません。Dockerはコンテナを作成するのに便利なツールですし、docker buildコマンドで作成されたイメージはKubernetesクラスター上でこれからも動作可能なのです。&lt;/p>
+&lt;p>もし、GKE、EKS、AKSといったマネージドKubernetesサービス(それらはデフォルトで&lt;a href="https://github.com/Azure/AKS/releases/tag/2020-11-16">containerdを使用しています&lt;/a>)を使っているのなら、ワーカーノードがサポート対象のランタイムを使用しているか、Dockerのサポートが将来のK8sバージョンで切れる前に確認しておく必要があるでしょう。
+もし、ノードをカスタマイズしているのなら、環境やRuntimeの仕様に合わせて更新する必要があるでしょう。サービスプロバイダーと確認し、アップグレードのための適切なテストと計画を立ててください。&lt;/p>
+&lt;p>もし、ご自身でClusterを管理しているのなら、やはり問題が発生する前に必要な対応を行う必要があります。v1.20の時点で、Dockerの使用についての警告メッセージが表示されるようになります。将来のKubernetesリリース(現在の計画では2021年下旬のv1.22)でDockerのRuntimeとしての使用がサポートされなくなれば、containerdやCRI-Oといった他のサポート対象のRuntimeに切り替える必要があります。切り替える際、そのRuntimeが現在使用しているDocker Daemonの設定をサポートすることを確認してください。(Loggingなど)&lt;/p>
+&lt;h2 id="では-なぜ混乱が生じ-誰もが恐怖に駆られているのか">では、なぜ混乱が生じ、誰もが恐怖に駆られているのか。&lt;/h2>
+&lt;p>ここで議論になっているのは2つの異なる場面についてであり、それが混乱の原因になっています。Kubernetesクラスターの内部では、Container runtimeと呼ばれるものがあり、それはImageをPullし起動する役目を持っています。Dockerはその選択肢として人気があります(他にはcontainerdやCRI-Oが挙げられます)が、しかしDockerはそれ自体がKubernetesの一部として設計されているわけではありません。これが問題の原因となっています。&lt;/p>
+&lt;p>お分かりかと思いますが、ここで”Docker”と呼んでいるものは、ある1つのものではなく、その技術的な体系の全体であり、その一部には&amp;quot;containerd&amp;quot;と呼ばれるものもあり、これはそれ自体がハイレベルなContainer runtimeとなっています。Dockerは素晴らしいもので、便利です。なぜなら、多くのUXの改善がされており、それは人間が開発を行うための操作を簡単にしているのです。しかし、それらはKubernetesに必要なものではありません。Kubernetesは人間ではないからです。
+このhuman-friendlyな抽象化レイヤーが作られたために、結果としてはKubernetesクラスターはDockershimと呼ばれるほかのツールを使い、本当に必要な機能つまりcontainerdを利用してきました。これは素晴らしいとは言えません。なぜなら、我々がメンテする必要のあるものが増えますし、それは問題が発生する要因ともなります。今回の変更で実際に行われることというのは、Dockershimを最も早い場合でv1.23のリリースでkubeletから除外することです。その結果として、Dockerのサポートがなくなるということなのです。
+ここで、containerdがDockerに含まれているなら、なぜDockershimが必要なのかと疑問に思われる方もいるでしょう。&lt;/p>
+&lt;p>DockerはCRI(&lt;a href="https://kubernetes.io/blog/2016/12/container-runtime-interface-cri-in-kubernetes/">Container Runtime Interface&lt;/a>)に準拠していません。もしそうであればshimは必要ないのですが、現実はそうでありません。
+しかし、これは世界の終わりでありません、心配しないでください。みなさんはContainer runtimeをDockerから他のサポート対象であるContainer runtimeに切り替えるだけでよいのです。&lt;/p>
+&lt;p>1つ注意すべきことは、クラスターで行われる処理のなかでDocker socket(&lt;code>/var/run/docker.sock&lt;/code>)に依存する部分がある場合、他のRuntimeへ切り替えるとこの部分が働かなくなるでしょう。このパターンはしばしばDocker in Dockerと呼ばれます。このような場合の対応方法はたくさんあります。&lt;a href="https://github.com/GoogleContainerTools/kaniko">kaniko&lt;/a>、&lt;a href="https://github.com/genuinetools/img">img&lt;/a>、&lt;a href="https://github.com/containers/buildah">buildah&lt;/a>などです。&lt;/p>
+&lt;h2 id="では開発者にとって-この変更は何を意味するのか-これからもdockerfileを使ってよいのか-これからもdockerでビルドを行ってよいのか">では開発者にとって、この変更は何を意味するのか。これからもDockerfileを使ってよいのか。これからもDockerでビルドを行ってよいのか。&lt;/h2>
+&lt;p>この変更は、Dockerを直接操作している多くのみなさんとは別の場面に影響を与えるでしょう。
+みなさんが開発を行う際に使用しているDockerと、Kubernetesクラスターの内部で使われているDocker runtimeは関係ありません。これがわかりにくいことは理解しています。開発者にとって、Dockerはこれからも便利なものであり、このアナウンスがあった前と変わらないでしょう。DockerでビルドされたImageは、決してDockerでだけ動作するというわけではありません。それはOCI(&lt;a href="https://opencontainers.org/">Open Container Initiative&lt;/a>) Imageと呼ばれるものです。あらゆるOCI準拠のImageは、それを何のツールでビルドしたかによらず、Kubernetesから見れば同じものなのです。&lt;a href="https://containerd.io/">containerd&lt;/a>も&lt;a href="https://cri-o.io/">CRI-O&lt;/a>も、そのようなImageをPullし、起動することが出来ます。
+これがコンテナの仕様について、共通の仕様を策定している理由なのです。&lt;/p>
+&lt;p>さて、この変更は決定しています。いくつかの問題は発生するかもしてませんが、決して壊滅的なものではなく、ほとんどの場合は良い変化となるでしょう。Kubernetesをどのように使用しているかによりますが、この変更が特に何の影響も及ぼさない人もいるでしょうし、影響がとても少ない場合もあります。長期的に見れば、物事を簡単にするのに役立つものです。
+もし、この問題がまだわかりにくいとしても、心配しないでください。Kubernetesでは多くのものが変化しており、その全てに完璧に精通している人など存在しません。
+経験の多寡や難易度にかかわらず、どんなことでも質問してください。我々の目標は、全ての人が将来の変化について、可能な限りの知識と理解を得られることです。
+このブログが多くの質問の答えとなり、不安を和らげることができればと願っています。&lt;/p>
+&lt;p>別の情報をお探しであれば、&lt;a href="https://kubernetes.xuxiaowei.com.cn/ja/dockershim">dockershimの削除に関するFAQ&lt;/a>を参照してください。&lt;/p></description></item></channel></rss>

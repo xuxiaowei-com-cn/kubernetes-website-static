@@ -1,0 +1,207 @@
+<!doctype html><html lang=ko class=no-js><head><meta name=robots content="noindex, nofollow"><link rel=alternate hreflang=en href=https://kubernetes.xuxiaowei.com.cn/docs/reference/networking/><link rel=alternate hreflang=zh-cn href=https://kubernetes.xuxiaowei.com.cn/zh-cn/docs/reference/networking/><link rel=alternate hreflang=ja href=https://kubernetes.xuxiaowei.com.cn/ja/docs/reference/networking/><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.121.2"><link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/ko/docs/reference/networking/><link rel="shortcut icon" type=image/png href=/images/favicon.png><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=manifest href=/manifest.webmanifest><link rel=apple-touch-icon href=/images/kubernetes-192x192.png><title>네트워킹 레퍼런스 | Kubernetes</title><meta property="og:title" content="네트워킹 레퍼런스">
+<meta property="og:description" content="운영 수준의 컨테이너 오케스트레이션"><meta property="og:type" content="website"><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/ko/docs/reference/networking/"><meta itemprop=name content="네트워킹 레퍼런스"><meta itemprop=description content="운영 수준의 컨테이너 오케스트레이션"><meta name=twitter:card content="summary"><meta name=twitter:title content="네트워킹 레퍼런스"><meta name=twitter:description content="운영 수준의 컨테이너 오케스트레이션"><link href=/scss/main.css rel=stylesheet><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png"}</script><meta name=theme-color content="#326ce5"><style>.gutter{background-color:#eee;background-repeat:no-repeat;background-position:50%}.gutter.gutter-horizontal{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==);cursor:col-resize}#sidebarnav,#maindoc{max-width:100%}#maindoc{overflow-wrap:break-word}@media(max-width:768px){#sidebarnav{padding-left:15px;padding-right:15px}}</style><link rel=stylesheet href=/css/feature-states.css><meta name=description content="이 섹션에서는 쿠버네티스 네트워킹의 레퍼런스 상세를 제공한다."><meta property="og:description" content="이 섹션에서는 쿠버네티스 네트워킹의 레퍼런스 상세를 제공한다."><meta name=twitter:description content="이 섹션에서는 쿠버네티스 네트워킹의 레퍼런스 상세를 제공한다."><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/ko/docs/reference/networking/"><meta property="og:title" content="네트워킹 레퍼런스"><meta name=twitter:title content="네트워킹 레퍼런스"><meta name=twitter:image content="https://kubernetes.io/images/favicon.png"><meta name=twitter:image:alt content="Kubernetes"><meta property="og:image" content="/images/kubernetes-horizontal-color.png"><meta property="og:type" content="article"><script src=/js/jquery-3.6.0.min.js intregrity=sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK crossorigin=anonymous></script><script src=/js/split-1.6.0.js intregrity=sha384-0blL3GqHy6+9fw0cyY2Aoiwg4onHAtslAs4OkqZY7UQBrR65/K4gI+hxLdWDrjpz></script><script defer src=/js/dismiss_banner.js></script><link type=text/css rel=stylesheet href=/css/custom.css><script type=text/javascript>(function(e,t,n,s,o,i,a){e[n]=e[n]||function(){(e[n].q=e[n].q||[]).push(arguments)},i=t.createElement(s),i.async=1,i.src="https://www.clarity.ms/tag/"+o,a=t.getElementsByTagName(s)[0],a.parentNode.insertBefore(i,a)})(window,document,"clarity","script","ym5uznpd9c")</script></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-column flex-md-row td-navbar" data-auto-burger=primary><a class="navbar-brand img-fluid" href=/ko/></a><div class="td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0"><li class="nav-item mr-2 mb-lg-0"><a class="nav-link active" href=/ko/docs/>문서</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/ko/blog/>쿠버네티스 블로그</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/ko/training/>교육</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/ko/partners/>파트너</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/ko/community/>커뮤니티</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/ko/case-studies/>사례 연구</a></li><li class="nav-item mr-n3 mr-lg-0 dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>버전</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/ko/releases>릴리스 정보</a>
+<a class=dropdown-item href=https://xuxiaowei.io/t/1320/ko/docs/reference/networking/>Kubernetes 文档说明</a>
+<a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn/ko/docs/reference/networking/>v1.38</a>
+<a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn/ko/docs/reference/networking/>v1.37</a>
+<a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn/ko/docs/reference/networking/>v1.36</a>
+<a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn/ko/docs/reference/networking/>v1.35</a>
+<a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn/ko/docs/reference/networking/>v1.34</a>
+<a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn/ko/docs/reference/networking/>v1.33</a>
+<a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn/ko/docs/reference/networking/>v1.32</a>
+<a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn/ko/docs/reference/networking/>v1.31</a>
+<a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn/ko/docs/reference/networking/>v1.30</a>
+<a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn/ko/docs/reference/networking/>v1.29</a>
+<a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn/ko/docs/reference/networking/>v1.28</a>
+<a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn/ko/docs/reference/networking/>v1.27</a>
+<a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn/ko/docs/reference/networking/>v1.26</a>
+<a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn/ko/docs/reference/networking/>v1.25</a>
+<a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn/ko/docs/reference/networking/>v1.24</a>
+<a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn/ko/docs/reference/networking/>v1.23</a>
+<a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn/ko/docs/reference/networking/>v1.22</a>
+<a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn/ko/docs/reference/networking/>v1.21</a>
+<a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn/ko/docs/reference/networking/>v1.20</a></div></li><li class="nav-item mr-n4 mr-lg-0 dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdownMenuLink role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>한국어 (Korean)</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/reference/networking/>English</a>
+<a class=dropdown-item href=/zh-cn/docs/reference/networking/>中文 (Chinese)</a>
+<a class=dropdown-item href=/ja/docs/reference/networking/>日本語 (Japanese)</a></div></li><li class="search-item nav-item mr-n4 mr-lg-0"><div class=search-bar><i class="search-icon fas fa-search"></i>
+<input type=search name=q class="search-input td-search-input" placeholder=검색하기 aria-label=검색하기 autocomplete=off></div></li></ul></div><button id=hamburger onclick=kub.toggleMenu() data-auto-burger-exclude><div></div></button></nav></header><div class="container-fluid td-outer"><div class=td-main><div class="row flex-xl-nowrap"><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><div class=td-content><div class="pageinfo pageinfo-primary d-print-none"><p>이 섹션의 다중 페이지 출력 화면임.
+<a href=# onclick="return print(),!1">여기를 클릭하여 프린트</a>.</p><p><a href=/ko/docs/reference/networking/>이 페이지의 일반 화면으로 돌아가기</a>.</p></div><h1 class=title>네트워킹 레퍼런스</h1><ul><li>1: <a href=#pg-a097017db59d2768c0422adcd3f79efd>서비스가 지원하는 프로토콜</a></li><li>2: <a href=#pg-5927c7cb60e78293efad3e86e45df77f>포트와 프로토콜</a></li><li>3: <a href=#pg-d59bf31808ffbe549a5b9ecfc354cfad>가상 IP 및 서비스 프록시</a></li></ul><div class=content><p>이 섹션에서는
+쿠버네티스 네트워킹의 레퍼런스 상세를 제공한다.</p></div></div><div class=td-content><h1 id=pg-a097017db59d2768c0422adcd3f79efd>1 - 서비스가 지원하는 프로토콜</h1><p><a class=glossary-tooltip title='네트워크 서비스로 파드 집합에서 실행 중인 애플리케이션을 노출하는 방법' data-toggle=tooltip data-placement=top href=/ko/docs/concepts/services-networking/service/ target=_blank aria-label=서비스>서비스</a>를 구성하여,
+쿠버네티스가 지원하는 네트워크 프로토콜 중 하나를 선택할 수 있다.</p><p>쿠버네티스는 서비스에 대해 다음의 프로토콜을 지원한다.</p><ul><li><a href=#protocol-sctp><code>SCTP</code></a></li><li><a href=#protocol-tcp><code>TCP</code></a> <em>(기본값)</em></li><li><a href=#protocol-udp><code>UDP</code></a></li></ul><p>서비스를 정의할 때, 서비스가 사용할
+<a href=/ko/docs/concepts/services-networking/service/#%EC%95%A0%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98-%ED%94%84%EB%A1%9C%ED%86%A0%EC%BD%9C>애플리케이션 프로토콜</a>을
+지정할 수도 있다.</p><p>이 문서에서는 몇 가지 특수 사례에 대해 설명하며,
+이들 모두는 일반적으로 전송 프로토콜(transport protocol)로 TCP를 사용한다.</p><ul><li><a href=#protocol-http-special>HTTP</a> 및 <a href=#protocol-http-special>HTTPS</a></li><li><a href=#protocol-proxy-special>PROXY 프로토콜</a></li><li>로드밸런서에서의 <a href=#protocol-tls-special>TLS</a> 터미네이션</li></ul><h2 id=protocol-support>지원하는 프로토콜</h2><p>서비스 포트의 <code>protocol</code>에 대해 다음 3개의 값이 유효하다.</p><h3 id=protocol-sctp><code>SCTP</code></h3><div class="my-2 feature-state-notice feature-stable"><b>기능 상태:</b> <code>Kubernetes v1.20 [stable]</code></div><p>SCTP 트래픽을 지원하는 네트워크 플러그인을 사용하는 경우, 대부분의 서비스에
+SCTP를 사용할 수 있다. <code>type: LoadBalancer</code> 서비스의 경우 SCTP 지원 여부는
+이 기능을 제공하는 클라우드 공급자에 따라 다르다. (대부분 지원하지 않음)</p><p>SCTP는 윈도우 노드에서는 지원되지 않는다.</p><h4 id=caveat-sctp-multihomed>멀티홈(multihomed) SCTP 연결 지원</h4><p>멀티홈 SCTP 연결 지원을 위해서는 CNI 플러그인이 파드에 복수개의 인터페이스 및 IP 주소를 할당하는 기능을 지원해야 한다.</p><p>멀티홈 SCTP 연결에서의 NAT는 상응하는 커널 모듈 내의 특수한 로직을 필요로 한다.</p><h3 id=protocol-tcp><code>TCP</code></h3><p>모든 종류의 서비스에 TCP를 사용할 수 있으며, 이는 기본 네트워크 프로토콜이다.</p><h3 id=protocol-udp><code>UDP</code></h3><p>대부분의 서비스에 UDP를 사용할 수 있다. <code>type: LoadBalancer</code> 서비스의 경우,
+UDP 지원 여부는 이 기능을 제공하는 클라우드 공급자에 따라 다르다.</p><h2 id=특수-케이스>특수 케이스</h2><h3 id=protocol-http-special>HTTP</h3><p>클라우드 공급자가 이를 지원하는 경우,
+LoadBalancer 모드의 서비스를 사용하여,
+쿠버네티스 클러스터 외부에, HTTP / HTTPS 리버스 프록싱을 통해
+해당 서비스의 백엔드 엔드포인트로 트래픽을 전달하는 로드밸런서를 구성할 수 있다.</p><p>일반적으로, 트래픽을 HTTP 수준에서 제어하려면
+해당 서비스의 프로토콜을 <code>TCP</code>로 지정하고
+로드밸런서를 구성하는
+<a class=glossary-tooltip title='임의의 식별되지 않는 메타데이터를 오브젝트에 첨부할 때 이용하는 키-밸류 쌍.' data-toggle=tooltip data-placement=top href=/ko/docs/concepts/overview/working-with-objects/annotations target=_blank aria-label=어노테이션>어노테이션</a>(보통
+클라우드 공급자마다 다름)을 추가한다.
+이 구성은 워크로드로의 HTTPS (HTTP over TLS) 지원 및 평문 HTTP 리버스 프록시도 포함할 수 있다.</p><div class="alert alert-info note callout" role=alert><strong>참고:</strong> 서비스 대신 <a class=glossary-tooltip title='클러스터 내의 서비스에 대한 외부 접근을 관리하는 API 오브젝트이며, 일반적으로 HTTP를 관리함.' data-toggle=tooltip data-placement=top href=/ko/docs/concepts/services-networking/ingress/ target=_blank aria-label=인그레스>인그레스</a> 를 사용하여
+HTTP/HTTPS 서비스를 노출할 수도 있다.</div><p>특정 연결의
+<a href=/ko/docs/concepts/services-networking/service/#%EC%95%A0%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98-%ED%94%84%EB%A1%9C%ED%86%A0%EC%BD%9C>애플리케이션 프로토콜</a>을
+<code>http</code> 또는 <code>https</code>로 추가적으로 명시하고 싶을 수도 있다.
+로드밸런서에서 워크로드로 가는 세션이 HTTP without TLS이면 <code>http</code>를 사용하고,
+로드밸런서에서 워크로드로 가는 세션이 TLS 암호화를 사용하면 <code>https</code>를 사용한다.</p><h3 id=protocol-proxy-special>PROXY 프로토콜</h3><p>클라우드 공급자가 지원하는 경우에,
+<code>type: LoadBalancer</code>로 설정된 서비스를 사용하여,
+쿠버네티스 외부에 존재하면서 연결들을
+<a href=https://www.haproxy.org/download/2.5/doc/proxy-protocol.txt>PROXY 프로토콜</a>로 감싸 전달하는 로드밸런서를 구성할 수 있다.</p><p>이러한 로드 밸런서는 들어오는 연결을 설명하는 초기 일련의 옥텟(octets)을 전송하며,
+이는 다음의 예시(PROXY 프로토콜 v1)와 유사하다.</p><pre tabindex=0><code>PROXY TCP4 192.0.2.202 10.0.42.7 12345 7\r\n
+</code></pre><p>프록시 프로토콜 프리앰블(preamble) 뒤에 오는 데이터는
+클라이언트가 전송한 원본 데이터이다.
+양쪽 중 한쪽에서 연결을 닫으면,
+로드밸런서도 연결 종료를 트리거하며 남아있는 데이터를 수신 가능한 쪽으로 보낸다.</p><p>일반적으로는, 프로토콜을 <code>TCP</code>로 설정한 서비스를 정의한다.
+또한, 클라우드 공급자별로 상이한 어노테이션을 설정하여
+로드밸런서가 각 인커밍 연결을 PROXY 프로토콜로 감싸도록 구성할 수도 있다.</p><h3 id=protocol-tls-special>TLS</h3><p>클라우드 공급자가 지원하는 경우에,
+<code>type: LoadBalancer</code>로 설정된 서비스를 사용하여,
+쿠버네티스 외부에 존재하는 리버스 프록시를 구축할 수 있으며,
+이 때 클라이언트로부터 로드밸런서까지의 연결은 TLS 암호화되고 로드밸런서는 TLS 서버 피어가 된다.
+로드밸런서로부터 워크로드까지의 연결은 TLS일 수도 있으며, 평문일 수도 있다.
+사용 가능한 정확한 옵션의 범위는 클라우드 공급자 또는 커스텀 서비스 구현에 따라 다를 수 있다.</p><p>일반적으로는, 프로토콜을 <code>TCP</code>로 설정하고
+어노테이션(보통 클라우드 공급자별로 상이함)을 설정하여
+로드밸런서가 TLS 서버로 작동하도록 구성한다.
+클라우드 공급자별로 상이한 메커니즘을 사용하여
+TLS 아이덴티티(서버, 그리고 경우에 따라 워크로드로 연결하는 클라이언트도 가능)를 구성할 수도 있다.</p></div><div class=td-content style=page-break-before:always><h1 id=pg-5927c7cb60e78293efad3e86e45df77f>2 - 포트와 프로토콜</h1><p>물리적 네트워크 방화벽이 있는 온프레미스 데이터 센터 또는
+퍼블릭 클라우드의 가상 네트워크와 같이 네트워크 경계가 엄격한 환경에서
+쿠버네티스를 실행할 때, 쿠버네티스 구성 요소에서
+사용하는 포트와 프로토콜을 알고 있는 것이 유용하다.</p><h2 id=컨트롤-플레인>컨트롤 플레인</h2><table><thead><tr><th>프로토콜</th><th>방향</th><th>포트 범위</th><th>용도</th><th>사용 주체</th></tr></thead><tbody><tr><td>TCP</td><td>인바운드</td><td>6443</td><td>쿠버네티스 API 서버</td><td>전부</td></tr><tr><td>TCP</td><td>인바운드</td><td>2379-2380</td><td>etcd 서버 클라이언트 API</td><td>kube-apiserver, etcd</td></tr><tr><td>TCP</td><td>인바운드</td><td>10250</td><td>Kubelet API</td><td>Self, 컨트롤 플레인</td></tr><tr><td>TCP</td><td>인바운드</td><td>10259</td><td>kube-scheduler</td><td>Self</td></tr><tr><td>TCP</td><td>인바운드</td><td>10257</td><td>kube-controller-manager</td><td>Self</td></tr></tbody></table><p>etcd 포트가 컨트롤 플레인 섹션에 포함되어 있지만, 외부 또는 사용자 지정 포트에서 자체
+etcd 클러스터를 호스팅할 수도 있다.</p><h2 id=node>워커 노드</h2><table><thead><tr><th>프로토콜</th><th>방향</th><th>포트 범위</th><th>용도</th><th>사용 주체</th></tr></thead><tbody><tr><td>TCP</td><td>인바운드</td><td>10250</td><td>Kubelet API</td><td>Self, 컨트롤 플레인</td></tr><tr><td>TCP</td><td>인바운드</td><td>30000-32767</td><td>NodePort 서비스†</td><td>전부</td></tr></tbody></table><p>† <a href=/ko/docs/concepts/services-networking/service/>노드포트(NodePort) 서비스</a>의 기본 포트 범위.</p><p>모든 기본 포트 번호를 재정의할 수 있다. 사용자 지정 포트를 사용하는 경우
+여기에 언급된 기본값 대신 해당 포트를 열어야 한다.</p><p>종종 발생하는 한 가지 일반적인 예는 API 서버 포트를 443으로 변경하는 경우이다.
+또는, API 서버의 기본 포트를 그대로 유지하고,
+443 포트에서 수신 대기하는 로드 밸런서 뒤에 API 서버를 두고,
+로드 밸런서에서 API 서버로 가는 요청을 API 서버의 기본 포트로 라우팅할 수도 있다.</p></div><div class=td-content style=page-break-before:always><h1 id=pg-d59bf31808ffbe549a5b9ecfc354cfad>3 - 가상 IP 및 서비스 프록시</h1><p>쿠버네티스 클러스터의 모든 <a class=glossary-tooltip title='노드는 쿠버네티스의 작업 장비(worker machine)이다.' data-toggle=tooltip data-placement=top href=/ko/docs/concepts/architecture/nodes/ target=_blank aria-label=노드>노드</a>는
+<a href=/ko/docs/reference/command-line-tools-reference/kube-proxy/><code>kube-proxy</code></a>를
+실행한다(<code>kube-proxy</code>를 대체하는 구성요소를 직접 배포한 경우가 아니라면).</p><p><code>kube-proxy</code>는
+<a href=/ko/docs/concepts/services-networking/service/#externalname><code>ExternalName</code></a> 외의 <code>type</code>의
+<a class=glossary-tooltip title='네트워크 서비스로 파드 집합에서 실행 중인 애플리케이션을 노출하는 방법' data-toggle=tooltip data-placement=top href=/ko/docs/concepts/services-networking/service/ target=_blank aria-label=서비스>서비스</a>를 위한
+<em>가상 IP</em> 메커니즘의 구현을 담당한다.</p><p>항상 발생하는 질문은,
+왜 쿠버네티스가 인바운드 트래픽을 백엔드로 전달하기 위해
+프록시에 의존하는가 하는 점이다.
+다른 접근법이 있는가? 예를 들어, 여러 A 값 (또는 IPv6의 경우 AAAA)을 가진 DNS 레코드를 구성하고,
+라운드-로빈 이름 확인 방식을 취할 수 있는가?</p><p>There are a few reasons for using proxying for Services:</p><ul><li>레코드 TTL을 고려하지 않고, 만료된 이름 검색 결과를 캐싱하는
+DNS 구현에 대한 오래된 역사가 있다.</li><li>일부 앱은 DNS 검색을 한 번만 수행하고 결과를 무기한으로 캐시한다.</li><li>앱과 라이브러리가 적절히 재-확인을 했다고 하더라도,
+DNS 레코드의 TTL이 낮거나 0이면
+DNS에 부하가 높아 관리하기가 어려워질 수 있다.</li></ul><p>본 페이지의 뒷 부분에서 다양한 kube-proxy 구현이 동작하는 방식에 대해 읽을 수 있다.
+우선 알아두어야 할 것은, <code>kube-proxy</code>를 구동할 때,
+커널 수준의 규칙이 수정(예를 들어, iptables 규칙이 생성될 수 있음)될 수 있고,
+이는 때로는 리부트 전까지 정리되지 않을 수도 있다.
+그래서, kube-proxy는 컴퓨터에서 저수준의, 특권을 가진(privileged) 네트워킹 프록시 서비스가 구동됨으로써 발생하는
+결과를 이해하고 있는 관리자에 의해서만 구동되어야 한다.
+비록 <code>kube-proxy</code> 실행 파일이 <code>cleanup</code> 기능을 지원하기는 하지만,
+이 기능은 공식적인 기능이 아니기 때문에 구현된 그대로만 사용할 수 있다.</p><p><a id=example></a>예를 들어, 3개의 레플리카로 실행되는 스테이트리스 이미지-처리 백엔드를 생각해보자.
+이러한 레플리카는 대체 가능하다.
+즉, 프론트엔드는 그것들이 사용하는 백엔드를 신경쓰지 않는다.
+백엔드 세트를 구성하는 실제 파드는 변경될 수 있지만,
+프론트엔드 클라이언트는 이를 인식할 필요가 없으며, 백엔드 세트 자체를 추적해야 할 필요도 없다.</p><h2 id=프록시-모드들>프록시 모드들</h2><p>kube-proxy는 여러 모드 중 하나로 기동될 수 있으며, 이는 환경 설정에 따라 결정됨에 유의한다.</p><ul><li>kube-proxy의 구성은 컨피그맵(ConfigMap)을 통해 이루어진다.
+그리고 해당 kube-proxy를 위한 컨피그맵은 실효성있게
+거의 대부분의 kube-proxy의 플래그의 행위를 더 이상 사용하지 않도록 한다.</li><li>kube-proxy를 위한 해당 컨피그맵은 기동 중 구성의 재적용(live reloading)은 지원하지 않는다.</li><li>kube-proxy를 위한 컨피그맵 파라미터는 기동 시에 검증이나 확인을 하지 않는다.
+예를 들어, 운영 체계가 iptables 명령을 허용하지 않을 경우,
+표준 커널 kube-proxy 구현체는 작동하지 않을 것이다.</li></ul><h3 id=proxy-mode-iptables><code>iptables</code> 프록시 모드</h3><p>이 모드에서는, kube-proxy는 쿠버네티스 컨트롤 플레인의
+서비스, 엔드포인트슬라이스 오브젝트의 추가와 제거를 감시한다.
+각 서비스에 대해, 서비스의 <code>clusterIP</code> 및 <code>port</code>에 대한 트래픽을 캡처하고
+해당 트래픽을 서비스의 백엔드 세트 중 하나로 리다이렉트(redirect)하는
+iptables 규칙을 설치한다.
+각 엔드포인트 오브젝트에 대해, 백엔드 파드를 선택하는 iptables 규칙을 설치한다.</p><p>기본적으로, iptables 모드의 kube-proxy는 백엔드를 임의로 선택한다.</p><p>트래픽을 처리하기 위해 iptables를 사용하면 시스템 오버헤드가 줄어드는데,
+유저스페이스와 커널 스페이스 사이를 전환할 필요없이 리눅스 넷필터(netfilter)가
+트래픽을 처리하기 때문이다. 이 접근 방식은 더 신뢰할 수 있기도 하다.</p><p>kube-proxy가 iptables 모드에서 실행 중이고 선택된 첫 번째 파드가 응답하지 않으면, 연결이 실패한다.
+이는 이전의 <code>userspace</code> 모드와 다르다.
+이전의 <code>userspace</code> 시나리오에서는,
+kube-proxy는 첫 번째 파드에 대한 연결이 실패했음을 감지하고 다른 백엔드 파드로 자동으로 재시도한다.</p><p>파드 <a href=/ko/docs/concepts/workloads/pods/pod-lifecycle/#%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%ED%94%84%EB%A1%9C%EB%B8%8C-probe>준비성 프로브(readiness probe)</a>를 사용하여
+백엔드 파드가 제대로 작동하는지 확인할 수 있으므로,
+iptables 모드의 kube-proxy는 정상으로 테스트된 백엔드만 볼 수 있다.
+이렇게 하면 트래픽이 kube-proxy를 통해 실패한 것으로 알려진 파드로 전송되는 것을 막을 수 있다.</p><figure class=diagram-medium><img src=/images/docs/services-iptables-overview.svg><figcaption><h4>iptables 프록시에 대한 서비스 개요 다이어그램</h4></figcaption></figure><h4 id=packet-processing-iptables>예시</h4><p>다시 한번, <a href=#example>위</a>에서 설명한
+이미지 처리 애플리케이션을 고려한다.
+백엔드 서비스가 생성되면,
+쿠버네티스 컨트롤 플레인은 가상 IP 주소(예 : 10.0.0.1)를 할당한다.
+서비스 포트를 1234라고 가정하자.
+클러스터의 모든 kube-proxy 인스턴스는
+새 서비스의 생성을 관찰할 수 있다.</p><p>프록시가 새로운 서비스를 발견하면,
+가상 IP 주소에서 서비스-별 규칙으로 리다이렉션되는 일련의 iptables 규칙을 설치한다.
+서비스-별 규칙은 트래픽을 (목적지 NAT를 사용하여) 백엔드로 리다이렉션하는
+엔드포인트-별 규칙에 연결한다.</p><p>클라이언트가 서비스의 가상 IP 주소에 연결하면 iptables 규칙이 시작한다.
+(세션 어피니티(Affinity)에 따라 또는 무작위로) 백엔드가 선택되고,
+패킷의 클라이언트 IP 주소를 덮어쓰지 않고 백엔드로 리다이렉션된다.</p><p>트래픽이 노드-포트 또는 로드 밸런서를 통해 들어오는 경우에도,
+이와 동일한 기본 흐름이 실행되지만, 클라이언트 IP는 변경된다.</p><h3 id=proxy-mode-ipvs>IPVS 프록시 모드</h3><p><code>ipvs</code> 모드에서, kube-proxy는 쿠버네티스 서비스와 엔드포인트슬라이스를 감시하고,
+<code>netlink</code> 인터페이스를 호출하여 그에 따라 IPVS 규칙을 생성하고
+IPVS 규칙을 쿠버네티스 서비스 및 엔드포인트슬라이스와 주기적으로 동기화한다.
+이 제어 루프는 IPVS 상태가 원하는 상태와 일치하도록
+보장한다.
+서비스에 접근하면, IPVS는 트래픽을 백엔드 파드 중 하나로 보낸다.</p><p>IPVS 프록시 모드는 iptables 모드와 유사한 넷필터 후크 기능을
+기반으로 하지만, 해시 테이블을 기본 데이터 구조로 사용하고
+커널 스페이스에서 동작한다.
+이는 IPVS 모드의 kube-proxy는 iptables 모드의 kube-proxy보다
+지연 시간이 짧은 트래픽을 리다이렉션하고, 프록시 규칙을 동기화할 때 성능이
+훨씬 향상됨을 의미한다. 다른 프록시 모드와 비교했을 때, IPVS 모드는
+높은 네트워크 트래픽 처리량도 지원한다.</p><p>IPVS는 트래픽을 백엔드 파드로 밸런싱하기 위한 추가 옵션을 제공하며,
+그 목록은 다음과 같다.</p><ul><li><code>rr</code>: 라운드-로빈</li><li><code>lc</code>: 최소 연결 (가장 적은 수의 열려있는 연결)</li><li><code>dh</code>: 목적지 해싱</li><li><code>sh</code>: 소스 해싱</li><li><code>sed</code>: 최단 예상 지연 (shortest expected delay)</li><li><code>nq</code>: 큐 미사용 (never queue)</li></ul><div class="alert alert-info note callout" role=alert><strong>참고:</strong><p>IPVS 모드에서 kube-proxy를 실행하려면, kube-proxy를 시작하기 전에 노드에서 IPVS를
+사용 가능하도록 해야 한다.</p><p>kube-proxy가 IPVS 프록시 모드로 시작될 때, IPVS 커널 모듈이
+사용 가능한지 확인한다. IPVS 커널 모듈이 감지되지 않으면, kube-proxy는
+iptables 프록시 모드로 다시 실행된다.</p></div><figure class=diagram-medium><img src=/images/docs/services-ipvs-overview.svg><figcaption><h4>IPVS 프록시에 대한 서비스 개요 다이어그램</h4></figcaption></figure><h2 id=세션-어피니티>세션 어피니티</h2><p>이러한 프록시 모델에서,
+클라이언트가 쿠버네티스/서비스/파드에 대해 전혀 모르더라도
+서비스의 IP:포트로 향하는 트래픽은 적절한 백엔드로 프록시된다.</p><p>특정 클라이언트의 연결이 매번 동일한 파드로
+전달되도록 하려면, 서비스의 <code>.spec.sessionAffinity</code>를 <code>ClientIP</code>로 설정하여
+클라이언트의 IP 주소를 기반으로 세션 어피니티를 선택할 수 있다.
+(기본값은 <code>None</code>)</p><h3 id=세션-고정-session-stickiness-타임아웃>세션 고정(Session stickiness) 타임아웃</h3><p>서비스의 <code>.spec.sessionAffinityConfig.clientIP.timeoutSeconds</code>를 적절히 설정하여
+최대 세션 고정 시간을 설정할 수도 있다.
+(기본값은 10800으로, 이는 3시간에 해당됨)</p><div class="alert alert-info note callout" role=alert><strong>참고:</strong> 윈도우에서는, 서비스의 최대 세션 고정 시간(maximum session sticky time)을 설정하는 것이 지원되지 않는다.</div><h2 id=서비스에-ip-주소-할당>서비스에 IP 주소 할당</h2><p>고정된 목적지로 실제로 라우팅되는 파드 IP 주소와 달리,
+서비스 IP는 실제로는 단일 호스트에서 응답하지 않는다.
+대신에, kube-proxy는 패킷 처리 로직(예: 리눅스의 iptables)을 사용하여,
+필요에 따라 투명하게 리다이렉션되는 <em>가상</em> IP 주소를 정의한다.</p><p>클라이언트가 VIP에 연결하면, 트래픽이 자동으로 적절한 엔드포인트로 전송된다.
+환경 변수와 서비스 용 DNS는
+실제로는 서비스의 가상 IP 주소 (및 포트)로 채워진다.</p><h3 id=충돌-방지하기>충돌 방지하기</h3><p>쿠버네티스의 주요 철학 중 하나는,
+사용자가 잘못한 것이 없는 경우에는 실패할 수 있는 상황에 노출되어서는 안된다는 것이다.
+서비스 리소스 설계 시,
+다른 사람의 포트 선택과 충돌할 경우에 대비해 자신의 포트 번호를 선택하지 않아도 된다.
+만약 그러한 일이 발생한다면 그것은 격리 실패이다.</p><p>서비스에 대한 포트 번호를 사용자가 선택할 수 있도록 하려면,
+두 개의 서비스가 충돌하지 않도록 해야 한다.
+쿠버네티스는 API 서버에 설정되어 있는 <code>service-cluster-ip-range</code> CIDR 범위에서
+각 서비스에 고유한 IP 주소를 할당하여 이를 달성한다.</p><p>각 서비스가 고유한 IP를 받도록 하기 위해, 각 서비스를 만들기 전에 내부 할당기가
+<a class=glossary-tooltip title='모든 클러스터 데이터를 담는 쿠버네티스 뒷단의 저장소로 사용되는 일관성·고가용성 키-값 저장소.' data-toggle=tooltip data-placement=top href=/docs/tasks/administer-cluster/configure-upgrade-etcd/ target=_blank aria-label=etcd>etcd</a>에서
+글로벌 할당 맵을 원자적으로(atomically) 업데이트한다.
+서비스가 IP 주소 할당을 가져오려면 레지스트리에 맵 오브젝트가 있어야 하는데,
+그렇지 않으면 IP 주소를 할당할 수 없다는 메시지와 함께 생성에 실패한다.</p><p>컨트롤 플레인에서, 백그라운드 컨트롤러는 해당 맵을 생성해야
+한다(인-메모리 잠금을 사용하는 이전 버전의 쿠버네티스에서의 마이그레이션 지원을 위해 필요함).
+쿠버네티스는 또한 컨트롤러를 사용하여 유효하지 않은
+할당(예: 관리자 개입에 의한)을 체크하고
+더 이상 어떠한 서비스도 사용하지 않는 할당된 IP 주소를 정리한다.</p><h4 id=service-ip-static-sub-range>서비스 가상 IP 주소의 IP 주소 범위</h4><div class="my-2 feature-state-notice feature-beta"><b>기능 상태:</b> <code>Kubernetes v1.25 [beta]</code></div><p>쿠버네티스는 <code>min(max(16, cidrSize / 16), 256)</code> 공식을 사용하여 얻어진
+<code>service-cluster-ip-range</code>의 크기에 기반하여 <code>ClusterIP</code> 범위를 두 대역으로 나누며,
+여기서 이 공식은 <em>16 이상 256 이하이며,
+그 사이에 계단 함수가 있음</em> 으로 설명할 수 있다.</p><p>쿠버네티스는 서비스에 대한 동적 IP 할당 시 상위 대역에서 우선적으로 선택하며,
+이는 곧 만약 사용자가 <code>type: ClusterIP</code> 서비스에 특정 IP 주소를 할당하고 싶다면
+<strong>하위</strong> 대역에서 골라야 함을 의미한다.
+이렇게 함으로써 할당 시 충돌의 위험을 줄일 수 있다.</p><p>만약 <code>ServiceIPStaticSubrange</code>
+<a href=/ko/docs/reference/command-line-tools-reference/feature-gates/>기능 게이트</a>를 비활성화하면
+쿠버네티스는 <code>type: ClusterIP</code> 서비스에 대해
+수동 및 동적 할당 IP 주소를 위한 하나의 공유되는 풀을 사용한다.</p><h2 id=트래픽-폴리시>트래픽 폴리시</h2><p><code>.spec.internalTrafficPolicy</code> 및 <code>.spec.externalTrafficPolicy</code> 필드를 설정하여
+쿠버네티스가 트래픽을 어떻게 정상(healthy, “ready”) 백엔드로 라우팅할지를 제어할 수 있다.</p><h3 id=내부-트래픽-폴리시>내부 트래픽 폴리시</h3><div class="my-2 feature-state-notice feature-beta"><b>기능 상태:</b> <code>Kubernetes v1.22 [beta]</code></div><p><code>spec.internalTrafficPolicy</code> 필드를 설정하여 내부 소스에서 오는 트래픽이 어떻게 라우트될지를 제어할 수 있다.
+이 필드는 <code>Cluster</code> 또는 <code>Local</code>로 설정할 수 있다.
+필드를 <code>Cluster</code>로 설정하면 내부 트래픽을 준비 상태의 모든 엔드포인트로 라우트하며,
+<code>Local</code>로 설정하면 준비 상태의 노드-로컬 엔드포인트로만 라우트한다.
+만약 트래픽 정책이 <code>Local</code>로 설정되어 있는데 노드-로컬 엔드포인트가 하나도 없는 경우, kube-proxy는 트래픽을 드롭시킨다.</p><h3 id=외부-트래픽-폴리시>외부 트래픽 폴리시</h3><p><code>spec.externalTrafficPolicy</code> 필드를 설정하여 외부 소스에서 오는 트래픽이 어떻게 라우트될지를 제어할 수 있다.
+이 필드는 <code>Cluster</code> 또는 <code>Local</code>로 설정할 수 있다.
+필드를 <code>Cluster</code>로 설정하면 외부 트래픽을 준비 상태의 모든 엔드포인트로 라우트하며,
+<code>Local</code>로 설정하면 준비 상태의 노드-로컬 엔드포인트로만 라우트한다.
+만약 트래픽 정책이 <code>Local</code>로 설정되어 있는데 노드-로컬 엔드포인트가 하나도 없는 경우,
+kube-proxy는 연관된 서비스로의 트래픽을 포워드하지 않는다.</p><h3 id=종료-중인-엔드포인트로-가는-트래픽>종료 중인 엔드포인트로 가는 트래픽</h3><div class="my-2 feature-state-notice feature-beta"><b>기능 상태:</b> <code>Kubernetes v1.26 [beta]</code></div><p>kube-proxy에 대해 <code>ProxyTerminatingEndpoints</code>
+<a href=/ko/docs/reference/command-line-tools-reference/feature-gates/>기능 게이트</a>가 활성화되어 있고
+트래픽 폴리시가 <code>Local</code>이면,
+해당 노드의 kube-proxy는 서비스에 대한 엔드포인트를 선택할 때 좀 더 복잡한 알고리즘을 사용한다.
+이 기능이 활성화되어 있으면, kube-proxy는 노드가 로컬 엔드포인트를 갖고 있는지,
+그리고 모든 로컬 엔드포인트가 '종료 중'으로 표시되어 있는지 여부를 확인한다.
+만약 로컬 엔드포인트가 존재하고 <strong>모든</strong> 로컬 엔드포인트가 종료 중이면,
+kube-proxy는 종료 중인 해당 엔드포인트로 트래픽을 전달한다.
+이외의 경우, kube-proxy는 종료 중이 아닌 엔드포인트로 트래픽을 전달하는 편을 선호한다.</p><p>종료 중인 엔드포인트에 대한 이러한 포워딩 정책 덕분에, <code>externalTrafficPolicy: Local</code>을 사용하는 경우에
+<code>NodePort</code> 및 <code>LoadBalancer</code> 서비스가 연결들을 자비롭게(gracefully) 종료시킬 수 있다.</p><p>디플로이먼트가 롤링 업데이트될 때, 로드밸런서 뒤에 있는 노드가 해당 디플로이먼트의 레플리카를 N개에서 0개 갖도록 변경될 수 있다.
+일부 경우에, 외부 로드 밸런서가 헬스 체크 프로브 사이의 기간에 레플리카 0개를 갖는 노드로 트래픽을 전송할 수 있다.
+종료 중인 엔드포인트로의 트래픽 라우팅 기능을 통해
+파드를 스케일 다운 중인 노드가 해당 종료 중인 파드로의 트래픽을 자비롭게 수신 및 드레인할 수 있다.
+파드 종료가 완료되면, 외부 로드 밸런서는 이미 노드의 헬스 체크가 실패했음을 확인하고
+해당 노드를 백엔드 풀에서 완전히 제거했을 것이다.</p><h2 id=다음-내용>다음 내용</h2><p>서비스에 대해 더 알아보려면,
+<a href=/ko/docs/tutorials/services/connect-applications-service/>서비스와 애플리케이션 연결</a>을 읽어 본다.</p><p>또한,</p><ul><li><a href=/ko/docs/concepts/services-networking/service/>서비스</a>에 대해 읽어 본다.</li><li>서비스 API에 대한 <a href=/docs/reference/kubernetes-api/service-resources/service-v1/>API 레퍼런스</a>를 읽어 본다.</li></ul></div></main></div></div><footer class=d-print-none><div class=footer__links><nav><a class=text-white href=/ko/docs/home/>문서</a>
+<a class=text-white href=/ko/blog/>블로그</a>
+<a class=text-white href=/ko/training/>교육</a>
+<a class=text-white href=/ko/partners/>파트너</a>
+<a class=text-white href=/ko/community/>커뮤니티</a>
+<a class=text-white href=/ko/case-studies/>사례 연구</a></nav></div><div class=container-fluid><div class=row><div class="col-6 col-sm-2 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="User mailing list" aria-label="User mailing list"><a class=text-white target=_blank href=https://discuss.kubernetes.io><i class="fa fa-envelope"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=X(Twitter) aria-label=X(Twitter)><a class=text-white target=_blank href=https://twitter.com/kubernetesio><i class="fab fa-x-twitter"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Calendar aria-label=Calendar><a class=text-white target=_blank href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io"><i class="fas fa-calendar-alt"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Youtube aria-label=Youtube><a class=text-white target=_blank href=https://youtube.com/kubernetescommunity><i class="fab fa-youtube"></i></a></li></ul></div><div class="col-6 col-sm-2 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank href=https://github.com/kubernetes/kubernetes><i class="fab fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Slack aria-label=Slack><a class=text-white target=_blank href=https://slack.k8s.io><i class="fab fa-slack"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Contribute aria-label=Contribute><a class=text-white target=_blank href=https://git.k8s.io/community/contributors/guide><i class="fas fa-edit"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="Stack Overflow" aria-label="Stack Overflow"><a class=text-white target=_blank href=https://stackoverflow.com/questions/tagged/kubernetes><i class="fab fa-stack-overflow"></i></a></li></ul></div><div class="col-12 col-sm-8 text-center order-sm-2"><small class=text-white>&copy; 2026 The Kubernetes Authors | Documentation Distributed under <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a></small><br><small class=text-white>Copyright &copy; 2026 The Linux Foundation &reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href=https://www.linuxfoundation.org/trademark-usage class=light-text>Trademark Usage page</a></small><br><small class=text-white><a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></small></div></div></div></footer></div><script src=/js/jquery-3.6.0.min.js integrity=sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK crossorigin=anonymous></script><script src=/js/popper-1.16.1.min.js intregrity=sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN crossorigin=anonymous></script><script src=/js/bootstrap-4.6.1.min.js integrity=sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2 crossorigin=anonymous></script><script src=/js/script.js></script><script src=/js/main.min.f675c5c4c54b6b5388e8b068c737501040fb82c5372a14c00c002fe79b2e53fb.js integrity="sha256-9nXFxMVLa1OI6LBoxzdQEED7gsU3KhTADAAv55suU/s=" crossorigin=anonymous></script><script>let splitInstance=null;function enableSplitter(e){e.matches?splitInstance||(splitInstance=Split(["#sidebarnav","#maindoc"],{sizes:[20,80],minSize:100})):splitInstance&&(splitInstance.destroy(),splitInstance=null)}const screenWidthMediaQuery=window.matchMedia("(min-width: 768px)"),eleNav=document.getElementById("sidebarnav");eleNav!==null&&(enableSplitter(screenWidthMediaQuery),screenWidthMediaQuery.addListener(enableSplitter))</script></body></html>
