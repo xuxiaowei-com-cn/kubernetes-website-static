@@ -1,0 +1,1788 @@
+<!doctype html><html lang=en class=no-js>
+<head>
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','G-JPP6RFM2BP')</script>
+<script type=text/javascript>(function(a,e,b,f,g,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},c=e.createElement(f),c.async=1,c.src="https://www.clarity.ms/tag/"+g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d)})(window,document,"clarity","script","yn9s3e0drd")</script>
+<link rel=alternate hreflang=zh href=https://kubernetes.xuxiaowei.com.cn/zh/docs/contribute/style/>
+<link rel=alternate hreflang=ko href=https://kubernetes.xuxiaowei.com.cn/ko/docs/contribute/style/>
+<link rel=alternate hreflang=ja href=https://kubernetes.xuxiaowei.com.cn/ja/docs/contribute/style/>
+<link rel=alternate hreflang=fr href=https://kubernetes.xuxiaowei.com.cn/fr/docs/contribute/style/>
+<link rel=alternate hreflang=es href=https://kubernetes.xuxiaowei.com.cn/es/docs/contribute/style/>
+<link rel=alternate hreflang=ru href=https://kubernetes.xuxiaowei.com.cn/ru/docs/contribute/style/>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=generator content="Hugo 0.87.0">
+<link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/docs/contribute/style/>
+<link rel="shortcut icon" type=image/png href=/images/favicon.png>
+<link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180>
+<link rel=manifest href=/manifest.webmanifest>
+<link rel=apple-touch-icon href=/images/kubernetes-192x192.png>
+<title>Documentation style overview | Kubernetes</title><meta property="og:title" content="Documentation style overview">
+<meta property="og:description" content="Production-Grade Container Orchestration">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/docs/contribute/style/"><meta property="og:site_name" content="Kubernetes">
+<meta itemprop=name content="Documentation style overview">
+<meta itemprop=description content="Production-Grade Container Orchestration"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="Documentation style overview">
+<meta name=twitter:description content="Production-Grade Container Orchestration">
+<link href=/scss/main.css rel=stylesheet>
+<script src=/js/jquery-3.3.1.min.js integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin=anonymous></script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png"}</script>
+<meta name=theme-color content="#326ce5">
+<link rel=stylesheet href=/css/feature-states.css>
+<meta name=description content="The topics in this section provide guidance on writing style, content formatting and organization, and using Hugo customizations specific to Kubernetes documentation.">
+<meta property="og:description" content="The topics in this section provide guidance on writing style, content formatting and organization, and using Hugo customizations specific to Kubernetes documentation.">
+<meta name=twitter:description content="The topics in this section provide guidance on writing style, content formatting and organization, and using Hugo customizations specific to Kubernetes documentation.">
+<meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/docs/contribute/style/">
+<meta property="og:title" content="Documentation style overview">
+<meta name=twitter:title content="Documentation style overview">
+<meta name=twitter:image content="https://kubernetes.io/images/favicon.png">
+<meta name=twitter:image:alt content="Kubernetes">
+<meta property="og:image" content="/images/kubernetes-horizontal-color.png">
+<meta property="og:type" content="article">
+<script src=/js/script.js></script>
+<link type=text/css rel=stylesheet href=/css/custom.css>
+</head>
+<body class=td-section>
+<header>
+<nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-column flex-md-row td-navbar" data-auto-burger=primary>
+<a class=navbar-brand href=/></a>
+<div class="td-navbar-nav-scroll ml-md-auto" id=main_navbar>
+<ul class="navbar-nav mt-2 mt-lg-0">
+<li class="nav-item mr-2 mb-lg-0">
+<a class="nav-link active" href=/docs/>Documentation</span></a>
+</li>
+<li class="nav-item mr-2 mb-lg-0">
+<a class=nav-link href=/blog/>Kubernetes Blog</span></a>
+</li>
+<li class="nav-item mr-2 mb-lg-0">
+<a class=nav-link href=/training/>Training</span></a>
+</li>
+<li class="nav-item mr-2 mb-lg-0">
+<a class=nav-link href=/partners/>Partners</span></a>
+</li>
+<li class="nav-item mr-2 mb-lg-0">
+<a class=nav-link href=/community/>Community</span></a>
+</li>
+<li class="nav-item mr-2 mb-lg-0">
+<a class=nav-link href=/case-studies/>Case Studies</span></a>
+</li>
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+Versions
+</a>
+<div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink>
+<a class=dropdown-item href=/releases>Release Information</a>
+<a class=dropdown-item href=https://xuxiaowei.io/t/1320/docs/contribute/style/>Kubernetes 文档说明</a>
+<a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn/docs/contribute/style/>v1.38</a>
+<a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn/docs/contribute/style/>v1.37</a>
+<a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn/docs/contribute/style/>v1.36</a>
+<a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn/docs/contribute/style/>v1.35</a>
+<a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn/docs/contribute/style/>v1.34</a>
+<a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn/docs/contribute/style/>v1.33</a>
+<a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn/docs/contribute/style/>v1.32</a>
+<a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn/docs/contribute/style/>v1.31</a>
+<a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn/docs/contribute/style/>v1.30</a>
+<a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn/docs/contribute/style/>v1.29</a>
+<a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn/docs/contribute/style/>v1.28</a>
+<a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn/docs/contribute/style/>v1.27</a>
+<a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn/docs/contribute/style/>v1.26</a>
+<a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn/docs/contribute/style/>v1.25</a>
+<a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn/docs/contribute/style/>v1.24</a>
+<a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn/docs/contribute/style/>v1.23</a>
+<a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn/docs/contribute/style/>v1.22</a>
+<a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn/docs/contribute/style/>v1.21</a>
+<a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn/docs/contribute/style/>v1.20</a>
+</div>
+</li>
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href=# id=navbarDropdownMenuLink role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+English
+</a>
+<div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink>
+<a class=dropdown-item href=/zh/docs/contribute/style/>中文 Chinese</a>
+<a class=dropdown-item href=/ko/docs/contribute/style/>한국어 Korean</a>
+<a class=dropdown-item href=/ja/docs/contribute/style/>日本語 Japanese</a>
+<a class=dropdown-item href=/fr/docs/contribute/style/>Français</a>
+<a class=dropdown-item href=/es/docs/contribute/style/>Español</a>
+<a class=dropdown-item href=/ru/docs/contribute/style/>Русский</a>
+</div>
+</li>
+</ul>
+</div>
+<button id=hamburger onclick=kub.toggleMenu() data-auto-burger-exclude><div></div></button>
+</nav>
+</header>
+<div class="container-fluid td-outer">
+<div class=td-main>
+<div class="row flex-xl-nowrap">
+<div class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none">
+</div>
+<div class="d-none d-xl-block col-xl-2 td-toc d-print-none">
+</div>
+<main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main>
+<div class=td-content>
+<div class="pageinfo pageinfo-primary d-print-none">
+<p>
+This the multi-page printable view of this section.
+<a href=# onclick="return print(),!1">Click here to print</a>.
+</p><p>
+<a href=/docs/contribute/style/>Return to the regular view of this page</a>.
+</p>
+</div>
+<h1 class=title>Documentation style overview</h1>
+<ul>
+<li>1: <a href=#pg-3b9549b1c8f5ef9d6ae0a841cc99c180>Documentation Content Guide</a></li>
+<li>2: <a href=#pg-75de610057816ac48210db20ec633217>Documentation Style Guide</a></li>
+<li>3: <a href=#pg-4f09c4b708d2dd4ac9eac1080dab6728>Writing a new topic</a></li>
+<li>4: <a href=#pg-69e79c7baae79b2f34332a745d62ddca>Page content types</a></li>
+<li>5: <a href=#pg-357f2ddd61035f18c2aa63fe86203f9c>Content organization</a></li>
+<li>6: <a href=#pg-6d76d18115f82583d526bdaf5d05edbc>Custom Hugo Shortcodes</a></li>
+</ul>
+<div class=content>
+<p>The topics in this section provide guidance on writing style, content formatting
+and organization, and using Hugo customizations specific to Kubernetes
+documentation.</p>
+</div>
+</div>
+<div class=td-content>
+<h1 id=pg-3b9549b1c8f5ef9d6ae0a841cc99c180>1 - Documentation Content Guide</h1>
+<p>This page contains guidelines for Kubernetes documentation.</p>
+<p>If you have questions about what's allowed, join the #sig-docs channel in
+<a href=https://slack.k8s.io/>Kubernetes Slack</a> and ask!</p>
+<p>You can register for Kubernetes Slack at <a href=https://slack.k8s.io/>https://slack.k8s.io/</a>.</p>
+<p>For information on creating new content for the Kubernetes
+docs, follow the <a href=/docs/contribute/style/style-guide>style guide</a>.</p>
+<h2 id=overview>Overview</h2>
+<p>Source for the Kubernetes website, including the docs, resides in the
+<a href=https://github.com/kubernetes/website>kubernetes/website</a> repository.</p>
+<p>Located in the <code>kubernetes/website/content/&lt;language_code>/docs</code> folder, the
+majority of Kubernetes documentation is specific to the <a href=https://github.com/kubernetes/kubernetes>Kubernetes
+project</a>.</p>
+<h2 id=what-s-allowed>What's allowed</h2>
+<p>Kubernetes docs allow content for third-party projects only when:</p>
+<ul>
+<li>Content documents software in the Kubernetes project</li>
+<li>Content documents software that's out of project but necessary for Kubernetes to function</li>
+<li>Content is canonical on kubernetes.io, or links to canonical content elsewhere</li>
+</ul>
+<h3 id=third-party-content>Third party content</h3>
+<p>Kubernetes documentation includes applied examples of projects in the Kubernetes project—projects that live in the <a href=https://github.com/kubernetes>kubernetes</a> and
+<a href=https://github.com/kubernetes-sigs>kubernetes-sigs</a> GitHub organizations.</p>
+<p>Links to active content in the Kubernetes project are always allowed.</p>
+<p>Kubernetes requires some third party content to function. Examples include container runtimes (containerd, CRI-O, Docker),
+<a href=/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/>networking policy</a> (CNI plugins), <a href=/docs/concepts/services-networking/ingress-controllers/>Ingress controllers</a>, and <a href=/docs/concepts/cluster-administration/logging/>logging</a>.</p>
+<p>Docs can link to third-party open source software (OSS) outside the Kubernetes project only if it's necessary for Kubernetes to function.</p>
+<h3 id=dual-sourced-content>Dual sourced content</h3>
+<p>Wherever possible, Kubernetes docs link to canonical sources instead of hosting
+dual-sourced content.</p>
+<p>Dual-sourced content requires double the effort (or more!) to maintain
+and grows stale more quickly.</p>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> If you're a maintainer for a Kubernetes project and need help hosting your own docs,
+ask for help in <a href=https://kubernetes.slack.com/messages/C1J0BPD2M/>#sig-docs on Kubernetes Slack</a>.
+</div>
+<h3 id=more-information>More information</h3>
+<p>If you have questions about allowed content, join the <a href=https://slack.k8s.io/>Kubernetes Slack</a> #sig-docs channel and ask!</p>
+<h2 id=what-s-next>What's next</h2>
+<ul>
+<li>Read the <a href=/docs/contribute/style/style-guide>Style guide</a>.</li>
+</ul>
+</div>
+<div class=td-content style=page-break-before:always>
+<h1 id=pg-75de610057816ac48210db20ec633217>2 - Documentation Style Guide</h1>
+<p>This page gives writing style guidelines for the Kubernetes documentation.
+These are guidelines, not rules. Use your best judgment, and feel free to
+propose changes to this document in a pull request.</p>
+<p>For additional information on creating new content for the Kubernetes
+documentation, read the <a href=/docs/contribute/style/content-guide/>Documentation Content Guide</a>.</p>
+<p>Changes to the style guide are made by SIG Docs as a group. To propose a change
+or addition, <a href=https://bit.ly/sig-docs-agenda>add it to the agenda</a> for an upcoming SIG Docs meeting, and attend the meeting to participate in the
+discussion.</p>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> Kubernetes documentation uses
+<a href=https://github.com/yuin/goldmark>Goldmark Markdown Renderer</a>
+with some adjustments along with a few
+<a href=/docs/contribute/style/hugo-shortcodes/>Hugo Shortcodes</a> to support
+glossary entries, tabs, and representing feature state.
+</div>
+<h2 id=language>Language</h2>
+<p>Kubernetes documentation has been translated into multiple languages
+(see <a href=https://github.com/kubernetes/website/blob/main/README.md#localization-readmemds>Localization READMEs</a>).</p>
+<p>The way of localizing the docs for a different language is described in <a href=/docs/contribute/localization/>Localizing Kubernetes Documentation</a>.</p>
+<p>The English-language documentation uses U.S. English spelling and grammar.</p>
+<h2 id=documentation-formatting-standards>Documentation formatting standards</h2>
+<h3 id=use-upper-camel-case-for-api-objects>Use upper camel case for API objects</h3>
+<p>When you refer specifically to interacting with an API object, use <a href=https://en.wikipedia.org/wiki/Camel_case>UpperCamelCase</a>, also known as Pascal case. You may see different capitalization, such as "configMap", in the <a href=/docs/reference/kubernetes-api/>API Reference</a>. When writing general documentation, it's better to use upper camel case, calling it "ConfigMap" instead.</p>
+<p>When you are generally discussing an API object, use <a href=https://docs.microsoft.com/en-us/style-guide/text-formatting/using-type/use-sentence-style-capitalization>sentence-style capitalization</a>.</p>
+<p>You may use the word "resource", "API", or "object" to clarify a Kubernetes resource type in a sentence.</p>
+<p>Don't split an API object name into separate words. For example, use PodTemplateList, not Pod Template List.</p>
+<p>The following examples focus on capitalization. For more information about formatting API object names, review the related guidance on <a href=#code-style-inline-code>Code Style</a>.</p>
+<table><caption style=display:none>Do and Don't - Use Pascal case for API objects</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>The HorizontalPodAutoscaler resource is responsible for ...</td>
+<td style=text-align:left>The Horizontal pod autoscaler is responsible for ...</td>
+</tr>
+<tr>
+<td style=text-align:left>A PodList object is a list of pods.</td>
+<td style=text-align:left>A Pod List object is a list of pods.</td>
+</tr>
+<tr>
+<td style=text-align:left>The Volume object contains a <code>hostPath</code> field.</td>
+<td style=text-align:left>The volume object contains a hostPath field.</td>
+</tr>
+<tr>
+<td style=text-align:left>Every ConfigMap object is part of a namespace.</td>
+<td style=text-align:left>Every configMap object is part of a namespace.</td>
+</tr>
+<tr>
+<td style=text-align:left>For managing confidential data, consider using the Secret API.</td>
+<td style=text-align:left>For managing confidential data, consider using the secret API.</td>
+</tr>
+</tbody>
+</table>
+<h3 id=use-angle-brackets-for-placeholders>Use angle brackets for placeholders</h3>
+<p>Use angle brackets for placeholders. Tell the reader what a placeholder
+represents, for example:</p>
+<p>Display information about a pod:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl describe pod &lt;pod-name&gt; -n &lt;namespace&gt;
+</code></pre></div><p>If the namespace of the pod is <code>default</code>, you can omit the '-n' parameter.</p>
+<h3 id=use-bold-for-user-interface-elements>Use bold for user interface elements</h3>
+<table><caption style=display:none>Do and Don't - Bold interface elements</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>Click <strong>Fork</strong>.</td>
+<td style=text-align:left>Click "Fork".</td>
+</tr>
+<tr>
+<td style=text-align:left>Select <strong>Other</strong>.</td>
+<td style=text-align:left>Select "Other".</td>
+</tr>
+</tbody>
+</table>
+<h3 id=use-italics-to-define-or-introduce-new-terms>Use italics to define or introduce new terms</h3>
+<table><caption style=display:none>Do and Don't - Use italics for new terms</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>A <em>cluster</em> is a set of nodes ...</td>
+<td style=text-align:left>A "cluster" is a set of nodes ...</td>
+</tr>
+<tr>
+<td style=text-align:left>These components form the <em>control plane</em>.</td>
+<td style=text-align:left>These components form the <strong>control plane</strong>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id=use-code-style-for-filenames-directories-and-paths>Use code style for filenames, directories, and paths</h3>
+<table><caption style=display:none>Do and Don't - Use code style for filenames, directories, and paths</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>Open the <code>envars.yaml</code> file.</td>
+<td style=text-align:left>Open the envars.yaml file.</td>
+</tr>
+<tr>
+<td style=text-align:left>Go to the <code>/docs/tutorials</code> directory.</td>
+<td style=text-align:left>Go to the /docs/tutorials directory.</td>
+</tr>
+<tr>
+<td style=text-align:left>Open the <code>/_data/concepts.yaml</code> file.</td>
+<td style=text-align:left>Open the /_data/concepts.yaml file.</td>
+</tr>
+</tbody>
+</table>
+<h3 id=use-the-international-standard-for-punctuation-inside-quotes>Use the international standard for punctuation inside quotes</h3>
+<table><caption style=display:none>Do and Don't - Use the international standard for punctuation inside quotes</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>events are recorded with an associated "stage".</td>
+<td style=text-align:left>events are recorded with an associated "stage."</td>
+</tr>
+<tr>
+<td style=text-align:left>The copy is called a "fork".</td>
+<td style=text-align:left>The copy is called a "fork."</td>
+</tr>
+</tbody>
+</table>
+<h2 id=inline-code-formatting>Inline code formatting</h2>
+<h3 id=code-style-inline-code>Use code style for inline code, commands, and API objects</h3>
+<p>For inline code in an HTML document, use the <code>&lt;code></code> tag. In a Markdown
+document, use the backtick (<code>`</code>).</p>
+<table><caption style=display:none>Do and Don't - Use code style for inline code, commands, and API objects</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>The <code>kubectl run</code> command creates a <code>Pod</code>.</td>
+<td style=text-align:left>The "kubectl run" command creates a pod.</td>
+</tr>
+<tr>
+<td style=text-align:left>The kubelet on each node acquires a <code>Lease</code>…</td>
+<td style=text-align:left>The kubelet on each node acquires a lease…</td>
+</tr>
+<tr>
+<td style=text-align:left>A <code>PersistentVolume</code> represents durable storage…</td>
+<td style=text-align:left>A Persistent Volume represents durable storage…</td>
+</tr>
+<tr>
+<td style=text-align:left>For declarative management, use <code>kubectl apply</code>.</td>
+<td style=text-align:left>For declarative management, use "kubectl apply".</td>
+</tr>
+<tr>
+<td style=text-align:left>Enclose code samples with triple backticks. (```)</td>
+<td style=text-align:left>Enclose code samples with any other syntax.</td>
+</tr>
+<tr>
+<td style=text-align:left>Use single backticks to enclose inline code. For example, <code>var example = true</code>.</td>
+<td style=text-align:left>Use two asterisks (<code>**</code>) or an underscore (<code>_</code>) to enclose inline code. For example, <strong>var example = true</strong>.</td>
+</tr>
+<tr>
+<td style=text-align:left>Use triple backticks before and after a multi-line block of code for fenced code blocks.</td>
+<td style=text-align:left>Use multi-line blocks of code to create diagrams, flowcharts, or other illustrations.</td>
+</tr>
+<tr>
+<td style=text-align:left>Use meaningful variable names that have a context.</td>
+<td style=text-align:left>Use variable names such as 'foo','bar', and 'baz' that are not meaningful and lack context.</td>
+</tr>
+<tr>
+<td style=text-align:left>Remove trailing spaces in the code.</td>
+<td style=text-align:left>Add trailing spaces in the code, where these are important, because the screen reader will read out the spaces as well.</td>
+</tr>
+</tbody>
+</table>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> The website supports syntax highlighting for code samples, but specifying a language is optional. Syntax highlighting in the code block should conform to the <a href="https://www.w3.org/WAI/WCAG21/quickref/?versions=2.0&showtechniques=141%2C143#contrast-minimum">contrast guidelines.</a>
+</div>
+<h3 id=use-code-style-for-object-field-names-and-namespaces>Use code style for object field names and namespaces</h3>
+<table><caption style=display:none>Do and Don't - Use code style for object field names</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>Set the value of the <code>replicas</code> field in the configuration file.</td>
+<td style=text-align:left>Set the value of the "replicas" field in the configuration file.</td>
+</tr>
+<tr>
+<td style=text-align:left>The value of the <code>exec</code> field is an ExecAction object.</td>
+<td style=text-align:left>The value of the "exec" field is an ExecAction object.</td>
+</tr>
+<tr>
+<td style=text-align:left>Run the process as a DaemonSet in the <code>kube-system</code> namespace.</td>
+<td style=text-align:left>Run the process as a DaemonSet in the kube-system namespace.</td>
+</tr>
+</tbody>
+</table>
+<h3 id=use-code-style-for-kubernetes-command-tool-and-component-names>Use code style for Kubernetes command tool and component names</h3>
+<table><caption style=display:none>Do and Don't - Use code style for Kubernetes command tool and component names</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>The kubelet preserves node stability.</td>
+<td style=text-align:left>The <code>kubelet</code> preserves node stability.</td>
+</tr>
+<tr>
+<td style=text-align:left>The <code>kubectl</code> handles locating and authenticating to the API server.</td>
+<td style=text-align:left>The kubectl handles locating and authenticating to the apiserver.</td>
+</tr>
+<tr>
+<td style=text-align:left>Run the process with the certificate, <code>kube-apiserver --client-ca-file=FILENAME</code>.</td>
+<td style=text-align:left>Run the process with the certificate, kube-apiserver --client-ca-file=FILENAME.</td>
+</tr>
+</tbody>
+</table>
+<h3 id=starting-a-sentence-with-a-component-tool-or-component-name>Starting a sentence with a component tool or component name</h3>
+<table><caption style=display:none>Do and Don't - Starting a sentence with a component tool or component name</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>The <code>kubeadm</code> tool bootstraps and provisions machines in a cluster.</td>
+<td style=text-align:left><code>kubeadm</code> tool bootstraps and provisions machines in a cluster.</td>
+</tr>
+<tr>
+<td style=text-align:left>The kube-scheduler is the default scheduler for Kubernetes.</td>
+<td style=text-align:left>kube-scheduler is the default scheduler for Kubernetes.</td>
+</tr>
+</tbody>
+</table>
+<h3 id=use-a-general-descriptor-over-a-component-name>Use a general descriptor over a component name</h3>
+<table><caption style=display:none>Do and Don't - Use a general descriptor over a component name</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>The Kubernetes API server offers an OpenAPI spec.</td>
+<td style=text-align:left>The apiserver offers an OpenAPI spec.</td>
+</tr>
+<tr>
+<td style=text-align:left>Aggregated APIs are subordinate API servers.</td>
+<td style=text-align:left>Aggregated APIs are subordinate APIServers.</td>
+</tr>
+</tbody>
+</table>
+<h3 id=use-normal-style-for-string-and-integer-field-values>Use normal style for string and integer field values</h3>
+<p>For field values of type string or integer, use normal style without quotation marks.</p>
+<table><caption style=display:none>Do and Don't - Use normal style for string and integer field values</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>Set the value of <code>imagePullPolicy</code> to Always.</td>
+<td style=text-align:left>Set the value of <code>imagePullPolicy</code> to "Always".</td>
+</tr>
+<tr>
+<td style=text-align:left>Set the value of <code>image</code> to nginx:1.16.</td>
+<td style=text-align:left>Set the value of <code>image</code> to <code>nginx:1.16</code>.</td>
+</tr>
+<tr>
+<td style=text-align:left>Set the value of the <code>replicas</code> field to 2.</td>
+<td style=text-align:left>Set the value of the <code>replicas</code> field to <code>2</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id=code-snippet-formatting>Code snippet formatting</h2>
+<h3 id=don-t-include-the-command-prompt>Don't include the command prompt</h3>
+<table><caption style=display:none>Do and Don't - Don't include the command prompt</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>kubectl get pods</td>
+<td style=text-align:left>$ kubectl get pods</td>
+</tr>
+</tbody>
+</table>
+<h3 id=separate-commands-from-output>Separate commands from output</h3>
+<p>Verify that the pod is running on your chosen node:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pods --output<span style=color:#666>=</span>wide
+</code></pre></div><p>The output is similar to this:</p>
+<pre><code class=language-console data-lang=console>NAME     READY     STATUS    RESTARTS   AGE    IP           NODE
+nginx    1/1       Running   0          13s    10.200.0.4   worker0
+</code></pre><h3 id=versioning-kubernetes-examples>Versioning Kubernetes examples</h3>
+<p>Code examples and configuration examples that include version information should be consistent with the accompanying text.</p>
+<p>If the information is version specific, the Kubernetes version needs to be defined in the <code>prerequisites</code> section of the <a href=/docs/contribute/style/page-content-types/#task>Task template</a> or the <a href=/docs/contribute/style/page-content-types/#tutorial>Tutorial template</a>. Once the page is saved, the <code>prerequisites</code> section is shown as <strong>Before you begin</strong>.</p>
+<p>To specify the Kubernetes version for a task or tutorial page, include <code>min-kubernetes-server-version</code> in the front matter of the page.</p>
+<p>If the example YAML is in a standalone file, find and review the topics that include it as a reference.
+Verify that any topics using the standalone YAML have the appropriate version information defined.
+If a stand-alone YAML file is not referenced from any topics, consider deleting it instead of updating it.</p>
+<p>For example, if you are writing a tutorial that is relevant to Kubernetes version 1.8, the front-matter of your markdown file should look something like:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#00f;font-weight:700>---</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>title</span>:<span style=color:#bbb> </span>&lt;your tutorial title here&gt;<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>min-kubernetes-server-version</span>:<span style=color:#bbb> </span>v1.8<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:#00f;font-weight:700>---</span><span style=color:#bbb>
+</span></code></pre></div><p>In code and configuration examples, do not include comments about alternative versions.
+Be careful to not include incorrect statements in your examples as comments, such as:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb> </span><span style=color:#080;font-style:italic># earlier versions use...</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:#00f;font-weight:700>...</span><span style=color:#bbb>
+</span></code></pre></div><h2 id=kubernetes-io-word-list>Kubernetes.io word list</h2>
+<p>A list of Kubernetes-specific terms and words to be used consistently across the site.</p>
+<table><caption style=display:none>Kubernetes.io word list</caption>
+<thead>
+<tr>
+<th style=text-align:left>Term</th>
+<th style=text-align:left>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>Kubernetes</td>
+<td style=text-align:left>Kubernetes should always be capitalized.</td>
+</tr>
+<tr>
+<td style=text-align:left>Docker</td>
+<td style=text-align:left>Docker should always be capitalized.</td>
+</tr>
+<tr>
+<td style=text-align:left>SIG Docs</td>
+<td style=text-align:left>SIG Docs rather than SIG-DOCS or other variations.</td>
+</tr>
+<tr>
+<td style=text-align:left>On-premises</td>
+<td style=text-align:left>On-premises or On-prem rather than On-premise or other variations.</td>
+</tr>
+</tbody>
+</table>
+<h2 id=shortcodes>Shortcodes</h2>
+<p>Hugo <a href=https://gohugo.io/content-management/shortcodes>Shortcodes</a> help create different rhetorical appeal levels. Our documentation supports three different shortcodes in this category: <strong>Note</strong> <code>{{&lt; note >}}</code>, <strong>Caution</strong> <code>{{&lt; caution >}}</code>, and <strong>Warning</strong> <code>{{&lt; warning >}}</code>.</p>
+<ol>
+<li>
+<p>Surround the text with an opening and closing shortcode.</p>
+</li>
+<li>
+<p>Use the following syntax to apply a style:</p>
+<pre><code class=language-none data-lang=none>{{&lt; note &gt;}}
+No need to include a prefix; the shortcode automatically provides one. (Note:, Caution:, etc.)
+{{&lt; /note &gt;}}
+</code></pre><p>The output is:</p>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> The prefix you choose is the same text for the tag.
+</div>
+</li>
+</ol>
+<h3 id=note>Note</h3>
+<p>Use <code>{{&lt; note >}}</code> to highlight a tip or a piece of information that may be helpful to know.</p>
+<p>For example:</p>
+<pre><code>{{&lt; note &gt;}}
+You can _still_ use Markdown inside these callouts.
+{{&lt; /note &gt;}}
+</code></pre><p>The output is:</p>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> You can <em>still</em> use Markdown inside these callouts.
+</div>
+<p>You can use a <code>{{&lt; note >}}</code> in a list:</p>
+<pre><code>1. Use the note shortcode in a list
+
+1. A second item with an embedded note
+
+   {{&lt; note &gt;}}
+   Warning, Caution, and Note shortcodes, embedded in lists, need to be indented four spaces. See [Common Shortcode Issues](#common-shortcode-issues).
+   {{&lt; /note &gt;}}
+
+1. A third item in a list
+
+1. A fourth item in a list
+</code></pre><p>The output is:</p>
+<ol>
+<li>
+<p>Use the note shortcode in a list</p>
+</li>
+<li>
+<p>A second item with an embedded note</p>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> Warning, Caution, and Note shortcodes, embedded in lists, need to be indented four spaces. See <a href=#common-shortcode-issues>Common Shortcode Issues</a>.
+</div>
+</li>
+<li>
+<p>A third item in a list</p>
+</li>
+<li>
+<p>A fourth item in a list</p>
+</li>
+</ol>
+<h3 id=caution>Caution</h3>
+<p>Use <code>{{&lt; caution >}}</code> to call attention to an important piece of information to avoid pitfalls.</p>
+<p>For example:</p>
+<pre><code>{{&lt; caution &gt;}}
+The callout style only applies to the line directly above the tag.
+{{&lt; /caution &gt;}}
+</code></pre><p>The output is:</p>
+<div class="alert alert-warning caution callout" role=alert>
+<strong>Caution:</strong> The callout style only applies to the line directly above the tag.
+</div>
+<h3 id=warning>Warning</h3>
+<p>Use <code>{{&lt; warning >}}</code> to indicate danger or a piece of information that is crucial to follow.</p>
+<p>For example:</p>
+<pre><code>{{&lt; warning &gt;}}
+Beware.
+{{&lt; /warning &gt;}}
+</code></pre><p>The output is:</p>
+<div class="alert alert-danger warning callout" role=alert>
+<strong>Warning:</strong> Beware.
+</div>
+<h3 id=katacoda-embedded-live-environment>Katacoda Embedded Live Environment</h3>
+<p>This button lets users run Minikube in their browser using the <a href=https://www.katacoda.com/embed/panel>Katacoda Terminal</a>.
+It lowers the barrier of entry by allowing users to use Minikube with one click instead of going through the complete
+Minikube and Kubectl installation process locally.</p>
+<p>The Embedded Live Environment is configured to run <code>minikube start</code> and lets users complete tutorials in the same window
+as the documentation.</p>
+<div class="alert alert-warning caution callout" role=alert>
+<strong>Caution:</strong> The session is limited to 15 minutes.
+</div>
+<p>For example:</p>
+<pre><code>{{&lt; kat-button &gt;}}
+</code></pre><p>The output is:</p>
+<script defer src=https://katacoda.com/embed.js></script>
+<button class=button onclick=window.katacoda.init()>Launch Terminal</button>
+<h2 id=common-shortcode-issues>Common Shortcode Issues</h2>
+<h3 id=ordered-lists>Ordered Lists</h3>
+<p>Shortcodes will interrupt numbered lists unless you indent four spaces before the notice and the tag.</p>
+<p>For example:</p>
+<pre><code>1. Preheat oven to 350˚F
+
+1. Prepare the batter, and pour into springform pan.
+   `{{&lt; note &gt;}}Grease the pan for best results.{{&lt; /note &gt;}}`
+
+1. Bake for 20-25 minutes or until set.
+</code></pre>
+<p>The output is:</p>
+<ol>
+<li>
+<p>Preheat oven to 350˚F</p>
+</li>
+<li>
+<p>Prepare the batter, and pour into springform pan.</p>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> Grease the pan for best results.
+</div>
+</li>
+<li>
+<p>Bake for 20-25 minutes or until set.</p>
+</li>
+</ol>
+<h3 id=include-statements>Include Statements</h3>
+<p>Shortcodes inside include statements will break the build. You must insert them in the parent document, before and after you call the include. For example:</p>
+<pre><code>{{&lt; note &gt;}}
+{{&lt; include &quot;task-tutorial-prereqs.md&quot; &gt;}}
+{{&lt; /note &gt;}}
+</code></pre><h2 id=markdown-elements>Markdown elements</h2>
+<h3 id=line-breaks>Line breaks</h3>
+<p>Use a single newline to separate block-level content like headings, lists, images, code blocks, and others. The exception is second-level headings, where it should be two newlines. Second-level headings follow the first-level (or the title) without any preceding paragraphs or texts. A two line spacing helps visualize the overall structure of content in a code editor better.</p>
+<h3 id=headings>Headings</h3>
+<p>People accessing this documentation may use a screen reader or other assistive technology (AT). <a href=https://en.wikipedia.org/wiki/Screen_reader>Screen readers</a> are linear output devices, they output items on a page one at a time. If there is a lot of content on a page, you can use headings to give the page an internal structure. A good page structure helps all readers to easily navigate the page or filter topics of interest.</p>
+<table><caption style=display:none>Do and Don't - Headings</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>Update the title in the front matter of the page or blog post.</td>
+<td style=text-align:left>Use first level heading, as Hugo automatically converts the title in the front matter of the page into a first-level heading.</td>
+</tr>
+<tr>
+<td style=text-align:left>Use ordered headings to provide a meaningful high-level outline of your content.</td>
+<td style=text-align:left>Use headings level 4 through 6, unless it is absolutely necessary. If your content is that detailed, it may need to be broken into separate articles.</td>
+</tr>
+<tr>
+<td style=text-align:left>Use pound or hash signs (<code>#</code>) for non-blog post content.</td>
+<td style=text-align:left>Use underlines (<code>---</code> or <code>===</code>) to designate first-level headings.</td>
+</tr>
+<tr>
+<td style=text-align:left>Use sentence case for headings. For example, <strong>Extend kubectl with plugins</strong></td>
+<td style=text-align:left>Use title case for headings. For example, <strong>Extend Kubectl With Plugins</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id=paragraphs>Paragraphs</h3>
+<table><caption style=display:none>Do and Don't - Paragraphs</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>Try to keep paragraphs under 6 sentences.</td>
+<td style=text-align:left>Indent the first paragraph with space characters. For example, ⋅⋅⋅Three spaces before a paragraph will indent it.</td>
+</tr>
+<tr>
+<td style=text-align:left>Use three hyphens (<code>---</code>) to create a horizontal rule. Use horizontal rules for breaks in paragraph content. For example, a change of scene in a story, or a shift of topic within a section.</td>
+<td style=text-align:left>Use horizontal rules for decoration.</td>
+</tr>
+</tbody>
+</table>
+<h3 id=links>Links</h3>
+<table><caption style=display:none>Do and Don't - Links</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>Write hyperlinks that give you context for the content they link to. For example: Certain ports are open on your machines. See <a href=#check-required-ports>Check required ports</a> for more details.</td>
+<td style=text-align:left>Use ambiguous terms such as "click here". For example: Certain ports are open on your machines. See <a href=#check-required-ports>here</a> for more details.</td>
+</tr>
+<tr>
+<td style=text-align:left>Write Markdown-style links: <code>[link text](URL)</code>. For example: <code>[Hugo shortcodes](/docs/contribute/style/hugo-shortcodes/#table-captions)</code> and the output is <a href=/docs/contribute/style/hugo-shortcodes/#table-captions>Hugo shortcodes</a>.</td>
+<td style=text-align:left>Write HTML-style links: <code>&lt;a href="/media/examples/link-element-example.css" target="_blank">Visit our tutorial!&lt;/a></code>, or create links that open in new tabs or windows. For example: <code>[example website](https://example.com){target="_blank"}</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id=lists>Lists</h3>
+<p>Group items in a list that are related to each other and need to appear in a specific order or to indicate a correlation between multiple items. When a screen reader comes across a list—whether it is an ordered or unordered list—it will be announced to the user that there is a group of list items. The user can then use the arrow keys to move up and down between the various items in the list.
+Website navigation links can also be marked up as list items; after all they are nothing but a group of related links.</p>
+<ul>
+<li>
+<p>End each item in a list with a period if one or more items in the list are complete sentences. For the sake of consistency, normally either all items or none should be complete sentences.</p>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> Ordered lists that are part of an incomplete introductory sentence can be in lowercase and punctuated as if each item was a part of the introductory sentence.
+</div>
+</li>
+<li>
+<p>Use the number one (<code>1.</code>) for ordered lists.</p>
+</li>
+<li>
+<p>Use (<code>+</code>), (<code>*</code>), or (<code>-</code>) for unordered lists.</p>
+</li>
+<li>
+<p>Leave a blank line after each list.</p>
+</li>
+<li>
+<p>Indent nested lists with four spaces (for example, ⋅⋅⋅⋅).</p>
+</li>
+<li>
+<p>List items may consist of multiple paragraphs. Each subsequent paragraph in a list item must be indented by either four spaces or one tab.</p>
+</li>
+</ul>
+<h3 id=tables>Tables</h3>
+<p>The semantic purpose of a data table is to present tabular data. Sighted users can quickly scan the table but a screen reader goes through line by line. A table caption is used to create a descriptive title for a data table. Assistive technologies (AT) use the HTML table caption element to identify the table contents to the user within the page structure.</p>
+<ul>
+<li>Add table captions using <a href=/docs/contribute/style/hugo-shortcodes/#table-captions>Hugo shortcodes</a> for tables.</li>
+</ul>
+<h2 id=content-best-practices>Content best practices</h2>
+<p>This section contains suggested best practices for clear, concise, and consistent content.</p>
+<h3 id=use-present-tense>Use present tense</h3>
+<table><caption style=display:none>Do and Don't - Use present tense</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>This command starts a proxy.</td>
+<td style=text-align:left>This command will start a proxy.</td>
+</tr>
+</tbody>
+</table>
+<p>Exception: Use future or past tense if it is required to convey the correct
+meaning.</p>
+<h3 id=use-active-voice>Use active voice</h3>
+<table><caption style=display:none>Do and Don't - Use active voice</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>You can explore the API using a browser.</td>
+<td style=text-align:left>The API can be explored using a browser.</td>
+</tr>
+<tr>
+<td style=text-align:left>The YAML file specifies the replica count.</td>
+<td style=text-align:left>The replica count is specified in the YAML file.</td>
+</tr>
+</tbody>
+</table>
+<p>Exception: Use passive voice if active voice leads to an awkward construction.</p>
+<h3 id=use-simple-and-direct-language>Use simple and direct language</h3>
+<p>Use simple and direct language. Avoid using unnecessary phrases, such as saying "please."</p>
+<table><caption style=display:none>Do and Don't - Use simple and direct language</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>To create a ReplicaSet, ...</td>
+<td style=text-align:left>In order to create a ReplicaSet, ...</td>
+</tr>
+<tr>
+<td style=text-align:left>See the configuration file.</td>
+<td style=text-align:left>Please see the configuration file.</td>
+</tr>
+<tr>
+<td style=text-align:left>View the pods.</td>
+<td style=text-align:left>With this next command, we'll view the pods.</td>
+</tr>
+</tbody>
+</table>
+<h3 id=address-the-reader-as-you>Address the reader as "you"</h3>
+<table><caption style=display:none>Do and Don't - Addressing the reader</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>You can create a Deployment by ...</td>
+<td style=text-align:left>We'll create a Deployment by ...</td>
+</tr>
+<tr>
+<td style=text-align:left>In the preceding output, you can see...</td>
+<td style=text-align:left>In the preceding output, we can see ...</td>
+</tr>
+</tbody>
+</table>
+<h3 id=avoid-latin-phrases>Avoid Latin phrases</h3>
+<p>Prefer English terms over Latin abbreviations.</p>
+<table><caption style=display:none>Do and Don't - Avoid Latin phrases</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>For example, ...</td>
+<td style=text-align:left>e.g., ...</td>
+</tr>
+<tr>
+<td style=text-align:left>That is, ...</td>
+<td style=text-align:left>i.e., ...</td>
+</tr>
+</tbody>
+</table>
+<p>Exception: Use "etc." for et cetera.</p>
+<h2 id=patterns-to-avoid>Patterns to avoid</h2>
+<h3 id=avoid-using-we>Avoid using "we"</h3>
+<p>Using "we" in a sentence can be confusing, because the reader might not know
+whether they're part of the "we" you're describing.</p>
+<table><caption style=display:none>Do and Don't - Patterns to avoid</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>Version 1.4 includes ...</td>
+<td style=text-align:left>In version 1.4, we have added ...</td>
+</tr>
+<tr>
+<td style=text-align:left>Kubernetes provides a new feature for ...</td>
+<td style=text-align:left>We provide a new feature ...</td>
+</tr>
+<tr>
+<td style=text-align:left>This page teaches you how to use pods.</td>
+<td style=text-align:left>In this page, we are going to learn about pods.</td>
+</tr>
+</tbody>
+</table>
+<h3 id=avoid-jargon-and-idioms>Avoid jargon and idioms</h3>
+<p>Some readers speak English as a second language. Avoid jargon and idioms to help them understand better.</p>
+<table><caption style=display:none>Do and Don't - Avoid jargon and idioms</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>Internally, ...</td>
+<td style=text-align:left>Under the hood, ...</td>
+</tr>
+<tr>
+<td style=text-align:left>Create a new cluster.</td>
+<td style=text-align:left>Turn up a new cluster.</td>
+</tr>
+</tbody>
+</table>
+<h3 id=avoid-statements-about-the-future>Avoid statements about the future</h3>
+<p>Avoid making promises or giving hints about the future. If you need to talk about
+an alpha feature, put the text under a heading that identifies it as alpha
+information.</p>
+<p>An exception to this rule is documentation about announced deprecations
+targeting removal in future versions. One example of documentation like this
+is the <a href=/docs/reference/using-api/deprecation-guide/>Deprecated API migration guide</a>.</p>
+<h3 id=avoid-statements-that-will-soon-be-out-of-date>Avoid statements that will soon be out of date</h3>
+<p>Avoid words like "currently" and "new." A feature that is new today might not be
+considered new in a few months.</p>
+<table><caption style=display:none>Do and Don't - Avoid statements that will soon be out of date</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>In version 1.4, ...</td>
+<td style=text-align:left>In the current version, ...</td>
+</tr>
+<tr>
+<td style=text-align:left>The Federation feature provides ...</td>
+<td style=text-align:left>The new Federation feature provides ...</td>
+</tr>
+</tbody>
+</table>
+<h3 id=avoid-words-that-assume-a-specific-level-of-understanding>Avoid words that assume a specific level of understanding</h3>
+<p>Avoid words such as "just", "simply", "easy", "easily", or "simple". These words do not add value.</p>
+<table><caption style=display:none>Do and Don't - Avoid insensitive words</caption>
+<thead>
+<tr>
+<th style=text-align:left>Do</th>
+<th style=text-align:left>Don't</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>Include one command in ...</td>
+<td style=text-align:left>Include just one command in ...</td>
+</tr>
+<tr>
+<td style=text-align:left>Run the container ...</td>
+<td style=text-align:left>Simply run the container ...</td>
+</tr>
+<tr>
+<td style=text-align:left>You can remove ...</td>
+<td style=text-align:left>You can easily remove ...</td>
+</tr>
+<tr>
+<td style=text-align:left>These steps ...</td>
+<td style=text-align:left>These simple steps ...</td>
+</tr>
+</tbody>
+</table>
+<h2 id=what-s-next>What's next</h2>
+<ul>
+<li>Learn about <a href=/docs/contribute/style/write-new-topic/>writing a new topic</a>.</li>
+<li>Learn about <a href=/docs/contribute/style/page-content-types/>using page templates</a>.</li>
+<li>Learn about <a href=/docs/contribute/new-content/open-a-pr/>creating a pull request</a>.</li>
+</ul>
+</div>
+<div class=td-content style=page-break-before:always>
+<h1 id=pg-4f09c4b708d2dd4ac9eac1080dab6728>3 - Writing a new topic</h1>
+<p>This page shows how to create a new topic for the Kubernetes docs.</p>
+<h2 id=before-you-begin>Before you begin</h2>
+<p>Create a fork of the Kubernetes documentation repository as described in
+<a href=/docs/contribute/new-content/open-a-pr/>Open a PR</a>.</p>
+<h2 id=choosing-a-page-type>Choosing a page type</h2>
+<p>As you prepare to write a new topic, think about the page type that would fit your content the best:</p>
+<table><caption style=display:none>Guidelines for choosing a page type</caption>
+<thead>
+<tr>
+<th style=text-align:left>Type</th>
+<th style=text-align:left>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>Concept</td>
+<td style=text-align:left>A concept page explains some aspect of Kubernetes. For example, a concept page might describe the Kubernetes Deployment object and explain the role it plays as an application while it is deployed, scaled, and updated. Typically, concept pages don't include sequences of steps, but instead provide links to tasks or tutorials. For an example of a concept topic, see <a href=/docs/concepts/architecture/nodes/>Nodes</a>.</td>
+</tr>
+<tr>
+<td style=text-align:left>Task</td>
+<td style=text-align:left>A task page shows how to do a single thing. The idea is to give readers a sequence of steps that they can actually do as they read the page. A task page can be short or long, provided it stays focused on one area. In a task page, it is OK to blend brief explanations with the steps to be performed, but if you need to provide a lengthy explanation, you should do that in a concept topic. Related task and concept topics should link to each other. For an example of a short task page, see <a href=/docs/tasks/configure-pod-container/configure-volume-storage/>Configure a Pod to Use a Volume for Storage</a>. For an example of a longer task page, see <a href=/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/>Configure Liveness and Readiness Probes</a></td>
+</tr>
+<tr>
+<td style=text-align:left>Tutorial</td>
+<td style=text-align:left>A tutorial page shows how to accomplish a goal that ties together several Kubernetes features. A tutorial might provide several sequences of steps that readers can actually do as they read the page. Or it might provide explanations of related pieces of code. For example, a tutorial could provide a walkthrough of a code sample. A tutorial can include brief explanations of the Kubernetes features that are being tied together, but should link to related concept topics for deep explanations of individual features.</td>
+</tr>
+</tbody>
+</table>
+<h3 id=creating-a-new-page>Creating a new page</h3>
+<p>Use a <a href=/docs/contribute/style/page-content-types/>content type</a> for each new page
+that you write. The docs site provides templates or
+<a href=https://gohugo.io/content-management/archetypes/>Hugo archetypes</a> to create
+new content pages. To create a new type of page, run <code>hugo new</code> with the path to the file
+you want to create. For example:</p>
+<pre><code>hugo new docs/concepts/my-first-concept.md
+</code></pre><h2 id=choosing-a-title-and-filename>Choosing a title and filename</h2>
+<p>Choose a title that has the keywords you want search engines to find.
+Create a filename that uses the words in your title separated by hyphens.
+For example, the topic with title
+<a href=/docs/tasks/extend-kubernetes/http-proxy-access-api/>Using an HTTP Proxy to Access the Kubernetes API</a>
+has filename <code>http-proxy-access-api.md</code>. You don't need to put
+"kubernetes" in the filename, because "kubernetes" is already in the
+URL for the topic, for example:</p>
+<pre><code>   /docs/tasks/extend-kubernetes/http-proxy-access-api/
+</code></pre>
+<h2 id=adding-the-topic-title-to-the-front-matter>Adding the topic title to the front matter</h2>
+<p>In your topic, put a <code>title</code> field in the
+<a href=https://gohugo.io/content-management/front-matter/>front matter</a>.
+The front matter is the YAML block that is between the
+triple-dashed lines at the top of the page. Here's an example:</p>
+<pre><code>---
+title: Using an HTTP Proxy to Access the Kubernetes API
+---
+</code></pre>
+<h2 id=choosing-a-directory>Choosing a directory</h2>
+<p>Depending on your page type, put your new file in a subdirectory of one of these:</p>
+<ul>
+<li>/content/en/docs/tasks/</li>
+<li>/content/en/docs/tutorials/</li>
+<li>/content/en/docs/concepts/</li>
+</ul>
+<p>You can put your file in an existing subdirectory, or you can create a new
+subdirectory.</p>
+<h2 id=placing-your-topic-in-the-table-of-contents>Placing your topic in the table of contents</h2>
+<p>The table of contents is built dynamically using the directory structure of the
+documentation source. The top-level directories under <code>/content/en/docs/</code> create
+top-level navigation, and subdirectories each have entries in the table of
+contents.</p>
+<p>Each subdirectory has a file <code>_index.md</code>, which represents the "home" page for
+a given subdirectory's content. The <code>_index.md</code> does not need a template. It
+can contain overview content about the topics in the subdirectory.</p>
+<p>Other files in a directory are sorted alphabetically by default. This is almost
+never the best order. To control the relative sorting of topics in a
+subdirectory, set the <code>weight:</code> front-matter key to an integer. Typically, we
+use multiples of 10, to account for adding topics later. For instance, a topic
+with weight <code>10</code> will come before one with weight <code>20</code>.</p>
+<h2 id=embedding-code-in-your-topic>Embedding code in your topic</h2>
+<p>If you want to include some code in your topic, you can embed the code in your
+file directly using the markdown code block syntax. This is recommended for the
+following cases (not an exhaustive list):</p>
+<ul>
+<li>The code shows the output from a command such as
+<code>kubectl get deploy mydeployment -o json | jq '.status'</code>.</li>
+<li>The code is not generic enough for users to try out. As an example, you can
+embed the YAML
+file for creating a Pod which depends on a specific
+<a href=/docs/concepts/storage/volumes#flexvolume>FlexVolume</a> implementation.</li>
+<li>The code is an incomplete example because its purpose is to highlight a
+portion of a larger file. For example, when describing ways to
+customize the <a href=/docs/tasks/administer-cluster/sysctl-cluster/#podsecuritypolicy>PodSecurityPolicy</a>
+for some reasons, you can provide a short snippet directly in your topic file.</li>
+<li>The code is not meant for users to try out due to other reasons. For example,
+when describing how a new attribute should be added to a resource using the
+<code>kubectl edit</code> command, you can provide a short example that includes only
+the attribute to add.</li>
+</ul>
+<h2 id=including-code-from-another-file>Including code from another file</h2>
+<p>Another way to include code in your topic is to create a new, complete sample
+file (or group of sample files) and then reference the sample from your topic.
+Use this method to include sample YAML files when the sample is generic and
+reusable, and you want the reader to try it out themselves.</p>
+<p>When adding a new standalone sample file, such as a YAML file, place the code in
+one of the <code>&lt;LANG>/examples/</code> subdirectories where <code>&lt;LANG></code> is the language for
+the topic. In your topic file, use the <code>codenew</code> shortcode:</p>
+<pre><code class=language-none data-lang=none>{{&lt; codenew file=&quot;&lt;RELPATH&gt;/my-example-yaml&gt;&quot; &gt;}}
+</code></pre><p>where <code>&lt;RELPATH></code> is the path to the file to include, relative to the
+<code>examples</code> directory. The following Hugo shortcode references a YAML
+file located at <code>/content/en/examples/pods/storage/gce-volume.yaml</code>.</p>
+<pre><code class=language-none data-lang=none>{{&lt; codenew file=&quot;pods/storage/gce-volume.yaml&quot; &gt;}}
+</code></pre><div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> To show raw Hugo shortcodes as in the above example and prevent Hugo
+from interpreting them, use C-style comments directly after the <code>&lt;</code> and before
+the <code>></code> characters. View the code for this page for an example.
+</div>
+<h2 id=showing-how-to-create-an-api-object-from-a-configuration-file>Showing how to create an API object from a configuration file</h2>
+<p>If you need to demonstrate how to create an API object based on a
+configuration file, place the configuration file in one of the subdirectories
+under <code>&lt;LANG>/examples</code>.</p>
+<p>In your topic, show this command:</p>
+<pre><code>kubectl create -f https://k8s.io/examples/pods/storage/gce-volume.yaml
+</code></pre><div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> When adding new YAML files to the <code>&lt;LANG>/examples</code> directory, make
+sure the file is also included into the <code>&lt;LANG>/examples_test.go</code> file. The
+Travis CI for the Website automatically runs this test case when PRs are
+submitted to ensure all examples pass the tests.
+</div>
+<p>For an example of a topic that uses this technique, see
+<a href=/docs/tasks/run-application/run-single-instance-stateful-application/>Running a Single-Instance Stateful Application</a>.</p>
+<h2 id=adding-images-to-a-topic>Adding images to a topic</h2>
+<p>Put image files in the <code>/images</code> directory. The preferred
+image format is SVG.</p>
+<h2 id=what-s-next>What's next</h2>
+<ul>
+<li>Learn about <a href=/docs/contribute/style/page-content-types/>using page content types</a>.</li>
+<li>Learn about <a href=/docs/contribute/new-content/open-a-pr/>creating a pull request</a>.</li>
+</ul>
+</div>
+<div class=td-content style=page-break-before:always>
+<h1 id=pg-69e79c7baae79b2f34332a745d62ddca>4 - Page content types</h1>
+<p>The Kubernetes documentation follows several types of page content:</p>
+<ul>
+<li>Concept</li>
+<li>Task</li>
+<li>Tutorial</li>
+<li>Reference</li>
+</ul>
+<h2 id=content-sections>Content sections</h2>
+<p>Each page content type contains a number of sections defined by
+Markdown comments and HTML headings. You can add content headings to
+your page with the <code>heading</code> shortcode. The comments and headings help
+maintain the structure of the page content types.</p>
+<p>Examples of Markdown comments defining page content sections:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-markdown data-lang=markdown><span style=color:#080;font-style:italic>&lt;!-- overview --&gt;</span>
+</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-markdown data-lang=markdown><span style=color:#080;font-style:italic>&lt;!-- body --&gt;</span>
+</code></pre></div><p>To create common headings in your content pages, use the <code>heading</code> shortcode with
+a heading string.</p>
+<p>Examples of heading strings:</p>
+<ul>
+<li>whatsnext</li>
+<li>prerequisites</li>
+<li>objectives</li>
+<li>cleanup</li>
+<li>synopsis</li>
+<li>seealso</li>
+<li>options</li>
+</ul>
+<p>For example, to create a <code>whatsnext</code> heading, add the heading shortcode with the "whatsnext" string:</p>
+<pre><code class=language-none data-lang=none>## {{% heading &quot;whatsnext&quot; %}}
+</code></pre><p>You can declare a <code>prerequisites</code> heading as follows:</p>
+<pre><code class=language-none data-lang=none>## {{% heading &quot;prerequisites&quot; %}}
+</code></pre><p>The <code>heading</code> shortcode expects one string parameter.
+The heading string parameter matches the prefix of a variable in the <code>i18n/&lt;lang>.toml</code> files.
+For example:</p>
+<p><code>i18n/en.toml</code>:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml>[whatsnext_heading]
+other = <span style=color:#b44>&#34;What&#39;s next&#34;</span>
+</code></pre></div><p><code>i18n/ko.toml</code>:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml>[whatsnext_heading]
+other = <span style=color:#b44>&#34;다음 내용&#34;</span>
+</code></pre></div><h2 id=content-types>Content types</h2>
+<p>Each content type informally defines its expected page structure.
+Create page content with the suggested page sections.</p>
+<h3 id=concept>Concept</h3>
+<p>A concept page explains some aspect of Kubernetes. For example, a concept
+page might describe the Kubernetes Deployment object and explain the role it
+plays as an application once it is deployed, scaled, and updated. Typically, concept
+pages don't include sequences of steps, but instead provide links to tasks or
+tutorials.</p>
+<p>To write a new concept page, create a Markdown file in a subdirectory of the
+<code>/content/en/docs/concepts</code> directory, with the following characteristics:</p>
+<p>Concept pages are divided into three sections:</p>
+<table>
+<thead>
+<tr>
+<th>Page section</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>overview</td>
+</tr>
+<tr>
+<td>body</td>
+</tr>
+<tr>
+<td>whatsnext</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>overview</code> and <code>body</code> sections appear as comments in the concept page.
+You can add the <code>whatsnext</code> section to your page with the <code>heading</code> shortcode.</p>
+<p>Fill each section with content. Follow these guidelines:</p>
+<ul>
+<li>Organize content with H2 and H3 headings.</li>
+<li>For <code>overview</code>, set the topic's context with a single paragraph.</li>
+<li>For <code>body</code>, explain the concept.</li>
+<li>For <code>whatsnext</code>, provide a bulleted list of topics (5 maximum) to learn more about the concept.</li>
+</ul>
+<p><a href=/docs/concepts/overview/working-with-objects/annotations/>Annotations</a> is a published example of a concept page.</p>
+<h3 id=task>Task</h3>
+<p>A task page shows how to do a single thing, typically by giving a short
+sequence of steps. Task pages have minimal explanation, but often provide links
+to conceptual topics that provide related background and knowledge.</p>
+<p>To write a new task page, create a Markdown file in a subdirectory of the
+<code>/content/en/docs/tasks</code> directory, with the following characteristics:</p>
+<table>
+<thead>
+<tr>
+<th>Page section</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>overview</td>
+</tr>
+<tr>
+<td>prerequisites</td>
+</tr>
+<tr>
+<td>steps</td>
+</tr>
+<tr>
+<td>discussion</td>
+</tr>
+<tr>
+<td>whatsnext</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>overview</code>, <code>steps</code>, and <code>discussion</code> sections appear as comments in the task page.
+You can add the <code>prerequisites</code> and <code>whatsnext</code> sections to your page
+with the <code>heading</code> shortcode.</p>
+<p>Within each section, write your content. Use the following guidelines:</p>
+<ul>
+<li>Use a minimum of H2 headings (with two leading <code>#</code> characters). The sections
+themselves are titled automatically by the template.</li>
+<li>For <code>overview</code>, use a paragraph to set context for the entire topic.</li>
+<li>For <code>prerequisites</code>, use bullet lists when possible. Start adding additional
+prerequisites below the <code>include</code>. The default prerequisites include a running Kubernetes cluster.</li>
+<li>For <code>steps</code>, use numbered lists.</li>
+<li>For discussion, use normal content to expand upon the information covered
+in <code>steps</code>.</li>
+<li>For <code>whatsnext</code>, give a bullet list of up to 5 topics the reader might be
+interested in reading next.</li>
+</ul>
+<p>An example of a published task topic is <a href=/docs/tasks/extend-kubernetes/http-proxy-access-api/>Using an HTTP proxy to access the Kubernetes API</a>.</p>
+<h3 id=tutorial>Tutorial</h3>
+<p>A tutorial page shows how to accomplish a goal that is larger than a single
+task. Typically a tutorial page has several sections, each of which has a
+sequence of steps. For example, a tutorial might provide a walkthrough of a
+code sample that illustrates a certain feature of Kubernetes. Tutorials can
+include surface-level explanations, but should link to related concept topics
+for deep explanations.</p>
+<p>To write a new tutorial page, create a Markdown file in a subdirectory of the
+<code>/content/en/docs/tutorials</code> directory, with the following characteristics:</p>
+<table>
+<thead>
+<tr>
+<th>Page section</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>overview</td>
+</tr>
+<tr>
+<td>prerequisites</td>
+</tr>
+<tr>
+<td>objectives</td>
+</tr>
+<tr>
+<td>lessoncontent</td>
+</tr>
+<tr>
+<td>cleanup</td>
+</tr>
+<tr>
+<td>whatsnext</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>overview</code>, <code>objectives</code>, and <code>lessoncontent</code> sections appear as comments in the tutorial page.
+You can add the <code>prerequisites</code>, <code>cleanup</code>, and <code>whatsnext</code> sections to your page
+with the <code>heading</code> shortcode.</p>
+<p>Within each section, write your content. Use the following guidelines:</p>
+<ul>
+<li>Use a minimum of H2 headings (with two leading <code>#</code> characters). The sections
+themselves are titled automatically by the template.</li>
+<li>For <code>overview</code>, use a paragraph to set context for the entire topic.</li>
+<li>For <code>prerequisites</code>, use bullet lists when possible. Add additional
+prerequisites below the ones included by default.</li>
+<li>For <code>objectives</code>, use bullet lists.</li>
+<li>For <code>lessoncontent</code>, use a mix of numbered lists and narrative content as
+appropriate.</li>
+<li>For <code>cleanup</code>, use numbered lists to describe the steps to clean up the
+state of the cluster after finishing the task.</li>
+<li>For <code>whatsnext</code>, give a bullet list of up to 5 topics the reader might be
+interested in reading next.</li>
+</ul>
+<p>An example of a published tutorial topic is
+<a href=/docs/tasks/run-application/run-stateless-application-deployment/>Running a Stateless Application Using a Deployment</a>.</p>
+<h3 id=reference>Reference</h3>
+<p>A component tool reference page shows the description and flag options output for
+a Kubernetes component tool. Each page generates from scripts using the component tool commands.</p>
+<p>A tool reference page has several possible sections:</p>
+<table>
+<thead>
+<tr>
+<th>Page section</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>synopsis</td>
+</tr>
+<tr>
+<td>options</td>
+</tr>
+<tr>
+<td>options from parent commands</td>
+</tr>
+<tr>
+<td>examples</td>
+</tr>
+<tr>
+<td>seealso</td>
+</tr>
+</tbody>
+</table>
+<p>Examples of published tool reference pages are:</p>
+<ul>
+<li><a href=/docs/reference/setup-tools/kubeadm/kubeadm-init/>kubeadm init</a></li>
+<li><a href=/docs/reference/command-line-tools-reference/kube-apiserver/>kube-apiserver</a></li>
+<li><a href=/docs/reference/kubectl/kubectl/>kubectl</a></li>
+</ul>
+<h2 id=what-s-next>What's next</h2>
+<ul>
+<li>Learn about the <a href=/docs/contribute/style/style-guide/>Style guide</a></li>
+<li>Learn about the <a href=/docs/contribute/style/content-guide/>Content guide</a></li>
+<li>Learn about <a href=/docs/contribute/style/content-organization/>content organization</a></li>
+</ul>
+</div>
+<div class=td-content style=page-break-before:always>
+<h1 id=pg-357f2ddd61035f18c2aa63fe86203f9c>5 - Content organization</h1>
+<p>This site uses Hugo. In Hugo, <a href=https://gohugo.io/content-management/organization/>content organization</a> is a core concept.</p>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> <strong>Hugo Tip:</strong> Start Hugo with <code>hugo server --navigateToChanged</code> for content edit-sessions.
+</div>
+<h2 id=page-lists>Page Lists</h2>
+<h3 id=page-order>Page Order</h3>
+<p>The documentation side menu, the documentation page browser etc. are listed using Hugo's default sort order, which sorts by weight (from 1), date (newest first), and finally by the link title.</p>
+<p>Given that, if you want to move a page or a section up, set a weight in the page's front matter:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>title</span>:<span style=color:#bbb> </span>My Page<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>weight</span>:<span style=color:#bbb> </span><span style=color:#666>10</span><span style=color:#bbb>
+</span></code></pre></div><div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> For page weights, it can be smart not to use 1, 2, 3 ..., but some other interval, say 10, 20, 30... This allows you to insert pages where you want later.
+</div>
+<h3 id=documentation-main-menu>Documentation Main Menu</h3>
+<p>The <code>Documentation</code> main menu is built from the sections below <code>docs/</code> with the <code>main_menu</code> flag set in front matter of the <code>_index.md</code> section content file:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>main_menu</span>:<span style=color:#bbb> </span><span style=color:#a2f;font-weight:700>true</span><span style=color:#bbb>
+</span></code></pre></div><p>Note that the link title is fetched from the page's <code>linkTitle</code>, so if you want it to be something different than the title, change it in the content file:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>main_menu</span>:<span style=color:#bbb> </span><span style=color:#a2f;font-weight:700>true</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>title</span>:<span style=color:#bbb> </span>Page Title<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>linkTitle</span>:<span style=color:#bbb> </span>Title used in links<span style=color:#bbb>
+</span></code></pre></div><div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> The above needs to be done per language. If you don't see your section in the menu, it is probably because it is not identified as a section by Hugo. Create a <code>_index.md</code> content file in the section folder.
+</div>
+<h3 id=documentation-side-menu>Documentation Side Menu</h3>
+<p>The documentation side-bar menu is built from the <em>current section tree</em> starting below <code>docs/</code>.</p>
+<p>It will show all sections and their pages.</p>
+<p>If you don't want to list a section or page, set the <code>toc_hide</code> flag to <code>true</code> in front matter:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>toc_hide</span>:<span style=color:#bbb> </span><span style=color:#a2f;font-weight:700>true</span><span style=color:#bbb>
+</span></code></pre></div><p>When you navigate to a section that has content, the specific section or page (e.g. <code>_index.md</code>) is shown. Else, the first page inside that section is shown.</p>
+<h3 id=documentation-browser>Documentation Browser</h3>
+<p>The page browser on the documentation home page is built using all the sections and pages that are directly below the <code>docs section</code>.</p>
+<p>If you don't want to list a section or page, set the <code>toc_hide</code> flag to <code>true</code> in front matter:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>toc_hide</span>:<span style=color:#bbb> </span><span style=color:#a2f;font-weight:700>true</span><span style=color:#bbb>
+</span></code></pre></div><h3 id=the-main-menu>The Main Menu</h3>
+<p>The site links in the top-right menu -- and also in the footer -- are built by page-lookups. This is to make sure that the page actually exists. So, if the <code>case-studies</code> section does not exist in a site (language), it will not be linked to.</p>
+<h2 id=page-bundles>Page Bundles</h2>
+<p>In addition to standalone content pages (Markdown files), Hugo supports <a href=https://gohugo.io/content-management/page-bundles/>Page Bundles</a>.</p>
+<p>One example is <a href=/docs/contribute/style/hugo-shortcodes/>Custom Hugo Shortcodes</a>. It is considered a <code>leaf bundle</code>. Everything below the directory, including the <code>index.md</code>, will be part of the bundle. This also includes page-relative links, images that can be processed etc.:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>en/docs/home/contribute/includes
+├── example1.md
+├── example2.md
+├── index.md
+└── podtemplate.json
+</code></pre></div><p>Another widely used example is the <code>includes</code> bundle. It sets <code>headless: true</code> in front matter, which means that it does not get its own URL. It is only used in other pages.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>en/includes
+├── default-storage-class-prereqs.md
+├── index.md
+├── partner-script.js
+├── partner-style.css
+├── task-tutorial-prereqs.md
+├── user-guide-content-moved.md
+└── user-guide-migration-notice.md
+</code></pre></div><p>Some important notes to the files in the bundles:</p>
+<ul>
+<li>For translated bundles, any missing non-content files will be inherited from languages above. This avoids duplication.</li>
+<li>All the files in a bundle are what Hugo calls <code>Resources</code> and you can provide metadata per language, such as parameters and title, even if it does not supports front matter (YAML files etc.). See <a href=https://gohugo.io/content-management/page-resources/#page-resources-metadata>Page Resources Metadata</a>.</li>
+<li>The value you get from <code>.RelPermalink</code> of a <code>Resource</code> is page-relative. See <a href=https://gohugo.io/content-management/urls/#permalinks>Permalinks</a>.</li>
+</ul>
+<h2 id=styles>Styles</h2>
+<p>The <a href=https://sass-lang.com/>SASS</a> source of the stylesheets for this site is stored in <code>assets/sass</code> and is automatically built by Hugo.</p>
+<h2 id=what-s-next>What's next</h2>
+<ul>
+<li>Learn about <a href=/docs/contribute/style/hugo-shortcodes/>custom Hugo shortcodes</a></li>
+<li>Learn about the <a href=/docs/contribute/style/style-guide>Style guide</a></li>
+<li>Learn about the <a href=/docs/contribute/style/content-guide>Content guide</a></li>
+</ul>
+</div>
+<div class=td-content style=page-break-before:always>
+<h1 id=pg-6d76d18115f82583d526bdaf5d05edbc>6 - Custom Hugo Shortcodes</h1>
+<p>This page explains the custom Hugo shortcodes that can be used in Kubernetes Markdown documentation.</p>
+<p>Read more about shortcodes in the <a href=https://gohugo.io/content-management/shortcodes>Hugo documentation</a>.</p>
+<h2 id=feature-state>Feature state</h2>
+<p>In a Markdown page (<code>.md</code> file) on this site, you can add a shortcode to display version and state of the documented feature.</p>
+<h3 id=feature-state-demo>Feature state demo</h3>
+<p>Below is a demo of the feature state snippet, which displays the feature as stable in the latest Kubernetes version.</p>
+<pre><code>{{&lt; feature-state state=&quot;stable&quot; &gt;}}
+</code></pre><p>Renders to:</p>
+<div style=margin-top:10px;margin-bottom:10px>
+<b>FEATURE STATE:</b> <code>Kubernetes v1.22 [stable]</code>
+</div>
+<p>The valid values for <code>state</code> are:</p>
+<ul>
+<li>alpha</li>
+<li>beta</li>
+<li>deprecated</li>
+<li>stable</li>
+</ul>
+<h3 id=feature-state-code>Feature state code</h3>
+<p>The displayed Kubernetes version defaults to that of the page or the site. You can change the
+feature state version by passing the <code>for_k8s_version</code> shortcode parameter. For example:</p>
+<pre><code>{{&lt; feature-state for_k8s_version=&quot;v1.10&quot; state=&quot;beta&quot; &gt;}}
+</code></pre><p>Renders to:</p>
+<div style=margin-top:10px;margin-bottom:10px>
+<b>FEATURE STATE:</b> <code>Kubernetes v1.10 [beta]</code>
+</div>
+<h2 id=glossary>Glossary</h2>
+<p>There are two glossary shortcodes: <code>glossary_tooltip</code> and <code>glossary_definition</code>.</p>
+<p>You can reference glossary terms with an inclusion that automatically updates and replaces content with the relevant links from <a href=/docs/reference/glossary/>our glossary</a>. When the glossary term is moused-over, the glossary entry displays a tooltip. The glossary term also displays as a link.</p>
+<p>As well as inclusions with tooltips, you can reuse the definitions from the glossary in
+page content.</p>
+<p>The raw data for glossary terms is stored at <a href=https://github.com/kubernetes/website/tree/main/content/en/docs/reference/glossary>https://github.com/kubernetes/website/tree/main/content/en/docs/reference/glossary</a>, with a content file for each glossary term.</p>
+<h3 id=glossary-demo>Glossary demo</h3>
+<p>For example, the following include within the Markdown renders to <a class=glossary-tooltip title="A set of worker machines, called nodes, that run containerized applications. Every cluster has at least one worker node." data-toggle=tooltip data-placement=top href="/docs/reference/glossary/?all=true#term-cluster" target=_blank aria-label=cluster>cluster</a> with a tooltip:</p>
+<pre><code>{{&lt; glossary_tooltip text=&quot;cluster&quot; term_id=&quot;cluster&quot; &gt;}}
+</code></pre><p>Here's a short glossary definition:</p>
+<pre><code>{{&lt; glossary_definition prepend=&quot;A cluster is&quot; term_id=&quot;cluster&quot; length=&quot;short&quot; &gt;}}
+</code></pre><p>which renders as:
+<p>A cluster is a set of worker machines, called <a class=glossary-tooltip title="A node is a worker machine in Kubernetes." data-toggle=tooltip data-placement=top href=/docs/concepts/architecture/nodes/ target=_blank aria-label=nodes>nodes</a>,
+that run containerized applications. Every cluster has at least one worker node.</p></p>
+<p>You can also include a full definition:</p>
+<pre><code>{{&lt; glossary_definition term_id=&quot;cluster&quot; length=&quot;all&quot; &gt;}}
+</code></pre><p>which renders as:
+<p>A set of worker machines, called <a class=glossary-tooltip title="A node is a worker machine in Kubernetes." data-toggle=tooltip data-placement=top href=/docs/concepts/architecture/nodes/ target=_blank aria-label=nodes>nodes</a>,
+that run containerized applications. Every cluster has at least one worker node.</p>
+<p>The worker node(s) host the <a class=glossary-tooltip title="A Pod represents a set of running containers in your cluster." data-toggle=tooltip data-placement=top href=/docs/concepts/workloads/pods/ target=_blank aria-label=Pods>Pods</a> that are
+the components of the application workload. The
+<a class=glossary-tooltip title="The container orchestration layer that exposes the API and interfaces to define, deploy, and manage the lifecycle of containers." data-toggle=tooltip data-placement=top href="/docs/reference/glossary/?all=true#term-control-plane" target=_blank aria-label="control plane">control plane</a> manages the worker
+nodes and the Pods in the cluster. In production environments, the control plane usually
+runs across multiple computers and a cluster usually runs multiple nodes, providing
+fault-tolerance and high availability.</p></p>
+<h2 id=links-to-api-reference>Links to API Reference</h2>
+<p>You can link to a page of the Kubernetes API reference using the <code>api-reference</code> shortcode, for example to the
+<a href=/docs/reference/kubernetes-api/workload-resources/pod-v1/>Pod</a> reference:</p>
+<pre><code>{{&lt; api-reference page=&quot;workload-resources/pod-v1&quot; &gt;}}
+</code></pre><p>The content of the <code>page</code> parameter is the suffix of the URL of the API reference page.</p>
+<p>You can link to a specific place into a page by specifying an <code>anchor</code> parameter, for example to the
+<a href=/docs/reference/kubernetes-api/workload-resources/pod-v1/#PodSpec>PodSpec</a> reference or the
+<a href=/docs/reference/kubernetes-api/workload-resources/pod-v1/#environment-variables>environment-variables</a> section of the page:</p>
+<pre><code>{{&lt; api-reference page=&quot;workload-resources/pod-v1&quot; anchor=&quot;PodSpec&quot; &gt;}}
+{{&lt; api-reference page=&quot;workload-resources/pod-v1&quot; anchor=&quot;environment-variables&quot; &gt;}}
+</code></pre><p>You can change the text of the link by specifying a <code>text</code> parameter, for example by linking to the
+<a href=/docs/reference/kubernetes-api/workload-resources/pod-v1/#environment-variables>Environment Variables</a> section of the page:</p>
+<pre><code>{{&lt; api-reference page=&quot;workload-resources/pod-v1&quot; anchor=&quot;environment-variables&quot; text=&quot;Environment Variable&quot; &gt;}}
+</code></pre><h2 id=table-captions>Table captions</h2>
+<p>You can make tables more accessible to screen readers by adding a table caption. To add a <a href=https://www.w3schools.com/tags/tag_caption.asp>caption</a> to a table, enclose the table with a <code>table</code> shortcode and specify the caption with the <code>caption</code> parameter.</p>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> Table captions are visible to screen readers but invisible when viewed in standard HTML.
+</div>
+<p>Here's an example:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go-html-template data-lang=go-html-template><span style=color:#080>{{</span><span>&lt;</span><span style=color:#bbb> </span>table<span style=color:#bbb> </span>caption<span style=color:#666>=</span><span style=color:#b44>&#34;Configuration parameters&#34;</span><span style=color:#bbb> </span><span>&gt;</span><span style=color:#080>}}</span>
+Parameter | Description | Default
+:---------|:------------|:-------
+`timeout` | The timeout for requests | `30s`
+`logLevel` | The log level for log output | `INFO`
+<span style=color:#080>{{</span><span>&lt;</span><span style=color:#bbb> </span><span>/</span>table<span style=color:#bbb> </span><span>&gt;</span><span style=color:#080>}}</span>
+</code></pre></div><p>The rendered table looks like this:</p>
+<table><caption style=display:none>Configuration parameters</caption>
+<thead>
+<tr>
+<th style=text-align:left>Parameter</th>
+<th style=text-align:left>Description</th>
+<th style=text-align:left>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left><code>timeout</code></td>
+<td style=text-align:left>The timeout for requests</td>
+<td style=text-align:left><code>30s</code></td>
+</tr>
+<tr>
+<td style=text-align:left><code>logLevel</code></td>
+<td style=text-align:left>The log level for log output</td>
+<td style=text-align:left><code>INFO</code></td>
+</tr>
+</tbody>
+</table>
+<p>If you inspect the HTML for the table, you should see this element immediately after the opening <code>&lt;table></code> element:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:green;font-weight:700>caption</span> <span style=color:#b44>style</span><span style=color:#666>=</span><span style=color:#b44>&#34;display: none;&#34;</span>&gt;Configuration parameters&lt;/<span style=color:green;font-weight:700>caption</span>&gt;
+</code></pre></div><h2 id=tabs>Tabs</h2>
+<p>In a markdown page (<code>.md</code> file) on this site, you can add a tab set to display multiple flavors of a given solution.</p>
+<p>The <code>tabs</code> shortcode takes these parameters:</p>
+<ul>
+<li><code>name</code>: The name as shown on the tab.</li>
+<li><code>codelang</code>: If you provide inner content to the <code>tab</code> shortcode, you can tell Hugo what code language to use for highlighting.</li>
+<li><code>include</code>: The file to include in the tab. If the tab lives in a Hugo <a href=https://gohugo.io/content-management/page-bundles/#leaf-bundles>leaf bundle</a>, the file -- which can be any MIME type supported by Hugo -- is looked up in the bundle itself. If not, the content page that needs to be included is looked up relative to the current page. Note that with the <code>include</code>, you do not have any shortcode inner content and must use the self-closing syntax. For example, <code>{{&lt; tab name="Content File #1" include="example1" />}}</code>. The language needs to be specified under <code>codelang</code> or the language is taken based on the file name. Non-content files are code-highlighted by default.</li>
+<li>If your inner content is markdown, you must use the <code>%</code>-delimiter to surround the tab. For example, <code>{{% tab name="Tab 1" %}}This is **markdown**{{% /tab %}}</code></li>
+<li>You can combine the variations mentioned above inside a tab set.</li>
+</ul>
+<p>Below is a demo of the tabs shortcode.</p>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> The tab <strong>name</strong> in a <code>tabs</code> definition must be unique within a content page.
+</div>
+<h3 id=tabs-demo-code-highlighting>Tabs demo: Code highlighting</h3>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go-text-template data-lang=go-text-template><span style=color:#080>{{</span><span>&lt;</span><span style=color:#bbb> </span>tabs<span style=color:#bbb> </span>name<span style=color:#666>=</span><span style=color:#b44>&#34;tab_with_code&#34;</span><span style=color:#bbb> </span><span>&gt;</span><span style=color:#080>}}</span>
+<span style=color:#080>{{</span><span>{&lt;</span><span style=color:#bbb> </span>tab<span style=color:#bbb> </span>name<span style=color:#666>=</span><span style=color:#b44>&#34;Tab 1&#34;</span><span style=color:#bbb> </span>codelang<span style=color:#666>=</span><span style=color:#b44>&#34;bash&#34;</span><span style=color:#bbb> </span><span>&gt;</span><span style=color:#080>}}</span>
+echo &#34;This is tab 1.&#34;
+<span style=color:#080>{{</span><span>&lt;</span><span style=color:#bbb> </span><span>/</span>tab<span style=color:#bbb> </span><span>&gt;</span><span style=color:#080>}}</span>
+<span style=color:#080>{{</span><span>&lt;</span><span style=color:#bbb> </span>tab<span style=color:#bbb> </span>name<span style=color:#666>=</span><span style=color:#b44>&#34;Tab 2&#34;</span><span style=color:#bbb> </span>codelang<span style=color:#666>=</span><span style=color:#b44>&#34;go&#34;</span><span style=color:#bbb> </span><span>&gt;</span><span style=color:#080>}}</span>
+println &#34;This is tab 2.&#34;
+<span style=color:#080>{{</span><span>&lt;</span><span style=color:#bbb> </span><span>/</span>tab<span style=color:#bbb> </span><span>&gt;</span><span style=color:#080>}}</span>}
+<span style=color:#080>{{</span><span>&lt;</span><span style=color:#bbb> </span><span>/</span>tabs<span style=color:#bbb> </span><span>&gt;</span><span style=color:#080>}}</span>
+</code></pre></div><p>Renders to:</p>
+<ul class="nav nav-tabs" id=tab-with-code role=tablist><li class=nav-item><a data-toggle=tab class="nav-link active" href=#tab-with-code-0 role=tab aria-controls=tab-with-code-0 aria-selected=true>Tab 1</a></li>
+<li class=nav-item><a data-toggle=tab class=nav-link href=#tab-with-code-1 role=tab aria-controls=tab-with-code-1>Tab 2</a></li></ul>
+<div class=tab-content id=tab-with-code><div id=tab-with-code-0 class="tab-pane show active" role=tabpanel aria-labelledby=tab-with-code-0>
+<p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>
+<span style=color:#a2f>echo</span> <span style=color:#b44>&#34;This is tab 1.&#34;</span>
+</code></pre></div></div>
+<div id=tab-with-code-1 class=tab-pane role=tabpanel aria-labelledby=tab-with-code-1>
+<p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go>
+println <span style=color:#b44>&#34;This is tab 2.&#34;</span>
+</code></pre></div></div></div>
+<h3 id=tabs-demo-inline-markdown-and-html>Tabs demo: Inline Markdown and HTML</h3>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go-html-template data-lang=go-html-template><span style=color:#080>{{</span><span>&lt;</span><span style=color:#bbb> </span>tabs<span style=color:#bbb> </span>name<span style=color:#666>=</span><span style=color:#b44>&#34;tab_with_md&#34;</span><span style=color:#bbb> </span><span>&gt;</span><span style=color:#080>}}</span>
+<span style=color:#080>{{</span><span>%</span><span style=color:#bbb> </span>tab<span style=color:#bbb> </span>name<span style=color:#666>=</span><span style=color:#b44>&#34;Markdown&#34;</span><span style=color:#bbb> </span><span>%</span><span style=color:#080>}}</span>
+This is **some markdown.**
+<span style=color:#080>{{</span><span>&lt;</span><span style=color:#bbb> </span>note<span style=color:#bbb> </span><span>&gt;</span><span style=color:#080>}}</span>
+It can even contain shortcodes.
+<span style=color:#080>{{</span><span>&lt;</span><span style=color:#bbb> </span><span>/</span>note<span style=color:#bbb> </span><span>&gt;</span><span style=color:#080>}}</span>
+<span style=color:#080>{{</span><span>%</span><span style=color:#bbb> </span><span>/</span>tab<span style=color:#bbb> </span><span>%</span><span style=color:#080>}}</span>
+<span style=color:#080>{{</span><span>&lt;</span><span style=color:#bbb> </span>tab<span style=color:#bbb> </span>name<span style=color:#666>=</span><span style=color:#b44>&#34;HTML&#34;</span><span style=color:#bbb> </span><span>&gt;</span><span style=color:#080>}}</span>
+&lt;<span style=color:green;font-weight:700>div</span>&gt;
+	&lt;<span style=color:green;font-weight:700>h3</span>&gt;Plain HTML&lt;/<span style=color:green;font-weight:700>h3</span>&gt;
+	&lt;<span style=color:green;font-weight:700>p</span>&gt;This is some &lt;<span style=color:green;font-weight:700>i</span>&gt;plain&lt;/<span style=color:green;font-weight:700>i</span>&gt; HTML.&lt;/<span style=color:green;font-weight:700>p</span>&gt;
+&lt;/<span style=color:green;font-weight:700>div</span>&gt;
+<span style=color:#080>{{</span><span>&lt;</span><span style=color:#bbb> </span><span>/</span>tab<span style=color:#bbb> </span><span>&gt;</span><span style=color:#080>}}</span>
+<span style=color:#080>{{</span><span>&lt;</span><span style=color:#bbb> </span><span>/</span>tabs<span style=color:#bbb> </span><span>&gt;</span><span style=color:#080>}}</span>
+</code></pre></div><p>Renders to:</p>
+<ul class="nav nav-tabs" id=tab-with-md role=tablist><li class=nav-item><a data-toggle=tab class="nav-link active" href=#tab-with-md-0 role=tab aria-controls=tab-with-md-0 aria-selected=true>Markdown</a></li>
+<li class=nav-item><a data-toggle=tab class=nav-link href=#tab-with-md-1 role=tab aria-controls=tab-with-md-1>HTML</a></li></ul>
+<div class=tab-content id=tab-with-md><div id=tab-with-md-0 class="tab-pane show active" role=tabpanel aria-labelledby=tab-with-md-0>
+<p><p>This is <strong>some markdown.</strong></p>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> It can even contain shortcodes.
+</div>
+</div>
+<div id=tab-with-md-1 class=tab-pane role=tabpanel aria-labelledby=tab-with-md-1>
+<p>
+<div>
+<h3>Plain HTML</h3>
+<p>This is some <i>plain</i> HTML.</p>
+</div>
+</div></div>
+<h3 id=tabs-demo-file-include>Tabs demo: File include</h3>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go-text-template data-lang=go-text-template><span style=color:#080>{{</span><span>&lt;</span><span style=color:#bbb> </span>tabs<span style=color:#bbb> </span>name<span style=color:#666>=</span><span style=color:#b44>&#34;tab_with_file_include&#34;</span><span style=color:#bbb> </span><span>&gt;</span><span style=color:#080>}}</span>
+<span style=color:#080>{{</span><span>&lt;</span><span style=color:#bbb> </span>tab<span style=color:#bbb> </span>name<span style=color:#666>=</span><span style=color:#b44>&#34;Content File #1&#34;</span><span style=color:#bbb> </span>include<span style=color:#666>=</span><span style=color:#b44>&#34;example1&#34;</span><span style=color:#bbb> </span><span>/&gt;</span><span style=color:#080>}}</span>
+<span style=color:#080>{{</span><span>&lt;</span><span style=color:#bbb> </span>tab<span style=color:#bbb> </span>name<span style=color:#666>=</span><span style=color:#b44>&#34;Content File #2&#34;</span><span style=color:#bbb> </span>include<span style=color:#666>=</span><span style=color:#b44>&#34;example2&#34;</span><span style=color:#bbb> </span><span>/&gt;</span><span style=color:#080>}}</span>
+<span style=color:#080>{{</span><span>&lt;</span><span style=color:#bbb> </span>tab<span style=color:#bbb> </span>name<span style=color:#666>=</span><span style=color:#b44>&#34;JSON File&#34;</span><span style=color:#bbb> </span>include<span style=color:#666>=</span><span style=color:#b44>&#34;podtemplate&#34;</span><span style=color:#bbb> </span><span>/&gt;</span><span style=color:#080>}}</span>
+<span style=color:#080>{{</span><span>&lt;</span><span style=color:#bbb> </span><span>/</span>tabs<span style=color:#bbb> </span><span>&gt;</span><span style=color:#080>}}</span>
+</code></pre></div><p>Renders to:</p>
+<ul class="nav nav-tabs" id=tab-with-file-include role=tablist><li class=nav-item><a data-toggle=tab class="nav-link active" href=#tab-with-file-include-0 role=tab aria-controls=tab-with-file-include-0 aria-selected=true>Content File #1</a></li>
+<li class=nav-item><a data-toggle=tab class=nav-link href=#tab-with-file-include-1 role=tab aria-controls=tab-with-file-include-1>Content File #2</a></li>
+<li class=nav-item><a data-toggle=tab class=nav-link href=#tab-with-file-include-2 role=tab aria-controls=tab-with-file-include-2>JSON File</a></li></ul>
+<div class=tab-content id=tab-with-file-include><div id=tab-with-file-include-0 class="tab-pane show active" role=tabpanel aria-labelledby=tab-with-file-include-0>
+<p><p>This is an <strong>example</strong> content file inside the <strong>includes</strong> leaf bundle.</p>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> Included content files can also contain shortcodes.
+</div>
+</div>
+<div id=tab-with-file-include-1 class=tab-pane role=tabpanel aria-labelledby=tab-with-file-include-1>
+<p><p>This is another <strong>example</strong> content file inside the <strong>includes</strong> leaf bundle.</p>
+</div>
+<div id=tab-with-file-include-2 class=tab-pane role=tabpanel aria-labelledby=tab-with-file-include-2>
+<p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>  {
+    <span style=color:green;font-weight:700>&#34;apiVersion&#34;</span>: <span style=color:#b44>&#34;v1&#34;</span>,
+    <span style=color:green;font-weight:700>&#34;kind&#34;</span>: <span style=color:#b44>&#34;PodTemplate&#34;</span>,
+    <span style=color:green;font-weight:700>&#34;metadata&#34;</span>: {
+      <span style=color:green;font-weight:700>&#34;name&#34;</span>: <span style=color:#b44>&#34;nginx&#34;</span>
+    },
+    <span style=color:green;font-weight:700>&#34;template&#34;</span>: {
+      <span style=color:green;font-weight:700>&#34;metadata&#34;</span>: {
+        <span style=color:green;font-weight:700>&#34;labels&#34;</span>: {
+          <span style=color:green;font-weight:700>&#34;name&#34;</span>: <span style=color:#b44>&#34;nginx&#34;</span>
+        },
+        <span style=color:green;font-weight:700>&#34;generateName&#34;</span>: <span style=color:#b44>&#34;nginx-&#34;</span>
+      },
+      <span style=color:green;font-weight:700>&#34;spec&#34;</span>: {
+         <span style=color:green;font-weight:700>&#34;containers&#34;</span>: [{
+           <span style=color:green;font-weight:700>&#34;name&#34;</span>: <span style=color:#b44>&#34;nginx&#34;</span>,
+           <span style=color:green;font-weight:700>&#34;image&#34;</span>: <span style=color:#b44>&#34;dockerfile/nginx&#34;</span>,
+           <span style=color:green;font-weight:700>&#34;ports&#34;</span>: [{<span style=color:green;font-weight:700>&#34;containerPort&#34;</span>: <span style=color:#666>80</span>}]
+         }]
+      }
+    }
+  }
+</code></pre></div></div></div>
+<h2 id=third-party-content-marker>Third party content marker</h2>
+<p>Running Kubernetes requires third-party software. For example: you
+usually need to add a
+<a href=/docs/tasks/administer-cluster/dns-custom-nameservers/#introduction>DNS server</a>
+to your cluster so that name resolution works.</p>
+<p>When we link to third-party software, or otherwise mention it,
+we follow the <a href=/docs/contribute/style/content-guide/>content guide</a>
+and we also mark those third party items.</p>
+<p>Using these shortcodes adds a disclaimer to any documentation page
+that uses them.</p>
+<h3 id=third-party-content-list>Lists</h3>
+<p>For a list of several third-party items, add:</p>
+<pre><code>{{% thirdparty-content %}}
+</code></pre><p>just below the heading for the section that includes all items.</p>
+<h3 id=third-party-content-item>Items</h3>
+<p>If you have a list where most of the items refer to in-project
+software (for example: Kubernetes itself, and the separate
+<a href=https://github.com/kubernetes-sigs/descheduler>Descheduler</a>
+component), then there is a different form to use.</p>
+<p>Add the shortcode:</p>
+<pre><code>{{% thirdparty-content single=&quot;true&quot; %}}
+</code></pre><p>before the item, or just below the heading for the specific item.</p>
+<h2 id=version-strings>Version strings</h2>
+<p>To generate a version string for inclusion in the documentation, you can choose from
+several version shortcodes. Each version shortcode displays a version string derived from
+the value of a version parameter found in the site configuration file, <code>config.toml</code>.
+The two most commonly used version parameters are <code>latest</code> and <code>version</code>.</p>
+<h3 id=param-version><code>{{&lt; param "version" >}}</code></h3>
+<p>The <code>{{&lt; param "version" >}}</code> shortcode generates the value of the current version of
+the Kubernetes documentation from the <code>version</code> site parameter. The <code>param</code> shortcode accepts the name of one site parameter, in this case: <code>version</code>.</p>
+<div class="alert alert-info note callout" role=alert>
+<strong>Note:</strong> In previously released documentation, <code>latest</code> and <code>version</code> parameter values are not equivalent.
+After a new version is released, <code>latest</code> is incremented and the value of <code>version</code> for the documentation set remains unchanged. For example, a previously released version of the documentation displays <code>version</code> as
+<code>v1.19</code> and <code>latest</code> as <code>v1.20</code>.
+</div>
+<p>Renders to:</p>
+v1.22
+<h3 id=latest-version><code>{{&lt; latest-version >}}</code></h3>
+<p>The <code>{{&lt; latest-version >}}</code> shortcode returns the value of the <code>latest</code> site parameter.
+The <code>latest</code> site parameter is updated when a new version of the documentation is released.
+This parameter does not always match the value of <code>version</code> in a documentation set.</p>
+<p>Renders to:</p>
+v1.26
+<h3 id=latest-semver><code>{{&lt; latest-semver >}}</code></h3>
+<p>The <code>{{&lt; latest-semver >}}</code> shortcode generates the value of <code>latest</code> without the "v" prefix.</p>
+<p>Renders to:</p>
+1.26
+<h3 id=version-check><code>{{&lt; version-check >}}</code></h3>
+<p>The <code>{{&lt; version-check >}}</code> shortcode checks if the <code>min-kubernetes-server-version</code>
+page parameter is present and then uses this value to compare to <code>version</code>.</p>
+<p>Renders to:</p>
+To check the version, enter <code>kubectl version</code>.
+<h3 id=latest-release-notes><code>{{&lt; latest-release-notes >}}</code></h3>
+<p>The <code>{{&lt; latest-release-notes >}}</code> shortcode generates a version string from <code>latest</code> and removes
+the "v" prefix. The shortcode prints a new URL for the release note CHANGELOG page with the modified version string.</p>
+<p>Renders to:</p>
+https://git.k8s.io/kubernetes/CHANGELOG/CHANGELOG-1.26.md
+<h2 id=what-s-next>What's next</h2>
+<ul>
+<li>Learn about <a href=https://gohugo.io/>Hugo</a>.</li>
+<li>Learn about <a href=/docs/contribute/style/write-new-topic/>writing a new topic</a>.</li>
+<li>Learn about <a href=/docs/contribute/style/page-content-types/>page content types</a>.</li>
+<li>Learn about <a href=/docs/contribute/new-content/open-a-pr/>opening a pull request</a>.</li>
+<li>Learn about <a href=/docs/contribute/advanced/>advanced contributing</a>.</li>
+</ul>
+</div>
+</main>
+</div>
+</div>
+<footer class=d-print-none>
+<div class=footer__links>
+<nav>
+<a class=text-white href=/docs/home/>Home</a>
+<a class=text-white href=/blog/>Blog</a>
+<a class=text-white href=/training/>Training</a>
+<a class=text-white href=/partners/>Partners</a>
+<a class=text-white href=/community/>Community</a>
+<a class=text-white href=/case-studies/>Case Studies</a>
+</nav>
+</div>
+<div class=container-fluid>
+<div class=row>
+<div class="col-6 col-sm-2 text-xs-center order-sm-2">
+<ul class="list-inline mb-0">
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="User mailing list" aria-label="User mailing list">
+<a class=text-white target=_blank href=https://discuss.kubernetes.io>
+<i class="fa fa-envelope"></i>
+</a>
+</li>
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter>
+<a class=text-white target=_blank href=https://twitter.com/kubernetesio>
+<i class="fab fa-twitter"></i>
+</a>
+</li>
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Calendar aria-label=Calendar>
+<a class=text-white target=_blank href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io">
+<i class="fas fa-calendar-alt"></i>
+</a>
+</li>
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Youtube aria-label=Youtube>
+<a class=text-white target=_blank href=https://youtube.com/kubernetescommunity>
+<i class="fab fa-youtube"></i>
+</a>
+</li>
+</ul>
+</div>
+<div class="col-6 col-sm-2 text-right text-xs-center order-sm-3">
+<ul class="list-inline mb-0">
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub>
+<a class=text-white target=_blank href=https://github.com/kubernetes/kubernetes>
+<i class="fab fa-github"></i>
+</a>
+</li>
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Slack aria-label=Slack>
+<a class=text-white target=_blank href=https://slack.k8s.io>
+<i class="fab fa-slack"></i>
+</a>
+</li>
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Contribute aria-label=Contribute>
+<a class=text-white target=_blank href=https://git.k8s.io/community/contributors/guide>
+<i class="fas fa-edit"></i>
+</a>
+</li>
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="Stack Overflow" aria-label="Stack Overflow">
+<a class=text-white target=_blank href=https://stackoverflow.com/questions/tagged/kubernetes>
+<i class="fab fa-stack-overflow"></i>
+</a>
+</li>
+</ul>
+</div>
+<div class="col-12 col-sm-8 text-center order-sm-2">
+<small class=text-white>&copy; 2026 The Kubernetes Authors | Documentation Distributed under <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a></small>
+<br>
+<small class=text-white>Copyright &copy; 2026 The Linux Foundation &reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href=https://www.linuxfoundation.org/trademark-usage class=light-text>Trademark Usage page</a></small>
+<br>
+<small class=text-white><a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></small>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src=/js/popper-1.14.3.min.js integrity=sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49 crossorigin=anonymous></script>
+<script src=/js/bootstrap-4.3.1.min.js integrity=sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM crossorigin=anonymous></script>
+<script src=/js/main.min.223905d4acc5f7b370e2af585c8a5b56ce39b2fddddd6dffb6f6c3428927fe2c.js integrity="sha256-IjkF1KzF97Nw4q9YXIpbVs45sv3d3W3/tvbDQokn/iw=" crossorigin=anonymous></script>
+</body>
+</html>

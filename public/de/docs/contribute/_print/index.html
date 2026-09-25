@@ -1,0 +1,489 @@
+<!doctype html><html lang=de class=no-js>
+<head>
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','G-JPP6RFM2BP')</script>
+<script type=text/javascript>(function(a,e,b,f,g,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},c=e.createElement(f),c.async=1,c.src="https://www.clarity.ms/tag/"+g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d)})(window,document,"clarity","script","yn9s3e0drd")</script>
+<link rel=alternate hreflang=en href=https://kubernetes.xuxiaowei.com.cn/docs/contribute/>
+<link rel=alternate hreflang=zh href=https://kubernetes.xuxiaowei.com.cn/zh/docs/contribute/>
+<link rel=alternate hreflang=ko href=https://kubernetes.xuxiaowei.com.cn/ko/docs/contribute/>
+<link rel=alternate hreflang=ja href=https://kubernetes.xuxiaowei.com.cn/ja/docs/contribute/>
+<link rel=alternate hreflang=fr href=https://kubernetes.xuxiaowei.com.cn/fr/docs/contribute/>
+<link rel=alternate hreflang=es href=https://kubernetes.xuxiaowei.com.cn/es/docs/contribute/>
+<link rel=alternate hreflang=pt-br href=https://kubernetes.xuxiaowei.com.cn/pt-br/docs/contribute/>
+<link rel=alternate hreflang=id href=https://kubernetes.xuxiaowei.com.cn/id/docs/contribute/>
+<link rel=alternate hreflang=ru href=https://kubernetes.xuxiaowei.com.cn/ru/docs/contribute/>
+<link rel=alternate hreflang=pl href=https://kubernetes.xuxiaowei.com.cn/pl/docs/contribute/>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=generator content="Hugo 0.87.0">
+<link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/de/docs/contribute/>
+<link rel="shortcut icon" type=image/png href=/images/favicon.png>
+<link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180>
+<link rel=manifest href=/manifest.webmanifest>
+<link rel=apple-touch-icon href=/images/kubernetes-192x192.png>
+<title>Zur Kubernets-Dokumentation beitragen | Kubernetes</title><meta property="og:title" content="Zur Kubernets-Dokumentation beitragen">
+<meta property="og:description" content="Produktionsreife Container-Orchestrierung">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/de/docs/contribute/"><meta property="og:site_name" content="Kubernetes">
+<meta itemprop=name content="Zur Kubernets-Dokumentation beitragen">
+<meta itemprop=description content="Produktionsreife Container-Orchestrierung"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="Zur Kubernets-Dokumentation beitragen">
+<meta name=twitter:description content="Produktionsreife Container-Orchestrierung">
+<link href=/scss/main.css rel=stylesheet>
+<script src=/js/jquery-3.3.1.min.js integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin=anonymous></script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png"}</script>
+<meta name=theme-color content="#326ce5">
+<link rel=stylesheet href=/css/feature-states.css>
+<meta name=description content="Wenn Sie an der Dokumentation oder der Website von Kubernetes mitwirken möchten, freuen wir uns über Ihre Hilfe! Jeder kann seinen Beitrag leisten, unabhängig davon ob Sie neu im Projekt sind oder schon lange dabei sind, und ob Sie sich als Entwickler, Endbenutzer oder einfach jemanden, der es einfach nicht aushält, Tippfehler zu sehen sehen.
+Weitere Möglichkeiten, sich in der Kubernetes-Community zu engagieren oder mehr über uns zu erfahren, finden Sie auf der Kubernetes-Community-Seite.">
+<meta property="og:description" content="Wenn Sie an der Dokumentation oder der Website von Kubernetes mitwirken möchten, freuen wir uns über Ihre Hilfe! Jeder kann seinen Beitrag leisten, unabhängig davon ob Sie neu im Projekt sind oder schon lange dabei sind, und ob Sie sich als Entwickler, Endbenutzer oder einfach jemanden, der es einfach nicht aushält, Tippfehler zu sehen sehen.
+Weitere Möglichkeiten, sich in der Kubernetes-Community zu engagieren oder mehr über uns zu erfahren, finden Sie auf der Kubernetes-Community-Seite.">
+<meta name=twitter:description content="Wenn Sie an der Dokumentation oder der Website von Kubernetes mitwirken möchten, freuen wir uns über Ihre Hilfe! Jeder kann seinen Beitrag leisten, unabhängig davon ob Sie neu im Projekt sind oder schon lange dabei sind, und ob Sie sich als Entwickler, Endbenutzer oder einfach jemanden, der es einfach nicht aushält, Tippfehler zu sehen sehen.
+Weitere Möglichkeiten, sich in der Kubernetes-Community zu engagieren oder mehr über uns zu erfahren, finden Sie auf der Kubernetes-Community-Seite.">
+<meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/de/docs/contribute/">
+<meta property="og:title" content="Zur Kubernets-Dokumentation beitragen">
+<meta name=twitter:title content="Zur Kubernets-Dokumentation beitragen">
+<meta name=twitter:image content="https://kubernetes.io/images/favicon.png">
+<meta name=twitter:image:alt content="Kubernetes">
+<meta property="og:image" content="/images/kubernetes-horizontal-color.png">
+<meta property="og:type" content="article">
+<script src=/js/script.js></script>
+<link type=text/css rel=stylesheet href=/css/custom.css>
+</head>
+<body class=td-section>
+<header>
+<nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-column flex-md-row td-navbar" data-auto-burger=primary>
+<a class=navbar-brand href=/de/></a>
+<div class="td-navbar-nav-scroll ml-md-auto" id=main_navbar>
+<ul class="navbar-nav mt-2 mt-lg-0">
+<li class="nav-item mr-2 mb-lg-0">
+<a class="nav-link active" href=/de/docs/>Dokumentation</span></a>
+</li>
+<li class="nav-item mr-2 mb-lg-0">
+<a class=nav-link href=/de/blog/>Kubernetes Blog</span></a>
+</li>
+<li class="nav-item mr-2 mb-lg-0">
+<a class=nav-link href=/de/training/>Schulungen</span></a>
+</li>
+<li class="nav-item mr-2 mb-lg-0">
+<a class=nav-link href=/de/partners/>Partner</span></a>
+</li>
+<li class="nav-item mr-2 mb-lg-0">
+<a class=nav-link href=/de/community/>Community</span></a>
+</li>
+<li class="nav-item mr-2 mb-lg-0">
+<a class=nav-link href=/de/case-studies/>Fallstudien</span></a>
+</li>
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+Versions
+</a>
+<div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink>
+<a class=dropdown-item href=/releases>Release Information</a>
+<a class=dropdown-item href=https://xuxiaowei.io/t/1320/de/docs/contribute/>Kubernetes 文档说明</a>
+<a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn/de/docs/contribute/>v1.38</a>
+<a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn/de/docs/contribute/>v1.37</a>
+<a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn/de/docs/contribute/>v1.36</a>
+<a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn/de/docs/contribute/>v1.35</a>
+<a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn/de/docs/contribute/>v1.34</a>
+<a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn/de/docs/contribute/>v1.33</a>
+<a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn/de/docs/contribute/>v1.32</a>
+<a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn/de/docs/contribute/>v1.31</a>
+<a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn/de/docs/contribute/>v1.30</a>
+<a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn/de/docs/contribute/>v1.29</a>
+<a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn/de/docs/contribute/>v1.28</a>
+<a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn/de/docs/contribute/>v1.27</a>
+<a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn/de/docs/contribute/>v1.26</a>
+<a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn/de/docs/contribute/>v1.25</a>
+<a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn/de/docs/contribute/>v1.24</a>
+<a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn/de/docs/contribute/>v1.23</a>
+<a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn/de/docs/contribute/>v1.22</a>
+<a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn/de/docs/contribute/>v1.21</a>
+<a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn/de/docs/contribute/>v1.20</a>
+</div>
+</li>
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href=# id=navbarDropdownMenuLink role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+Deutsch
+</a>
+<div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink>
+<a class=dropdown-item href=/docs/contribute/>English</a>
+<a class=dropdown-item href=/zh/docs/contribute/>中文 Chinese</a>
+<a class=dropdown-item href=/ko/docs/contribute/>한국어 Korean</a>
+<a class=dropdown-item href=/ja/docs/contribute/>日本語 Japanese</a>
+<a class=dropdown-item href=/fr/docs/contribute/>Français</a>
+<a class=dropdown-item href=/es/docs/contribute/>Español</a>
+<a class=dropdown-item href=/pt-br/docs/contribute/>Português</a>
+<a class=dropdown-item href=/id/docs/contribute/>Bahasa Indonesia</a>
+<a class=dropdown-item href=/ru/docs/contribute/>Русский</a>
+<a class=dropdown-item href=/pl/docs/contribute/>Polski</a>
+</div>
+</li>
+</ul>
+</div>
+<button id=hamburger onclick=kub.toggleMenu() data-auto-burger-exclude><div></div></button>
+</nav>
+</header>
+<div class="container-fluid td-outer">
+<div class=td-main>
+<div class="row flex-xl-nowrap">
+<div class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none">
+</div>
+<div class="d-none d-xl-block col-xl-2 td-toc d-print-none">
+</div>
+<main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main>
+<div class=td-content>
+<div class="pageinfo pageinfo-primary d-print-none">
+<p>
+Das ist eine für den Ausdruck optimierte Ansicht des gesamten Kapitels inkl. Unterseiten.
+<a href=# onclick="return print(),!1">Druckvorgang starten</a>.
+</p><p>
+<a href=/de/docs/contribute/>Zur Standardansicht zurückkehren</a>.
+</p>
+</div>
+<h1 class=title>Zur Kubernets-Dokumentation beitragen</h1>
+<ul>
+<li>1: <a href=#pg-849a2fdb87779db1c212fe5a9f88ff0d>Lokalisierung der Kubernetes Dokumentation</a></li>
+</ul>
+<div class=content>
+<p>Wenn Sie an der Dokumentation oder der Website von Kubernetes mitwirken möchten, freuen wir uns über Ihre Hilfe!
+Jeder kann seinen Beitrag leisten, unabhängig davon ob Sie neu im Projekt sind oder schon lange dabei sind, und ob Sie sich als
+Entwickler, Endbenutzer oder einfach jemanden, der es einfach nicht aushält, Tippfehler zu sehen sehen.</p>
+<p>Weitere Möglichkeiten, sich in der Kubernetes-Community zu engagieren oder mehr über uns zu erfahren, finden Sie auf der <a href=/community/>Kubernetes-Community-Seite</a>.
+Informationen zum Handbuch zur Dokumentation von Kubernetes finden Sie im <a href=/docs/contribute/style/style-guide/>Gestaltungshandbuch</a>.</p>
+<h2 id=arten-von-mitwirkenden>Arten von Mitwirkenden</h2>
+<ul>
+<li>Ein <em>Member</em> der Kubernetes Organisation, hat die <a href=/docs/contribute/start#sign-the-cla>CLA unterzeichnet</a>
+und etwas Zeit und Energie zum Projekt beigetragen.
+Siehe <a href=https://github.com/kubernetes/community/blob/master/community-membership.md>Community-Mitgliedschaft</a> für spezifische Kriterien bezüglich der Mitgliedschaft.</li>
+<li>Ein SIG Docs <em>Reviewer</em> ist ein Mitglied der Kubernetes-Organisation, das Interesse an der Überprüfung von
+Dokumentationsanfragen geäußert hat und von einem SIG Docs Approver zu der entsprechenden Github-Gruppe
+und den <code>OWNERS</code>-Dateien im Github-Repository hinzugefügt wurde.</li>
+<li>Ein SIG Docs <em>approver</em> ist ein Mitglied mit gutem Ansehen, das sich kontinuierlich für das Projekt engagiert hat.
+Ein Approver kann Pull-Anfragen zusammenführen und Inhalte im Namen der Kubernetes-Organisation veröffentlichen.
+Approver können SIG Docs auch in der größeren Kubernetes-Community vertreten. Einige der Aufgaben eines SIG Docs Approvers, wie z.B. die Koordination einer Freigabe, erfordern einen erheblichen Zeitaufwand.</li>
+</ul>
+<h2 id=möglichkeiten-einen-beitrag-zu-leisten>Möglichkeiten, einen Beitrag zu leisten</h2>
+<p>Diese Liste ist in Funktionen unterteilt, die jeder tun kann, die von Mitgliedern der Kubernetes-Organisation durchgeführt werden können, und Dinge, die ein höheres Maß an Zugriff und eine bessere Kenntnis der SIG Docs-Prozesse erfordern. Wenn Sie im Laufe der Zeit einen konstanten Beitrag leisten, können Sie einige der bereits getroffenen Tools und organisatorischen Entscheidungen nachvollziehen.</p>
+<p>Dies ist keine vollständige Liste von Möglichkeiten, wie Sie zur Kubernetes-Dokumentation beitragen können, aber sie sollte Ihnen den Einstieg erleichtern.</p>
+<ul>
+<li><a href=/docs/contribute/start/>Jeder</a>
+<ul>
+<li>Umsetzbare issues eröffnen</li>
+</ul>
+</li>
+<li><a href=/docs/contribute/start/>Member</a>
+<ul>
+<li>Vorhandene Dokumente verbessern</li>
+<li>Ideen zur Verbesserung in <a href=http://slack.k8s.io/>Slack</a> oder der <a href=https://groups.google.com/forum/#!forum/kubernetes-sig-docs>SIG docs Mailingliste</a> einbringen</li>
+<li>Den Zugriff auf Dokumente verbessern</li>
+<li>Unverbindliches Feedback zu PRs verfassen</li>
+<li>Enen Blogbeitrag oder eine Fallstudie schreiben</li>
+</ul>
+</li>
+<li><a href=/docs/contribute/intermediate/>Reviewer</a>
+<ul>
+<li>Neue Funktionen dokumentieren</li>
+<li>Auswerten und Kategorisieren von Problemen</li>
+<li>PRs überprüfen</li>
+<li>Diagramme, Grafiken und einbettbare Screencasts / Videos erstellen</li>
+<li>Lokalisierung</li>
+<li>Als Vertreter von docs zu anderen Repos beitragen</li>
+<li>An Benutzer gerichtete Zeichenfolgen im Code bearbeiten</li>
+<li>Code-Kommentare verbessern, Godoc</li>
+</ul>
+</li>
+<li><a href=/docs/contribute/advanced/>Approver</a>
+<ul>
+<li>Veröffentlichen Sie den Inhalt von Members, indem Sie PRs genehmigen und zusammenführen</li>
+<li>Nehmen Sie als Docs-Vertreter an einem Kubernetes-Release-Team teil</li>
+<li>Verbesserungsvorschläge für den Style Guide</li>
+<li>Verbesserungsvorschläge für Dokumentprüfungen vorschlagen</li>
+<li>Vorschläge für Verbesserungen der Kubernetes-Website oder anderer Tools</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class=td-content style=page-break-before:always>
+<h1 id=pg-849a2fdb87779db1c212fe5a9f88ff0d>1 - Lokalisierung der Kubernetes Dokumentation</h1>
+<p>Diese Seite zeigt dir wie die Dokumentation für verschiedene Sprachen <a href=https://blog.mozilla.org/l10n/2011/12/14/i18n-vs-l10n-whats-the-diff/>lokalisiert</a> wird.</p>
+<h2 id=erste-schritte>Erste Schritte</h2>
+<p>Da Mitwirkende nicht ihren eigenen Pull Request freigeben können, brauchst du mindestens zwei Mitwirkende um mit der Lokalisierung anfangen zu können.</p>
+<p>Alle Lokalisierungsteams müssen sich mit ihren eigenen Ressourcen selbst tragen. Die Kubernetes-Website ist gerne bereit, deine Arbeit zu beherbergen, aber es liegt an dir, sie zu übersetzen.</p>
+<h3 id=finden-deinen-zwei-buchstaben-sprachcode>Finden deinen Zwei-Buchstaben-Sprachcode</h3>
+<p>Rufe den <a href=https://www.loc.gov/standards/iso639-2/php/code_list.php>ISO 639-1 Standard</a> auf und finde deinen Zwei-Buchstaben-Ländercode zur Lokalisierung. Zum Beispiel ist der Zwei-Buchstaben-Code für Korea <code>ko</code>.</p>
+<h3 id=duplizieren-und-klonen-des-repositories>Duplizieren und klonen des Repositories</h3>
+<p>Als erstes <a href=/docs/contribute/new-content/new-content/#fork-the-repo>erstells du dir deine eigenes Duplikat</a> vom [kubernetes/website] Repository.</p>
+<p>Dann klonst du das Duplikat und <code>cd</code> hinein:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>git clone https://github.com/&lt;username&gt;/website
+<span style=color:#a2f>cd</span> website
+</code></pre></div><h3 id=eröffne-ein-pull-request>Eröffne ein Pull Request</h3>
+<p>Als nächstes <a href=/docs/contribute/new-content/open-a-pr/#open-a-pr>eröffnest du einen Pull Request</a> (PR) um eine Lokalisierung zum <code>kubernetes/website</code> Repository hinzuzufügen.</p>
+<p>Der PR muss die <a href=#mindestanforderungen>minimalen Inhaltsanforderungen</a> erfüllen bevor dieser genehmigt werden kann.</p>
+<p>Wie der PR für eine neue Lokalisierung aussieht kannst du dir an dem PR für die <a href=https://github.com/kubernetes/website/pull/12548>Französische Dokumentation</a> ansehen.</p>
+<h3 id=trete-der-kubernetes-github-organisation-bei>Trete der Kubernetes GitHub Organisation bei</h3>
+<p>Sobald du eine Lokalisierungs-PR eröffnet hast, kannst du Mitglied der Kubernetes GitHub Organisation werden. Jede Person im Team muss einen eigenen <a href=https://github.com/kubernetes/org/issues/new/choose>Antrag auf Mitgliedschaft in der Organisation</a> im <code>kubernetes/org</code>-Repository erstellen.</p>
+<h3 id=lokalisierungs-team-in-github-hinzufügen>Lokalisierungs-Team in GitHub hinzufügen</h3>
+<p>Im nächsten Schritt musst du dein Kubernetes Lokalisierungs-Team in die <a href=https://github.com/kubernetes/org/blob/master/config/kubernetes/sig-docs/teams.yaml><code>sig-docs/teams.yaml</code></a> eintragen.</p>
+<p>Der PR des <a href=https://github.com/kubernetes/org/pull/685>Spanischen Lokalisierungs-Teams</a> kann dir hierbei eine Hilfestellung sein.</p>
+<p>Mitglieder der <code>@kubernetes/sig-docs-**-owners</code> können nur PRs freigeben die innerhalb deines Lokalisierungs-Ordners Änderungen vorgenommen haben: <code>/content/**/</code>.</p>
+<p>Für jede Lokalisierung automatisiert das Team <code>@kubernetes/sig-docs-**-reviews</code> die Review-Zuweisung für neue PRs.</p>
+<p>Mitglieder von <code>@kubernetes/website-maintainers</code> können neue Entwicklungszweige schaffen, um die Übersetzungsarbeiten zu koordinieren.</p>
+<p>Mitglieder von <code>@kubernetes/website-milestone-maintainers</code> können den Befehl <code>/milestone</code> <a href=https://prow.k8s.io/command-help>Prow Kommando</a> verwenden, um Themen oder PRs einen Meilenstein zuzuweisen.</p>
+<h3 id=workflow-konfigurieren>Workflow konfigurieren</h3>
+<p>Als nächstes fügst du ein GitHub-Label für deine Lokalisierung im <code>kubernetes/test-infra</code>-Repository hinzu. Mit einem Label kannst du Aufgaben filtern und Anfragen für deine spezifische Sprache abrufen.</p>
+<p>Schau dir den PR zum Hinzufügen der Labels für die [Italienischen Sprachen-Labels](<a href=https://github.com/kubernetes/test-infra/pull/11316>https://github.com/kubernetes/test-infra/pull/11316</a> an.</p>
+<h3 id=finde-eine-gemeinschaft>Finde eine Gemeinschaft</h3>
+<p>Lasse die Kubernetes SIG Docs wissen, dass du an der Erstellung einer Lokalisierung interessiert bist! Trete dem <a href=https://kubernetes.slack.com/messages/C1J0BPD2M/>SIG Docs Slack-Kanal</a> bei. Andere Lokalisierungsteams helfen dir gerne beim Einstieg und beantworten deine Fragen.</p>
+<p>Du kannst auch einen Slack-Kanal für deine Lokalisierung im <code>kubernetes/community</code>-Repository erstellen. Ein Beispiel für das Hinzufügen eines Slack-Kanals findest du im PR für <a href=https://github.com/kubernetes/community/pull/3605>Kanäle für Indonesisch und Portugiesisch hinzufügen</a>.</p>
+<h2 id=mindestanforderungen>Mindestanforderungen</h2>
+<h3 id=ändere-die-website-konfiguration>Ändere die Website-Konfiguration</h3>
+<p>Die Kubernetes-Website verwendet Hugo als Web-Framework. Die Hugo-Konfiguration der Website befindet sich in der Datei <a href=https://github.com/kubernetes/website/tree/master/config.toml><code>config.toml</code></a>. Um eine neue Lokalisierung zu unterstützen, musst du die Datei <code>config.toml</code> modifizieren.</p>
+<p>Dazu fügst du einen neuen Block für die neue Sprache unter den bereits existierenden <code>[languages]</code> Block in das <code>config.toml</code> ein, wie folgendes Beispiel zeigt:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml>[languages.de]
+title = <span style=color:#b44>&#34;Kubernetes&#34;</span>
+description = <span style=color:#b44>&#34;Produktionsreife Container-Verwaltung&#34;</span>
+languageName = <span style=color:#b44>&#34;Deutsch&#34;</span>
+contentDir = <span style=color:#b44>&#34;content/de&#34;</span>
+weight = <span style=color:#666>3</span>
+</code></pre></div><p>Wenn du deinem Block einen Parameter <code>weight</code> zuweist, suche den Sprachblock mit dem höchsten Gewicht und addiere 1 zu diesem Wert.</p>
+<p>Weitere Informationen zu Hugos Multilingualen Support findest du unter "<a href=https://gohugo.io/content-management/multilingual/>Multilingual Mode</a>" auf in der Hugo Dokumentation.</p>
+<h3 id=neuen-lokalisierungsordner-erstellen>Neuen Lokalisierungsordner erstellen</h3>
+<p>Füge eine sprachspezifisches Unterverzeichnis zum Ordner <a href=https://github.com/kubernetes/website/tree/master/content><code>content</code></a> im Repository hinzu. Der Zwei-Buchstaben-Code für Deutsch ist zum Beispiel <code>de</code>:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>mkdir content/de
+</code></pre></div><h3 id=lokalisiere-den-verhaltenscodex>Lokalisiere den Verhaltenscodex</h3>
+<p>Öffne einen PR gegen das <a href=https://github.com/cncf/foundation/tree/master/code-of-conduct-languages><code>cncf/foundation</code></a> Repository, um den Verhaltenskodex in deiner Sprache hinzuzufügen.</p>
+<h3 id=lokalisierungs-readme-datei-hinzufügen>Lokalisierungs README Datei hinzufügen</h3>
+<p>Um andere Lokalisierungsmitwirkende anzuleiten, füge eine neue <a href=https://help.github.com/articles/about-readmes/><code>README-**.md</code></a> auf der obersten Ebene von k/website hinzu, wobei <code>**</code> der aus zwei Buchstaben bestehende Sprachcode ist. Eine deutsche README-Datei wäre zum Beispiel <code>README-de.md</code>.</p>
+<p>Gebe den Lokalisierungsmitwirkende in der lokalisierten <code>README-**.md</code>-Datei Anleitung zum Mitwirken. Füge dieselben Informationen ein, die auch in <code>README.md</code> enthalten sind, sowie:</p>
+<ul>
+<li>Eine Anlaufstelle für das Lokalisierungsprojekt</li>
+<li>Alle für die Lokalisierung spezifischen Informationen</li>
+</ul>
+<p>Nachdem du das lokalisierte README erstellt hast, füge der Datei einen Link aus der englischen Hauptdatei <code>README.md</code> hinzu und gebe die Kontaktinformationen auf Englisch an. Du kannst eine GitHub-ID, eine E-Mail-Adresse, <a href=https://slack.com/>Slack-Kanal</a> oder eine andere Kontaktmethode angeben. Du musst auch einen Link zu deinem lokalisierten Verhaltenskodex der Gemeinschaft angeben.</p>
+<h3 id=richte-eine-owners-datei-ein>Richte eine OWNERS Datei ein</h3>
+<p>Um die Rollen der einzelnen an der Lokalisierung beteiligten Benutzer festzulegen, erstelle eine <code>OWNERS</code>-Datei innerhalb des sprachspezifischen Unterverzeichnisses mit:</p>
+<ul>
+<li><strong>reviewers</strong>: Eine Liste von kubernetes-Teams mit Gutachter-Rollen, in diesem Fall das <code>sig-docs-**-reviews</code> Team, das in <a href=#lokalisierungs-team-in-github-hinzuf%C3%BCgen>Lokalisierungsteam in GitHub hinzufügen</a> erstellt wurde.</li>
+<li><strong>approvers</strong>: Eine Liste der Kubernetes-Teams mit der Rolle des Genehmigers, in diesem Fall das <code>sig-docs-**-owners</code> Team, das in <a href=#lokalisierungs-team-in-github-hinzuf%C3%BCgen>Lokalisierungsteam in GitHub hinzufügen</a> erstellt wurde.</li>
+<li><strong>labels</strong>: Eine Liste von GitHub-Labels, die automatisch auf einen PR angewendet werden sollen, in diesem Fall das Sprachlabel, das unter <a href=#workflow-konfigurieren>Workflow konfigurieren</a> erstellt wurde.</li>
+</ul>
+<p>Weitere Informationen über die Datei <code>OWNERS</code> findest du unter <a href=https://go.k8s.io/owners>go.k8s.io/owners</a>.</p>
+<p>Die Datei <a href=https://git.k8s.io/website/content/es/OWNERS>Spanish OWNERS file</a>, mit dem Sprachcode <code>es</code>, sieht wie folgt aus:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#080;font-style:italic># See the OWNERS docs at https://go.k8s.io/owners</span><span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:#080;font-style:italic># This is the localization project for Spanish.</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:#080;font-style:italic># Teams and members are visible at https://github.com/orgs/kubernetes/teams.</span><span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>reviewers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb></span>- sig-docs-es-reviews<span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>approvers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb></span>- sig-docs-es-owners<span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb></span>- language/es<span style=color:#bbb>
+</span></code></pre></div><p>Nachdem du die sprachspezifische Datei <code>OWNERS</code> hinzugefügt hast, aktualisiere die root Datei <a href=https://git.k8s.io/website/OWNERS_ALIASES><code>OWNERS_ALIASES</code></a> mit den neuen Kubernetes-Teams für die Lokalisierung, <code>sig-docs-**-owners</code> und <code>sig-docs-**-reviews</code>.</p>
+<p>Füge für jedes Team die Liste der unter <a href=#lokalisierungs-team-in-github-hinzuf%C3%BCgen>Ihr Lokalisierungsteam in GitHub hinzufügen</a> angeforderten GitHub-Benutzer in alphabetischer Reihenfolge hinzu.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#a00000>--- a/OWNERS_ALIASES
+</span><span style=color:#a00000></span><span style=color:#00a000>+++ b/OWNERS_ALIASES
+</span><span style=color:#00a000></span><span style=color:purple;font-weight:700>@@ -48,6 +48,14 @@ aliases:
+</span><span style=color:purple;font-weight:700></span>     - stewart-yu
+     - xiangpengzhao
+     - zhangxiaoyu-zidif
+<span style=color:#00a000>+  sig-docs-es-owners: # Admins for Spanish content
+</span><span style=color:#00a000>+    - alexbrand
+</span><span style=color:#00a000>+    - raelga
+</span><span style=color:#00a000>+  sig-docs-es-reviews: # PR reviews for Spanish content
+</span><span style=color:#00a000>+    - alexbrand
+</span><span style=color:#00a000>+    - electrocucaracha
+</span><span style=color:#00a000>+    - glo-pena
+</span><span style=color:#00a000>+    - raelga
+</span><span style=color:#00a000></span>   sig-docs-fr-owners: # Admins for French content
+     - perriea
+     - remyleone
+</code></pre></div><h2 id=inhalte-übersetzen>Inhalte übersetzen</h2>
+<p>Die Lokalisierung <em>aller</em> Dokumentationen des Kubernetes ist eine enorme Aufgabe. Es ist in Ordnung, klein anzufangen und mit der Zeit zu erweitern.</p>
+<p>Alle Lokalisierungen müssen folgende Inhalte enthalten:</p>
+<table>
+<thead>
+<tr>
+<th>Beschreibung</th>
+<th>URLs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Startseite</td>
+<td><a href=/docs/home/>Alle Überschriften und Untertitel URLs</a></td>
+</tr>
+<tr>
+<td>Einrichtung</td>
+<td><a href=/docs/setup/>Alle Überschriften und Untertitel URLs</a></td>
+</tr>
+<tr>
+<td>Tutorials</td>
+<td><a href=/docs/tutorials/kubernetes-basics/>Kubernetes Grundlagen</a>, <a href=/docs/tutorials/stateless-application/hello-minikube/>Hello Minikube</a></td>
+</tr>
+<tr>
+<td>Site strings</td>
+<td><a href=https://github.com/kubernetes/website/tree/master/i18n>Alle Website-Zeichenfolgen in einer neuen lokalisierten TOML-Datei</a></td>
+</tr>
+</tbody>
+</table>
+<p>Übersetzte Dokumente müssen sich in ihrem eigenen Unterverzeichnis <code>content/**/</code> befinden, aber ansonsten dem gleichen URL-Pfad wie die englische Quelle folgen. Um z.B. das Tutorial <a href=/docs/tutorials/kubernetes-basics/>Kubernetes Grundlagen</a> für die Übersetzung ins Deutsche vorzubereiten, erstelle einen Unterordner unter dem Ordner <code>content/de/</code> und kopiere die englische Quelle:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>mkdir -p content/de/docs/tutorials
+cp content/en/docs/tutorials/kubernetes-basics.md content/de/docs/tutorials/kubernetes-basics.md
+</code></pre></div><p>Übersetzungswerkzeuge können den Übersetzungsprozess beschleunigen. Einige Redakteure bieten beispielsweise Plugins zur schnellen Übersetzung von Text an.</p>
+<div class="alert alert-warning caution callout" role=alert>
+<strong>Achtung:</strong> Maschinelle Übersetzung allein reicht nicht aus. Die Lokalisierung erfordert eine umfassende menschliche Überprüfung, um Mindestqualitätsstandards zu erfüllen.
+</div>
+<p>Um die Genauigkeit in Grammatik und Bedeutung zu gewährleisten, sollten die Mitglieder deines Lokalisierungsteams alle maschinell erstellten Übersetzungen vor der Veröffentlichung sorgfältig überprüfen.</p>
+<h3 id=quelldaten>Quelldaten</h3>
+<p>Lokalisierungen müssen auf den englischen Dateien der neuesten Version basieren, v1.26.</p>
+<p>Um die Quelldatei für das neueste Release führe folgende Schritte durch:</p>
+<ol>
+<li>Navigiere zum Repository der Website Kubernetes unter <a href=https://github.com/kubernetes/website>https://github.com/kubernetes/website</a>.</li>
+<li>Wähle den <code>release-1.X</code>-Zweig für die aktuellste Version.</li>
+</ol>
+<p>Die neueste Version ist v1.26, so dass der neueste Versionszweig <a href=https://github.com/kubernetes/website/tree/release-1.26><code>release-1.26</code></a> ist.</p>
+<h3 id=seitenverlinkung-in-der-internationalisierung>Seitenverlinkung in der Internationalisierung</h3>
+<p>Lokalisierungen müssen den Inhalt von <a href=https://github.com/kubernetes/website/blob/master/i18n/en.toml><code>i18n/de.toml</code></a> in einer neuen sprachspezifischen Datei enthalten. Als Beispiel: <code>i18n/de.toml</code>.</p>
+<p>Füge eine neue Lokalisierungsdatei zu <code>i18n/</code> hinzu. Zum Beispiel mit Deutsch (<code>de</code>):</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>cp i18n/en.toml i18n/de.toml
+</code></pre></div><p>Übersetze dann den Wert jeder Zeichenfolge:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-TOML data-lang=TOML>[docs_label_i_am]
+other = <span style=color:#b44>&#34;ICH BIN...&#34;</span>
+</code></pre></div><p>Durch die Lokalisierung von Website-Zeichenfolgen kannst du Website-weiten Text und Funktionen anpassen: z. B. den gesetzlichen Copyright-Text in der Fußzeile auf jeder Seite.</p>
+<h2 id=sprachspezifischer-styleguide>Sprachspezifischer Styleguide</h2>
+<p>Einige Sprachteams haben ihren eigenen sprachspezifischen Styleguide und ihr eigenes Glossar. Siehe zum Beispiel den <a href=/ko/docs/contribute/localization_ko/>Leitfaden zur koreanischen Lokalisierung</a>.</p>
+<h3 id=informale-schreibweise>Informale Schreibweise</h3>
+<p>Für die deutsche Übersetzungen verwenden wir eine informelle Schreibweise und der Ansprache per <code>Du</code>. Allerdings werden keine Jargon, Slang, Wortspiele, Redewendungen oder kulturspezifische Bezüge eingebracht.</p>
+<h3 id=datums-und-maßeinheiten>Datums und Maßeinheiten</h3>
+<p>Wenn notwendig sollten Datumsangaben in das in Deutschland übliche dd.mm.yyyy überführt werden. Alternativ können diese auch in den Textfluss eingebunden werden: "... am 24. April ....".</p>
+<h3 id=abkürzungen>Abkürzungen</h3>
+<p>Abkürzungen sollten nach Möglichkeit nicht verwendet werden und entweder ausgeschrieben oder anderweitig umgangen werden.</p>
+<h3 id=zusammengesetzte-wörter>Zusammengesetzte Wörter</h3>
+<p>Durch die Übersetzung werden oft Nomen aneinandergereiht, diese Wortketten müssen durch Bindestriche verbunden werden. Dies ist auch möglich wenn ein Teil ins Deutsche übersetzt wird ein weiterer jedoch im Englischen bestehen bleibt. Als Richtlinie gilt hier der <a href=https://www.duden.de/sprachwissen/rechtschreibregeln/bindestrich>Duden</a>.</p>
+<h3 id=anglizismen>Anglizismen</h3>
+<p>Die Verwendung von Anglizismen ist dann wünschenswert, wenn die Verwendung eines deutschen Wortes, vor allem für technische Begriffe, nicht eindeutig ist oder zu Unklarheiten führt.</p>
+<h2 id=branching-strategie>Branching Strategie</h2>
+<p>Da Lokalisierungsprojekte in hohem Maße gemeinschaftliche Bemühungen sind, ermutigen wir Teams, in gemeinsamen Entwicklungszweigen zu arbeiten.</p>
+<p>In einem Entwicklungszweig zusammenzuarbeiten:</p>
+<ol>
+<li>
+<p>Ein Teammitglied von <a href=https://github.com/orgs/kubernetes/teams/website-maintainers>@kubernetes/website-maintainers</a> eröffnet einen Entwicklungszweig aus einem Quellzweig auf <a href=https://github.com/kubernetes/website>https://github.com/kubernetes/website</a>.</p>
+<p>Deine Genehmiger sind dem <code>@kubernetes/website-maintainers</code>-Team beigetreten, als du <a href=#lokalisierungs-team-in-github-hinzuf%C3%BCgen>dein Lokalisierungsteam</a> zum Repository <a href=https://github.com/kubernetes/org><code>kubernetes/org</code></a> hinzugefügt hast.</p>
+<p>Wir empfehlen das folgende Zweigbenennungsschema:</p>
+<p><code>dev-&lt;Quellversion>-&lt;Sprachcode>.&lt;Team-Meilenstein></code></p>
+<p>Beispielsweise öffnet ein Genehmigender in einem deutschen Lokalisierungsteam den Entwicklungszweig <code>dev-1.12-de.1</code> direkt gegen das k/website-Repository, basierend auf dem Quellzweig für Kubernetes v1.12.</p>
+</li>
+<li>
+<p>Einzelne Mitwirkende öffnen Feature-Zweige, die auf dem Entwicklungszweig basieren.</p>
+<p>Zum Beispiel öffnet ein deutscher Mitwirkende eine Pull-Anfrage mit Änderungen an <code>kubernetes:dev-1.12-de.1</code> von <code>Benutzername:lokaler-Zweig-Name</code>.</p>
+</li>
+<li>
+<p>Genehmiger Überprüfen und führen die Feature-Zweigen in den Entwicklungszweig zusammen.</p>
+</li>
+<li>
+<p>In regelmäßigen Abständen führt ein Genehmiger den Entwicklungszweig mit seinem Ursprungszweig zusammen, indem er eine neue Pull-Anfrage eröffnet und genehmigt. Achtet darauf, die Commits zusammenzuführen (squash), bevor die Pull-Anfrage genehmigt wird.</p>
+</li>
+</ol>
+<p>Wiederhole die Schritte 1-4 nach Bedarf, bis die Lokalisierung abgeschlossen ist. Zum Beispiel würden nachfolgende deutsche Entwicklungszweige sein: <code>dev-1.12-de.2</code>, <code>dev-1.12-de.3</code>, usw.</p>
+<p>Die Teams müssen den lokalisierten Inhalt in demselben Versionszweig zusammenführen, aus dem der Inhalt stammt. Beispielsweise muss ein Entwicklungszweig, der von release-1.26 ausgeht, auf {{release-1.26} basieren.</p>
+<p>Ein Genehmiger muss einen Entwicklungszweig aufrechterhalten, indem er seinen Quellzweig auf dem aktuellen Stand hält und Merge-Konflikte auflöst. Je länger ein Entwicklungszweig geöffnet bleibt, desto mehr Wartung erfordert er in der Regel. Ziehe in Betracht, regelmäßig Entwicklungszweige zusammenzuführen und neue zu eröffnen, anstatt einen extrem lang laufenden Entwicklungszweig zu unterhalten.</p>
+<p>Zu Beginn jedes Team-Meilensteins ist es hilfreich, ein Problem <a href=https://github.com/kubernetes/website/blob/master/scripts/upstream_changes.py>Vergleich der Upstream-Änderungen</a> zwischen dem vorherigen Entwicklungszweig und dem aktuellen Entwicklungszweig zu öffnen.</p>
+<p>Während nur Genehmiger einen neuen Entwicklungszweig eröffnen und Pull-Anfragen zusammenführen können, kann jeder eine Pull-Anfrage für einen neuen Entwicklungszweig eröffnen. Es sind keine besonderen Genehmigungen erforderlich.</p>
+<p>Weitere Informationen über das Arbeiten von Forks oder direkt vom Repository aus findest du unter <a href=#duplizieren-und-klonen-des-repositories>"fork and clone the repo"</a>.</p>
+<h2 id=am-upstream-mitwirken>Am Upstream Mitwirken</h2>
+<p>SIG Docs begrüßt Upstream Beiträge, also auf das englische Original, und Korrekturen an der englischen Quelle.</p>
+<h2 id=unterstütze-bereits-bestehende-lokalisierungen>Unterstütze bereits bestehende Lokalisierungen</h2>
+<p>Du kannst auch dazu beitragen, Inhalte zu einer bestehenden Lokalisierung hinzuzufügen oder zu verbessern. Trete dem <a href=https://kubernetes.slack.com/messages/C1J0BPD2M/>Slack-Kanal</a> für die Lokalisierung bei und beginne mit der Eröffnung von PRs, um zu helfen. Bitte beschränke deine Pull-Anfragen auf eine einzige Lokalisierung, da Pull-Anfragen, die Inhalte in mehreren Lokalisierungen ändern, schwer zu überprüfen sein könnten.</p>
+<h2 id=nächste-schritte>Nächste Schritte</h2>
+<p>Sobald eine Lokalisierung die Anforderungen an den Arbeitsablauf und die Mindestausgabe erfüllt, wird SIG docs:</p>
+<ul>
+<li>Die Sprachauswahl auf der Website aktivieren</li>
+<li>Die Verfügbarkeit der Lokalisierung über die Kanäle der <a href=https://www.cncf.io/about/>Cloud Native Computing Foundation</a> (CNCF), einschließlich des <a href=https://kubernetes.io/blog/>Kubernetes Blogs</a> veröffentlichen.</li>
+</ul>
+</div>
+</main>
+</div>
+</div>
+<footer class=d-print-none>
+<div class=footer__links>
+<nav>
+<a class=text-white href=/de/docs/home/>Home</a>
+<a class=text-white href=/de/blog/>Blog</a>
+<a class=text-white href=/de/training/>Schulungen</a>
+<a class=text-white href=/de/partners/>Partner</a>
+<a class=text-white href=/de/community/>Community</a>
+<a class=text-white href=/de/case-studies/>Fallstudien</a>
+</nav>
+</div>
+<div class=container-fluid>
+<div class=row>
+<div class="col-6 col-sm-2 text-xs-center order-sm-2">
+<ul class="list-inline mb-0">
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="User mailing list" aria-label="User mailing list">
+<a class=text-white target=_blank href=https://discuss.kubernetes.io>
+<i class="fa fa-envelope"></i>
+</a>
+</li>
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter>
+<a class=text-white target=_blank href=https://twitter.com/kubernetesio>
+<i class="fab fa-twitter"></i>
+</a>
+</li>
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Calendar aria-label=Calendar>
+<a class=text-white target=_blank href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io">
+<i class="fas fa-calendar-alt"></i>
+</a>
+</li>
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Youtube aria-label=Youtube>
+<a class=text-white target=_blank href=https://youtube.com/kubernetescommunity>
+<i class="fab fa-youtube"></i>
+</a>
+</li>
+</ul>
+</div>
+<div class="col-6 col-sm-2 text-right text-xs-center order-sm-3">
+<ul class="list-inline mb-0">
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub>
+<a class=text-white target=_blank href=https://github.com/kubernetes/kubernetes>
+<i class="fab fa-github"></i>
+</a>
+</li>
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Slack aria-label=Slack>
+<a class=text-white target=_blank href=https://slack.k8s.io>
+<i class="fab fa-slack"></i>
+</a>
+</li>
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Contribute aria-label=Contribute>
+<a class=text-white target=_blank href=https://git.k8s.io/community/contributors/guide>
+<i class="fas fa-edit"></i>
+</a>
+</li>
+<li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="Stack Overflow" aria-label="Stack Overflow">
+<a class=text-white target=_blank href=https://stackoverflow.com/questions/tagged/kubernetes>
+<i class="fab fa-stack-overflow"></i>
+</a>
+</li>
+</ul>
+</div>
+<div class="col-12 col-sm-8 text-center order-sm-2">
+<small class=text-white>&copy; 2026 The Kubernetes Authors | Documentation Distributed under <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a></small>
+<br>
+<small class=text-white>Copyright &copy; 2026 The Linux Foundation &reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href=https://www.linuxfoundation.org/trademark-usage class=light-text>Trademark Usage page</a></small>
+<br>
+<small class=text-white><a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></small>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src=/js/popper-1.14.3.min.js integrity=sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49 crossorigin=anonymous></script>
+<script src=/js/bootstrap-4.3.1.min.js integrity=sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM crossorigin=anonymous></script>
+<script src=/js/main.min.223905d4acc5f7b370e2af585c8a5b56ce39b2fddddd6dffb6f6c3428927fe2c.js integrity="sha256-IjkF1KzF97Nw4q9YXIpbVs45sv3d3W3/tvbDQokn/iw=" crossorigin=anonymous></script>
+</body>
+</html>
