@@ -1,0 +1,239 @@
+<!doctype html><html itemscope itemtype=http://schema.org/WebPage lang=bn class=no-js><head><meta name=robots content="noindex, nofollow"><link rel=alternate hreflang=en href=https://kubernetes.xuxiaowei.com.cn/docs/setup/production-environment/><link rel=alternate hreflang=zh-cn href=https://kubernetes.xuxiaowei.com.cn/zh-cn/docs/setup/production-environment/><link rel=alternate hreflang=fr href=https://kubernetes.xuxiaowei.com.cn/fr/docs/setup/production-environment/><link rel=alternate hreflang=hi href=https://kubernetes.xuxiaowei.com.cn/hi/docs/setup/production-environment/><link rel=alternate hreflang=id href=https://kubernetes.xuxiaowei.com.cn/id/docs/setup/production-environment/><link rel=alternate hreflang=ja href=https://kubernetes.xuxiaowei.com.cn/ja/docs/setup/production-environment/><link rel=alternate hreflang=ko href=https://kubernetes.xuxiaowei.com.cn/ko/docs/setup/production-environment/><link rel=alternate hreflang=uk href=https://kubernetes.xuxiaowei.com.cn/uk/docs/setup/production-environment/><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.133.0"><link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/bn/docs/setup/production-environment/><link rel="shortcut icon" type=image/png href=/images/kubernetes.png><link rel=icon type=image/png sizes=64x64 href=/icons/favicon-64.png><link rel=icon type=image/png sizes=32x32 href=/icons/favicon-32.png><link rel=icon type=image/png sizes=16x16 href=/icons/favicon-16.png><link rel=apple-touch-icon-256x256 href=/icons/apple-touch-icon-256x256.png><link rel=apple-touch-icon-196x196 href=/icons/apple-touch-icon-196x196.png><link rel=apple-touch-icon-192x192 href=/icons/apple-touch-icon-192x192.png><link rel=apple-touch-icon-180x180 href=/icons/apple-touch-icon-180x180.png><link rel=apple-touch-icon-167x167 href=/icons/apple-touch-icon-167x167.png><link rel=apple-touch-icon-160x160 href=/icons/apple-touch-icon-160x160.png><link rel=apple-touch-icon-152x152 href=/icons/apple-touch-icon-152x152.png><link rel=apple-touch-icon-120x120 href=/icons/apple-touch-icon-120x120.png><link rel=apple-touch-icon-76x76 href=/icons/apple-touch-icon-76x76.png><link rel=icon type=image/png href=/icons/icon-128x128.png sizes=128x128><meta name=theme-color content="#326de6"><title>প্রোডাকশন এনভায়রনমেন্ট | Kubernetes</title><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/bn/docs/setup/production-environment/">
+<meta property="og:site_name" content="Kubernetes"><meta property="og:title" content="প্রোডাকশন এনভায়রনমেন্ট "><meta property="og:description" content="একটি প্রোডাকশন-কোয়ালিটির কুবারনেটিস ক্লাস্টার তৈরি করুন"><meta property="og:locale" content="bn"><meta property="og:type" content="website"><meta itemprop=name content="প্রোডাকশন এনভায়রনমেন্ট "><meta itemprop=description content="একটি প্রোডাকশন-কোয়ালিটির কুবারনেটিস ক্লাস্টার তৈরি করুন"><meta itemprop=dateModified content="2026-09-25T14:02:01+08:00"><meta itemprop=wordCount content="2287"><meta name=twitter:card content="summary"><meta name=twitter:title content="প্রোডাকশন এনভায়রনমেন্ট "><meta name=twitter:description content="একটি প্রোডাকশন-কোয়ালিটির কুবারনেটিস ক্লাস্টার তৈরি করুন"><link href=/scss/main.css rel=stylesheet><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png"}</script><meta name=theme-color content="#326ce5"><style>.gutter{background-color:#eee;background-repeat:no-repeat;background-position:50%}.gutter.gutter-horizontal{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==);cursor:col-resize}#sidebarnav,#maindoc{max-width:100%}#maindoc{overflow-wrap:break-word}@media(max-width:768px){#sidebarnav{padding-left:15px;padding-right:15px}}</style><meta name=description content="একটি প্রোডাকশন-কোয়ালিটির কুবারনেটিস ক্লাস্টার তৈরি করুন"><meta property="og:description" content="একটি প্রোডাকশন-কোয়ালিটির কুবারনেটিস ক্লাস্টার তৈরি করুন"><meta name=twitter:description content="একটি প্রোডাকশন-কোয়ালিটির কুবারনেটিস ক্লাস্টার তৈরি করুন"><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/bn/docs/setup/production-environment/"><meta property="og:title" content="প্রোডাকশন এনভায়রনমেন্ট "><meta name=twitter:title content="প্রোডাকশন এনভায়রনমেন্ট "><meta name=twitter:image content="https://kubernetes.io/images/favicon.png"><meta name=twitter:image:alt content="Kubernetes"><meta property="og:image" content="/images/kubernetes-horizontal-color.png"><meta property="og:type" content="article"><script src=/js/jquery-3.6.0.min.js intregrity=sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK crossorigin=anonymous></script><script src=/js/split-1.6.0.js intregrity=sha384-0blL3GqHy6+9fw0cyY2Aoiwg4onHAtslAs4OkqZY7UQBrR65/K4gI+hxLdWDrjpz></script><link rel=manifest href=/manifest.webmanifest><script defer src=/js/banner-dismiss.js></script><link type=text/css rel=stylesheet href=/css/custom.css><script type=text/javascript>(function(e,t,n,s,o,i,a){e[n]=e[n]||function(){(e[n].q=e[n].q||[]).push(arguments)},i=t.createElement(s),i.async=1,i.src="https://www.clarity.ms/tag/"+o,a=t.getElementsByTagName(s)[0],a.parentNode.insertBefore(i,a)})(window,document,"clarity","script","ym5vzq3iql")</script></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-column flex-md-row td-navbar" data-auto-burger=primary><a class="navbar-brand img-fluid" href=/bn/></a><div class="td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0"><li class="nav-item mr-2 mb-lg-0"><a class="nav-link active" href=/bn/docs/>ডকুমেন্টেশন</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/bn/blog/>কুবারনেটিস ব্লগ</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/bn/training/>প্রশিক্ষণ</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/bn/partners/>পার্টনার</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/bn/community/>কমিউনিটি</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/bn/case-studies/>কেস স্টাডিজ</a></li><li class="nav-item mr-n3 mr-lg-0 dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>ভার্সন</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/bn/releases>রিলিজ তথ্য</a>
+<a class=dropdown-item href=https://xuxiaowei.io/t/1320/bn/docs/setup/production-environment/>Kubernetes 文档说明</a>
+<a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn/bn/docs/setup/production-environment/>v1.38</a>
+<a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn/bn/docs/setup/production-environment/>v1.37</a>
+<a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn/bn/docs/setup/production-environment/>v1.36</a>
+<a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn/bn/docs/setup/production-environment/>v1.35</a>
+<a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn/bn/docs/setup/production-environment/>v1.34</a>
+<a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn/bn/docs/setup/production-environment/>v1.33</a>
+<a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn/bn/docs/setup/production-environment/>v1.32</a>
+<a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn/bn/docs/setup/production-environment/>v1.31</a>
+<a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn/bn/docs/setup/production-environment/>v1.30</a>
+<a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn/bn/docs/setup/production-environment/>v1.29</a>
+<a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn/bn/docs/setup/production-environment/>v1.28</a>
+<a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn/bn/docs/setup/production-environment/>v1.27</a>
+<a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn/bn/docs/setup/production-environment/>v1.26</a>
+<a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn/bn/docs/setup/production-environment/>v1.25</a>
+<a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn/bn/docs/setup/production-environment/>v1.24</a>
+<a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn/bn/docs/setup/production-environment/>v1.23</a>
+<a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn/bn/docs/setup/production-environment/>v1.22</a>
+<a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn/bn/docs/setup/production-environment/>v1.21</a>
+<a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn/bn/docs/setup/production-environment/>v1.20</a></div></li><li class="nav-item mr-n4 mr-lg-0 dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdownMenuLink role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>বাংলা (Bengali)</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/setup/production-environment/>English</a>
+<a class=dropdown-item href=/zh-cn/docs/setup/production-environment/>中文 (Chinese)</a>
+<a class=dropdown-item href=/fr/docs/setup/production-environment/>Français (French)</a>
+<a class=dropdown-item href=/hi/docs/setup/production-environment/>हिन्दी (Hindi)</a>
+<a class=dropdown-item href=/id/docs/setup/production-environment/>Bahasa Indonesia (Indonesian)</a>
+<a class=dropdown-item href=/ja/docs/setup/production-environment/>日本語 (Japanese)</a>
+<a class=dropdown-item href=/ko/docs/setup/production-environment/>한국어 (Korean)</a>
+<a class=dropdown-item href=/uk/docs/setup/production-environment/>Українська (Ukrainian)</a></div></li><li class="search-item nav-item mr-n4 mr-lg-0"><div class=search-bar><i class="search-icon fa-solid fa-search"></i>
+<input type=search name=q data-search-page=/bn/search/ class="search-input td-search-input" placeholder="অনুসন্ধান করুন" aria-label="অনুসন্ধান করুন" autocomplete=off></div></li></ul></div><button id=hamburger onclick=kub.toggleMenu() data-auto-burger-exclude><div></div></button></nav></header><div class="container-fluid td-outer"><div class=td-main><div class="row flex-xl-nowrap"><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><div class=td-content><div class="pageinfo pageinfo-primary d-print-none"><p>এটি এই বিভাগটির বহু পৃষ্ঠার মুদ্রণযোগ্য দর্শন।
+<a href=# onclick="return print(),!1">মুদ্রণ করতে এখানে ক্লিক করুন</a>.</p><p><a href=/bn/docs/setup/production-environment/>এই পৃষ্ঠার নিয়মিত দৃশ্যে ফিরে আসুন</a>.</p></div><h1 class=title>প্রোডাকশন এনভায়রনমেন্ট</h1><div class=lead>একটি প্রোডাকশন-কোয়ালিটির কুবারনেটিস ক্লাস্টার তৈরি করুন</div><ul><li>1: <a href=#pg-00e1646f68aeb89f9722cf6f6cfcad94>ডিপ্লয়মেন্টের টুল সহ কুবারনেটিস ইনস্টল করা</a></li><ul><li>1.1: <a href=#pg-a16f59f325a17cdeed324d5c889f7f73>kubeadm এর সাহায্যে ক্লাস্টার বুটস্ট্রাপ করা</a></li><ul></ul></ul><li>2: <a href=#pg-d2f55eefe7222b7c637875af9c3ec199>Turnkey ক্লাউড সলিউশন</a></li></ul><div class=content><p>একটি প্রোডাকশন-কোয়ালিটির কুবারনেটিস ক্লাস্টারের জন্য পরিকল্পনা এবং প্রস্তুতি প্রয়োজন।
+আপনার কুবারনেটিস ক্লাস্টার যদি গুরুতর ওয়ার্কলোড চালাতে হয়, তাহলে এটি অবশ্যই সহনশীল হওয়ার জন্য কনফিগার করতে হবে।
+এই পৃষ্ঠাটি ব্যাখ্যা করে যে আপনি একটি প্রোডাকশন-রেডি ক্লাস্টার সেট আপ করতে নিতে পারেন,
+অথবা প্রোডাকশন ব্যবহারের জন্য একটি বিদ্যমান ক্লাস্টার প্রচার করতে পারেন।
+আপনি যদি ইতিমধ্যেই প্রোডাকশন সেটআপের সাথে পরিচিত হন এবং লিঙ্কগুলি চান তবে সরাসরি
+<a href=#what-s-next>পরবর্তী কি</a> তে যান।</p><h2 id=প-র-ড-কশন-ব-ব-চন>প্রোডাকশন বিবেচনা</h2><p>সাধারণত, ব্যক্তিগত শিক্ষা, ডেভেলপমেন্ট, বা টেস্ট এনভায়রনমেন্ট কুবারনেটিস এর চেয়ে বেশি প্রয়োজনীয়তা রয়েছে
+একটি প্রোডাকশন কুবারনেটিস ক্লাস্টার এনভায়রনমেন্টে। একটি প্রোডাকশন এনভায়রনমেন্টের প্রয়োজন হতে পারে
+অনেক ব্যবহারকারীর দ্বারা নিরাপদ অ্যাক্সেস, ধারাবাহিক প্রাপ্যতা, এবং চাহিদা পরিবর্তনে মানিয়ে নেওয়ার
+জন্য রিসোর্স।</p><p>আপনি যেখানে আপনার প্রোডাকশন কুবারনেটিস এনভায়রনমেন্ট লাইভ করাতে চান তা নির্ধারণ করুন
+(প্রেমিসেস বা একটি ক্লাউড) এবং আপনি যে পরিমাণ ব্যবস্থাপনা নিতে চান বা অন্যদের হাতে দিতে চান,
+বিবেচনা করুন কিভাবে একটি কুবারনেটিস ক্লাস্টারের জন্য আপনার প্রয়োজনীয়তাগুলি
+নিম্নলিখিত সমস্যাগুলির দ্বারা প্রভাবিত হয়:</p><ul><li><p><em>প্রাপ্যতা</em>: একটি একক-মেশিন কুবারনেটিস <a href=/bn/docs/setup/#learning-environment>লার্নিং এনভায়রনমেন্ট</a>
+ব্যর্থতার একক পয়েন্ট আছে। একটি অত্যন্ত প্রাপ্য ক্লাস্টার তৈরি করার অর্থ বিবেচনা করা:</p><ul><li>ওয়ার্কার নোড থেকে কন্ট্রোল প্লেন আলাদা করা।</li><li>মাল্টিপল নোডের উপর কন্ট্রোল প্লেন কম্পোনেন্ট প্রতিলিপি করা।</li><li>ক্লাস্টারের <a class=glossary-tooltip title='কন্ট্রোল প্লেন উপাদান যা কুবারনেটিস API পরিবেশন করে।' data-toggle=tooltip data-placement=top href=/bn/docs/concepts/architecture/#kube-apiserver target=_blank aria-label='API সার্ভার'>API সার্ভার</a>-এ ব্যালেন্সিং ট্রাফিক লোড করুন।</li><li>পর্যাপ্ত ওয়ার্কার নোড এভেইল্যাবল থাকা, বা দ্রুত এভেইল্যাবল হতে সক্ষম, কারণ পরিবর্তিত ওয়ার্কলোড এটি নিশ্চিত করে।</li></ul></li><li><p><em>স্কেল</em>: আপনি যদি আশা করেন আপনার প্রোডাকশন কুবারনেটিস এনভায়রনমেন্ট একটি স্থিতিশীল পরিমাণে
+চাহিদা পাবে, তাহলে আপনি আপনার প্রয়োজনীয় ক্ষমতার জন্য সেট আপ করতে সক্ষম হবেন এবং সম্পন্ন হবেন। কিন্তু,
+যদি সময়ের সাথে সাথে আপনার চাহিদা বাড়ে বা নাটকীয়ভাবে পরিবর্তন করে সিজন বা বিশেষ ইভেন্টের
+মতো জিনিসের উপর ভিত্তি করে, তাহলে আপনাকে পরিকল্পনা করতে হবে কিভাবে কন্ট্রোল প্লেন এবং ওয়ার্কার নোডগুলিতে
+আরও অনুরোধ থেকে বর্ধিত চাপ কমাতে বা অব্যবহৃত রিসোর্সগুলি কমাতে স্কেল
+কমাতে হবে।</p></li><li><p><em>নিরাপত্তা এবং অ্যাক্সেস ব্যবস্থাপনা</em>: আপনার নিজের কুবারনেটিস লার্নিং ক্লাস্টারে আপনার সম্পূর্ণ
+অ্যাডমিন সুবিধা রয়েছে। কিন্তু গুরুত্বপূর্ণ ওয়ার্কলোড সহ ভাগ করা ক্লাস্টার, এবং
+এক বা দুইজনের বেশি ব্যবহারকারীর জন্য কে এবং কি ক্লাস্টার রিসোর্স অ্যাক্সেস করতে পারে তার
+জন্য আরও পরিমার্জিত পদ্ধতির প্রয়োজন। আপনি রোল-বেসড অ্যাক্সেস কন্ট্রোল
+(<a href=/docs/reference/access-authn-authz/rbac/>RBAC</a>) এবং অন্যান্য
+নিরাপত্তা ব্যবস্থা ব্যবহার করতে পারেন যাতে ব্যবহারকারী এবং ওয়ার্কলোড তাদের প্রয়োজনীয়
+রিসোর্সগুলিতে অ্যাক্সেস পেতে পারে ওয়ার্কলোড, এবং ক্লাস্টার নিজেই নিরাপদ।
+<a href=/bn/docs/concepts/policy/>পলিসি</a> এবং
+<a href=/docs/concepts/configuration/manage-resources-containers/>কন্টেইনার রিসোর্স</a> পরিচালনার মাধ্যমে
+ব্যবহারকারী এবং ওয়ার্কলোড যে রিসোর্সগুলি অ্যাক্সেস করতে পারে তার উপর আপনি সীমা নির্ধারণ করতে পারেন।</p></li></ul><p>কুবারনেটিস প্রোডাকশন এনভায়রনমেন্ট নিজে থেকে তৈরি করার আগে, এই
+কাজের কিছু বা সমস্ত কিছু
+<a href=/bn/docs/setup/production-environment/turnkey-solutions/>টার্নকি ক্লাউড সলিউশন</a>
+প্রদানকারী বা অন্যান্য <a href=/bn/partners/>কুবারনেটিস পার্টনারস</a> এর কাছে হস্তান্তর করার কথা বিবেচনা করুন।
+বিকল্প অন্তর্ভুক্ত:</p><ul><li><em>সার্ভারহীন</em>: কোনও ক্লাস্টার পরিচালনা না করেই কেবল তৃতীয় পক্ষের
+টুলসগুলিতে ওয়ার্কলোড চালান। CPU ব্যবহার, মেমরি এবং ডিস্ক অনুরোধের মতো জিনিসগুলির জন্য আপনাকে
+চার্জ করা হবে।</li><li><em>ম্যানেজড কন্ট্রোল প্লেন</em>: প্রদানকারীকে স্কেল এবং প্রাপ্যতা পরিচালনা করতে দিন
+ক্লাস্টারের কন্ট্রোল প্লেন, সেইসাথে প্যাচ এবং আপগ্রেড হ্যান্ডেল করতে দিন।</li><li><em>ম্যানেজড ওয়ার্কার নোড</em>: আপনার প্রয়োজন মেটাতে নোডের পুল কনফিগার করুন,
+তারপর প্রদানকারী নিশ্চিত করে যে সেই নোডগুলি আয়ত্তগত এবং প্রয়োজনে আপগ্রেড
+বাস্তবায়নের জন্য প্রস্তুত।</li><li><em>ইন্টিগ্রেশন</em>: এমন প্রদানকারী আছে যারা কুবারনেটিসকে অন্য সার্ভিসের সাথে একীভূত করে
+যা আপনার প্রয়োজন হতে পারে, যেমন স্টোরেজ, কন্টেইনার রেজিস্ট্রি, অথেনটিকেশন
+পদ্ধতি, এবং ডেভেলপমেন্ট টুলস।</li></ul><p>আপনি নিজে একটি প্রোডাকশন কুবারনেটিস ক্লাস্টার তৈরি করুন বা অংশীদার এর সাথে
+কাজ করুন, নিম্নলিখিত বিভাগগুলি পর্যালোচনা করুন যাতে আপনার প্রয়োজনগুলি মূল্যায়ন করা যায়
+আপনার ক্লাস্টারের <em>কন্ট্রোল প্লেন</em>, <em>ওয়ার্কার নোড</em>, <em>ইউজার অ্যাক্সেস</em>, এবং
+<em>ওয়ার্কলোড রিসোর্স</em>।</p><h2 id=প-র-ড-কশন-ক-ল-স-ট-র-স-টআপ>প্রোডাকশন ক্লাস্টার সেটআপ</h2><p>একটি প্রোডাকশন-কোয়ালিটির কুবারনেটিস ক্লাস্টারে, কন্ট্রোল প্লেন সার্ভিসগুলি থেকে
+ক্লাস্টার পরিচালনা করে যা মাল্টিপল কম্পিউটারে ছড়িয়ে দেওয়া যেতে পারে
+বিভিন্ন উপায়ে. প্রতিটি ওয়ার্কার নোড, যাইহোক, একটি একক সত্তা প্রতিনিধিত্ব করে যে
+কুবারনেটিস পড চালানোর জন্য কনফিগার করা হয়েছে।</p><h3 id=প-র-ড-কশন-কন-ট-র-ল-প-ল-ন>প্রোডাকশন কন্ট্রোল প্লেন</h3><p>সহজতম কুবারনেটিস ক্লাস্টারে একই মেশিনে পুরো কন্ট্রোল প্লেন এবং ওয়ার্কার
+নোড সার্ভিসগুলি চলে। আপনি ওয়ার্কার নোডগুলি যোগ করে সেই এনভায়রনমেন্ট
+বাড়াতে পারেন, যেমনটি <a href=/docs/concepts/overview/components/>কুবারনেটিস কম্পোনেন্ট</a> এ
+চিত্রিত চিত্রে প্রতিফলিত হয়েছে।
+যদি ক্লাস্টারটি অল্প সময়ের জন্য পাওয়া যায় বা কিছু গুরুতর ভুল হয়ে গেলে তা
+বাতিল করা যেতে পারে, তাহলে এটি আপনার প্রয়োজন মেটাতে পারে।</p><p>আপনার যদি আরও স্থায়ী, অত্যন্ত সহজলভ্য ক্লাস্টারের প্রয়োজন হয় তবে, আপনার কন্ট্রোল প্লেন
+প্রসারিত করার উপায়গুলি বিবেচনা করা উচিত। নকশা অনুসারে, একক মেশিনে চলমান
+এক-মেশিন কন্ট্রোল প্লেন সার্ভিসগুলি খুব বেশি সহজলভ্য নয়।
+যদি ক্লাস্টার চালু রাখা এবং চালানো
+এবং কিছু ভুল হয়ে গেলে তা মেরামত করা যায় তা নিশ্চিত করা গুরুত্বপূর্ণ,
+এই পদক্ষেপগুলি বিবেচনা করুন:</p><ul><li><em>ডিপ্লয়মেন্ট টুল নির্বাচন করুন</em>: আপনি kubeadm, kops, এবং kubespray-এর মতো
+টুল ব্যবহার করে একটি কন্ট্রোল প্লেন স্থাপন করতে পারেন। প্রতিটি
+ডিপ্লয়মেন্ট পদ্ধতি ব্যবহার করে প্রোডাকশন-কোয়ালিটির ডিপ্লয়মেন্টের জন্য টিপস শিখতে
+<a href=/bn/docs/setup/production-environment/tools/>ডিপ্লয়মেন্ট টুলের সাথে কুবারনেটিস ইনস্টল করার</a> পদ্ধতি
+দেখুন। বিভিন্ন <a href=/bn/docs/setup/production-environment/container-runtimes/>কন্টেইনার রানটাইম</a>
+আপনার ডিপ্লয়মেন্টের সাথে ব্যবহার করার জন্য সহজলভ্য।</li><li><em>সার্টিফিকেট পরিচালনা করুন</em>: কন্ট্রোল প্লেন সার্ভিসগুলির মধ্যে সুরক্ষিত যোগাযোগ সার্টিফিকেট
+ব্যবহার করে প্রয়োগ করা হয়। সার্টিফিকেটগুলি স্থাপনের সময় স্বয়ংক্রিয়ভাবে তৈরি হয় বা
+আপনি আপনার নিজের সার্টিফিকেট কর্তৃপক্ষ ব্যবহার করে সেগুলি তৈরি করতে পারেন৷
+বিস্তারিত জানার জন্য <a href=/docs/setup/best-practices/certificates/>PKI সার্টিফিকেট এবং প্রয়োজনীয়তা</a> দেখুন।</li><li><em>apiserver এর জন্য লোড ব্যালেন্সার কনফিগার করুন</em>: বিভিন্ন নোডে চলমান apiserver
+সার্ভিস দৃষ্টান্তগুলিতে বহিরাগত API অনুরোধগুলি বিতরণ করতে একটি লোড ব্যালেন্সার কনফিগার করুন। দেখুন
+<a href=/docs/tasks/access-application-cluster/create-external-load-balancer/>একটি বাহ্যিক লোড ব্যালেন্সার তৈরি করুন</a>
+বিস্তারিত জানার জন্য.</li><li><em>পৃথক এবং ব্যাকআপ etcd সার্ভিস</em>: etcd সার্ভিসগুলি হয় অন্যান্য কন্ট্রোল প্লেন
+সার্ভিসগুলির মতো একই মেশিনে চলতে পারে বা অতিরিক্ত নিরাপত্তা এবং প্রাপ্যতার জন্য
+আলাদা মেশিনে চলতে পারে। যেহেতু etcd ক্লাস্টার কনফিগারেশন ডেটা সঞ্চয় করে,
+তাই etcd ডাটাবেসের ব্যাকআপ নিয়মিত করা উচিত যাতে আপনি প্রয়োজনে
+সেই ডাটাবেসটি মেরামত করতে পারেন।
+etcd কনফিগার করা এবং ব্যবহার করার বিষয়ে বিস্তারিত জানার জন্য <a href=https://etcd.io/docs/v3.5/faq/>etcd FAQ</a> দেখুন।
+<a href=/docs/tasks/administer-cluster/configure-upgrade-etcd/>কুবারনেটিস-এর জন্য অপারেটিং etcd ক্লাস্টার</a>
+দেখুন এবং <a href=/docs/setup/production-environment/tools/kubeadm/setup-ha-etcd-with-kubeadm/>kubeadm-এর সাথে একটি উচ্চ প্রাপ্যতা etcd ক্লাস্টার সেট আপ করুন</a>
+বিস্তারিত জানার জন্য।</li><li><em>মাল্টিপল কন্ট্রোল প্লেন সিস্টেম তৈরি করুন</em>: উচ্চ প্রাপ্যতা জন্য,
+কন্ট্রোল প্লেন একটি একক মেশিনে সীমাবদ্ধ করা উচিত নয়। যদি কন্ট্রোল প্লেন
+সার্ভিসগুলি একটি init সার্ভিস দ্বারা চালিত হয় (যেমন systemd), প্রতিটি সার্ভিস কমপক্ষে
+তিনটি মেশিনে চালানো উচিত। যাইহোক, কুবারনেটিস-এ পড হিসাবে কন্ট্রোল প্লেন সার্ভিসগুলি চালানো
+নিশ্চিত করে যে আপনার অনুরোধ করা সার্ভিসগুলির প্রতিলিপিকৃত সংখ্যা
+সর্বদা সহজলভ্য থাকবে৷
+সময়সূচী ত্রুটি সহনশীল হওয়া উচিত,
+কিন্তু অত্যন্ত সহজলভ্য নয়। কুবারনেটিস সার্ভিসগুলির লিডার নির্বাচন করার জন্য
+কিছু ডিপ্লয়মেন্টে টুলগুলি <a href=https://raft.github.io/>Raft</a> সম্মতিমূলক অ্যালগরিদম সেট আপ করে৷ যদি
+প্রাইমারিটা চলে যায়, অন্য একটি সার্ভিস নিজেকে নির্বাচন করে এবং দখল করে নেয়।</li><li><em>মাল্টিপল জোন স্প্যান করুন</em>: যদি আপনার ক্লাস্টারকে সর্বদা এভেইল্যাবল রাখা
+গুরুত্বপূর্ণ হয়, তবে একটি ক্লাস্টার তৈরি করার কথা বিবেচনা করুন যা মাল্টিপল ডেটা সেন্টার জুড়ে চলে,
+ক্লাউড এনভায়রনমেন্টে জোন হিসাবে উল্লেখ করা হয়। জোনের গ্রুপগুলিকে রিজিওন হিসাবে উল্লেখ করা হয়।
+একই রিজিওনে মাল্টিপল জোনে
+একটি ক্লাস্টার ছড়িয়ে দেওয়ার মাধ্যমে, এটি একটি জোন অপ্রাপ্য হয়ে গেলেও
+আপনার ক্লাস্টারটি কাজ করা চালিয়ে যাওয়ার সম্ভাবনাকে উন্নত করতে পারে।
+বিস্তারিত জানার জন্য <a href=/docs/setup/best-practices/multiple-zones/>মাল্টিপল জোনে চলমান</a> দেখুন।</li><li><em>চলমান ফিচারগুলি পরিচালনা করুন</em>: আপনি যদি সময়ের সাথে সাথে আপনার ক্লাস্টার রাখার পরিকল্পনা করেন
+তবে এর স্বাস্থ্য এবং নিরাপত্তা বজায় রাখার জন্য আপনাকে কিছু কাজ করতে হবে। উদাহরণস্বরূপ,
+আপনি যদি kubeadm-এর সাথে ইনস্টল করেন, তাহলে আপনাকে
+<a href=/docs/tasks/administer-cluster/kubeadm/kubeadm-certs/>সার্টিফিকেট ম্যানেজমেন্ট</a>
+এবং <a href=/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/>kubeadm ক্লাস্টার আপগ্রেড করা</a> সাহায্য করার জন্য নির্দেশাবলী রয়েছে।
+কুবারনেটিস অ্যাডমিনিস্ট্রেটিভ কাজগুলির একটি দীর্ঘ তালিকার জন্য
+<a href=/docs/tasks/administer-cluster/>একটি ক্লাস্টার পরিচালনা</a> দেখুন।</li></ul><p>আপনি যখন কন্ট্রোল প্লেন সার্ভিসগুলি চালান তখন এভেইল্যাবল বিকল্পগুলি সম্পর্কে জানতে,
+<a href=/docs/reference/command-line-tools-reference/kube-apiserver/>kube-apiserver</a>,
+<a href=/docs/reference/command-line-tools-reference/kube-controller-manager/>kube-controller-manager</a> দেখুন,
+এবং <a href=/docs/reference/command-line-tools-reference/kube-scheduler/>kube-scheduler</a>
+কম্পোনেন্ট পৃষ্ঠা। হাইলি এভেইল্যাবল কন্ট্রোল প্লেন উদাহরণের জন্য,
+<a href=/docs/setup/production-environment/tools/kubeadm/ha-topology/>হাইলি এভেইল্যাবল টপোলজির বিকল্পগুলি</a>,
+<a href=/docs/setup/production-environment/tools/kubeadm/high-availability/>kubeadm-এর সাহায্যে হাইলি এভেইল্যাবল ক্লাস্টার তৈরি করা</a> দেখুন,
+এবং <a href=/docs/tasks/administer-cluster/configure-upgrade-etcd/>অপারেটিং etcd ক্লাস্টার-এর জন্য কুবারনেটিস</a>।
+একটি etcd ব্যাকআপ প্ল্যান তৈরির তথ্যের জন্য
+<a href=/docs/tasks/administer-cluster/configure-upgrade-etcd/#backing-up-an-etcd-cluster>একটি etcd ক্লাস্টার ব্যাক আপ করা</a> দেখুন।</p><h3 id=প-র-ড-কশন-ওয-র-ক-র-ন-ড>প্রোডাকশন ওয়ার্কার নোড</h3><p>প্রোডাকশন-কোয়ালিটির ওয়ার্কলোড স্থিতিস্থাপক হতে হবে এবং তারা যেকোন কিছুর উপর নির্ভর করে
+স্থিতিস্থাপক হতে হবে (যেমন CoreDNS)। আপনি নিজের কন্ট্রোল প্লেন
+পরিচালনা করুন বা একটি ক্লাউড প্রদানকারী আপনার জন্য এটা করে, আপনাকে
+বিবেচনা করতে হবে কিভাবে আপনি আপনার ওয়ার্কার নোডগুলি পরিচালনা করতে চান (এছাড়াও সহজভাবে
+<em>নোড</em> হিসাবে উল্লেখ করা হয়)।</p><ul><li><em>নোডগুলি কনফিগার করুন</em>: নোডগুলি ফিজিক্যাল বা ভার্চুয়াল মেশিন হতে পারে। আপনি যদি
+নিজের নোডগুলি তৈরি করতে এবং পরিচালনা করতে চান তবে আপনি একটি সমর্থিত অপারেটিং সিস্টেম ইনস্টল করতে পারেন,
+তারপরে উপযুক্ত <a href=/bn/docs/concepts/architecture/#node-components>নোড সার্ভিসগুলি</a>
+যোগ করুন এবং চালান। বিবেচনা করুন:<ul><li>উপযুক্ত মেমরি, সিপি উ, এবং ডিস্কের গতি এবং স্টোরেজ ক্ষমতা এভেইল্যাবল থাকার মাধ্যমে আপনি যখন নোড সেট আপ করেন তখন আপনার ওয়ার্কলোডের চাহিদা।</li><li>জেনেরিক কম্পিউটার সিস্টেমগুলি করবে কিনা বা আপনার কাছে এমন ওয়ার্কলোড আছে যেগুলির জন্য জিপিউ প্রসেসর, উইন্ডোজ নোড, বা ভিএম আইসোলেশন প্রয়োজন।</li></ul></li><li><em>ভ্যালিডেট নোড</em>: কিভাবে একটি নোড একটি কুবারনেটিস ক্লাস্টারে
+যোগদানের প্রয়োজনীয়তা পূরণ করে তা নিশ্চিত করার তথ্যের জন্য
+<a href=/docs/setup/best-practices/node-conformance/>ভ্যালিড নোড সেটআপ</a> দেখুন।</li><li><em>ক্লাস্টারে নোড যোগ করুন</em>: আপনি যদি নিজের ক্লাস্টার পরিচালনা করেন তাহলে আপনি
+আপনার নিজস্ব মেশিন সেট আপ করে নোড যোগ করতে পারেন এবং হয় সেগুলিকে ম্যানুয়ালি যোগ করে অথবা
+ক্লাস্টারের apiserver এ নিজেদের নিবন্ধন করতে পারেন। এই উপায়ে
+নোড যোগ করার জন্য কুবারনেটিস কিভাবে সেট আপ করতে হয় সে সম্পর্কে তথ্যের জন্য <a href=/bn/docs/concepts/architecture/nodes/>নোডসমুহ</a> বিভাগটি দেখুন।</li><li><em>নোড স্কেল করুন</em>: আপনার ক্লাস্টারের শেষ পর্যন্ত যে ক্ষমতা প্রয়োজন তা প্রসারিত করার জন্য একটি
+পরিকল্পনা করুন। আপনার চালানোর জন্য কতগুলি পড এবং কন্টেইনার প্রয়োজন
+তার উপর ভিত্তি করে আপনার কতগুলি নোড প্রয়োজন তা নির্ধারণ করতে সাহায্য করতে
+<a href=/docs/setup/best-practices/cluster-large/>বড় ক্লাস্টারগুলির জন্য বিবেচনা</a> দেখুন। আপনি যদি নিজে নোড পরিচালনা করেন, তাহলে এর অর্থ
+হতে পারে আপনার নিজের ফিজিক্যাল টুল কেনা এবং ইনস্টল করা।</li><li><em>নোড অটোস্কেল করুন</em>: আপনার নোডগুলি স্বয়ংক্রিয়ভাবে পরিচালনা করার জন্য উপলব্ধ সরঞ্জামগুলি এবং
+তাদের সরবরাহ করা ক্ষমতা সম্পর্কে জানতে
+<a href=/docs/concepts/cluster-administration/cluster-autoscaling>ক্লাস্টার অটোস্কেলিং</a> পড়ুন।</li><li><em>নোড স্বাস্থ্য পরীক্ষা সেট আপ করুন</em>: গুরুত্বপূর্ণ ওয়ার্কলোডের জন্য, আপনি নিশ্চিত করতে চান যে
+সেই নোডগুলিতে চলমান নোড এবং পডগুলি স্বাস্থ্যকর।
+<a href=/docs/tasks/debug-application-cluster/monitor-node-health/>নোড প্রবলেম ডিটেক্টর</a>
+daemon ব্যবহার করে, আপনি নিশ্চিত করতে পারেন আপনার নোডগুলি সুস্থ।</li></ul><h2 id=প-র-ড-কশন-ব-যবহ-রক-র-ব-যবস-থ-পন>প্রোডাকশন ব্যবহারকারী ব্যবস্থাপনা</h2><p>প্রোডাকশনে, আপনি হয়ত এমন একটি মডেল থেকে সরে যাচ্ছেন যেখানে আপনি বা একটি ছোট গ্রুপ
+ক্লাস্টারে প্রবেশ করছেন যেখানে সম্ভাব্য কয়েক ডজন বা
+শত শত লোক থাকতে পারে। একটি লার্নিং এনভায়রনমেন্ট বা প্ল্যাটফর্ম প্রোটোটাইপে, আপনি যা করেন তার জন্য
+আপনার একটি একক অ্যাডমিনিস্ট্রেটিভ অ্যাকাউন্ট থাকতে পারে । প্রোডাকশনে, আপনি
+বিভিন্ন নেমস্পেসে বিভিন্ন স্তরের অ্যাক্সেস সহ আরও অ্যাকাউন্ট চাইবেন।</p><p>একটি প্রোডাকশন-কোয়ালিটির ক্লাস্টার নেওয়ার অর্থ হল আপনি কীভাবে
+বেছে বেছে অন্য ব্যবহারকারীদের অ্যাক্সেসের অনুমতি দিতে চান তা নির্ধারণ করা। বিশেষ করে, যারা আপনার
+ক্লাস্টার (অথেনটিকেশন) অ্যাক্সেস করার চেষ্টা করে তাদের পরিচয় যাচাই
+করার জন্য এবং তারা যা জিজ্ঞাসা করছে (অথোরাইজেশন) করার অনুমতি আছে কিনা তা নির্ধারণ করার জন্য আপনাকে
+কৌশল নির্বাচন করতে হবেঃ</p><ul><li><em>অথেনটিকেশন</em>: apiserver ব্যবহারকারীদের অথেনটিকেশন করতে পারে ক্লায়েন্ট সার্টিফিকেট,
+bearer টোকেন, একটি অথেনটিকেশন প্রক্সি, বা HTTP মৌলিক অথেনটিকেশন ব্যবহার করে।
+আপনি কোন অথেনটিকেশন পদ্ধতি ব্যবহার করতে চান তা নির্বাচন করতে পারেন।
+প্লাগইন ব্যবহার করে, apiserver আপনার প্রতিষ্ঠানের বিদ্যমান সুবিধা নিতে পারে
+অথেনটিকেশন পদ্ধতি, যেমন LDAP বা Kerberos। দেখা
+<a href=/docs/reference/access-authn-authz/authentication/>অথেনটিকেশন</a>
+কুবারনেটিস ব্যবহারকারীদের অথেনটিকেশনের এই বিভিন্ন পদ্ধতির বর্ণনার জন্য।</li><li><em>অথোরাইজেশন</em>: আপনি যখন আপনার নিয়মিত ব্যবহারকারীদের অথোরাইজেশন করার জন্য প্রস্তুত হন, আপনি সম্ভবত
+RBAC এবং ABAC অথোরাইজেশনের মধ্যে বেছে নেবেন। ব্যবহারকারীর অ্যাকাউন্ট অথোরাইজেশনের জন্য বিভিন্ন মোড পর্যালোচনা করতে
+<a href=/docs/reference/access-authn-authz/authorization/>অথোরাইজেশন ওভারভিউ</a> দেখুন (সেইসাথে আপনার ক্লাস্টারে সার্ভিস
+অ্যাকাউন্ট অ্যাক্সেস):<ul><li><em>রোল-বেসড অ্যাক্সেস কন্ট্রোল</em> (<a href=/docs/reference/access-authn-authz/rbac/>RBAC</a>):
+অথেন্টিকেটেড ব্যবহারকারীদের নির্দিষ্ট সেটের অনুমতি প্রদান করে আপনাকে আপনার ক্লাস্টারে অ্যাক্সেস বরাদ্দ করতে দেয়।
+একটি নির্দিষ্ট নেমস্পেস (Role) বা সমগ্র ক্লাস্টার জুড়ে (ClusterRole) অনুমতিগুলি বরাদ্দ
+করা যেতে পারে। তারপর RoleBindings এবং ClusterRoleBindings ব্যবহার করে, সেই অনুমতিগুলি নির্দিষ্ট ব্যবহারকারীদের সাথে
+সংযুক্ত করা যেতে পারে।</li><li><em>অ্যাট্রিবিউট-বেসড অ্যাক্সেস কন্ট্রোল</em> (<a href=/docs/reference/access-authn-authz/abac/>ABAC</a>):
+আপনাকে ক্লাস্টারে রিসোর্স অ্যাট্রিবিউটের উপর ভিত্তি করে পলিসি তৈরি করতে দেয় এবং সেই অ্যাট্রিবিউটগুলির উপর ভিত্তি করে অ্যাক্সেসের
+অনুমতি দেয় বা অস্বীকার করে। একটি পলিসি ফাইলের প্রতিটি লাইন ভার্শনিং বৈশিষ্ট্য (apiVersion
+এবং kind) এবং বিষয় (ব্যবহারকারী বা গ্রুপ), রিসোর্স বৈশিষ্ট্য,
+নন-রিসোর্সে বৈশিষ্ট্য (/version বা /apis) এবং শুধুমাত্র পঠনযোগ্য বৈশিষ্ট্যের সাথে মেলে বিশেষ বৈশিষ্ট্যগুলির একটি মানচিত্র সনাক্ত করে।
+বিস্তারিত জানার জন্য <a href=/docs/reference/access-authn-authz/abac/#examples>উদাহরণ</a> দেখুন.</li></ul></li></ul><p>যেহেতু কেউ আপনার প্রোডাকশন কুবারনেটস ক্লাস্টারে অথেনটিকেশন এবং অথোরাইজেশন সেট আপ করছে, এখানে কিছু বিষয় বিবেচনা করার আছেঃ</p><ul><li><em>অথোরাইজেশন মোড সেট করুন</em>: যখন Kubernetes API সার্ভার
+(<a href=/docs/reference/command-line-tools-reference/kube-apiserver/>kube-apiserver</a>) শুরু হয়,
+তখন সমর্থিত অথেনটিকেশন মোডগুলি <em>--authorization-mode</em> ফ্ল্যাগ ব্যবহার করে সেট করতে হবে।
+উদাহরণস্বরূপ, <em>kube-adminserver.yaml</em> ফাইলে (<em>/etc/kubernetes/manifests</em>-এ) সেই ফ্ল্যাগটি
+Node,RBAC-তে সেট করা যেতে পারে। এটি অথেন্টিকেটেড অনুরোধের জন্য নোড এবং RBAC অথোরাইজেশনের অনুমতি দেবে।</li><li><em>ব্যবহারকারী সার্টিফিকেট এবং রোল বাইন্ডিং (RBAC)ভর্তি নিয়ন্ত্রক বিবেচনা করুন</em>: আপনি যদি RBAC অথোরাইজেশন ব্যবহার করেন,
+ব্যবহারকারীরা একটি CertificateSigningRequest (CSR) তৈরি করতে পারে যা ক্লাস্টার
+CA দ্বারা স্বাক্ষরিত হতে পারে। তারপর আপনি প্রতিটি ব্যবহারকারীর রোল এবং ক্লাস্টার রোল বাইন্ড করতে পারেন।
+বিস্তারিত জানার জন্য <a href=/docs/reference/access-authn-authz/certificate-signing-requests/>সার্টিফিকেট স্বাক্ষরের অনুরোধ</a>
+দেখুন।</li><li><em>অ্যাট্রিবিউটগুলিকে একত্রিত করে এমন পলিসি তৈরি করুন (ABAC)</em>: আপনি যদি ABAC অথোরাইজেশন ব্যবহার করেন,
+আপনি নির্দিষ্ট রিসোর্সগুলি (যেমন একটি পড), নেমস্পেস, বা apiGroup অ্যাক্সেস করার জন্য নির্বাচিত
+ব্যবহারকারী বা গ্রুপগুলিকে অথোরাইজেশন করার জন্য পলিসিগুলি গঠনের জন্য অ্যাট্রিবিউটগুলিকে সংমিশ্রণ
+বরাদ্দ করতে পারেন। আরও তথ্যের জন্য,
+<a href=/docs/reference/access-authn-authz/abac/#examples>উদাহরণ</a> দেখুন।</li><li><em>অ্যাডমিশন কন্ট্রোলারদের বিবেচনা করুন</em>: API সার্ভারের মাধ্যমে যে অনুরোধগুলি
+আসতে পারে তার অথোরাইজেশনের অতিরিক্ত ফর্মগুলির মধ্যে রয়েছে
+<a href=/docs/reference/access-authn-authz/authentication/#webhook-token-authentication>ওয়েবহুক টোকেন অথেনটিকেশন</a>।
+API সার্ভারে <a href=/docs/reference/access-authn-authz/admission-controllers/>অ্যাডমিশন কন্ট্রোলার</a>
+যোগ করে ওয়েবহুক এবং অন্যান্য বিশেষ অথোরাইজেশনের ধরন
+সক্ষম করতে হবে।</li></ul><h2 id=ওয়-র-কল-ড-র-র-স-র-স-র-স-ম-ন-র-ধ-রণ-কর-ন>ওয়ার্কলোডের রিসোর্সের সীমা নির্ধারণ করুন</h2><p>প্রোডাকশন ওয়ার্কলোডের চাহিদা কুবারনেটিস কন্ট্রোল প্লেনের ভিতরে এবং বাইরে
+উভয় ক্ষেত্রেই চাপ সৃষ্টি করতে পারে। আপনার ক্লাস্টারের ওয়ার্কলোডের প্রয়োজনের জন্য সেট আপ করার সময়
+এই আইটেমগুলি বিবেচনা করুনঃ</p><ul><li><em>নেমস্পেস সীমা সেট করুন</em>: মেমরি এবং সিপিইউ এর মত জিনিসগুলিতে প্রতি-নেমস্পেস কোটা সেট করুন। বিস্তারিত
+জানার জন্য <a href=/docs/tasks/administer-cluster/manage-resources/>Manage Memory, CPU, and API Resources</a>
+দেখুন। এছাড়াও আপনি উত্তরাধিকার
+সীমার জন্য <a href=/blog/2020/08/14/introducing-hierarchical-namespaces/>হায়ারার্কিক্যাল নেমস্পেস</a>
+সেট করতে পারেন।</li><li><em>ডিএনএস চাহিদার জন্য প্রস্তুত করুন</em>: আপনি যদি আশা করেন যে ওয়ার্কলোড ব্যাপকভাবে বৃদ্ধি পাবে,
+আপনার DNS সার্ভিসটিও স্কেল বাড়াতে প্রস্তুত থাকতে হবে। দেখুন
+<a href=/docs/tasks/administer-cluster/dns-horizontal-autoscaling/>একটি ক্লাস্টারে DNS সার্ভিসটি অটোস্কেল করুন</a>।</li><li><em>অতিরিক্ত সার্ভিস অ্যাকাউন্ট তৈরি করুন</em>: ব্যবহারকারীর অ্যাকাউন্টগুলি নির্ধারণ করে যে ব্যবহারকারীরা
+একটি ক্লাস্টারে কী করতে পারে, যখন একটি সার্ভিস অ্যাকাউন্ট একটি নির্দিষ্ট নেমস্পেসের মধ্যে পড
+অ্যাক্সেসকে সংজ্ঞায়িত করে। ডিফল্টরূপে, একটি পড তার নেমস্পেস থেকে ডিফল্ট সার্ভিস অ্যাকাউন্টে নেয়।
+একটি নতুন সার্ভিস অ্যাকাউন্ট তৈরি করার তথ্যের জন্য <a href=/docs/reference/access-authn-authz/service-accounts-admin/>সার্ভিস অ্যাকাউন্ট পরিচালনা করা</a>
+দেখুন। উদাহরণস্বরূপ, আপনি চাইতে পারেন:<ul><li>সিক্রেট যোগ করুন যা একটি পড একটি নির্দিষ্ট কন্টেইনার রেজিস্ট্রি থেকে ইমেজ পুল করতে ব্যবহার করতে পারে।
+উদাহরণের জন্য <a href=/docs/tasks/configure-pod-container/configure-service-account/>পডের জন্য সার্ভিস অ্যাকাউন্ট কনফিগার করুন</a>
+দেখুন।</li><li>একটি সার্ভিস অ্যাকাউন্টে RBAC অনুমতিগুলি বরাদ্দ করুন৷ বিস্তারিত জানার জন্য
+<a href=/docs/reference/access-authn-authz/rbac/#service-account-permissions>সার্ভিস অ্যাকাউন্ট অনুমতি</a>
+দেখুন।</li></ul></li></ul><h2 id=এর-পর-র-ক>এর পরের কি</h2><ul><li>আপনি নিজের প্রোডাকশন তৈরি করতে চান কিনা তা স্থির করুন কুবারনেটিস
+বা এভেইল্যাবল <a href=/bn/docs/setup/production-environment/turnkey-solutions/>টার্নকি ক্লাউড সলিউশন</a>
+অথবা <a href=/bn/partners/>কুবারনেটিস অংশীদার</a> থেকে একটি পেতে চান।</li><li>আপনি যদি নিজের ক্লাস্টার তৈরি করতে চান,
+তাহলে পরিকল্পনা করুন আপনি কীভাবে
+<a href=/docs/setup/best-practices/certificates/>সার্টিফিকেট</a> পরিচালনা করতে চান এবং
+<a href=/docs/setup/production-environment/tools/kubeadm/setup-ha-etcd-with-kubeadm/>etcd</a>
+এর মতো ফিচারগুলির জন্য উচ্চ প্রাপ্যতা সেট আপ করুন)
+এবং <a href=/docs/setup/production-environment/tools/kubeadm/ha-topology/>API সার্ভার</a>।</li><li><a href=/bn/docs/setup/production-environment/tools/kubeadm/>kubeadm</a> থেকে ডিপ্লয়মেন্ট পদ্ধতি বেছে নিন,
+<a href=https://kops.sigs.k8s.io/>kops</a> অথবা
+<a href=https://kubespray.io/>Kubespray</a>।</li><li>আপনার <a href=/docs/reference/access-authn-authz/authentication/>অথেনটিকেশন</a>
+এবং <a href=/docs/reference/access-authn-authz/authorization/>অথোরাইজেশন</a>
+পদ্ধতি নির্ধারণ করে ব্যবহারকারী ব্যবস্থাপনা কনফিগার করুন।</li><li><a href=/docs/tasks/administer-cluster/manage-resources/>রিসোর্স লিমিট</a>,
+<a href=/docs/tasks/administer-cluster/dns-horizontal-autoscaling>DNS autoscaling</a>
+সেট আপ করে অ্যাপ্লিকেশন ওয়ার্কলোডের জন্য প্রস্তুত করুন /) এবং
+<a href=/docs/reference/access-authn-authz/service-accounts-admin/>সার্ভিস অ্যাকাউন্ট</a>।</li></ul></div></div><div class=td-content style=page-break-before:always><h1 id=pg-00e1646f68aeb89f9722cf6f6cfcad94>1 - ডিপ্লয়মেন্টের টুল সহ কুবারনেটিস ইনস্টল করা</h1><p>আপনার নিজস্ব প্রোডাকশন কুবারনেটিস ক্লাস্টার সেট আপ করার জন্য অনেক পদ্ধতি এবং সরঞ্জাম আছে।
+উদাহরণ স্বরূপ:</p><ul><li><p><a href=/bn/docs/setup/production-environment/tools/kubeadm/>kubeadm</a></p></li><li><p><a href=https://kops.sigs.k8s.io/>kops</a>: একটি স্বয়ংক্রিয় ক্লাস্টার প্রভিশনিং টুল।
+টিউটোরিয়াল, সর্বোত্তম অনুশীলন, কনফিগারেশন বিকল্প এবং কমিউনিটির
+কাছে পৌঁছানো তথ্যের জন্য, অনুগ্রহ করে চেক করুন
+<a href=https://kops.sigs.k8s.io/><code>kOps</code> ওয়েবসাইট</a> বিস্তারিত জানতে।</p></li><li><p><a href=https://kubespray.io/>Kubespray</a>:
+<a href=https://docs.ansible.com/>Ansible</a> প্লেবুকের একটি রচনা,
+<a href=https://github.com/kubernetes-sigs/kubespray/blob/master/docs/ansible.md#inventory>ইনভেন্টরি</a>,
+প্রভিশনিং টুলস, এবং জেনেরিক ওস/কুবারনেটিস ক্লাস্টার কনফিগারেশন ব্যবস্থাপনা কাজের
+জন্য ডোমেন জ্ঞান । আপনি স্ল্যাক চ্যানেলে সম্প্রদায়ের সাথে যোগাযোগ করতে পারেন
+<a href=https://kubernetes.slack.com/messages/kubespray/>#kubespray</a>।</p></li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-a16f59f325a17cdeed324d5c889f7f73>1.1 - kubeadm এর সাহায্যে ক্লাস্টার বুটস্ট্রাপ করা</h1></div><div class=td-content style=page-break-before:always><h1 id=pg-d2f55eefe7222b7c637875af9c3ec199>2 - Turnkey ক্লাউড সলিউশন</h1><p>এই পৃষ্ঠাটি কুবারনেটিস প্রত্যয়িত সমাধান প্রদানকারীদের একটি তালিকা প্রদান করে। প্রতিটি প্রদানকারীর পৃষ্ঠা থেকে,
+আপনি প্রোডাকশন এর জন্য প্রস্তুত ক্লাস্টার ইনস্টল এবং
+সেটআপ করা শিখতে পারেন</p><script>function updateLandscapeSource(e,t){console.log({button:e,shouldUpdateFragment:t});try{if(t)window.location.hash="#iframe-landscape-"+e.id;else{var n=document.querySelectorAll("#landscape");let t=e.dataset.landscapeTypes,s=`https://landscape.cncf.io/embed/embed.html?key=${encodeURIComponent(t)}&headers=false&style=shadowed&size=md&bg-color=%23d95e00&fg-color=%23ffffff&iframe-resizer=true`;n[0].src=s}}catch(e){console.log({message:"error handling Landscape switch",error:e})}}document.addEventListener("DOMContentLoaded",function(){let t=()=>{if(window.location.hash){let e=document.querySelectorAll(".landscape-trigger"+window.location.hash);e.length==1&&(landscapeSource=e[0],console.log("Updating Landscape source based on fragment:",window.location.hash.substring(1)),updateLandscapeSource(landscapeSource,!1))}};var e,n=document.querySelectorAll(".landscape-trigger");if(n.forEach(e=>{e.onclick=function(){updateLandscapeSource(e,!0)}}),e=document.querySelectorAll(".landscape-trigger.landscape-default"),e.length==1){let t=e[0];updateLandscapeSource(t,!1)}window.addEventListener("hashchange",t,!1),t()})</script><div id=frameHolder><iframe id=iframe-landscape src="https://landscape.cncf.io/embed/embed.html?key=platform--certified-kubernetes-hosted&headers=false&style=shadowed&size=md&bg-color=%233371e3&fg-color=%23ffffff&iframe-resizer=true" style=width:1px;min-width:100%;min-height:100px;border:0></iframe>
+<script>iFrameResize({},"#iframe-landscape")</script></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-5 col-sm-7 text-center order-2 footer-main"><p><span class=copyright-notice>&copy; 2026 The Kubernetes Authors | ডকুমেন্টেশন <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a> লাইসেন্সের অধীনে বিতরণ করা হয়েছে</span></p><p><span class=copyright-notice>&copy; 2026 The Linux Foundation &reg;. সমস্ত অধিকার সংরক্ষিত। The Linux Foundation নিবন্ধিত ট্রেডমার্ক এবং ট্রেডমার্ক ব্যবহার করে। The Linux Foundation এর ট্রেডমার্কের তালিকার জন্য, অনুগ্রহ করে আমাদের <a href=https://www.linuxfoundation.org/trademark-usage class=light-text>Trademark Usage page</a> দেখুন</span></p><p><span class=certification-notice>ICP লাইসেন্স <a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></span></p></div><div class="col col-sm-2 text-xs-center order-1"><ul class="list-inline mb-0 footer-icons"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://youtube.com/kubernetescommunity aria-label><i class="fa-brands fa-youtube"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://discuss.kubernetes.io aria-label><i class="fa-solid fa-envelope"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://serverfault.com/questions/tagged/kubernetes aria-label><i class="fa-brands fa-stack-overflow"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://twitter.com/kubernetesio aria-label><i class="fa-brands fa-twitter"></i></a></li></ul></div><div class="col col-sm-2 text-right text-xs-center order-3"><ul class="list-inline mb-0 footer-icons"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://k8s.dev/ aria-label><i class="fa-solid fa-laptop-code"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://github.com/kubernetes/kubernetes aria-label><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://slack.k8s.io aria-label><i class="fa-brands fa-slack"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io" aria-label><i class="fa-solid fa-calendar-days"></i></a></li></ul></div></div></div></footer></div><script src=/js/script.js></script><script src=/js/main.js></script><script>let splitInstance=null;function enableSplitter(e){e.matches?splitInstance||(splitInstance=Split(["#sidebarnav","#maindoc"],{sizes:[20,80],minSize:100})):splitInstance&&(splitInstance.destroy(),splitInstance=null)}const screenWidthMediaQuery=window.matchMedia("(min-width: 768px)"),eleNav=document.getElementById("sidebarnav");eleNav!==null&&(enableSplitter(screenWidthMediaQuery),screenWidthMediaQuery.addListener(enableSplitter))</script></body></html>

@@ -1,0 +1,709 @@
+<!doctype html><html itemscope itemtype=http://schema.org/WebPage lang=zh-cn class=no-js><head><meta name=robots content="noindex, nofollow"><link rel=alternate hreflang=en href=https://kubernetes.xuxiaowei.com.cn/docs/tasks/inject-data-application/><link rel=alternate hreflang=fr href=https://kubernetes.xuxiaowei.com.cn/fr/docs/tasks/inject-data-application/><link rel=alternate hreflang=de href=https://kubernetes.xuxiaowei.com.cn/de/docs/tasks/inject-data-application/><link rel=alternate hreflang=id href=https://kubernetes.xuxiaowei.com.cn/id/docs/tasks/inject-data-application/><link rel=alternate hreflang=ja href=https://kubernetes.xuxiaowei.com.cn/ja/docs/tasks/inject-data-application/><link rel=alternate hreflang=ko href=https://kubernetes.xuxiaowei.com.cn/ko/docs/tasks/inject-data-application/><link rel=alternate hreflang=es href=https://kubernetes.xuxiaowei.com.cn/es/docs/tasks/inject-data-application/><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.133.0"><link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/><link rel="shortcut icon" type=image/png href=/images/kubernetes.png><link rel=icon type=image/png sizes=64x64 href=/icons/favicon-64.png><link rel=icon type=image/png sizes=32x32 href=/icons/favicon-32.png><link rel=icon type=image/png sizes=16x16 href=/icons/favicon-16.png><link rel=apple-touch-icon-256x256 href=/icons/apple-touch-icon-256x256.png><link rel=apple-touch-icon-196x196 href=/icons/apple-touch-icon-196x196.png><link rel=apple-touch-icon-192x192 href=/icons/apple-touch-icon-192x192.png><link rel=apple-touch-icon-180x180 href=/icons/apple-touch-icon-180x180.png><link rel=apple-touch-icon-167x167 href=/icons/apple-touch-icon-167x167.png><link rel=apple-touch-icon-160x160 href=/icons/apple-touch-icon-160x160.png><link rel=apple-touch-icon-152x152 href=/icons/apple-touch-icon-152x152.png><link rel=apple-touch-icon-120x120 href=/icons/apple-touch-icon-120x120.png><link rel=apple-touch-icon-76x76 href=/icons/apple-touch-icon-76x76.png><link rel=icon type=image/png href=/icons/icon-128x128.png sizes=128x128><meta name=theme-color content="#326de6"><title>给应用注入数据 | Kubernetes</title><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/">
+<meta property="og:site_name" content="Kubernetes"><meta property="og:title" content="给应用注入数据"><meta property="og:description" content="给你的工作负载 Pod 指定配置和其他数据。"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="website"><meta itemprop=name content="给应用注入数据"><meta itemprop=description content="给你的工作负载 Pod 指定配置和其他数据。"><meta itemprop=dateModified content="2026-09-25T14:02:01+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="给应用注入数据"><meta name=twitter:description content="给你的工作负载 Pod 指定配置和其他数据。"><link href=/scss/main.css rel=stylesheet><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png"}</script><meta name=theme-color content="#326ce5"><style>.gutter{background-color:#eee;background-repeat:no-repeat;background-position:50%}.gutter.gutter-horizontal{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==);cursor:col-resize}#sidebarnav,#maindoc{max-width:100%}#maindoc{overflow-wrap:break-word}@media(max-width:768px){#sidebarnav{padding-left:15px;padding-right:15px}}</style><meta name=description content="给你的工作负载 Pod 指定配置和其他数据。"><meta property="og:description" content="给你的工作负载 Pod 指定配置和其他数据。"><meta name=twitter:description content="给你的工作负载 Pod 指定配置和其他数据。"><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/"><meta property="og:title" content="给应用注入数据"><meta name=twitter:title content="给应用注入数据"><meta name=twitter:image content="https://kubernetes.io/images/favicon.png"><meta name=twitter:image:alt content="Kubernetes"><meta property="og:image" content="/images/kubernetes-horizontal-color.png"><meta property="og:type" content="article"><script src=/js/jquery-3.6.0.min.js intregrity=sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK crossorigin=anonymous></script><script src=/js/split-1.6.0.js intregrity=sha384-0blL3GqHy6+9fw0cyY2Aoiwg4onHAtslAs4OkqZY7UQBrR65/K4gI+hxLdWDrjpz></script><link rel=manifest href=/manifest.webmanifest><script defer src=/js/banner-dismiss.js></script><link type=text/css rel=stylesheet href=/css/custom.css><script type=text/javascript>(function(e,t,n,s,o,i,a){e[n]=e[n]||function(){(e[n].q=e[n].q||[]).push(arguments)},i=t.createElement(s),i.async=1,i.src="https://www.clarity.ms/tag/"+o,a=t.getElementsByTagName(s)[0],a.parentNode.insertBefore(i,a)})(window,document,"clarity","script","ym5vzq3iql")</script></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-column flex-md-row td-navbar" data-auto-burger=primary><a class="navbar-brand img-fluid" href=/zh-cn/></a><div class="td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0"><li class="nav-item mr-2 mb-lg-0"><a class="nav-link active" href=/zh-cn/docs/>文档</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/zh-cn/blog/>Kubernetes 博客</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/zh-cn/training/>培训</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/zh-cn/partners/>合作伙伴</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/zh-cn/community/>社区</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/zh-cn/case-studies/>案例分析</a></li><li class="nav-item mr-n3 mr-lg-0 dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>版本列表</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh-cn/releases>发布信息</a>
+<a class=dropdown-item href=https://xuxiaowei.io/t/1320/zh-cn/docs/tasks/inject-data-application/>Kubernetes 文档说明</a>
+<a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/>v1.38</a>
+<a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/>v1.37</a>
+<a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/>v1.36</a>
+<a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/>v1.35</a>
+<a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/>v1.34</a>
+<a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/>v1.33</a>
+<a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/>v1.32</a>
+<a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/>v1.31</a>
+<a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/>v1.30</a>
+<a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/>v1.29</a>
+<a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/>v1.28</a>
+<a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/>v1.27</a>
+<a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/>v1.26</a>
+<a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/>v1.25</a>
+<a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/>v1.24</a>
+<a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/>v1.23</a>
+<a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/>v1.22</a>
+<a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/>v1.21</a>
+<a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn/zh-cn/docs/tasks/inject-data-application/>v1.20</a></div></li><li class="nav-item mr-n4 mr-lg-0 dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdownMenuLink role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>中文 (Chinese)</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/tasks/inject-data-application/>English</a>
+<a class=dropdown-item href=/fr/docs/tasks/inject-data-application/>Français (French)</a>
+<a class=dropdown-item href=/de/docs/tasks/inject-data-application/>Deutsch (German)</a>
+<a class=dropdown-item href=/id/docs/tasks/inject-data-application/>Bahasa Indonesia (Indonesian)</a>
+<a class=dropdown-item href=/ja/docs/tasks/inject-data-application/>日本語 (Japanese)</a>
+<a class=dropdown-item href=/ko/docs/tasks/inject-data-application/>한국어 (Korean)</a>
+<a class=dropdown-item href=/es/docs/tasks/inject-data-application/>Español (Spanish)</a></div></li><li class="search-item nav-item mr-n4 mr-lg-0"><div class=search-bar><i class="search-icon fa-solid fa-search"></i>
+<input type=search name=q data-search-page=/zh-cn/search/ class="search-input td-search-input" placeholder=搜索 aria-label=搜索 autocomplete=off></div></li></ul></div><button id=hamburger onclick=kub.toggleMenu() data-auto-burger-exclude><div></div></button></nav></header><div class="container-fluid td-outer"><div class=td-main><div class="row flex-xl-nowrap"><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><div class=td-content><div class="pageinfo pageinfo-primary d-print-none"><p>这是本节的多页打印视图。
+<a href=# onclick="return print(),!1">点击此处打印</a>.</p><p><a href=/zh-cn/docs/tasks/inject-data-application/>返回本页常规视图</a>.</p></div><h1 class=title>给应用注入数据</h1><div class=lead>给你的工作负载 Pod 指定配置和其他数据。</div><ul><li>1: <a href=#pg-c9af1e81bb6e109f6c41febe44f0931b>为容器设置启动时要执行的命令和参数</a></li><li>2: <a href=#pg-eff97c25c917cdb414eda016df0e2bca>定义相互依赖的环境变量</a></li><li>3: <a href=#pg-82c93897176489678232542102daea40>为容器设置环境变量</a></li><li>4: <a href=#pg-66c0456fdbef5e5116dd606d1e6f73cc>通过环境变量将 Pod 信息呈现给容器</a></li><li>5: <a href=#pg-bcf93d1cd019501fd0b7649e9fbcaf60>通过文件将 Pod 信息呈现给容器</a></li><li>6: <a href=#pg-7f9454a1e775548c23ee5b300a9218a3>使用 Secret 安全地分发凭据</a></li></ul><div class=content></div></div><div class=td-content><h1 id=pg-c9af1e81bb6e109f6c41febe44f0931b>1 - 为容器设置启动时要执行的命令和参数</h1><p>本页将展示如何为 <a class=glossary-tooltip title='Pod 表示你的集群上一组正在运行的容器。' data-toggle=tooltip data-placement=top href=/zh-cn/docs/concepts/workloads/pods/ target=_blank aria-label=Pod>Pod</a>
+中容器设置启动时要执行的命令及其参数。</p><h2 id=准备开始>准备开始</h2><p><p>你必须拥有一个 Kubernetes 的集群，且必须配置 kubectl 命令行工具让其与你的集群通信。
+建议运行本教程的集群至少有两个节点，且这两个节点不能作为控制平面主机。
+如果你还没有集群，你可以通过 <a href=https://minikube.sigs.k8s.io/docs/tutorials/multi_node/>Minikube</a>
+构建一个你自己的集群，或者你可以使用下面的 Kubernetes 练习环境之一：</p><ul><li><a href=https://killercoda.com/playgrounds/scenario/kubernetes>Killercoda</a></li><li><a href=https://labs.play-with-k8s.com/>玩转 Kubernetes</a></li></ul>要获知版本信息，请输入 <code>kubectl version</code>.</p><h2 id=define-a-command-and-arguments-when-you-create-a-pod>创建 Pod 时设置命令及参数</h2><p>创建 Pod 时，可以为其下的容器设置启动时要执行的命令及其参数。如果要设置命令，就填写在配置文件的
+<code>command</code> 字段下，如果要设置命令的参数，就填写在配置文件的 <code>args</code> 字段下。
+一旦 Pod 创建完成，该命令及其参数就无法再进行更改了。</p><p>如果在配置文件中设置了容器启动时要执行的命令及其参数，那么容器镜像中自带的命令与参数将会被覆盖而不再执行。
+如果配置文件中只是设置了参数，却没有设置其对应的命令，那么容器镜像中自带的命令会使用该新参数作为其执行时的参数。</p><div class="alert alert-info" role=alert><h4 class=alert-heading>说明：</h4><p><code>command</code> 字段对应于 <code>ENTRYPOINT</code>，而 <code>args</code> 字段对应于某些容器运行时的 <code>CMD</code>。</p></div><p>本示例中，将创建一个只包含单个容器的 Pod。在此 Pod 配置文件中设置了一个命令与两个参数：</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.31/content/zh-cn/examples/pods/commands.yaml download=pods/commands.yaml><code>pods/commands.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("pods-commands-yaml")' title="复制 pods/commands.yaml 到剪贴板"></img></div><div class=includecode id=pods-commands-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>command-demo<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>purpose</span>:<span style=color:#bbb> </span>demonstrate-command<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>command-demo-container<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>debian<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>command</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;printenv&#34;</span>]<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>args</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;HOSTNAME&#34;</span>,<span style=color:#bbb> </span><span style=color:#b44>&#34;KUBERNETES_PORT&#34;</span>]<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>restartPolicy</span>:<span style=color:#bbb> </span>OnFailure<span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><ol><li><p>基于 YAML 文件创建一个 Pod：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl apply -f https://k8s.io/examples/pods/commands.yaml
+</span></span></code></pre></div></li></ol><ol start=2><li><p>获取正在运行的 Pod：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get pods
+</span></span></code></pre></div><p>查询结果显示在 command-demo 这个 Pod 下运行的容器已经启动完成。</p></li></ol><ol start=3><li><p>如果要获取容器启动时执行命令的输出结果，可以通过 Pod 的日志进行查看：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl logs command-demo
+</span></span></code></pre></div><p>日志中显示了 HOSTNAME 与 KUBERNETES_PORT 这两个环境变量的值：</p><pre tabindex=0><code>command-demo
+tcp://10.3.240.1:443
+</code></pre></li></ol><h2 id=use-env-var-to-define-arguments>使用环境变量来设置参数</h2><p>在上面的示例中，我们直接将一串字符作为命令的参数。除此之外，我们还可以将环境变量作为命令的参数。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>env</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>MESSAGE<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;hello world&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>command</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;/bin/echo&#34;</span>]<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>args</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;$(MESSAGE)&#34;</span>]<span style=color:#bbb>
+</span></span></span></code></pre></div><p>这意味着你可以将那些用来设置环境变量的方法应用于设置命令的参数，其中包括了
+<a href=/zh-cn/docs/tasks/configure-pod-container/configure-pod-configmap/>ConfigMap</a> 与
+<a href=/zh-cn/docs/concepts/configuration/secret/>Secret</a>。</p><div class="alert alert-info" role=alert><h4 class=alert-heading>说明：</h4><p>环境变量需要加上括号，类似于 <code>"$(VAR)"</code>。这是在 <code>command</code> 或 <code>args</code> 字段使用变量的格式要求。</p></div><h2 id=run-a-command-in-a-shell>在 Shell 来执行命令</h2><p>有时候，你需要在 Shell 脚本中运行命令。
+例如，你要执行的命令可能由多个命令组合而成，或者它就是一个 Shell 脚本。
+这时，就可以通过如下方式在 Shell 中执行命令：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>command: <span style=color:#666>[</span><span style=color:#b44>&#34;/bin/sh&#34;</span><span style=color:#666>]</span>
+</span></span><span style=display:flex><span>args: <span style=color:#666>[</span><span style=color:#b44>&#34;-c&#34;</span>, <span style=color:#b44>&#34;while true; do echo hello; sleep 10;done&#34;</span><span style=color:#666>]</span>
+</span></span></code></pre></div><h2 id=接下来>接下来</h2><ul><li>进一步了解<a href=/zh-cn/docs/tasks/>配置 Pod 和容器</a></li><li>进一步了解<a href=/zh-cn/docs/tasks/debug/debug-application/get-shell-running-container/>在容器中运行命令</a></li><li>参阅 <a href=/docs/reference/generated/kubernetes-api/v1.31/#container-v1-core>Container</a>
+API 资源</li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-eff97c25c917cdb414eda016df0e2bca>2 - 定义相互依赖的环境变量</h1><p>本页展示了如何为 Kubernetes Pod 中的容器定义相互依赖的环境变量。</p><h2 id=准备开始>准备开始</h2><p>你必须拥有一个 Kubernetes 的集群，且必须配置 kubectl 命令行工具让其与你的集群通信。
+建议运行本教程的集群至少有两个节点，且这两个节点不能作为控制平面主机。
+如果你还没有集群，你可以通过 <a href=https://minikube.sigs.k8s.io/docs/tutorials/multi_node/>Minikube</a>
+构建一个你自己的集群，或者你可以使用下面的 Kubernetes 练习环境之一：</p><ul><li><a href=https://killercoda.com/playgrounds/scenario/kubernetes>Killercoda</a></li><li><a href=https://labs.play-with-k8s.com/>玩转 Kubernetes</a></li></ul><h2 id=define-an-environment-dependent-variable-for-a-container>为容器定义相互依赖的环境变量</h2><p>当创建一个 Pod 时，你可以为运行在 Pod 中的容器设置相互依赖的环境变量。
+若要设置相互依赖的环境变量，你可以在配置清单文件的 <code>env</code> 的 <code>value</code> 中使用 $(VAR_NAME)。</p><p>在本练习中，你会创建一个单容器的 Pod。
+此 Pod 的配置文件定义了一个已定义常用用法的相互依赖的环境变量。
+下面是此 Pod 的配置清单：</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.31/content/zh-cn/examples/pods/inject/dependent-envars.yaml download=pods/inject/dependent-envars.yaml><code>pods/inject/dependent-envars.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("pods-inject-dependent-envars-yaml")' title="复制 pods/inject/dependent-envars.yaml 到剪贴板"></img></div><div class=includecode id=pods-inject-dependent-envars-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>dependent-envars-demo<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>dependent-envars-demo<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>args</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- while true; do echo -en &#39;\n&#39;; printf UNCHANGED_REFERENCE=$UNCHANGED_REFERENCE&#39;\n&#39;; printf SERVICE_ADDRESS=$SERVICE_ADDRESS&#39;\n&#39;;printf ESCAPED_REFERENCE=$ESCAPED_REFERENCE&#39;\n&#39;; sleep 30; done;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>command</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- sh<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- -c<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>busybox:1.28<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>env</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>SERVICE_PORT<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;80&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>SERVICE_IP<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;172.17.0.1&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>UNCHANGED_REFERENCE<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;$(PROTOCOL)://$(SERVICE_IP):$(SERVICE_PORT)&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>PROTOCOL<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;https&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>SERVICE_ADDRESS<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;$(PROTOCOL)://$(SERVICE_IP):$(SERVICE_PORT)&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>ESCAPED_REFERENCE<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;$$(PROTOCOL)://$(SERVICE_IP):$(SERVICE_PORT)&#34;</span><span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><ol><li><p>依据清单创建 Pod：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl apply -f https://k8s.io/examples/pods/inject/dependent-envars.yaml
+</span></span></code></pre></div><pre tabindex=0><code>pod/dependent-envars-demo created
+</code></pre></li></ol><ol start=2><li><p>列出运行的 Pod：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get pods dependent-envars-demo
+</span></span></code></pre></div><pre tabindex=0><code>NAME                      READY     STATUS    RESTARTS   AGE
+dependent-envars-demo     1/1       Running   0          9s
+</code></pre></li></ol><ol start=3><li><p>检查 Pod 中运行容器的日志：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl logs pod/dependent-envars-demo
+</span></span></code></pre></div><pre tabindex=0><code>
+UNCHANGED_REFERENCE=$(PROTOCOL)://172.17.0.1:80
+SERVICE_ADDRESS=https://172.17.0.1:80
+ESCAPED_REFERENCE=$(PROTOCOL)://172.17.0.1:80
+</code></pre></li></ol><p>如上所示，你已经定义了 <code>SERVICE_ADDRESS</code> 的正确依赖引用，
+<code>UNCHANGED_REFERENCE</code> 的错误依赖引用，
+并跳过了 <code>ESCAPED_REFERENCE</code> 的依赖引用。</p><p>如果环境变量被引用时已事先定义，则引用可以正确解析，
+比如 <code>SERVICE_ADDRESS</code> 的例子。</p><p>请注意，<code>env</code> 列表中的顺序很重要。如果某环境变量定义出现在列表的尾部，
+则在解析列表前部环境变量时不会视其为“已被定义”。
+这就是为什么 <code>UNCHANGED_REFERENCE</code> 在上面的示例中解析 <code>$(PROTOCOL)</code> 失败的原因。</p><p>当环境变量未定义或仅包含部分变量时，未定义的变量会被当做普通字符串对待，
+比如 <code>UNCHANGED_REFERENCE</code> 的例子。
+注意，解析不正确的环境变量通常不会阻止容器启动。</p><p><code>$(VAR_NAME)</code> 这样的语法可以用两个 <code>$</code> 转义，即：<code>$$(VAR_NAME)</code>。
+无论引用的变量是否定义，转义的引用永远不会展开。
+这一点可以从上面 <code>ESCAPED_REFERENCE</code> 的例子得到印证。</p><h2 id=接下来>接下来</h2><ul><li>进一步了解<a href=/zh-cn/docs/tasks/inject-data-application/environment-variable-expose-pod-information/>环境变量</a>。</li><li>参阅 <a href=/docs/reference/generated/kubernetes-api/v1.31/#envvarsource-v1-core>EnvVarSource</a>。</li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-82c93897176489678232542102daea40>3 - 为容器设置环境变量</h1><p>本页将展示如何为 Kubernetes Pod 下的容器设置环境变量。</p><h2 id=准备开始>准备开始</h2><p>你必须拥有一个 Kubernetes 的集群，且必须配置 kubectl 命令行工具让其与你的集群通信。
+建议运行本教程的集群至少有两个节点，且这两个节点不能作为控制平面主机。
+如果你还没有集群，你可以通过 <a href=https://minikube.sigs.k8s.io/docs/tutorials/multi_node/>Minikube</a>
+构建一个你自己的集群，或者你可以使用下面的 Kubernetes 练习环境之一：</p><ul><li><a href=https://killercoda.com/playgrounds/scenario/kubernetes>Killercoda</a></li><li><a href=https://labs.play-with-k8s.com/>玩转 Kubernetes</a></li></ul><h2 id=define-an-env-variable-for-a-container>为容器设置一个环境变量</h2><p>创建 Pod 时，可以为其下的容器设置环境变量。通过配置文件的 <code>env</code> 或者 <code>envFrom</code> 字段来设置环境变量。</p><p><code>env</code> 和 <code>envFrom</code> 字段具有不同的效果。</p><p><code>env</code>
+：可以为容器设置环境变量，直接为你所给的每个变量指定一个值。</p><p><code>envFrom</code>
+：你可以通过引用 ConfigMap 或 Secret 来设置容器的环境变量。
+使用 <code>envFrom</code> 时，引用的 ConfigMap 或 Secret 中的所有键值对都被设置为容器的环境变量。
+你也可以指定一个通用的前缀字符串。</p><p>你可以阅读有关 <a href=/zh-cn/docs/tasks/configure-pod-container/configure-pod-configmap/#configure-all-key-value-pairs-in-a-configmap-as-container-environment-variables>ConfigMap</a>
+和 <a href=/zh-cn/docs/tasks/inject-data-application/distribute-credentials-secure/#configure-all-key-value-pairs-in-a-secret-as-container-environment-variables>Secret</a>
+的更多信息。</p><p>本页介绍如何使用 <code>env</code>。</p><p>本示例中，将创建一个只包含单个容器的 Pod。此 Pod 的配置文件中设置环境变量的名称为 <code>DEMO_GREETING</code>，
+其值为 <code>"Hello from the environment"</code>。下面是此 Pod 的配置清单：</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.31/content/zh-cn/examples/pods/inject/envars.yaml download=pods/inject/envars.yaml><code>pods/inject/envars.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("pods-inject-envars-yaml")' title="复制 pods/inject/envars.yaml 到剪贴板"></img></div><div class=includecode id=pods-inject-envars-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>envar-demo<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>purpose</span>:<span style=color:#bbb> </span>demonstrate-envars<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>envar-demo-container<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>gcr.io/google-samples/hello-app:2.0<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>env</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>DEMO_GREETING<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;Hello from the environment&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>DEMO_FAREWELL<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;Such a sweet sorrow&#34;</span><span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><ol><li><p>基于配置清单创建一个 Pod：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl apply -f https://k8s.io/examples/pods/inject/envars.yaml
+</span></span></code></pre></div></li></ol><ol start=2><li><p>获取正在运行的 Pod 信息：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get pods -l <span style=color:#b8860b>purpose</span><span style=color:#666>=</span>demonstrate-envars
+</span></span></code></pre></div><pre><code>查询结果应为：
+</code></pre><pre tabindex=0><code>NAME            READY     STATUS    RESTARTS   AGE
+envar-demo      1/1       Running   0          9s
+</code></pre></li></ol><ol start=3><li><p>列出 Pod 容器的环境变量：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl <span style=color:#a2f>exec</span> envar-demo -- printenv
+</span></span></code></pre></div><pre><code>打印结果应为：
+</code></pre><pre tabindex=0><code>NODE_VERSION=4.4.2
+EXAMPLE_SERVICE_PORT_8080_TCP_ADDR=10.3.245.237
+HOSTNAME=envar-demo
+...
+DEMO_GREETING=Hello from the environment
+DEMO_FAREWELL=Such a sweet sorrow
+</code></pre></li></ol><div class="alert alert-info" role=alert><h4 class=alert-heading>说明：</h4><p>通过 <code>env</code> 或 <code>envFrom</code> 字段设置的环境变量将覆盖容器镜像中指定的所有环境变量。</p></div><div class="alert alert-info" role=alert><h4 class=alert-heading>说明：</h4><p>环境变量可以互相引用，但是顺序很重要。
+使用在相同上下文中定义的其他变量的变量必须在列表的后面。
+同样，请避免使用循环引用。</p></div><h2 id=using-env-var-inside-of-your-config>在配置中使用环境变量</h2><p>你在 Pod 的配置中定义的、位于 <code>.spec.containers[*].env[*]</code> 下的环境变量
+可以在配置的其他地方使用，例如可用在为 Pod 的容器设置的命令和参数中。
+在下面的示例配置中，环境变量 <code>GREETING</code>、<code>HONORIFIC</code> 和 <code>NAME</code> 分别设置为 <code>Warm greetings to</code>、
+<code>The Most Honorable</code> 和 <code>Kubernetes</code>。
+环境变量 <code>MESSAGE</code> 将所有这些环境变量的集合组合起来，
+然后再传递给容器 <code>env-print-demo</code> 的 CLI 参数中使用。</p><p>环境变量名由字母、数字、下划线、点或连字符组成，但第一个字符不能是数字。
+如果启用了 <code>RelaxedEnvironmentVariableValidation</code> 特性门控，
+则所有可打印的 ASCII 字符（"=" 除外）都可以用于环境变量名。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>print-greeting<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>env-print-demo<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>bash<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>env</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>GREETING<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;Warm greetings to&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>HONORIFIC<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;The Most Honorable&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>NAME<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;Kubernetes&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>command</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;echo&#34;</span>]<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>args</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;$(GREETING) $(HONORIFIC) $(NAME)&#34;</span>]<span style=color:#bbb>
+</span></span></span></code></pre></div><p>创建后，命令 <code>echo Warm greetings to The Most Honorable Kubernetes</code> 将在容器中运行。</p><h2 id=接下来>接下来</h2><ul><li>进一步了解<a href=/zh-cn/docs/tasks/inject-data-application/environment-variable-expose-pod-information/>环境变量</a></li><li>进一步了解<a href=/zh-cn/docs/concepts/configuration/secret/#using-secrets-as-environment-variables>通过环境变量来使用 Secret</a></li><li>关于 <a href=/docs/reference/generated/kubernetes-api/v1.31/#envvarsource-v1-core>EnvVarSource</a> 资源的信息。</li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-66c0456fdbef5e5116dd606d1e6f73cc>4 - 通过环境变量将 Pod 信息呈现给容器</h1><p>此页面展示 Pod 如何使用 <strong>downward API</strong> 通过环境变量把自身的信息呈现给 Pod 中运行的容器。
+你可以使用环境变量来呈现 Pod 的字段、容器字段或两者。</p><p>在 Kubernetes 中有两种方式可以将 Pod 和容器字段呈现给运行中的容器：</p><ul><li>如本任务所述的<strong>环境变量</strong></li><li><a href=/zh-cn/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/>卷文件</a></li></ul><p>这两种呈现 Pod 和容器字段的方式统称为 downward API。</p><p>Service 是 Kubernetes 管理的容器化应用之间的主要通信模式，因此在运行时能发现这些 Service 是很有帮助的。</p><p>在<a href=/zh-cn/docs/tutorials/services/connect-applications-service/#accessing-the-service>这里</a>
+阅读更多关于访问 Service 的信息。</p><h2 id=准备开始>准备开始</h2><p>你必须拥有一个 Kubernetes 的集群，且必须配置 kubectl 命令行工具让其与你的集群通信。
+建议运行本教程的集群至少有两个节点，且这两个节点不能作为控制平面主机。
+如果你还没有集群，你可以通过 <a href=https://minikube.sigs.k8s.io/docs/tutorials/multi_node/>Minikube</a>
+构建一个你自己的集群，或者你可以使用下面的 Kubernetes 练习环境之一：</p><ul><li><a href=https://killercoda.com/playgrounds/scenario/kubernetes>Killercoda</a></li><li><a href=https://labs.play-with-k8s.com/>玩转 Kubernetes</a></li></ul><h2 id=use-pod-fields-as-values-for-env-var>用 Pod 字段作为环境变量的值</h2><p>在这部分练习中，你将创建一个包含一个容器的 Pod。并将 Pod 级别的字段作为环境变量投射到正在运行的容器中。</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.31/content/zh-cn/examples/pods/inject/dapi-envars-pod.yaml download=pods/inject/dapi-envars-pod.yaml><code>pods/inject/dapi-envars-pod.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("pods-inject-dapi-envars-pod-yaml")' title="复制 pods/inject/dapi-envars-pod.yaml 到剪贴板"></img></div><div class=includecode id=pods-inject-dapi-envars-pod-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>dapi-envars-fieldref<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>test-container<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>registry.k8s.io/busybox<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>command</span>:<span style=color:#bbb> </span>[<span style=color:#bbb> </span><span style=color:#b44>&#34;sh&#34;</span>,<span style=color:#bbb> </span><span style=color:#b44>&#34;-c&#34;</span>]<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>args</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- while true; do<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>echo -en &#39;\n&#39;;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>printenv MY_NODE_NAME MY_POD_NAME MY_POD_NAMESPACE;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>printenv MY_POD_IP MY_POD_SERVICE_ACCOUNT;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>sleep 10;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>done;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>env</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>MY_NODE_NAME<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>valueFrom</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>fieldRef</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>fieldPath</span>:<span style=color:#bbb> </span>spec.nodeName<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>MY_POD_NAME<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>valueFrom</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>fieldRef</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>fieldPath</span>:<span style=color:#bbb> </span>metadata.name<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>MY_POD_NAMESPACE<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>valueFrom</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>fieldRef</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>fieldPath</span>:<span style=color:#bbb> </span>metadata.namespace<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>MY_POD_IP<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>valueFrom</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>fieldRef</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>fieldPath</span>:<span style=color:#bbb> </span>status.podIP<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>MY_POD_SERVICE_ACCOUNT<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>valueFrom</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>fieldRef</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>fieldPath</span>:<span style=color:#bbb> </span>spec.serviceAccountName<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>restartPolicy</span>:<span style=color:#bbb> </span>Never<span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><p>这个清单中，你可以看到五个环境变量。<code>env</code> 字段定义了一组环境变量。
+数组中第一个元素指定 <code>MY_NODE_NAME</code> 这个环境变量从 Pod 的 <code>spec.nodeName</code> 字段获取变量值。
+同样，其它环境变量也是从 Pod 的字段获取它们的变量值。</p><div class="alert alert-info" role=alert><h4 class=alert-heading>说明：</h4><p>本示例中的字段是 Pod 字段，不是 Pod 中 Container 的字段。</p></div><p>创建 Pod：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl apply -f https://k8s.io/examples/pods/inject/dapi-envars-pod.yaml
+</span></span></code></pre></div><p>验证 Pod 中的容器运行正常：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># 如果新创建的 Pod 还是处于不健康状态，请重新运行此命令几次。</span>
+</span></span><span style=display:flex><span>kubectl get pods
+</span></span></code></pre></div><p>查看容器日志：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl logs dapi-envars-fieldref
+</span></span></code></pre></div><p>输出信息显示了所选择的环境变量的值：</p><pre tabindex=0><code>minikube
+dapi-envars-fieldref
+default
+172.17.0.4
+default
+</code></pre><p>要了解为什么这些值出现在日志中，请查看配置文件中的 <code>command</code> 和 <code>args</code> 字段。
+当容器启动时，它将五个环境变量的值写入标准输出。每十秒重复执行一次。</p><p>接下来，进入 Pod 中运行的容器，打开一个 Shell：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl <span style=color:#a2f>exec</span> -it dapi-envars-fieldref -- sh
+</span></span></code></pre></div><p>在 Shell 中，查看环境变量：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># 在容器内的 `shell` 中运行</span>
+</span></span><span style=display:flex><span>printenv
+</span></span></code></pre></div><p>输出信息显示环境变量已经设置为 Pod 字段的值。</p><pre tabindex=0><code>MY_POD_SERVICE_ACCOUNT=default
+...
+MY_POD_NAMESPACE=default
+MY_POD_IP=172.17.0.4
+...
+MY_NODE_NAME=minikube
+...
+MY_POD_NAME=dapi-envars-fieldref
+</code></pre><h2 id=use-container-fields-as-value-for-env-var>使用容器字段作为环境变量的值</h2><p>前面的练习中，你将 Pod 级别的字段作为环境变量的值。
+接下来这个练习中，你将传递属于 Pod 定义的字段，但这些字段取自特定容器而不是整个 Pod。</p><p>这里是只包含一个容器的 Pod 的清单：</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.31/content/zh-cn/examples/pods/inject/dapi-envars-container.yaml download=pods/inject/dapi-envars-container.yaml><code>pods/inject/dapi-envars-container.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("pods-inject-dapi-envars-container-yaml")' title="复制 pods/inject/dapi-envars-container.yaml 到剪贴板"></img></div><div class=includecode id=pods-inject-dapi-envars-container-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>dapi-envars-resourcefieldref<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>test-container<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>registry.k8s.io/busybox:1.24<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>command</span>:<span style=color:#bbb> </span>[<span style=color:#bbb> </span><span style=color:#b44>&#34;sh&#34;</span>,<span style=color:#bbb> </span><span style=color:#b44>&#34;-c&#34;</span>]<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>args</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- while true; do<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>echo -en &#39;\n&#39;;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>printenv MY_CPU_REQUEST MY_CPU_LIMIT;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>printenv MY_MEM_REQUEST MY_MEM_LIMIT;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>sleep 10;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>done;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>requests</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;32Mi&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;125m&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;64Mi&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;250m&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>env</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>MY_CPU_REQUEST<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>valueFrom</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>resourceFieldRef</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>containerName</span>:<span style=color:#bbb> </span>test-container<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>resource</span>:<span style=color:#bbb> </span>requests.cpu<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>MY_CPU_LIMIT<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>valueFrom</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>resourceFieldRef</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>containerName</span>:<span style=color:#bbb> </span>test-container<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>resource</span>:<span style=color:#bbb> </span>limits.cpu<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>MY_MEM_REQUEST<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>valueFrom</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>resourceFieldRef</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>containerName</span>:<span style=color:#bbb> </span>test-container<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>resource</span>:<span style=color:#bbb> </span>requests.memory<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>MY_MEM_LIMIT<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>valueFrom</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>resourceFieldRef</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>containerName</span>:<span style=color:#bbb> </span>test-container<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>resource</span>:<span style=color:#bbb> </span>limits.memory<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>restartPolicy</span>:<span style=color:#bbb> </span>Never<span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><p>这个清单中，你可以看到四个环境变量。<code>env</code> 字段定义了一组环境变量。
+数组中第一个元素指定 <code>MY_CPU_REQUEST</code> 这个环境变量从容器的 <code>requests.cpu</code>
+字段获取变量值。同样，其它的环境变量也是从特定于这个容器的字段中获取它们的变量值。</p><p>创建 Pod：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl apply -f https://k8s.io/examples/pods/inject/dapi-envars-container.yaml
+</span></span></code></pre></div><p>验证 Pod 中的容器运行正常：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># 如果新创建的 Pod 还是处于不健康状态，请重新运行此命令几次。</span>
+</span></span><span style=display:flex><span>kubectl get pods
+</span></span></code></pre></div><p>查看容器日志：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl logs dapi-envars-resourcefieldref
+</span></span></code></pre></div><p>输出信息显示了所选择的环境变量的值：</p><pre tabindex=0><code>1
+1
+33554432
+67108864
+</code></pre><h2 id=接下来>接下来</h2><ul><li>阅读<a href=/zh-cn/docs/tasks/inject-data-application/define-environment-variable-container/>给容器定义环境变量</a></li><li>阅读 Pod 的 <a href=/zh-cn/docs/reference/kubernetes-api/workload-resources/pod-v1/#PodSpec><code>spec</code></a>
+API 包括容器（Pod 的一部分）的定义。</li><li>阅读可以使用 downward API 呈现的<a href=/zh-cn/docs/concepts/workloads/pods/downward-api/#available-fields>可用字段</a>列表。</li></ul><p>在旧版 API 参考中阅读有关 Pod、容器和环境变量的信息：</p><ul><li><a href=/docs/reference/generated/kubernetes-api/v1.31/#podspec-v1-core>PodSpec</a></li><li><a href=/docs/reference/generated/kubernetes-api/v1.31/#container-v1-core>Container</a></li><li><a href=/docs/reference/generated/kubernetes-api/v1.31/#envvar-v1-core>EnvVar</a></li><li><a href=/docs/reference/generated/kubernetes-api/v1.31/#envvarsource-v1-core>EnvVarSource</a></li><li><a href=/docs/reference/generated/kubernetes-api/v1.31/#objectfieldselector-v1-core>ObjectFieldSelector</a></li><li><a href=/docs/reference/generated/kubernetes-api/v1.31/#resourcefieldselector-v1-core>ResourceFieldSelector</a></li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-bcf93d1cd019501fd0b7649e9fbcaf60>5 - 通过文件将 Pod 信息呈现给容器</h1><p>此页面描述 Pod 如何使用
+<a href=/zh-cn/docs/concepts/storage/volumes/#downwardapi><code>downwardAPI</code> 卷</a>
+把自己的信息呈现给 Pod 中运行的容器。
+<code>downwardAPI</code> 卷可以呈现 Pod 和容器的字段。</p><p>在 Kubernetes 中，有两种方式可以将 Pod 和容器字段呈现给运行中的容器：</p><ul><li><a href=/zh-cn/docs/tasks/inject-data-application/environment-variable-expose-pod-information/#the-downward-api>环境变量</a></li><li>本页面所述的卷文件</li></ul><p>这两种呈现 Pod 和容器字段的方式都称为 <strong>downward API</strong>。</p><h2 id=准备开始>准备开始</h2><p>你必须拥有一个 Kubernetes 的集群，且必须配置 kubectl 命令行工具让其与你的集群通信。
+建议运行本教程的集群至少有两个节点，且这两个节点不能作为控制平面主机。
+如果你还没有集群，你可以通过 <a href=https://minikube.sigs.k8s.io/docs/tutorials/multi_node/>Minikube</a>
+构建一个你自己的集群，或者你可以使用下面的 Kubernetes 练习环境之一：</p><ul><li><a href=https://killercoda.com/playgrounds/scenario/kubernetes>Killercoda</a></li><li><a href=https://labs.play-with-k8s.com/>玩转 Kubernetes</a></li></ul><h2 id=store-pod-fields>存储 Pod 字段</h2><p>在这部分的练习中，你将创建一个包含一个容器的 Pod，并将 Pod 级别的字段作为文件投射到正在运行的容器中。
+Pod 的清单如下：</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.31/content/zh-cn/examples/pods/inject/dapi-volume.yaml download=pods/inject/dapi-volume.yaml><code>pods/inject/dapi-volume.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("pods-inject-dapi-volume-yaml")' title="复制 pods/inject/dapi-volume.yaml 到剪贴板"></img></div><div class=includecode id=pods-inject-dapi-volume-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>kubernetes-downwardapi-volume-example<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>zone</span>:<span style=color:#bbb> </span>us-est-coast<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>cluster</span>:<span style=color:#bbb> </span>test-cluster1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>rack</span>:<span style=color:#bbb> </span>rack-22<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>annotations</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>build</span>:<span style=color:#bbb> </span>two<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>builder</span>:<span style=color:#bbb> </span>john-doe<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>client-container<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>registry.k8s.io/busybox<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>command</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;sh&#34;</span>,<span style=color:#bbb> </span><span style=color:#b44>&#34;-c&#34;</span>]<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>args</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- while true; do<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>if [[ -e /etc/podinfo/labels ]]; then<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span>echo -en &#39;\n\n&#39;; cat /etc/podinfo/labels; fi;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>if [[ -e /etc/podinfo/annotations ]]; then<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span>echo -en &#39;\n\n&#39;; cat /etc/podinfo/annotations; fi;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>sleep 5;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>done;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>volumeMounts</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>podinfo<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>mountPath</span>:<span style=color:#bbb> </span>/etc/podinfo<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>volumes</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>podinfo<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>downwardAPI</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>items</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>- <span style=color:green;font-weight:700>path</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;labels&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>fieldRef</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>fieldPath</span>:<span style=color:#bbb> </span>metadata.labels<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>- <span style=color:green;font-weight:700>path</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;annotations&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>fieldRef</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>fieldPath</span>:<span style=color:#bbb> </span>metadata.annotations<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><p>在 Pod 清单中，你可以看到 Pod 有一个 <code>downwardAPI</code> 类型的卷，并且挂载到容器中的
+<code>/etc/podinfo</code> 目录。</p><p>查看 <code>downwardAPI</code> 下面的 <code>items</code> 数组。
+数组的每个元素定义一个 <code>downwardAPI</code> 卷。
+第一个元素指示 Pod 的 <code>metadata.labels</code> 字段的值保存在名为 <code>labels</code> 的文件中。
+第二个元素指示 Pod 的 <code>annotations</code> 字段的值保存在名为 <code>annotations</code> 的文件中。</p><div class="alert alert-info" role=alert><h4 class=alert-heading>说明：</h4><p>本示例中的字段是 Pod 字段，不是 Pod 中容器的字段。</p></div><p>创建 Pod：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl apply -f https://k8s.io/examples/pods/inject/dapi-volume.yaml
+</span></span></code></pre></div><p>验证 Pod 中的容器运行正常：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get pods
+</span></span></code></pre></div><p>查看容器的日志：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl logs kubernetes-downwardapi-volume-example
+</span></span></code></pre></div><p>输出显示 <code>labels</code> 文件和 <code>annotations</code> 文件的内容：</p><pre tabindex=0><code>cluster=&#34;test-cluster1&#34;
+rack=&#34;rack-22&#34;
+zone=&#34;us-est-coast&#34;
+
+build=&#34;two&#34;
+builder=&#34;john-doe&#34;
+</code></pre><p>进入 Pod 中运行的容器，打开一个 Shell：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl <span style=color:#a2f>exec</span> -it kubernetes-downwardapi-volume-example -- sh
+</span></span></code></pre></div><p>在该 Shell中，查看 <code>labels</code> 文件：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>/# cat /etc/podinfo/labels
+</span></span></code></pre></div><p>输出显示 Pod 的所有标签都已写入 <code>labels</code> 文件：</p><pre tabindex=0><code>cluster=&#34;test-cluster1&#34;
+rack=&#34;rack-22&#34;
+zone=&#34;us-est-coast&#34;
+</code></pre><p>同样，查看 <code>annotations</code> 文件：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>/# cat /etc/podinfo/annotations
+</span></span></code></pre></div><p>查看 <code>/etc/podinfo</code> 目录下的文件：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>/# ls -laR /etc/podinfo
+</span></span></code></pre></div><p>在输出中可以看到，<code>labels</code> 和 <code>annotations</code> 文件都在一个临时子目录中。
+在这个例子中，这个临时子目录为 <code>..2982_06_02_21_47_53.299460680</code>。
+在 <code>/etc/podinfo</code> 目录中，<code>..data</code> 是指向该临时子目录的符号链接。
+另外在 <code>/etc/podinfo</code> 目录中，<code>labels</code> 和 <code>annotations</code> 也是符号链接。</p><pre tabindex=0><code>drwxr-xr-x  ... Feb 6 21:47 ..2982_06_02_21_47_53.299460680
+lrwxrwxrwx  ... Feb 6 21:47 ..data -&gt; ..2982_06_02_21_47_53.299460680
+lrwxrwxrwx  ... Feb 6 21:47 annotations -&gt; ..data/annotations
+lrwxrwxrwx  ... Feb 6 21:47 labels -&gt; ..data/labels
+
+/etc/..2982_06_02_21_47_53.299460680:
+total 8
+-rw-r--r--  ... Feb  6 21:47 annotations
+-rw-r--r--  ... Feb  6 21:47 labels
+</code></pre><p>用符号链接可实现元数据的动态原子性刷新；更新将写入一个新的临时目录，
+然后通过使用 <a href=http://man7.org/linux/man-pages/man2/rename.2.html>rename(2)</a>
+完成 <code>..data</code> 符号链接的原子性更新。</p><div class="alert alert-info" role=alert><h4 class=alert-heading>说明：</h4><p>如果容器以
+<a href=/zh-cn/docs/concepts/storage/volumes/#using-subpath>subPath</a> 卷挂载方式来使用
+Downward API，则该容器无法收到更新事件。</p></div><p>退出 Shell：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>/# <span style=color:#a2f>exit</span>
+</span></span></code></pre></div><h2 id=store-container-fields>存储容器字段</h2><p>前面的练习中，你使用 downward API 使 Pod 级别的字段可以被 Pod 内正在运行的容器访问。
+接下来这个练习，你将只传递由 Pod 定义的部分的字段到 Pod 内正在运行的容器中，
+但这些字段取自特定<a href=/zh-cn/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container>容器</a>而不是整个 Pod。
+下面是一个同样只有一个容器的 Pod 的清单：</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.31/content/zh-cn/examples/pods/inject/dapi-volume-resources.yaml download=pods/inject/dapi-volume-resources.yaml><code>pods/inject/dapi-volume-resources.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("pods-inject-dapi-volume-resources-yaml")' title="复制 pods/inject/dapi-volume-resources.yaml 到剪贴板"></img></div><div class=includecode id=pods-inject-dapi-volume-resources-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>kubernetes-downwardapi-volume-example-2<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>client-container<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>registry.k8s.io/busybox:1.24<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>command</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;sh&#34;</span>,<span style=color:#bbb> </span><span style=color:#b44>&#34;-c&#34;</span>]<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>args</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- while true; do<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>echo -en &#39;\n&#39;;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>if [[ -e /etc/podinfo/cpu_limit ]]; then<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span>echo -en &#39;\n&#39;; cat /etc/podinfo/cpu_limit; fi;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>if [[ -e /etc/podinfo/cpu_request ]]; then<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span>echo -en &#39;\n&#39;; cat /etc/podinfo/cpu_request; fi;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>if [[ -e /etc/podinfo/mem_limit ]]; then<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span>echo -en &#39;\n&#39;; cat /etc/podinfo/mem_limit; fi;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>if [[ -e /etc/podinfo/mem_request ]]; then<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span>echo -en &#39;\n&#39;; cat /etc/podinfo/mem_request; fi;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>sleep 5;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>done;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>resources</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>requests</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;32Mi&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;125m&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>limits</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>memory</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;64Mi&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>cpu</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;250m&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>volumeMounts</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>podinfo<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>mountPath</span>:<span style=color:#bbb> </span>/etc/podinfo<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>volumes</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>podinfo<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>downwardAPI</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>items</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>- <span style=color:green;font-weight:700>path</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;cpu_limit&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>resourceFieldRef</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>containerName</span>:<span style=color:#bbb> </span>client-container<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>resource</span>:<span style=color:#bbb> </span>limits.cpu<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>divisor</span>:<span style=color:#bbb> </span>1m<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>- <span style=color:green;font-weight:700>path</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;cpu_request&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>resourceFieldRef</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>containerName</span>:<span style=color:#bbb> </span>client-container<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>resource</span>:<span style=color:#bbb> </span>requests.cpu<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>divisor</span>:<span style=color:#bbb> </span>1m<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>- <span style=color:green;font-weight:700>path</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;mem_limit&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>resourceFieldRef</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>containerName</span>:<span style=color:#bbb> </span>client-container<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>resource</span>:<span style=color:#bbb> </span>limits.memory<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>divisor</span>:<span style=color:#bbb> </span>1Mi<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>- <span style=color:green;font-weight:700>path</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;mem_request&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>resourceFieldRef</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>containerName</span>:<span style=color:#bbb> </span>client-container<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>resource</span>:<span style=color:#bbb> </span>requests.memory<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>divisor</span>:<span style=color:#bbb> </span>1Mi<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><p>在这个清单中，你可以看到 Pod 有一个
+<a href=/zh-cn/docs/concepts/storage/volumes/#downwardapi><code>downwardAPI</code> 卷</a>，
+并且这个卷会挂载到 Pod 内的单个容器的 <code>/etc/podinfo</code> 目录。</p><p>查看 <code>downwardAPI</code> 下面的 <code>items</code> 数组。
+数组的每个元素定义一个 <code>downwardAPI</code> 卷。</p><p>第一个元素指定在名为 <code>client-container</code> 的容器中，
+以 <code>1m</code> 所指定格式的 <code>limits.cpu</code> 字段的值应推送到名为 <code>cpu_limit</code> 的文件中。
+<code>divisor</code> 字段是可选的，默认值为 <code>1</code>。1 的除数表示 CPU 资源的核数或内存资源的字节数。</p><p>创建 Pod：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl apply -f https://k8s.io/examples/pods/inject/dapi-volume-resources.yaml
+</span></span></code></pre></div><p>打开一个 Shell，进入 Pod 中运行的容器：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl <span style=color:#a2f>exec</span> -it kubernetes-downwardapi-volume-example-2 -- sh
+</span></span></code></pre></div><p>在 Shell 中，查看 <code>cpu_limit</code> 文件：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># 在容器内的 Shell 中运行</span>
+</span></span><span style=display:flex><span>cat /etc/podinfo/cpu_limit
+</span></span></code></pre></div><p>你可以使用同样的命令查看 <code>cpu_request</code>、<code>mem_limit</code> 和 <code>mem_request</code> 文件。</p><h2 id=project-keys-to-specific-paths-and-file-permissions>投射键名到指定路径并且指定文件权限</h2><p>你可以将键名投射到指定路径并且指定每个文件的访问权限。
+更多信息，请参阅 <a href=/zh-cn/docs/concepts/configuration/secret/>Secret</a>。</p><h2 id=接下来>接下来</h2><ul><li>参阅 Pod <a href=/zh-cn/docs/reference/kubernetes-api/workload-resources/pod-v1/#PodSpec><code>spec</code></a>
+API 的定义，其中包括了容器（Pod 的一部分）的定义。</li><li>参阅你可以使用 downward API 公开的<a href=/zh-cn/docs/concepts/workloads/pods/downward-api/#available-fields>可用字段</a>列表。</li></ul><p>阅读旧版的 API 参考中关于卷的内容：</p><ul><li>参阅
+<a href=/docs/reference/generated/kubernetes-api/v1.31/#volume-v1-core><code>Volume</code></a>
+API 定义，该 API 在 Pod 中定义通用卷以供容器访问。</li><li>参阅
+<a href=/docs/reference/generated/kubernetes-api/v1.31/#downwardapivolumesource-v1-core><code>DownwardAPIVolumeSource</code></a>
+API 定义，该 API 定义包含 Downward API 信息的卷。</li><li>参阅
+<a href=/docs/reference/generated/kubernetes-api/v1.31/#downwardapivolumefile-v1-core><code>DownwardAPIVolumeFile</code></a>
+API 定义，该 API 包含对对象或资源字段的引用，用于在 Downward API 卷中填充文件。</li><li>参阅
+<a href=/docs/reference/generated/kubernetes-api/v1.31/#resourcefieldselector-v1-core><code>ResourceFieldSelector</code></a>
+API 定义，该 API 指定容器资源及其输出格式。</li></ul></div><div class=td-content style=page-break-before:always><h1 id=pg-7f9454a1e775548c23ee5b300a9218a3>6 - 使用 Secret 安全地分发凭据</h1><p>本文展示如何安全地将敏感数据（如密码和加密密钥）注入到 Pod 中。</p><h2 id=准备开始>准备开始</h2><p>你必须拥有一个 Kubernetes 的集群，且必须配置 kubectl 命令行工具让其与你的集群通信。
+建议运行本教程的集群至少有两个节点，且这两个节点不能作为控制平面主机。
+如果你还没有集群，你可以通过 <a href=https://minikube.sigs.k8s.io/docs/tutorials/multi_node/>Minikube</a>
+构建一个你自己的集群，或者你可以使用下面的 Kubernetes 练习环境之一：</p><ul><li><a href=https://killercoda.com/playgrounds/scenario/kubernetes>Killercoda</a></li><li><a href=https://labs.play-with-k8s.com/>玩转 Kubernetes</a></li></ul><h3 id=convert-your-secret-data-to-a-base64-representation>将 Secret 数据转换为 base-64 形式</h3><p>假设用户想要有两条 Secret 数据：用户名 <code>my-app</code> 和密码 <code>39528$vdg7Jb</code>。
+首先使用 <a href=https://www.base64encode.org/>Base64 编码</a>将用户名和密码转化为 base-64 形式。
+下面是一个使用常用的 base64 程序的示例：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#a2f>echo</span> -n <span style=color:#b44>&#39;my-app&#39;</span> | base64
+</span></span><span style=display:flex><span><span style=color:#a2f>echo</span> -n <span style=color:#b44>&#39;39528$vdg7Jb&#39;</span> | base64
+</span></span></code></pre></div><p>结果显示 base-64 形式的用户名为 <code>bXktYXBw</code>，
+base-64 形式的密码为 <code>Mzk1MjgkdmRnN0pi</code>。</p><div class="alert alert-caution" role=alert><h4 class=alert-heading>注意：</h4><p>使用你的操作系统所能信任的本地工具以降低使用外部工具的风险。</p></div><h2 id=create-a-secret>创建 Secret</h2><p>这里是一个配置文件，可以用来创建存有用户名和密码的 Secret：</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.31/content/zh-cn/examples/pods/inject/secret.yaml download=pods/inject/secret.yaml><code>pods/inject/secret.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("pods-inject-secret-yaml")' title="复制 pods/inject/secret.yaml 到剪贴板"></img></div><div class=includecode id=pods-inject-secret-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Secret<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>test-secret<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>data</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>username</span>:<span style=color:#bbb> </span>bXktYXBw<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>password</span>:<span style=color:#bbb> </span>Mzk1MjgkdmRnN0pi<span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><ol><li><p>创建 Secret：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl apply -f https://k8s.io/examples/pods/inject/secret.yaml
+</span></span></code></pre></div></li></ol><ol start=2><li><p>查看 Secret 相关信息：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get secret test-secret
+</span></span></code></pre></div><p>输出：</p><pre tabindex=0><code>NAME          TYPE      DATA      AGE
+test-secret   Opaque    2         1m
+</code></pre></li></ol><ol start=3><li><p>查看 Secret 相关的更多详细信息：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl describe secret test-secret
+</span></span></code></pre></div><p>输出：</p><pre tabindex=0><code>Name:       test-secret
+Namespace:  default
+Labels:     &lt;none&gt;
+Annotations:    &lt;none&gt;
+
+Type:   Opaque
+
+Data
+====
+password:   13 bytes
+username:   7 bytes
+</code></pre></li></ol><h3 id=create-a-secret-directly-with-kubectl>直接用 kubectl 创建 Secret</h3><p>如果你希望略过 Base64 编码的步骤，你也可以使用 <code>kubectl create secret</code>
+命令直接创建 Secret。例如：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl create secret generic test-secret --from-literal<span style=color:#666>=</span><span style=color:#b44>&#39;username=my-app&#39;</span> --from-literal<span style=color:#666>=</span><span style=color:#b44>&#39;password=39528$vdg7Jb&#39;</span>
+</span></span></code></pre></div><p>这是一种更为方便的方法。
+前面展示的详细分解步骤有助于了解究竟发生了什么事情。</p><h2 id=create-a-pod-that-has-access-to-the-secret-data-through-a-volume>创建一个可以通过卷访问 Secret 数据的 Pod</h2><p>这里是一个可以用来创建 Pod 的配置文件：</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.31/content/zh-cn/examples/pods/inject/secret-pod.yaml download=pods/inject/secret-pod.yaml><code>pods/inject/secret-pod.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("pods-inject-secret-pod-yaml")' title="复制 pods/inject/secret-pod.yaml 到剪贴板"></img></div><div class=includecode id=pods-inject-secret-pod-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>secret-test-pod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>test-container<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>volumeMounts</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:#080;font-style:italic># name 必须与下面的卷名匹配</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>secret-volume<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>mountPath</span>:<span style=color:#bbb> </span>/etc/secret-volume<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>readOnly</span>:<span style=color:#bbb> </span><span style=color:#a2f;font-weight:700>true</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:#080;font-style:italic># Secret 数据通过一个卷暴露给该 Pod 中的容器</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>volumes</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>secret-volume<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>secret</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>secretName</span>:<span style=color:#bbb> </span>test-secret<span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><ol><li><p>创建 Pod：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl apply -f https://k8s.io/examples/pods/inject/secret-pod.yaml
+</span></span></code></pre></div></li><li><p>确认 Pod 正在运行：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get pod secret-test-pod
+</span></span></code></pre></div><p>输出：</p><pre tabindex=0><code>NAME              READY     STATUS    RESTARTS   AGE
+secret-test-pod   1/1       Running   0          42m
+</code></pre></li><li><p>获取一个 Shell 进入 Pod 中运行的容器：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl <span style=color:#a2f>exec</span> -i -t secret-test-pod -- /bin/bash
+</span></span></code></pre></div></li><li><p>Secret 数据通过挂载在 <code>/etc/secret-volume</code> 目录下的卷暴露在容器中。</p><p>在 Shell 中，列举 <code>/etc/secret-volume</code> 目录下的文件：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># 在容器中 Shell 运行下面命令</span>
+</span></span><span style=display:flex><span>ls /etc/secret-volume
+</span></span></code></pre></div><p>输出包含两个文件，每个对应一个 Secret 数据条目：</p><pre tabindex=0><code>password username
+</code></pre></li><li><p>在 Shell 中，显示 <code>username</code> 和 <code>password</code> 文件的内容：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># 在容器中 Shell 运行下面命令</span>
+</span></span><span style=display:flex><span><span style=color:#a2f>echo</span> <span style=color:#b44>&#34;</span><span style=color:#a2f;font-weight:700>$(</span> cat /etc/secret-volume/username <span style=color:#a2f;font-weight:700>)</span><span style=color:#b44>&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#a2f>echo</span> <span style=color:#b44>&#34;</span><span style=color:#a2f;font-weight:700>$(</span> cat /etc/secret-volume/password <span style=color:#a2f;font-weight:700>)</span><span style=color:#b44>&#34;</span>
+</span></span></code></pre></div><p>输出为用户名和密码：</p><pre tabindex=0><code>my-app
+39528$vdg7Jb
+</code></pre></li></ol><p>修改你的镜像或命令行，使程序在 <code>mountPath</code> 目录下查找文件。
+Secret <code>data</code> 映射中的每个键都成为该目录中的文件名。</p><h3 id=project-secret-keys-to-specific-file-paths>映射 Secret 键到特定文件路径</h3><p>你还可以控制卷内 Secret 键的映射路径。
+使用 <code>.spec.volumes[].secret.items</code> 字段来改变每个键的目标路径。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>mypod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>mypod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>redis<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>volumeMounts</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>foo<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>mountPath</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;/etc/foo&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>readOnly</span>:<span style=color:#bbb> </span><span style=color:#a2f;font-weight:700>true</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>volumes</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>foo<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>secret</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>secretName</span>:<span style=color:#bbb> </span>mysecret<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>items</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span>username<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>path</span>:<span style=color:#bbb> </span>my-group/my-username<span style=color:#bbb>
+</span></span></span></code></pre></div><p>当你部署此 Pod 时，会发生以下情况：</p><ul><li>来自 <code>mysecret</code> 的键 <code>username</code> 可以在路径 <code>/etc/foo/my-group/my-username</code>
+下供容器使用，而不是路径 <code>/etc/foo/username</code>。</li><li>来自该 Secret 的键 <code>password</code> 没有映射到任何路径。</li></ul><p>如果你使用 <code>.spec.volumes[].secret.items</code> 明确地列出键，请考虑以下事项：</p><ul><li>只有在 <code>items</code> 字段中指定的键才会被映射。</li><li>要使用 Secret 中全部的键，那么全部的键都必须列在 <code>items</code> 字段中。</li><li>所有列出的键必须存在于相应的 Secret 中。否则，该卷不被创建。</li></ul><h3 id=为-secret-键设置-posix-权限>为 Secret 键设置 POSIX 权限</h3><p>你可以为单个 Secret 键设置 POSIX 文件访问权限位。
+如果不指定任何权限，默认情况下使用 <code>0644</code>。
+你也可以为整个 Secret 卷设置默认的 POSIX 文件模式，需要时你可以重写单个键的权限。</p><p>例如，可以像这样指定默认模式：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>mypod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>mypod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>redis<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>volumeMounts</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>foo<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>mountPath</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;/etc/foo&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>volumes</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>foo<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>secret</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>secretName</span>:<span style=color:#bbb> </span>mysecret<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>defaultMode</span>:<span style=color:#bbb> </span><span style=color:#666>0400</span><span style=color:#bbb>
+</span></span></span></code></pre></div><p>Secret 被挂载在 <code>/etc/foo</code> 目录下；所有由 Secret 卷挂载创建的文件的访问许可都是 <code>0400</code>。</p><div class="alert alert-info" role=alert><h4 class=alert-heading>说明：</h4><p>如果使用 JSON 定义 Pod 或 Pod 模板，请注意 JSON 规范不支持数字的八进制形式，
+因为 JSON 将 <code>0400</code> 视为<strong>十进制</strong>的值 <code>400</code>。
+在 JSON 中，要改为使用十进制的 <code>defaultMode</code>。
+如果你正在编写 YAML，则可以用八进制编写 <code>defaultMode</code>。</p></div><h2 id=define-container-environment-variables-using-secret-data>使用 Secret 数据定义容器变量</h2><p>在你的容器中，你可以以环境变量的方式使用 Secret 中的数据。</p><p>如果容器已经使用了在环境变量中的 Secret，除非容器重新启动，否则容器将无法感知到 Secret 的更新。
+有第三方解决方案可以在 Secret 改变时触发容器重启。</p><h3 id=define-a-container-env-var-with-data-from-a-single-secret>使用来自 Secret 中的数据定义容器变量</h3><ul><li><p>定义环境变量为 Secret 中的键值偶对：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl create secret generic backend-user --from-literal<span style=color:#666>=</span>backend-username<span style=color:#666>=</span><span style=color:#b44>&#39;backend-admin&#39;</span>
+</span></span></code></pre></div></li></ul><ul><li><p>在 Pod 规约中，将 Secret 中定义的值 <code>backend-username</code> 赋给 <code>SECRET_USERNAME</code> 环境变量。</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.31/content/zh-cn/examples/pods/inject/pod-single-secret-env-variable.yaml download=pods/inject/pod-single-secret-env-variable.yaml><code>pods/inject/pod-single-secret-env-variable.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("pods-inject-pod-single-secret-env-variable-yaml")' title="复制 pods/inject/pod-single-secret-env-variable.yaml 到剪贴板"></img></div><div class=includecode id=pods-inject-pod-single-secret-env-variable-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>env-single-secret<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>envars-test-container<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>env</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>SECRET_USERNAME<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>valueFrom</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>secretKeyRef</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>backend-user<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span>backend-username<span style=color:#bbb>
+</span></span></span></code></pre></div></div></div></li></ul><ul><li><p>创建 Pod：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl create -f https://k8s.io/examples/pods/inject/pod-single-secret-env-variable.yaml
+</span></span></code></pre></div></li></ul><ul><li><p>在 Shell 中，显示容器环境变量 <code>SECRET_USERNAME</code> 的内容：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl <span style=color:#a2f>exec</span> -i -t env-single-secret -- /bin/sh -c <span style=color:#b44>&#39;echo $SECRET_USERNAME&#39;</span>
+</span></span></code></pre></div><p>输出类似于：</p><pre tabindex=0><code>backend-admin
+</code></pre></li></ul><h3 id=define-container-env-var-with-data-from-multi-secrets>使用来自多个 Secret 的数据定义环境变量</h3><ul><li><p>和前面的例子一样，先创建 Secret：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl create secret generic backend-user --from-literal<span style=color:#666>=</span>backend-username<span style=color:#666>=</span><span style=color:#b44>&#39;backend-admin&#39;</span>
+</span></span><span style=display:flex><span>kubectl create secret generic db-user --from-literal<span style=color:#666>=</span>db-username<span style=color:#666>=</span><span style=color:#b44>&#39;db-admin&#39;</span>
+</span></span></code></pre></div></li></ul><ul><li><p>在 Pod 规约中定义环境变量：</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.31/content/zh-cn/examples/pods/inject/pod-multiple-secret-env-variable.yaml download=pods/inject/pod-multiple-secret-env-variable.yaml><code>pods/inject/pod-multiple-secret-env-variable.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("pods-inject-pod-multiple-secret-env-variable-yaml")' title="复制 pods/inject/pod-multiple-secret-env-variable.yaml 到剪贴板"></img></div><div class=includecode id=pods-inject-pod-multiple-secret-env-variable-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>envvars-multiple-secrets<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>envars-test-container<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>env</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>BACKEND_USERNAME<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>valueFrom</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>secretKeyRef</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>backend-user<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span>backend-username<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>DB_USERNAME<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>valueFrom</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>secretKeyRef</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>db-user<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>key</span>:<span style=color:#bbb> </span>db-username<span style=color:#bbb>
+</span></span></span></code></pre></div></div></div></li></ul><ul><li><p>创建 Pod：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl create -f https://k8s.io/examples/pods/inject/pod-multiple-secret-env-variable.yaml
+</span></span></code></pre></div></li></ul><ul><li><p>在你的 Shell 中，显示容器环境变量的内容：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl <span style=color:#a2f>exec</span> -i -t envvars-multiple-secrets -- /bin/sh -c <span style=color:#b44>&#39;env | grep _USERNAME&#39;</span>
+</span></span></code></pre></div><p>输出类似于：</p><pre tabindex=0><code>DB_USERNAME=db-admin
+BACKEND_USERNAME=backend-admin
+</code></pre></li></ul><h2 id=configure-all-key-value-pairs-in-a-secret-as-container-env-var>将 Secret 中的所有键值偶对定义为环境变量</h2><div class="alert alert-info" role=alert><h4 class=alert-heading>说明：</h4><p>此功能在 Kubernetes 1.6 版本之后可用。</p></div><ul><li><p>创建包含多个键值偶对的 Secret：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl create secret generic test-secret --from-literal<span style=color:#666>=</span><span style=color:#b8860b>username</span><span style=color:#666>=</span><span style=color:#b44>&#39;my-app&#39;</span> --from-literal<span style=color:#666>=</span><span style=color:#b8860b>password</span><span style=color:#666>=</span><span style=color:#b44>&#39;39528$vdg7Jb&#39;</span>
+</span></span></code></pre></div></li></ul><ul><li><p>使用 <code>envFrom</code> 来将 Secret 中的所有数据定义为环境变量。
+Secret 中的键名成为容器中的环境变量名：</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.31/content/zh-cn/examples/pods/inject/pod-secret-envFrom.yaml download=pods/inject/pod-secret-envFrom.yaml><code>pods/inject/pod-secret-envFrom.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("pods-inject-pod-secret-envfrom-yaml")' title="复制 pods/inject/pod-secret-envFrom.yaml 到剪贴板"></img></div><div class=includecode id=pods-inject-pod-secret-envfrom-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>envfrom-secret<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>envars-test-container<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>nginx<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>envFrom</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>secretRef</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>test-secret<span style=color:#bbb>
+</span></span></span></code></pre></div></div></div></li></ul><ul><li><p>创建 Pod：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl create -f https://k8s.io/examples/pods/inject/pod-secret-envFrom.yaml
+</span></span></code></pre></div></li></ul><ul><li><p>在 Shell 中，显示环境变量 <code>username</code> 和 <code>password</code> 的内容：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl <span style=color:#a2f>exec</span> -i -t envfrom-secret -- /bin/sh -c <span style=color:#b44>&#39;echo &#34;username: $username\npassword: $password\n&#34;&#39;</span>
+</span></span></code></pre></div><p>输出类似于：</p><pre tabindex=0><code>username: my-app
+password: 39528$vdg7Jb
+</code></pre></li></ul><h2 id=provide-prod-test-creds>示例：使用 Secret 为 Pod 提供生产环境或测试环境的凭据</h2><p>此示例展示的是一个使用了包含生产环境凭据的 Secret 的 Pod 和一个使用了包含测试环境凭据的 Secret 的 Pod。</p><ol><li><p>创建用于生产环境凭据的 Secret：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl create secret generic prod-db-secret --from-literal<span style=color:#666>=</span><span style=color:#b8860b>username</span><span style=color:#666>=</span>produser --from-literal<span style=color:#666>=</span><span style=color:#b8860b>password</span><span style=color:#666>=</span>Y4nys7f11
+</span></span></code></pre></div><p>输出类似于：</p><pre tabindex=0><code>secret &#34;prod-db-secret&#34; created
+</code></pre></li></ol><ol start=2><li><p>为测试环境凭据创建 Secret。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl create secret generic test-db-secret --from-literal<span style=color:#666>=</span><span style=color:#b8860b>username</span><span style=color:#666>=</span>testuser --from-literal<span style=color:#666>=</span><span style=color:#b8860b>password</span><span style=color:#666>=</span>iluvtests
+</span></span></code></pre></div><p>输出类似于：</p><pre tabindex=0><code>secret &#34;test-db-secret&#34; created
+</code></pre><div class="alert alert-info" role=alert><h4 class=alert-heading>说明：</h4><p><code>$</code>、<code>\</code>、<code>*</code>、<code>=</code> 和 <code>!</code> 这类特殊字符会被你的 <a href=https://en.wikipedia.org/wiki/Shell_(computing)>Shell</a>
+解释，需要进行转义。</p><p>在大多数 Shell 中，最简单的密码转义方法是使用单引号（<code>'</code>）将密码包起来。
+例如，如果你的实际密码是 <code>S!B\*d$zDsb=</code>，则应执行以下命令：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl create secret generic dev-db-secret --from-literal<span style=color:#666>=</span><span style=color:#b8860b>username</span><span style=color:#666>=</span>devuser --from-literal<span style=color:#666>=</span><span style=color:#b8860b>password</span><span style=color:#666>=</span><span style=color:#b44>&#39;S!B\*d$zDsb=&#39;</span>
+</span></span></code></pre></div><p>你无需转义来自文件（<code>--from-file</code>）的密码中的特殊字符。</p></div></li></ol><ol start=3><li><p>创建 Pod 清单：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>cat <span style=color:#b44>&lt;&lt;EOF &gt; pod.yaml
+</span></span></span><span style=display:flex><span><span style=color:#b44>apiVersion: v1
+</span></span></span><span style=display:flex><span><span style=color:#b44>kind: List
+</span></span></span><span style=display:flex><span><span style=color:#b44>items:
+</span></span></span><span style=display:flex><span><span style=color:#b44>- kind: Pod
+</span></span></span><span style=display:flex><span><span style=color:#b44>  apiVersion: v1
+</span></span></span><span style=display:flex><span><span style=color:#b44>  metadata:
+</span></span></span><span style=display:flex><span><span style=color:#b44>    name: prod-db-client-pod
+</span></span></span><span style=display:flex><span><span style=color:#b44>    labels:
+</span></span></span><span style=display:flex><span><span style=color:#b44>      name: prod-db-client
+</span></span></span><span style=display:flex><span><span style=color:#b44>  spec:
+</span></span></span><span style=display:flex><span><span style=color:#b44>    volumes:
+</span></span></span><span style=display:flex><span><span style=color:#b44>    - name: secret-volume
+</span></span></span><span style=display:flex><span><span style=color:#b44>      secret:
+</span></span></span><span style=display:flex><span><span style=color:#b44>        secretName: prod-db-secret
+</span></span></span><span style=display:flex><span><span style=color:#b44>    containers:
+</span></span></span><span style=display:flex><span><span style=color:#b44>    - name: db-client-container
+</span></span></span><span style=display:flex><span><span style=color:#b44>      image: myClientImage
+</span></span></span><span style=display:flex><span><span style=color:#b44>      volumeMounts:
+</span></span></span><span style=display:flex><span><span style=color:#b44>      - name: secret-volume
+</span></span></span><span style=display:flex><span><span style=color:#b44>        readOnly: true
+</span></span></span><span style=display:flex><span><span style=color:#b44>        mountPath: &#34;/etc/secret-volume&#34;
+</span></span></span><span style=display:flex><span><span style=color:#b44>- kind: Pod
+</span></span></span><span style=display:flex><span><span style=color:#b44>  apiVersion: v1
+</span></span></span><span style=display:flex><span><span style=color:#b44>  metadata:
+</span></span></span><span style=display:flex><span><span style=color:#b44>    name: test-db-client-pod
+</span></span></span><span style=display:flex><span><span style=color:#b44>    labels:
+</span></span></span><span style=display:flex><span><span style=color:#b44>      name: test-db-client
+</span></span></span><span style=display:flex><span><span style=color:#b44>  spec:
+</span></span></span><span style=display:flex><span><span style=color:#b44>    volumes:
+</span></span></span><span style=display:flex><span><span style=color:#b44>    - name: secret-volume
+</span></span></span><span style=display:flex><span><span style=color:#b44>      secret:
+</span></span></span><span style=display:flex><span><span style=color:#b44>        secretName: test-db-secret
+</span></span></span><span style=display:flex><span><span style=color:#b44>    containers:
+</span></span></span><span style=display:flex><span><span style=color:#b44>    - name: db-client-container
+</span></span></span><span style=display:flex><span><span style=color:#b44>      image: myClientImage
+</span></span></span><span style=display:flex><span><span style=color:#b44>      volumeMounts:
+</span></span></span><span style=display:flex><span><span style=color:#b44>      - name: secret-volume
+</span></span></span><span style=display:flex><span><span style=color:#b44>        readOnly: true
+</span></span></span><span style=display:flex><span><span style=color:#b44>        mountPath: &#34;/etc/secret-volume&#34;
+</span></span></span><span style=display:flex><span><span style=color:#b44>EOF</span>
+</span></span></code></pre></div><div class="alert alert-info" role=alert><h4 class=alert-heading>说明：</h4><p>这两个 Pod 的规约只在一个字段上有所不同；这样便于从一个通用的 Pod 模板创建具有不同权能的 Pod。</p></div></li></ol><ol start=4><li><p>通过运行以下命令将所有这些对象应用到 API 服务器：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl create -f pod.yaml
+</span></span></code></pre></div></li></ol><p>两个容器的文件系统中都将存在以下文件，其中包含每个容器环境的值：</p><pre tabindex=0><code>/etc/secret-volume/username
+/etc/secret-volume/password
+</code></pre><p>你可以通过使用两个服务账号进一步简化基础 Pod 规约：</p><ol><li>带有 <code>prod-db-secret</code> 的 <code>prod-user</code></li><li>带有 <code>test-db-secret</code> 的 <code>test-user</code></li></ol><p>Pod 规约精简为：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>prod-db-client-pod<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>prod-db-client<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>serviceAccount</span>:<span style=color:#bbb> </span>prod-db-client<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>db-client-container<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>myClientImage<span style=color:#bbb>
+</span></span></span></code></pre></div><h3 id=references>参考</h3><ul><li><a href=/docs/reference/generated/kubernetes-api/v1.31/#secret-v1-core>Secret</a></li><li><a href=/docs/reference/generated/kubernetes-api/v1.31/#volume-v1-core>Volume</a></li><li><a href=/docs/reference/generated/kubernetes-api/v1.31/#pod-v1-core>Pod</a></li></ul><h2 id=接下来>接下来</h2><ul><li>进一步了解 <a href=/zh-cn/docs/concepts/configuration/secret/>Secret</a>。</li><li>了解<a href=/zh-cn/docs/concepts/storage/volumes/>卷</a>。</li></ul></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-5 col-sm-7 text-center order-2 footer-main"><p><span class=copyright-notice>&copy; 2026 The Kubernetes 作者 | 文档发布基于 <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a> 授权许可</span></p><p><span class=copyright-notice>&copy; 2026 Linux 基金会&reg;。保留所有权利。Linux 基金会已注册并使用商标。如需了解 Linux 基金会的商标列表，请访问<a href=https://www.linuxfoundation.org/trademark-usage class=light-text>商标使用页面</a></span></p><p><span class=certification-notice>ICP 许可： <a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></span></p></div><div class="col col-sm-2 text-xs-center order-1"><ul class="list-inline mb-0 footer-icons"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://youtube.com/kubernetescommunity aria-label><i class="fa-brands fa-youtube"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://discuss.kubernetes.io aria-label><i class="fa-solid fa-envelope"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://serverfault.com/questions/tagged/kubernetes aria-label><i class="fa-brands fa-stack-overflow"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://twitter.com/kubernetesio aria-label><i class="fa-brands fa-twitter"></i></a></li></ul></div><div class="col col-sm-2 text-right text-xs-center order-3"><ul class="list-inline mb-0 footer-icons"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://k8s.dev/ aria-label><i class="fa-solid fa-laptop-code"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://github.com/kubernetes/kubernetes aria-label><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://slack.k8s.io aria-label><i class="fa-brands fa-slack"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io" aria-label><i class="fa-solid fa-calendar-days"></i></a></li></ul></div></div></div></footer></div><script src=/js/script.js></script><script src=/js/main.js></script><script>let splitInstance=null;function enableSplitter(e){e.matches?splitInstance||(splitInstance=Split(["#sidebarnav","#maindoc"],{sizes:[20,80],minSize:100})):splitInstance&&(splitInstance.destroy(),splitInstance=null)}const screenWidthMediaQuery=window.matchMedia("(min-width: 768px)"),eleNav=document.getElementById("sidebarnav");eleNav!==null&&(enableSplitter(screenWidthMediaQuery),screenWidthMediaQuery.addListener(enableSplitter))</script></body></html>

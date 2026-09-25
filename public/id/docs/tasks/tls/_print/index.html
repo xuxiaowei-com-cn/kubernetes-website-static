@@ -1,0 +1,133 @@
+<!doctype html><html itemscope itemtype=http://schema.org/WebPage lang=id class=no-js><head><meta name=robots content="noindex, nofollow"><link rel=alternate hreflang=en href=https://kubernetes.xuxiaowei.com.cn/docs/tasks/tls/><link rel=alternate hreflang=zh-cn href=https://kubernetes.xuxiaowei.com.cn/zh-cn/docs/tasks/tls/><link rel=alternate hreflang=fr href=https://kubernetes.xuxiaowei.com.cn/fr/docs/tasks/tls/><link rel=alternate hreflang=de href=https://kubernetes.xuxiaowei.com.cn/de/docs/tasks/tls/><link rel=alternate hreflang=ja href=https://kubernetes.xuxiaowei.com.cn/ja/docs/tasks/tls/><link rel=alternate hreflang=ko href=https://kubernetes.xuxiaowei.com.cn/ko/docs/tasks/tls/><link rel=alternate hreflang=es href=https://kubernetes.xuxiaowei.com.cn/es/docs/tasks/tls/><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.133.0"><link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/id/docs/tasks/tls/><link rel="shortcut icon" type=image/png href=/images/kubernetes.png><link rel=icon type=image/png sizes=64x64 href=/icons/favicon-64.png><link rel=icon type=image/png sizes=32x32 href=/icons/favicon-32.png><link rel=icon type=image/png sizes=16x16 href=/icons/favicon-16.png><link rel=apple-touch-icon-256x256 href=/icons/apple-touch-icon-256x256.png><link rel=apple-touch-icon-196x196 href=/icons/apple-touch-icon-196x196.png><link rel=apple-touch-icon-192x192 href=/icons/apple-touch-icon-192x192.png><link rel=apple-touch-icon-180x180 href=/icons/apple-touch-icon-180x180.png><link rel=apple-touch-icon-167x167 href=/icons/apple-touch-icon-167x167.png><link rel=apple-touch-icon-160x160 href=/icons/apple-touch-icon-160x160.png><link rel=apple-touch-icon-152x152 href=/icons/apple-touch-icon-152x152.png><link rel=apple-touch-icon-120x120 href=/icons/apple-touch-icon-120x120.png><link rel=apple-touch-icon-76x76 href=/icons/apple-touch-icon-76x76.png><link rel=icon type=image/png href=/icons/icon-128x128.png sizes=128x128><meta name=theme-color content="#326de6"><title>TLS | Kubernetes</title><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/id/docs/tasks/tls/">
+<meta property="og:site_name" content="Kubernetes"><meta property="og:title" content="TLS"><meta property="og:description" content="Orkestrasi Kontainer dengan Skala Produksi"><meta property="og:locale" content="id"><meta property="og:type" content="website"><meta itemprop=name content="TLS"><meta itemprop=description content="Orkestrasi Kontainer dengan Skala Produksi"><meta itemprop=dateModified content="2026-09-25T14:02:01+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="TLS"><meta name=twitter:description content="Orkestrasi Kontainer dengan Skala Produksi"><link href=/scss/main.css rel=stylesheet><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png"}</script><meta name=theme-color content="#326ce5"><style>.gutter{background-color:#eee;background-repeat:no-repeat;background-position:50%}.gutter.gutter-horizontal{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==);cursor:col-resize}#sidebarnav,#maindoc{max-width:100%}#maindoc{overflow-wrap:break-word}@media(max-width:768px){#sidebarnav{padding-left:15px;padding-right:15px}}</style><meta name=description content="Orkestrasi Kontainer dengan Skala Produksi"><meta property="og:description" content="Orkestrasi Kontainer dengan Skala Produksi"><meta name=twitter:description content="Orkestrasi Kontainer dengan Skala Produksi"><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/id/docs/tasks/tls/"><meta property="og:title" content="TLS"><meta name=twitter:title content="TLS"><meta name=twitter:image content="https://kubernetes.io/images/favicon.png"><meta name=twitter:image:alt content="Kubernetes"><meta property="og:image" content="/images/kubernetes-horizontal-color.png"><meta property="og:type" content="article"><script src=/js/jquery-3.6.0.min.js intregrity=sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK crossorigin=anonymous></script><script src=/js/split-1.6.0.js intregrity=sha384-0blL3GqHy6+9fw0cyY2Aoiwg4onHAtslAs4OkqZY7UQBrR65/K4gI+hxLdWDrjpz></script><link rel=manifest href=/manifest.webmanifest><script defer src=/js/banner-dismiss.js></script><link type=text/css rel=stylesheet href=/css/custom.css><script type=text/javascript>(function(e,t,n,s,o,i,a){e[n]=e[n]||function(){(e[n].q=e[n].q||[]).push(arguments)},i=t.createElement(s),i.async=1,i.src="https://www.clarity.ms/tag/"+o,a=t.getElementsByTagName(s)[0],a.parentNode.insertBefore(i,a)})(window,document,"clarity","script","ym5vzq3iql")</script></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-column flex-md-row td-navbar" data-auto-burger=primary><a class="navbar-brand img-fluid" href=/id/></a><div class="td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0"><li class="nav-item mr-2 mb-lg-0"><a class="nav-link active" href=/id/docs/>Dokumentasi</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/id/community/>Komunitas</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/id/case-studies/>Studi kasus</a></li><li class="nav-item mr-n3 mr-lg-0 dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>Versi</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/id/releases>Release Information</a>
+<a class=dropdown-item href=https://xuxiaowei.io/t/1320/id/docs/tasks/tls/>Kubernetes 文档说明</a>
+<a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn/id/docs/tasks/tls/>v1.38</a>
+<a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn/id/docs/tasks/tls/>v1.37</a>
+<a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn/id/docs/tasks/tls/>v1.36</a>
+<a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn/id/docs/tasks/tls/>v1.35</a>
+<a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn/id/docs/tasks/tls/>v1.34</a>
+<a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn/id/docs/tasks/tls/>v1.33</a>
+<a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn/id/docs/tasks/tls/>v1.32</a>
+<a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn/id/docs/tasks/tls/>v1.31</a>
+<a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn/id/docs/tasks/tls/>v1.30</a>
+<a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn/id/docs/tasks/tls/>v1.29</a>
+<a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn/id/docs/tasks/tls/>v1.28</a>
+<a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn/id/docs/tasks/tls/>v1.27</a>
+<a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn/id/docs/tasks/tls/>v1.26</a>
+<a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn/id/docs/tasks/tls/>v1.25</a>
+<a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn/id/docs/tasks/tls/>v1.24</a>
+<a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn/id/docs/tasks/tls/>v1.23</a>
+<a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn/id/docs/tasks/tls/>v1.22</a>
+<a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn/id/docs/tasks/tls/>v1.21</a>
+<a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn/id/docs/tasks/tls/>v1.20</a></div></li><li class="nav-item mr-n4 mr-lg-0 dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdownMenuLink role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>Bahasa Indonesia (Indonesian)</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/tasks/tls/>English</a>
+<a class=dropdown-item href=/zh-cn/docs/tasks/tls/>中文 (Chinese)</a>
+<a class=dropdown-item href=/fr/docs/tasks/tls/>Français (French)</a>
+<a class=dropdown-item href=/de/docs/tasks/tls/>Deutsch (German)</a>
+<a class=dropdown-item href=/ja/docs/tasks/tls/>日本語 (Japanese)</a>
+<a class=dropdown-item href=/ko/docs/tasks/tls/>한국어 (Korean)</a>
+<a class=dropdown-item href=/es/docs/tasks/tls/>Español (Spanish)</a></div></li><li class="search-item nav-item mr-n4 mr-lg-0"><div class=search-bar><i class="search-icon fa-solid fa-search"></i>
+<input type=search name=q data-search-page=/id/search/ class="search-input td-search-input" placeholder=Cari aria-label=Cari autocomplete=off></div></li></ul></div><button id=hamburger onclick=kub.toggleMenu() data-auto-burger-exclude><div></div></button></nav></header><div class="container-fluid td-outer"><div class=td-main><div class="row flex-xl-nowrap"><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><div class=td-content><div class="pageinfo pageinfo-primary d-print-none"><p>This is the multi-page printable view of this section.
+<a href=# onclick="return print(),!1">Click here to print</a>.</p><p><a href=/id/docs/tasks/tls/>Return to the regular view of this page</a>.</p></div><h1 class=title>TLS</h1><ul><li>1: <a href=#pg-9a87de8ee8332cb487f34a05debb1125>Kelola Sertifikat TLS Pada Klaster</a></li></ul><div class=content></div></div><div class=td-content><h1 id=pg-9a87de8ee8332cb487f34a05debb1125>1 - Kelola Sertifikat TLS Pada Klaster</h1><p>Kubernetes menyediakan API <code>certificates.k8s.io</code> yang memungkinkan kamu membuat sertifikat
+TLS yang ditandatangani oleh Otoritas Sertifikat (CA) yang kamu kendalikan. CA dan sertifikat ini
+bisa digunakan oleh <em>workload</em> untuk membangun kepercayaan.</p><p>API <code>certificates.k8s.io</code> menggunakan protokol yang mirip dengan <a href=https://github.com/ietf-wg-acme/acme/>konsep ACME</a>.</p><div class="alert alert-info" role=alert><h4 class=alert-heading>Catatan:</h4>Sertifikat yang dibuat menggunakan API <code>certificates.k8s.io</code> ditandatangani oleh CA
+khusus. Ini memungkinkan untuk mengkonfigurasi klaster kamu agar menggunakan CA <em>root</em> klaster untuk tujuan ini,
+namun jangan pernah mengandalkan ini. Jangan berasumsi bahwa sertifikat ini akan melakukan validasi
+dengan CA <em>root</em> klaster</div><h2 id=sebelum-kamu-memulai>Sebelum kamu memulai</h2><p><p>Kamu harus memiliki klaster Kubernetes, dan perangkat baris perintah kubectl
+juga harus dikonfigurasikan untuk berkomunikasi dengan klastermu. Jika kamu
+belum memiliki klaster, kamu dapat membuatnya dengan menggunakan
+<a href=/id/docs/tasks/tools/#minikube>minikube</a>,
+atau kamu juga dapat menggunakan salah satu dari tempat mencoba Kubernetes berikut ini:</p><ul><li><a href=https://killercoda.com/playgrounds/scenario/kubernetes>Killercoda</a></li><li><a href=https://labs.play-with-k8s.com/>Bermain dengan Kubernetes</a></li></ul>Untuk melihat versi, tekan <code>kubectl version</code>.</p><h2 id=mempercayai-tls-dalam-klaster>Mempercayai TLS dalam Klaster</h2><p>Mempercayai CA khusus dari aplikasi yang berjalan sebagai Pod biasanya memerlukan
+beberapa tambahan konfigurasi aplikasi. Kamu harus menambahkan bundel sertifikat CA
+ke daftar sertifikat CA yang dipercaya klien atau server TLS.
+Misalnya, kamu akan melakukan ini dengan konfigurasi TLS golang dengan mengurai rantai sertifikat
+dan menambahkan sertifikat yang diurai ke <code>RootCAs</code> di <em>struct</em>
+<a href=https://godoc.org/crypto/tls#Config><code>tls.Config</code></a>.</p><p>Kamu bisa mendistribusikan sertifikat CA sebagai sebuah
+<a href=/id/docs/tasks/configure-pod-container/configure-pod-configmap>ConfigMap</a> yang bisa diakses oleh Pod kamu.</p><h2 id=meminta-sertifikat>Meminta Sertifikat</h2><p>Bagian berikut mendemonstrasikan cara membuat sertifikat TLS untuk sebuah
+Service kubernetes yang diakses melalui DNS.</p><div class="alert alert-info" role=alert><h4 class=alert-heading>Catatan:</h4>Tutorial ini menggunakan CFSSL: PKI dan peralatan TLS dari Cloudflare <a href=https://blog.cloudflare.com/introducing-cfssl/>klik disini</a> untuk mengetahui lebih jauh.</div><h2 id=unduh-dan-pasang-cfssl>Unduh dan Pasang CFSSL</h2><p>Contoh ini menggunakan cfssl yang dapat diunduh pada
+<a href=https://github.com/cloudflare/cfssl/releases>https://github.com/cloudflare/cfssl/releases</a>.</p><h2 id=membuat-certificatesigningrequest>Membuat CertificateSigningRequest</h2><p>Buat kunci pribadi dan CertificateSigningRequest (CSR) dengan menggunakan perintah berikut:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>cat <span style=color:#b44>&lt;&lt;EOF | cfssl genkey - | cfssljson -bare server
+</span></span></span><span style=display:flex><span><span style=color:#b44>{
+</span></span></span><span style=display:flex><span><span style=color:#b44>  &#34;hosts&#34;: [
+</span></span></span><span style=display:flex><span><span style=color:#b44>    &#34;my-svc.my-namespace.svc.cluster.local&#34;,
+</span></span></span><span style=display:flex><span><span style=color:#b44>    &#34;my-pod.my-namespace.pod.cluster.local&#34;,
+</span></span></span><span style=display:flex><span><span style=color:#b44>    &#34;192.0.2.24&#34;,
+</span></span></span><span style=display:flex><span><span style=color:#b44>    &#34;10.0.34.2&#34;
+</span></span></span><span style=display:flex><span><span style=color:#b44>  ],
+</span></span></span><span style=display:flex><span><span style=color:#b44>  &#34;CN&#34;: &#34;my-pod.my-namespace.pod.cluster.local&#34;,
+</span></span></span><span style=display:flex><span><span style=color:#b44>  &#34;key&#34;: {
+</span></span></span><span style=display:flex><span><span style=color:#b44>    &#34;algo&#34;: &#34;ecdsa&#34;,
+</span></span></span><span style=display:flex><span><span style=color:#b44>    &#34;size&#34;: 256
+</span></span></span><span style=display:flex><span><span style=color:#b44>  }
+</span></span></span><span style=display:flex><span><span style=color:#b44>}
+</span></span></span><span style=display:flex><span><span style=color:#b44>EOF</span>
+</span></span></code></pre></div><p><code>192.0.2.24</code> adalah klaster IP Service,
+<code>my-svc.my-namespace.svc.cluster.local</code> adalah nama DNS Service,
+<code>10.0.34.2</code> adalah IP Pod dan <code>my-pod.my-namespace.pod.cluster.local</code>
+adalah nama DNS Pod. Kamu akan melihat keluaran berikut:</p><pre tabindex=0><code>2017/03/21 06:48:17 [INFO] generate received request
+2017/03/21 06:48:17 [INFO] received CSR
+2017/03/21 06:48:17 [INFO] generating key: ecdsa-256
+2017/03/21 06:48:17 [INFO] encoded CSR
+</code></pre><p>Perintah ini menghasilkan dua berkas; Ini menghasilkan <code>server.csr</code> yang berisi permintaan sertifikasi PEM
+tersandi <a href=https://tools.ietf.org/html/rfc2986>pkcs#10</a>,
+dan <code>server-key.pem</code> yang berisi PEM kunci yang tersandi untuk sertifikat yang
+masih harus dibuat.</p><h2 id=membuat-objek-certificatesigningrequest-untuk-dikirim-ke-api-kubernetes>Membuat objek CertificateSigningRequest untuk dikirim ke API Kubernetes</h2><p>Buat sebuah yaml CSR dan kirim ke API Server dengan menggunakan perintah berikut:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>cat <span style=color:#b44>&lt;&lt;EOF | kubectl apply -f -
+</span></span></span><span style=display:flex><span><span style=color:#b44>apiVersion: certificates.k8s.io/v1beta1
+</span></span></span><span style=display:flex><span><span style=color:#b44>kind: CertificateSigningRequest
+</span></span></span><span style=display:flex><span><span style=color:#b44>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#b44>  name: my-svc.my-namespace
+</span></span></span><span style=display:flex><span><span style=color:#b44>spec:
+</span></span></span><span style=display:flex><span><span style=color:#b44>  request: $(cat server.csr | base64 | tr -d &#39;\n&#39;)
+</span></span></span><span style=display:flex><span><span style=color:#b44>  usages:
+</span></span></span><span style=display:flex><span><span style=color:#b44>  - digital signature
+</span></span></span><span style=display:flex><span><span style=color:#b44>  - key encipherment
+</span></span></span><span style=display:flex><span><span style=color:#b44>  - server auth
+</span></span></span><span style=display:flex><span><span style=color:#b44>EOF</span>
+</span></span></code></pre></div><p>Perhatikan bahwa berkas <code>server.csr</code> yang dibuat pada langkah 1 merupakan base64 tersandi
+dan disimpan di <em>field</em> <code>.spec.request</code>. Kami juga meminta
+sertifikat dengan penggunaan kunci "<em>digital signature</em>", "<em>key enchiperment</em>", dan "<em>server
+auth</em>". Kami mendukung semua penggunaan kunci dan penggunaan kunci yang diperpanjang yang terdaftar
+<a href=https://godoc.org/k8s.io/api/certificates/v1beta1#KeyUsage>di sini</a>
+sehingga kamu dapat meminta sertifikat klien dan sertifikat lain menggunakan
+API yang sama.</p><p>CSR semestinya bisa dilihat dari API pada status <em>Pending</em>. Kamu bisa melihatnya dengan menjalankan:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl describe csr my-svc.my-namespace
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>Name:                   my-svc.my-namespace
+Labels:                 &lt;none&gt;
+Annotations:            &lt;none&gt;
+CreationTimestamp:      Tue, 21 Mar 2017 07:03:51 -0700
+Requesting User:        yourname@example.com
+Status:                 Pending
+Subject:
+        Common Name:    my-svc.my-namespace.svc.cluster.local
+        Serial Number:
+Subject Alternative Names:
+        DNS Names:      my-svc.my-namespace.svc.cluster.local
+        IP Addresses:   192.0.2.24
+                        10.0.34.2
+Events: &lt;none&gt;
+</code></pre><h2 id=mendapatkan-persetujuan-certificatesigningrequest>Mendapatkan Persetujuan CertificateSigningRequest</h2><p>Penyetujuan CertificateSigningRequest dapat dilakukan dengan otomatis
+atau dilakukan sekali oleh administrator klaster. Informasi lebih lanjut tentang
+apa yang terjadi dibahas dibawah ini.</p><h2 id=unduh-dan-gunakan-sertifikat>Unduh dan Gunakan Sertifikat</h2><p>Setelah CSR ditandatangani dan disetujui, kamu akan melihat:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get csr
+</span></span></code></pre></div><pre tabindex=0><code class=language-none data-lang=none>NAME                  AGE       REQUESTOR               CONDITION
+my-svc.my-namespace   10m       yourname@example.com    Approved,Issued
+</code></pre><p>Kamu bisa mengundur sertifikat yang telah diterbitkan dan menyimpannya ke berkas
+<code>server.crt</code> dengan menggunakan perintah berikut:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get csr my-svc.my-namespace -o <span style=color:#b8860b>jsonpath</span><span style=color:#666>=</span><span style=color:#b44>&#39;{.status.certificate}&#39;</span> <span style=color:#b62;font-weight:700>\
+</span></span></span><span style=display:flex><span><span style=color:#b62;font-weight:700></span>    | base64 --decode &gt; server.crt
+</span></span></code></pre></div><p>Sekarang kamu bisa menggunakan <code>server.crt</code> dan <code>server-key.pem</code> sebagai pasangan
+kunci untuk memulai server HTTPS kamu.</p><h2 id=penyetujuan-certificatesigningrequest>Penyetujuan CertificateSigningRequest</h2><p>Administrator Kubernetes (dengan izin yang cukup) dapat menyetujui secara manual
+(atau menolak) Certificate Signing Requests dengan menggunakan perintah <code>kubectl certificate approve</code> dan <code>kubectl certificate deny</code>. Namun jika kamu bermaksud
+untuk menggunakan API ini secara sering, kamu dapat mempertimbangkan untuk menulis
+Certificate <em>controller</em> otomatis.</p><p>Baik itu mesin atau manusia yang menggunakan kubectl seperti di atas, peran pemberi persetujuan adalah
+untuk memverifikasi bahwa CSR memenuhi dua persyaratan:</p><ol><li>Subjek CSR mengontrol kunci pribadi yang digunakan untuk menandatangani CSR. Ini
+mengatasi ancaman pihak ketiga yang menyamar sebagai subjek resmi.
+Pada contoh di atas, langkah ini adalah untuk memverifikasi bahwa Pod mengontrol
+kunci pribadi yang digunakan untuk menghasilkan CSR.</li><li>Subjek CSR berwenang untuk bertindak dalam konteks yang diminta. Ini
+mengatasi ancaman subjek yang tidak diinginkan bergabung dengan klaster. Dalam
+contoh di atas, langkah ini untuk memverifikasi bahwa Pod diizinkan
+berpartisipasi dalam Service yang diminta.</li></ol><p>Jika dan hanya jika kedua persyaratan ini dipenuhi, pemberi persetujuan harus menyetujui
+CSR dan sebaliknya harus menolak CSR.</p><h2 id=peringatan-tentang-izin-persetujuan>Peringatan tentang Izin Persetujuan</h2><p>Kemampuan untuk menyetujui CSR menentukan siapa yang mempercayai siapa di dalam lingkungan kamu.
+Kemampuan untuk menyetujui CSR tersebut seharusnya tidak diberikan secara luas.
+Persyaratan tantangan yang disebutkan di bagian sebelumnya dan
+dampak dari mengeluarkan sertifikat khusus, harus sepenuhnya dipahami
+sebelum memberikan izin ini.</p><h2 id=catatan-untuk-administrator-klaster>Catatan Untuk Administrator Klaster</h2><p>Tutorial ini mengasumsikan bahwa penanda tangan diatur untuk melayani API sertifikat.
+Kubernetes <em>controller manager</em> menyediakan implementasi bawaan dari penanda tangan. Untuk
+mengaktifkan, berikan parameter <code>--cluster-signed-cert-file</code> dan
+<code>--cluster-signed-key-file</code> ke <em>controller manager</em> dengan <em>path</em> ke
+pasangan kunci CA kamu.</p></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-5 col-sm-7 text-center order-2 footer-main"><p><span class=copyright-notice>&copy; 2026 Para Pencipta Kubernetes | Dokumentasi didistribusikan di bawah <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a></span></p><p><span class=copyright-notice>&copy; 2026 Linux Foundation &reg;. Hak cipta dilindungi. Linux Foundation telah mendaftarkan merek dagang dan pengunaannya. Perinciannya bisa dilihat pada <a href=https://www.linuxfoundation.org/trademark-usage class=light-text>halaman penggunaan merek dagang</a></span></p><p><span class=certification-notice>ICP license: <a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></span></p></div><div class="col col-sm-2 text-xs-center order-1"><ul class="list-inline mb-0 footer-icons"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://youtube.com/kubernetescommunity aria-label><i class="fa-brands fa-youtube"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://discuss.kubernetes.io aria-label><i class="fa-solid fa-envelope"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://serverfault.com/questions/tagged/kubernetes aria-label><i class="fa-brands fa-stack-overflow"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://twitter.com/kubernetesio aria-label><i class="fa-brands fa-twitter"></i></a></li></ul></div><div class="col col-sm-2 text-right text-xs-center order-3"><ul class="list-inline mb-0 footer-icons"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://k8s.dev/ aria-label><i class="fa-solid fa-laptop-code"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://github.com/kubernetes/kubernetes aria-label><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://slack.k8s.io aria-label><i class="fa-brands fa-slack"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io" aria-label><i class="fa-solid fa-calendar-days"></i></a></li></ul></div></div></div></footer></div><script src=/js/script.js></script><script src=/js/main.js></script><script>let splitInstance=null;function enableSplitter(e){e.matches?splitInstance||(splitInstance=Split(["#sidebarnav","#maindoc"],{sizes:[20,80],minSize:100})):splitInstance&&(splitInstance.destroy(),splitInstance=null)}const screenWidthMediaQuery=window.matchMedia("(min-width: 768px)"),eleNav=document.getElementById("sidebarnav");eleNav!==null&&(enableSplitter(screenWidthMediaQuery),screenWidthMediaQuery.addListener(enableSplitter))</script></body></html>
