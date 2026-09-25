@@ -1,0 +1,934 @@
+<!doctype html><html itemscope itemtype=http://schema.org/WebPage lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.133.0"><link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/docs/tasks/job/><meta name=robots content="noindex, nofollow"><link rel="shortcut icon" type=image/png href=/images/kubernetes.png><link rel=icon type=image/png sizes=64x64 href=/icons/favicon-64.png><link rel=icon type=image/png sizes=32x32 href=/icons/favicon-32.png><link rel=icon type=image/png sizes=16x16 href=/icons/favicon-16.png><link rel=apple-touch-icon-256x256 href=/icons/apple-touch-icon-256x256.png><link rel=apple-touch-icon-196x196 href=/icons/apple-touch-icon-196x196.png><link rel=apple-touch-icon-192x192 href=/icons/apple-touch-icon-192x192.png><link rel=apple-touch-icon-180x180 href=/icons/apple-touch-icon-180x180.png><link rel=apple-touch-icon-167x167 href=/icons/apple-touch-icon-167x167.png><link rel=apple-touch-icon-160x160 href=/icons/apple-touch-icon-160x160.png><link rel=apple-touch-icon-152x152 href=/icons/apple-touch-icon-152x152.png><link rel=apple-touch-icon-120x120 href=/icons/apple-touch-icon-120x120.png><link rel=apple-touch-icon-76x76 href=/icons/apple-touch-icon-76x76.png><link rel=icon type=image/png href=/icons/icon-128x128.png sizes=128x128><meta name=theme-color content="#326de6"><title>Run Jobs | Kubernetes</title>
+<meta name=description content="Run Jobs using parallel processing."><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/docs/tasks/job/"><meta property="og:site_name" content="Kubernetes"><meta property="og:title" content="Run Jobs"><meta property="og:description" content="Run Jobs using parallel processing."><meta property="og:locale" content="en"><meta property="og:type" content="website"><meta itemprop=name content="Run Jobs"><meta itemprop=description content="Run Jobs using parallel processing."><meta itemprop=dateModified content="2026-09-25T15:19:53+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Run Jobs"><meta name=twitter:description content="Run Jobs using parallel processing."><link href=/scss/main.css rel=stylesheet><script src=/js/jquery-3.6.0.min.js integrity=sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK crossorigin=anonymous></script><meta property="og:image" content="/images/kubernetes-open-graph.png"><link rel=manifest href=/manifest.webmanifest><link rel=alternate hreflang=zh-cn href=https://kubernetes.xuxiaowei.com.cn/zh-cn/docs/tasks/job/><link rel=alternate hreflang=fr href=https://kubernetes.xuxiaowei.com.cn/fr/docs/tasks/job/><link rel=alternate hreflang=de href=https://kubernetes.xuxiaowei.com.cn/de/docs/tasks/job/><link rel=alternate hreflang=ja href=https://kubernetes.xuxiaowei.com.cn/ja/docs/tasks/job/><link rel=alternate hreflang=ko href=https://kubernetes.xuxiaowei.com.cn/ko/docs/tasks/job/><link rel=alternate hreflang=es href=https://kubernetes.xuxiaowei.com.cn/es/docs/tasks/job/><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png"}</script><meta name=theme-color content="#326ce5"><link rel=manifest href=/manifest.webmanifest><script defer src=/js/banner-dismiss.js></script><script type=text/javascript>(function(e,t,n,s,o,i,a){e[n]=e[n]||function(){(e[n].q=e[n].q||[]).push(arguments)},i=t.createElement(s),i.async=1,i.src="https://www.clarity.ms/tag/"+o,a=t.getElementsByTagName(s)[0],a.parentNode.insertBefore(i,a)})(window,document,"clarity","script","ym5wn7a0lz")</script></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-md-column flex-xl-row td-navbar" data-auto-burger=primary><a class=navbar-brand href=/><span class="navbar-brand__logo navbar-logo"><svg role="img" viewBox="-6.09 -6.09 446.94 115.94"><defs><style>.cls-1{fill:#fff}.cls-2{fill:#326ce5}</style></defs><g id="its-pronounced"><g id="kyoob-cuttle"><path id="kkkkkkk" d="M139.583 53.815c.823-.926 1.646-1.852 2.572-2.778q1.29-1.436 2.572-2.88c.823-1.03 1.646-1.956 2.367-2.78s1.44-1.645 1.954-2.262h9.98c-1.955 2.263-3.91 4.527-5.864 6.584q-2.778 3.087-6.173 6.482a41.554 41.554.0 013.498 3.704c1.234 1.44 2.366 2.88 3.498 4.32a43.93 43.93.0 013.086 4.528c.926 1.543 1.75 2.88 2.367 4.115h-9.67c-.619-1.03-1.339-2.058-2.059-3.19a37.46 37.46.0 00-2.47-3.6 29.584 29.584.0 00-2.777-3.498 17.678 17.678.0 00-2.778-2.778v12.963h-8.436v-42.49l8.436-1.338v24.898" class="cls-1"/><path id="uuuuuuu" d="M188.761 71.819a40.037 40.037.0 01-5.555 1.132 39.77 39.77.0 01-7.1.514 16.577 16.577.0 01-6.378-1.028 9.45 9.45.0 01-5.967-7.202 24.194 24.194.0 01-.618-5.556V43.115h8.437V58.65c0 2.675.31 4.63 1.03 5.865s2.056 1.852 4.011 1.852a13.117 13.117.0 001.955-.103c.72-.103 1.235-.103 1.852-.206V43.115h8.436l-.103 28.704" class="cls-1"/><path id="bbbbbbb" d="M215.82 57.724c0-5.452-1.955-8.127-5.968-8.127a10.99 10.99.0 00-2.572.308 7.775 7.775.0 00-2.057.823v15.33c.411.103.926.103 1.543.206.617.0 1.337.103 2.058.103A6.37 6.37.0 00214.071 64a10.55 10.55.0 001.75-6.276m8.538.206a18.63 18.63.0 01-1.029 6.482 13.242 13.242.0 01-2.983 4.938 15.823 15.823.0 01-4.836 3.19 18.829 18.829.0 01-6.585 1.028c-1.028.0-2.057-.103-3.189-.205s-2.16-.206-3.292-.31c-1.029-.102-2.058-.308-3.087-.514a13.002 13.002.0 01-2.572-.72V30.254l8.437-1.337v14.815a14.37 14.37.0 012.983-.926 17.028 17.028.0 013.293-.308 13.036 13.036.0 015.555 1.13 11.142 11.142.0 014.116 3.088 12.408 12.408.0 012.47 4.938 29.216 29.216.0 01.72 6.276" class="cls-1"/><path id="eeeeeee0" d="M229.401 58.239a17.557 17.557.0 011.234-6.893 15.744 15.744.0 013.19-4.94 11.991 11.991.0 014.526-2.982 13.75 13.75.0 015.35-1.03 13.168 13.168.0 019.98 3.91c2.47 2.572 3.703 6.38 3.703 11.317a9.413 9.413.0 01-.102 1.647c0 .514-.103 1.028-.103 1.543h-19.138a5.64 5.64.0 002.47 4.115 9.79 9.79.0 005.761 1.543 21.806 21.806.0 004.527-.411 18.455 18.455.0 003.704-1.03l1.131 6.894c-.41.206-1.028.412-1.85.72a10.37 10.37.0 01-2.574.515 23.221 23.221.0 01-2.983.41c-1.029.104-2.16.207-3.19.207a18.09 18.09.0 01-6.996-1.234 15.148 15.148.0 01-4.938-3.19 14.85 14.85.0 01-2.88-4.938 24.165 24.165.0 01-.824-6.173m19.857-3.292a6.652 6.652.0 00-.412-2.058 6.254 6.254.0 00-.926-1.852 4.915 4.915.0 00-4.115-1.852 6.216 6.216.0 00-2.47.514 4.092 4.092.0 00-1.645 1.235 5.395 5.395.0 00-1.03 1.852 15.044 15.044.0 00-.514 2.058h11.112" class="cls-1"/><path id="rrrrrrr" d="M281.768 50.523a15.46 15.46.0 00-2.675-.515 17.027 17.027.0 00-3.292-.31 18.138 18.138.0 00-1.955.207 16.165 16.165.0 00-1.646.309V72.95h-8.437V44.658a43.765 43.765.0 015.35-1.44 28.942 28.942.0 016.893-.72 10.015 10.015.0 011.646.102 14.058 14.058.0 011.955.206c.618.103 1.235.206 1.955.309.617.103 1.235.309 1.646.41l-1.44 6.998" class="cls-1"/><path id="nnnnnnn" d="M287.735 44.144a49.746 49.746.0 0112.655-1.646 15.693 15.693.0 016.276 1.028 8.813 8.813.0 014.012 2.778 12.018 12.018.0 012.058 4.32 22.95 22.95.0 01.617 5.557v16.77h-8.437V57.21c0-2.675-.308-4.63-1.028-5.762s-2.058-1.646-4.013-1.646a13.116 13.116.0 00-1.955.103 10.193 10.193.0 00-1.85.206v22.943h-8.335v-28.91" class="cls-1"/><path id="eeeeeee1" d="M319.63 58.239a17.556 17.556.0 011.233-6.893 15.745 15.745.0 013.19-4.94 11.99 11.99.0 014.527-2.982 13.75 13.75.0 015.35-1.03 13.168 13.168.0 019.98 3.91c2.468 2.572 3.703 6.38 3.703 11.317a9.412 9.412.0 01-.103 1.647c0 .514-.103 1.028-.103 1.543h-19.136a5.64 5.64.0 002.47 4.115 9.789 9.789.0 005.76 1.543 21.805 21.805.0 004.528-.411 18.455 18.455.0 003.703-1.03l1.132 6.894c-.41.206-1.029.412-1.852.72a10.37 10.37.0 01-2.572.515 23.226 23.226.0 01-2.984.41c-1.028.104-2.16.207-3.189.207a18.09 18.09.0 01-6.996-1.234 15.148 15.148.0 01-4.938-3.19 14.85 14.85.0 01-2.88-4.938 24.16 24.16.0 01-.824-6.173m19.856-3.292a6.653 6.653.0 00-.41-2.058 6.255 6.255.0 00-.927-1.852 4.915 4.915.0 00-4.116-1.852 6.216 6.216.0 00-2.469.514 4.092 4.092.0 00-1.646 1.235 5.396 5.396.0 00-1.029 1.852 15.037 15.037.0 00-.514 2.058h11.111" class="cls-1"/><path id="ttttttt" d="M353.89 35.707l8.435-1.337v8.745h10.083v6.995h-10.083v10.494a8.273 8.273.0 00.926 4.218c.618 1.03 1.955 1.544 3.807 1.544a25.227 25.227.0 002.778-.206 16.728 16.728.0 002.675-.72l1.234 6.584a16.386 16.386.0 01-3.395 1.029 19.779 19.779.0 01-4.63.41 15.723 15.723.0 01-5.76-.924 9.522 9.522.0 01-3.602-2.573 10.208 10.208.0 01-1.955-4.115 26.665 26.665.0 01-.514-5.247V35.707" class="cls-1"/><path id="eeeeeee2" d="M376.73 58.239a17.556 17.556.0 011.234-6.893 15.744 15.744.0 013.19-4.94 11.99 11.99.0 014.526-2.982 13.75 13.75.0 015.35-1.03 13.168 13.168.0 019.98 3.91c2.47 2.572 3.703 6.38 3.703 11.317a9.413 9.413.0 01-.103 1.647c0 .514-.103 1.028-.103 1.543h-19.136a5.64 5.64.0 002.47 4.115 9.789 9.789.0 005.76 1.543 21.805 21.805.0 004.528-.411 18.455 18.455.0 003.703-1.03l1.132 6.894c-.41.206-1.029.412-1.852.72a10.371 10.371.0 01-2.572.515 23.226 23.226.0 01-2.983.41c-1.03.104-2.16.207-3.19.207a18.09 18.09.0 01-6.996-1.234 15.147 15.147.0 01-4.938-3.19 14.85 14.85.0 01-2.88-4.938 20.343 20.343.0 01-.824-6.173m19.754-3.292a6.652 6.652.0 00-.412-2.058 6.254 6.254.0 00-.926-1.852 4.915 4.915.0 00-4.115-1.852 6.216 6.216.0 00-2.47.514 4.092 4.092.0 00-1.646 1.235 5.395 5.395.0 00-1.028 1.852 15.037 15.037.0 00-.515 2.058h11.112" class="cls-1"/><path id="sssssss" d="M419.631 66.778a8.454 8.454.0 003.293-.411 1.802 1.802.0 00.925-1.75c0-.72-.41-1.234-1.234-1.748a19.516 19.516.0 00-3.807-1.75c-1.337-.514-2.572-1.028-3.6-1.543a10.286 10.286.0 01-2.676-1.852 8.046 8.046.0 01-1.749-2.675 9.968 9.968.0 01-.617-3.703 7.828 7.828.0 013.086-6.585c2.058-1.646 4.94-2.47 8.54-2.47a29.267 29.267.0 015.247.515 19.02 19.02.0 013.91 1.03l-1.44 6.584a122.23 122.23.0 00-3.19-.926 14.394 14.394.0 00-3.807-.412c-2.675.0-3.91.72-3.91 2.16a3.004 3.004.0 00.206.927 1.728 1.728.0 00.72.823c.31.206.823.514 1.338.823.617.308 1.337.514 2.263.926a33.94 33.94.0 014.63 2.057 7.682 7.682.0 012.778 2.16 5.374 5.374.0 011.44 2.573 10.677 10.677.0 01.412 3.292 7.669 7.669.0 01-3.293 6.688c-2.16 1.543-5.247 2.263-9.362 2.263a23.783 23.783.0 01-6.584-.72 18.78 18.78.0 01-3.6-1.132l1.44-6.893a31.442 31.442.0 004.423 1.337 18.932 18.932.0 004.218.412" class="cls-1"/></g></g><path d="M4.233 60.98h4.881v3.877h-4.88z" class="cls-1"/><path d="M62.304 58.789a1.65 1.65.0 00-.393-.03 1.694 1.694.0 00-.655.17 1.712 1.712.0 00-.829 2.218l-.012.017 3.92 9.47a20.008 20.008.0 008.087-10.16l-10.1-1.705zm-15.717 1.34a1.71 1.71.0 00-1.64-1.33 1.68 1.68.0 00-.337.03l-.017-.02-10.013 1.7a20.084 20.084.0 008.062 10.087l3.88-9.376-.03-.037a1.693 1.693.0 00.095-1.053zm8.386 3.678a1.709 1.709.0 00-3.014.004h-.008l-4.924 8.904a20.057 20.057.0 0010.946.563q1.01-.23 1.973-.551l-4.936-8.92zm15.588-20.682-7.576 6.78.004.022a1.712 1.712.0 00.671 2.939l.01.04 9.813 2.828a20.352 20.352.0 00-2.922-12.61zm-14.075.759a1.712 1.712.0 002.718 1.305l.03.013 8.29-5.878A20.155 20.155.0 0055.901 33.72l.576 10.16zm-8.779 1.343a1.71 1.71.0 002.714-1.31l.042-.02.576-10.176a20.533 20.533.0 00-2.069.356 19.979 19.979.0 00-9.623 5.244l8.344 5.915zm-4.448 7.689a1.71 1.71.0 00.672-2.94l.008-.04-7.618-6.814a19.973 19.973.0 00-2.835 12.645l9.765-2.818zm7.4 2.993 2.81 1.35 2.801-1.347.696-3.025-1.939-2.425h-3.12l-1.946 2.42z" class="cls-2"/><path d="M99.925 61.869l-8.008-34.783a6.252 6.252.0 00-3.352-4.17L56.151 7.44a6.246 6.246.0 00-5.38.0L18.364 22.924a6.25 6.25.0 00-3.353 4.17L7.016 61.876a6.12 6.12.0 00-.002 2.67 6.206 6.206.0 00.226.79 6.022 6.022.0 00.617 1.253c.11.168.226.33.352.489l22.432 27.89c.098.12.206.232.313.345a6.17 6.17.0 001.183.98 6.4 6.4.0 001.773.77 6.112 6.112.0 001.576.218h.35l35.623-.008a5.976 5.976.0 00.648-.038 6.19 6.19.0 00.914-.174 6.372 6.372.0 00.635-.203q.244-.09.48-.2a6.407 6.407.0 00.68-.377 6.115 6.115.0 001.488-1.317l.684-.85 21.74-27.045a6.06 6.06.0 00.97-1.74 6.283 6.283.0 00.23-.792 6.105 6.105.0 00-.003-2.67zm-33.62 13.528a6.67 6.67.0 00.322.783 1.523 1.523.0 00-.15 1.144 18.097 18.097.0 001.72 3.08 16.123 16.123.0 011.04 1.546c.078.145.18.369.254.522a1.949 1.949.0 11-3.507 1.658c-.074-.152-.177-.354-.24-.497a16.21 16.21.0 01-.563-1.778 18.067 18.067.0 00-1.33-3.262 1.533 1.533.0 00-.99-.601c-.063-.107-.293-.528-.416-.746A25.104 25.104.0 0144.543 77.2l-.439.796a1.576 1.576.0 00-.836.407 13.567 13.567.0 00-1.502 3.485 16.04 16.04.0 01-.56 1.778c-.062.142-.166.342-.24.493v.004l-.003.004a1.948 1.948.0 11-3.502-1.662c.073-.154.171-.377.248-.522a16.168 16.168.0 011.04-1.55 18.95 18.95.0 001.756-3.156 1.925 1.925.0 00-.173-1.097l.353-.846A25.244 25.244.0 0129.498 61.367l-.845.144a2.151 2.151.0 00-1.116-.393 18.167 18.167.0 00-3.38.995 16.355 16.355.0 01-1.742.667c-.14.038-.342.077-.502.112-.013.004-.024.01-.037.013l-.03.003a1.947 1.947.0 11-.86-3.78l.027-.007.017-.005c.162-.038.37-.092.518-.12a16.212 16.212.0 011.861-.15 18.105 18.105.0 003.477-.571 2.682 2.682.0 00.834-.841l.812-.237a25.102 25.102.0 013.96-17.5l-.623-.554a2.155 2.155.0 00-.39-1.12 18.094 18.094.0 00-2.885-2.027 16.202 16.202.0 01-1.608-.94c-.118-.088-.274-.22-.402-.324l-.029-.02a2.056 2.056.0 01-.477-2.86 1.869 1.869.0 011.546-.684 2.312 2.312.0 011.352.51c.132.104.313.242.43.343a16.205 16.205.0 011.278 1.356A18.103 18.103.0 0033.3 35.74a1.532 1.532.0 001.152.112c.111.082.486.35.7.497a24.953 24.953.0 0112.675-7.241 25.302 25.302.0 013.507-.54l.046-.82a2.115 2.115.0 00.63-1.003 18.142 18.142.0 00-.216-3.518 16.306 16.306.0 01-.265-1.845c-.005-.141.003-.336.005-.497.0-.018-.005-.036-.005-.054a1.95 1.95.0 113.88-.002c0 .17.01.396.004.552a16.14 16.14.0 01-.266 1.844 18.169 18.169.0 00-.22 3.519 1.537 1.537.0 00.634.97c.007.14.03.608.047.866a25.422 25.422.0 0116.102 7.78l.738-.527a2.156 2.156.0 001.177-.128 18.17 18.17.0 002.615-2.366 16.095 16.095.0 011.281-1.356c.12-.102.3-.24.43-.343a1.95 1.95.0 112.417 3.033c-.13.105-.302.252-.427.345a16.133 16.133.0 01-1.612.94 18.153 18.153.0 00-2.885 2.027 1.534 1.534.0 00-.364 1.099c-.108.099-.487.435-.688.617a25.205 25.205.0 014.041 17.458l.783.228a2.181 2.181.0 00.837.842 18.14 18.14.0 003.478.572 16.384 16.384.0 011.86.149c.163.03.4.095.565.133a1.947 1.947.0 11-.863 3.78l-.028-.004c-.013-.003-.025-.01-.038-.013-.16-.035-.36-.07-.5-.107a16.154 16.154.0 01-1.74-.672 18.146 18.146.0 00-3.385-.995 1.534 1.534.0 00-1.086.403q-.413-.08-.829-.145A25.243 25.243.0 0166.305 75.397z" class="cls-2"/><path d="M104.153 62.76l-8.736-37.947a6.82 6.82.0 00-3.658-4.55L56.397 3.38a6.814 6.814.0 00-5.87.0L15.168 20.273a6.82 6.82.0 00-3.659 4.548L2.79 62.77a6.742 6.742.0 00.916 5.14 6.526 6.526.0 00.385.535l24.474 30.43a6.885 6.885.0 005.285 2.522l39.247-.01a6.888 6.888.0 005.286-2.518l24.465-30.433a6.766 6.766.0 001.306-5.675zm-4.227 1.778a6.285 6.285.0 01-.229.792 6.06 6.06.0 01-.97 1.74l-21.74 27.044-.683.85a6.115 6.115.0 01-1.489 1.318 6.41 6.41.0 01-.678.378q-.236.109-.48.198a6.373 6.373.0 01-.636.204 6.191 6.191.0 01-.914.174 5.973 5.973.0 01-.648.038l-35.624.008h-.349a6.113 6.113.0 01-1.576-.217 6.4 6.4.0 01-1.772-.771 6.17 6.17.0 01-1.184-.98c-.107-.113-.215-.224-.313-.345L8.21 67.079q-.188-.236-.352-.49a6.022 6.022.0 01-.617-1.253 6.207 6.207.0 01-.226-.79 6.12 6.12.0 01.002-2.67l7.995-34.783a6.25 6.25.0 013.353-4.17L50.772 7.442a6.246 6.246.0 015.38.0l32.413 15.476a6.252 6.252.0 013.352 4.17l8.008 34.783a6.105 6.105.0 01.001 2.669z" class="cls-1"/><path d="M85.955 59.083c-.166-.038-.402-.103-.564-.133a16.382 16.382.0 00-1.86-.15 18.14 18.14.0 01-3.479-.571 2.18 2.18.0 01-.837-.842l-.783-.228a25.205 25.205.0 00-4.04-17.458c.2-.182.58-.518.687-.617a1.534 1.534.0 01.364-1.1 18.154 18.154.0 012.885-2.026 16.127 16.127.0 001.612-.94c.125-.093.296-.24.427-.345a1.95 1.95.0 10-2.416-3.033c-.132.104-.312.24-.43.343a16.09 16.09.0 00-1.282 1.356 18.17 18.17.0 01-2.615 2.366 2.156 2.156.0 01-1.177.128l-.738.527a25.422 25.422.0 00-16.102-7.78c-.018-.258-.04-.725-.047-.866a1.537 1.537.0 01-.633-.97 18.172 18.172.0 01.22-3.52 16.137 16.137.0 00.264-1.843c.006-.156-.003-.383-.003-.552a1.95 1.95.0 10-3.88.002c0 .018.004.036.005.054-.002.16-.01.356-.005.497a16.308 16.308.0 00.265 1.845 18.143 18.143.0 01.216 3.518 2.115 2.115.0 01-.63 1.003l-.046.82a25.302 25.302.0 00-3.507.54 24.953 24.953.0 00-12.674 7.24q-.354-.243-.7-.496a1.532 1.532.0 01-1.153-.112 18.1 18.1.0 01-2.615-2.363 16.206 16.206.0 00-1.277-1.356c-.118-.101-.299-.24-.43-.344a2.312 2.312.0 00-1.353-.51 1.869 1.869.0 00-1.546.684 2.056 2.056.0 00.477 2.86l.03.02c.127.105.283.238.401.324a16.202 16.202.0 001.608.94 18.094 18.094.0 012.885 2.029 2.155 2.155.0 01.39 1.119l.621.555a25.102 25.102.0 00-3.958 17.5l-.812.236a2.682 2.682.0 01-.834.84 18.106 18.106.0 01-3.477.573 16.212 16.212.0 00-1.86.15c-.15.027-.357.08-.519.12l-.017.004-.028.008a1.947 1.947.0 10.862 3.78l.03-.004c.012-.003.023-.01.036-.012.16-.036.361-.075.502-.113a16.358 16.358.0 001.74-.667 18.167 18.167.0 013.382-.995 2.151 2.151.0 011.115.394l.846-.145a25.244 25.244.0 0011.187 13.967l-.353.846a1.925 1.925.0 01.173 1.097 18.949 18.949.0 01-1.756 3.155 16.173 16.173.0 00-1.04 1.55c-.077.146-.175.37-.249.523a1.948 1.948.0 103.503 1.662l.003-.004v-.004c.074-.152.178-.351.24-.493a16.04 16.04.0 00.56-1.778 13.567 13.567.0 011.502-3.485 1.576 1.576.0 01.836-.408l.44-.795a25.104 25.104.0 0017.901.045c.123.22.353.64.414.746a1.533 1.533.0 01.99.602 18.067 18.067.0 011.332 3.262 16.219 16.219.0 00.563 1.778c.063.143.166.345.24.497a1.949 1.949.0 103.507-1.658c-.074-.153-.176-.377-.253-.522a16.121 16.121.0 00-1.04-1.546 18.095 18.095.0 01-1.72-3.08 1.523 1.523.0 01.15-1.144 6.671 6.671.0 01-.324-.783A25.243 25.243.0 0077.486 61.33c.251.04.688.116.83.145a1.534 1.534.0 011.085-.403 18.144 18.144.0 013.383.995 16.149 16.149.0 001.741.672c.14.037.34.072.501.107.013.004.025.01.038.013l.028.004a1.947 1.947.0 10.863-3.78zM67.523 39.325l-8.29 5.877-.029-.013a1.711 1.711.0 01-2.718-1.305l-.009-.004-.576-10.16a20.155 20.155.0 0111.622 5.605zM51.906 50.46h3.12l1.94 2.425-.696 3.025-2.802 1.348-2.81-1.351-.697-3.026zM48.97 34.075a20.535 20.535.0 012.07-.356l-.577 10.175-.042.02a1.71 1.71.0 01-2.714 1.31l-.016.01-8.344-5.916a19.98 19.98.0 019.623-5.243zm-12.649 9.047 7.618 6.813-.008.042a1.71 1.71.0 01-.672 2.939l-.008.033-9.765 2.818a19.973 19.973.0 012.835-12.645zm10.2 18.1-3.88 9.375a20.084 20.084.0 01-8.06-10.088l10.012-1.7.017.022a1.68 1.68.0 01.336-.03 1.71 1.71.0 011.546 2.383zm11.452 12.057a20.057 20.057.0 01-10.946-.563l4.924-8.904h.008a1.712 1.712.0 013.014-.003h.037l4.936 8.919q-.96.32-1.973.55zm6.362-2.644-3.92-9.471.012-.017a1.712 1.712.0 01.83-2.217 1.694 1.694.0 01.654-.17 1.65 1.65.0 01.393.029l.017-.021 10.101 1.707a20.008 20.008.0 01-8.087 10.16zm9.148-14.901-9.814-2.827-.009-.041a1.712 1.712.0 01-.67-2.94l-.005-.02 7.576-6.78a20.352 20.352.0 012.922 12.608z" class="cls-1"/></svg></span><span class=navbar-brand__name>Kubernetes</span></a><div class="td-navbar-nav-scroll d-none d-md-block ml-xl-auto" id=main_navbar><ul class="navbar-nav mt-lg-0"><li class="nav-item mr-4 mb-2 mb-lg-0"><a class="nav-link active" href=/docs/>Documentation</a></li><li class="nav-item mr-4 mb-2 mb-lg-0"><a class=nav-link href=/blog/>Kubernetes Blog</a></li><li class="nav-item mr-4 mb-2 mb-lg-0"><a class=nav-link href=/training/>Training</a></li><li class="nav-item mr-4 mb-2 mb-lg-0"><a class=nav-link href=/partners/>Partners</a></li><li class="nav-item mr-4 mb-2 mb-lg-0"><a class=nav-link href=/community/>Community</a></li><li class="nav-item mr-4 mb-2 mb-lg-0"><a class=nav-link href=/case-studies/>Case Studies</a></li><li class="nav-item dropdown mr-4 d-none d-lg-block"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>Versions</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/releases>Release Information</a>
+<a class=dropdown-item href=https://xuxiaowei.io/t/1320/docs/tasks/job/>Kubernetes 文档说明</a>
+<a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn/docs/tasks/job/>v1.38</a>
+<a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn/docs/tasks/job/>v1.37</a>
+<a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn/docs/tasks/job/>v1.36</a>
+<a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn/docs/tasks/job/>v1.35</a>
+<a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn/docs/tasks/job/>v1.34</a>
+<a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn/docs/tasks/job/>v1.33</a>
+<a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn/docs/tasks/job/>v1.32</a>
+<a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn/docs/tasks/job/>v1.31</a>
+<a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn/docs/tasks/job/>v1.30</a>
+<a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn/docs/tasks/job/>v1.29</a>
+<a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn/docs/tasks/job/>v1.28</a>
+<a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn/docs/tasks/job/>v1.27</a>
+<a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn/docs/tasks/job/>v1.26</a>
+<a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn/docs/tasks/job/>v1.25</a>
+<a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn/docs/tasks/job/>v1.24</a>
+<a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn/docs/tasks/job/>v1.23</a>
+<a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn/docs/tasks/job/>v1.22</a>
+<a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn/docs/tasks/job/>v1.21</a>
+<a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn/docs/tasks/job/>v1.20</a></div></li><li class="nav-item dropdown mr-xl-4 d-none d-lg-block"><a class="nav-link dropdown-toggle" href=# id=navbarDropdownMenuLink role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>English</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh-cn/docs/tasks/job/>中文 (Chinese)</a>
+<a class=dropdown-item href=/fr/docs/tasks/job/>Français (French)</a>
+<a class=dropdown-item href=/de/docs/tasks/job/>Deutsch (German)</a>
+<a class=dropdown-item href=/ja/docs/tasks/job/>日本語 (Japanese)</a>
+<a class=dropdown-item href=/ko/docs/tasks/job/>한국어 (Korean)</a>
+<a class=dropdown-item href=/es/docs/tasks/job/>Español (Spanish)</a></div></li></ul></div><div class="navbar-nav d-none k8s-1500-block"><div class=search-bar><i class="search-icon fa-solid fa-search"></i>
+<input type=search name=q data-search-page=/search/ class="search-input td-search-input" placeholder="Search this site" aria-label="Search this site" autocomplete=off></div></div><button id=hamburger class="btn fas fa-bars" onclick=kub.toggleMenu() data-auto-burger-exclude></button></nav></header><div class="container-fluid td-outer"><div class=td-main><div class="row flex-xl-nowrap"><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><div class=td-content><div class="pageinfo pageinfo-primary d-print-none"><p>This is the multi-page printable view of this section.
+<a href=# onclick="return print(),!1">Click here to print</a>.</p><p><a href=/docs/tasks/job/>Return to the regular view of this page</a>.</p></div><h1 class=title>Run Jobs</h1><div class=lead>Run Jobs using parallel processing.</div><ul><li>1: <a href=#pg-964bdff888520740e5e221695245678d>Running Automated Tasks with a CronJob</a></li><li>2: <a href=#pg-1058efa4d70f13c015e6a2094ff85068>Coarse Parallel Processing Using a Work Queue</a></li><li>3: <a href=#pg-457c9dd93aed2b05615ed28dc38075d3>Fine Parallel Processing Using a Work Queue</a></li><li>4: <a href=#pg-9e63850014876afaebd1561f70bb8f6b>Indexed Job for Parallel Processing with Static Work Assignment</a></li><li>5: <a href=#pg-d65c40e1d2df81b94a09634c2432b055>Job with Pod-to-Pod Communication</a></li><li>6: <a href=#pg-da7c2b067953d239eb4457e8978ad8f6>Parallel Processing using Expansions</a></li><li>7: <a href=#pg-ecb5ec00bbce2e57292c6687437beae0>Handling retriable and non-retriable pod failures with Pod failure policy</a></li></ul><div class=content></div></div><div class=td-content><h1 id=pg-964bdff888520740e5e221695245678d>1 - Running Automated Tasks with a CronJob</h1><p>This page shows how to run automated tasks using Kubernetes <a class=glossary-tooltip title='A repeating task (a Job) that runs on a regular schedule.' data-toggle=tooltip data-placement=top href=/docs/concepts/workloads/controllers/cron-jobs/ target=_blank aria-label=CronJob>CronJob</a> object.</p><h2 id=before-you-begin>Before you begin</h2><ul><li><p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. It is recommended to run this tutorial on a cluster with at least two nodes that are not acting as control plane hosts. If you do not already have a
+cluster, you can create one by using
+<a href=https://minikube.sigs.k8s.io/docs/tutorials/multi_node/>minikube</a>
+or you can use one of these Kubernetes playgrounds:</p><ul><li><a href=https://killercoda.com/playgrounds/scenario/kubernetes>Killercoda</a></li><li><a href=https://kodekloud.com/public-playgrounds>KodeKloud</a></li><li><a href=https://labs.play-with-k8s.com/>Play with Kubernetes</a></li></ul></li></ul><h2 id=creating-a-cron-job>Creating a CronJob</h2><p>Cron jobs require a config file.
+Here is a manifest for a CronJob that runs a simple demonstration task every minute:</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.32/content/en/examples/application/job/cronjob.yaml download=application/job/cronjob.yaml><code>application/job/cronjob.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("application-job-cronjob-yaml")' title="Copy application/job/cronjob.yaml to clipboard"></img></div><div class=includecode id=application-job-cronjob-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>batch/v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>CronJob<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>hello<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>schedule</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;* * * * *&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>jobTemplate</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>template</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>hello<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>busybox:1.28<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>imagePullPolicy</span>:<span style=color:#bbb> </span>IfNotPresent<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>command</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span>- /bin/sh<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span>- -c<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span>- date; echo Hello from the Kubernetes cluster<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>restartPolicy</span>:<span style=color:#bbb> </span>OnFailure<span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><p>Run the example CronJob by using this command:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl create -f https://k8s.io/examples/application/job/cronjob.yaml
+</span></span></code></pre></div><p>The output is similar to this:</p><pre tabindex=0><code>cronjob.batch/hello created
+</code></pre><p>After creating the cron job, get its status using this command:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get cronjob hello
+</span></span></code></pre></div><p>The output is similar to this:</p><pre tabindex=0><code>NAME    SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+hello   */1 * * * *   False     0        &lt;none&gt;          10s
+</code></pre><p>As you can see from the results of the command, the cron job has not scheduled or run any jobs yet.
+<a class=glossary-tooltip title='A verb that is used to track changes to an object in Kubernetes as a stream.' data-toggle=tooltip data-placement=top href=/docs/reference/using-api/api-concepts/#api-verbs target=_blank aria-label=Watch>Watch</a> for the job to be created in around one minute:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get <span style=color:#a2f>jobs</span> --watch
+</span></span></code></pre></div><p>The output is similar to this:</p><pre tabindex=0><code>NAME               COMPLETIONS   DURATION   AGE
+hello-4111706356   0/1                      0s
+hello-4111706356   0/1           0s         0s
+hello-4111706356   1/1           5s         5s
+</code></pre><p>Now you've seen one running job scheduled by the "hello" cron job.
+You can stop watching the job and view the cron job again to see that it scheduled the job:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get cronjob hello
+</span></span></code></pre></div><p>The output is similar to this:</p><pre tabindex=0><code>NAME    SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+hello   */1 * * * *   False     0        50s             75s
+</code></pre><p>You should see that the cron job <code>hello</code> successfully scheduled a job at the time specified in
+<code>LAST SCHEDULE</code>. There are currently 0 active jobs, meaning that the job has completed or failed.</p><p>Now, find the pods that the last scheduled job created and view the standard output of one of the pods.</p><div class="alert alert-info" role=alert><h4 class=alert-heading>Note:</h4>The job name is different from the pod name.</div><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># Replace &#34;hello-4111706356&#34; with the job name in your system</span>
+</span></span><span style=display:flex><span><span style=color:#b8860b>pods</span><span style=color:#666>=</span><span style=color:#a2f;font-weight:700>$(</span>kubectl get pods --selector<span style=color:#666>=</span>job-name<span style=color:#666>=</span>hello-4111706356 --output<span style=color:#666>=</span><span style=color:#b8860b>jsonpath</span><span style=color:#666>={</span>.items<span style=color:#666>[</span>*<span style=color:#666>]</span>.metadata.name<span style=color:#666>}</span><span style=color:#a2f;font-weight:700>)</span>
+</span></span></code></pre></div><p>Show the pod log:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl logs <span style=color:#b8860b>$pods</span>
+</span></span></code></pre></div><p>The output is similar to this:</p><pre tabindex=0><code>Fri Feb 22 11:02:09 UTC 2019
+Hello from the Kubernetes cluster
+</code></pre><h2 id=deleting-a-cron-job>Deleting a CronJob</h2><p>When you don't need a cron job any more, delete it with <code>kubectl delete cronjob &lt;cronjob name></code>:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl delete cronjob hello
+</span></span></code></pre></div><p>Deleting the cron job removes all the jobs and pods it created and stops it from creating additional jobs.
+You can read more about removing jobs in <a href=/docs/concepts/architecture/garbage-collection/>garbage collection</a>.</p></div><div class=td-content style=page-break-before:always><h1 id=pg-1058efa4d70f13c015e6a2094ff85068>2 - Coarse Parallel Processing Using a Work Queue</h1><p>In this example, you will run a Kubernetes Job with multiple parallel
+worker processes.</p><p>In this example, as each pod is created, it picks up one unit of work
+from a task queue, completes it, deletes it from the queue, and exits.</p><p>Here is an overview of the steps in this example:</p><ol><li><strong>Start a message queue service.</strong> In this example, you use RabbitMQ, but you could use another
+one. In practice you would set up a message queue service once and reuse it for many jobs.</li><li><strong>Create a queue, and fill it with messages.</strong> Each message represents one task to be done. In
+this example, a message is an integer that we will do a lengthy computation on.</li><li><strong>Start a Job that works on tasks from the queue</strong>. The Job starts several pods. Each pod takes
+one task from the message queue, processes it, and exits.</li></ol><h2 id=before-you-begin>Before you begin</h2><p>You should already be familiar with the basic,
+non-parallel, use of <a href=/docs/concepts/workloads/controllers/job/>Job</a>.</p><p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. It is recommended to run this tutorial on a cluster with at least two nodes that are not acting as control plane hosts. If you do not already have a
+cluster, you can create one by using
+<a href=https://minikube.sigs.k8s.io/docs/tutorials/multi_node/>minikube</a>
+or you can use one of these Kubernetes playgrounds:</p><ul><li><a href=https://killercoda.com/playgrounds/scenario/kubernetes>Killercoda</a></li><li><a href=https://kodekloud.com/public-playgrounds>KodeKloud</a></li><li><a href=https://labs.play-with-k8s.com/>Play with Kubernetes</a></li></ul><p>You will need a container image registry where you can upload images to run in your cluster.</p><p>This task example also assumes that you have Docker installed locally.</p><h2 id=starting-a-message-queue-service>Starting a message queue service</h2><p>This example uses RabbitMQ, however, you can adapt the example to use another AMQP-type message service.</p><p>In practice you could set up a message queue service once in a
+cluster and reuse it for many jobs, as well as for long-running services.</p><p>Start RabbitMQ as follows:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># make a Service for the StatefulSet to use</span>
+</span></span><span style=display:flex><span>kubectl create -f https://kubernetes.io/examples/application/job/rabbitmq/rabbitmq-service.yaml
+</span></span></code></pre></div><pre tabindex=0><code>service &#34;rabbitmq-service&#34; created
+</code></pre><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl create -f https://kubernetes.io/examples/application/job/rabbitmq/rabbitmq-statefulset.yaml
+</span></span></code></pre></div><pre tabindex=0><code>statefulset &#34;rabbitmq&#34; created
+</code></pre><h2 id=testing-the-message-queue-service>Testing the message queue service</h2><p>Now, we can experiment with accessing the message queue. We will
+create a temporary interactive pod, install some tools on it,
+and experiment with queues.</p><p>First create a temporary interactive Pod.</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># Create a temporary interactive container</span>
+</span></span><span style=display:flex><span>kubectl run -i --tty temp --image ubuntu:22.04
+</span></span></code></pre></div><pre tabindex=0><code>Waiting for pod default/temp-loe07 to be running, status is Pending, pod ready: false
+... [ previous line repeats several times .. hit return when it stops ] ...
+</code></pre><p>Note that your pod name and command prompt will be different.</p><p>Next install the <code>amqp-tools</code> so you can work with message queues.
+The next commands show what you need to run inside the interactive shell in that Pod:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>apt-get update <span style=color:#666>&amp;&amp;</span> apt-get install -y curl ca-certificates amqp-tools python3 dnsutils
+</span></span></code></pre></div><p>Later, you will make a container image that includes these packages.</p><p>Next, you will check that you can discover the Service for RabbitMQ:</p><pre tabindex=0><code># Run these commands inside the Pod
+# Note the rabbitmq-service has a DNS name, provided by Kubernetes:
+nslookup rabbitmq-service
+</code></pre><pre tabindex=0><code>Server:        10.0.0.10
+Address:    10.0.0.10#53
+
+Name:    rabbitmq-service.default.svc.cluster.local
+Address: 10.0.147.152
+</code></pre><p>(the IP addresses will vary)</p><p>If the kube-dns addon is not set up correctly, the previous step may not work for you.
+You can also find the IP address for that Service in an environment variable:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># run this check inside the Pod</span>
+</span></span><span style=display:flex><span>env | grep RABBITMQ_SERVICE | grep HOST
+</span></span></code></pre></div><pre tabindex=0><code>RABBITMQ_SERVICE_SERVICE_HOST=10.0.147.152
+</code></pre><p>(the IP address will vary)</p><p>Next you will verify that you can create a queue, and publish and consume messages.</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># Run these commands inside the Pod</span>
+</span></span><span style=display:flex><span><span style=color:#080;font-style:italic># In the next line, rabbitmq-service is the hostname where the rabbitmq-service</span>
+</span></span><span style=display:flex><span><span style=color:#080;font-style:italic># can be reached.  5672 is the standard port for rabbitmq.</span>
+</span></span><span style=display:flex><span><span style=color:#a2f>export</span> <span style=color:#b8860b>BROKER_URL</span><span style=color:#666>=</span>amqp://guest:guest@rabbitmq-service:5672
+</span></span><span style=display:flex><span><span style=color:#080;font-style:italic># If you could not resolve &#34;rabbitmq-service&#34; in the previous step,</span>
+</span></span><span style=display:flex><span><span style=color:#080;font-style:italic># then use this command instead:</span>
+</span></span><span style=display:flex><span><span style=color:#b8860b>BROKER_URL</span><span style=color:#666>=</span>amqp://guest:guest@<span style=color:#b8860b>$RABBITMQ_SERVICE_SERVICE_HOST</span>:5672
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#080;font-style:italic># Now create a queue:</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>/usr/bin/amqp-declare-queue --url<span style=color:#666>=</span><span style=color:#b8860b>$BROKER_URL</span> -q foo -d
+</span></span></code></pre></div><pre tabindex=0><code>foo
+</code></pre><p>Publish one message to the queue:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>/usr/bin/amqp-publish --url<span style=color:#666>=</span><span style=color:#b8860b>$BROKER_URL</span> -r foo -p -b Hello
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#080;font-style:italic># And get it back.</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>/usr/bin/amqp-consume --url<span style=color:#666>=</span><span style=color:#b8860b>$BROKER_URL</span> -q foo -c <span style=color:#666>1</span> cat <span style=color:#666>&amp;&amp;</span> <span style=color:#a2f>echo</span> 1&gt;&amp;<span style=color:#666>2</span>
+</span></span></code></pre></div><pre tabindex=0><code>Hello
+</code></pre><p>In the last command, the <code>amqp-consume</code> tool took one message (<code>-c 1</code>)
+from the queue, and passes that message to the standard input of an arbitrary command.
+In this case, the program <code>cat</code> prints out the characters read from standard input, and
+the echo adds a carriage return so the example is readable.</p><h2 id=fill-the-queue-with-tasks>Fill the queue with tasks</h2><p>Now, fill the queue with some simulated tasks. In this example, the tasks are strings to be
+printed.</p><p>In a practice, the content of the messages might be:</p><ul><li>names of files to that need to be processed</li><li>extra flags to the program</li><li>ranges of keys in a database table</li><li>configuration parameters to a simulation</li><li>frame numbers of a scene to be rendered</li></ul><p>If there is large data that is needed in a read-only mode by all pods
+of the Job, you typically put that in a shared file system like NFS and mount
+that readonly on all the pods, or write the program in the pod so that it can natively read
+data from a cluster file system (for example: HDFS).</p><p>For this example, you will create the queue and fill it using the AMQP command line tools.
+In practice, you might write a program to fill the queue using an AMQP client library.</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># Run this on your computer, not in the Pod</span>
+</span></span><span style=display:flex><span>/usr/bin/amqp-declare-queue --url<span style=color:#666>=</span><span style=color:#b8860b>$BROKER_URL</span> -q job1  -d
+</span></span></code></pre></div><pre tabindex=0><code>job1
+</code></pre><p>Add items to the queue:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#a2f;font-weight:700>for</span> f in apple banana cherry date fig grape lemon melon
+</span></span><span style=display:flex><span><span style=color:#a2f;font-weight:700>do</span>
+</span></span><span style=display:flex><span>  /usr/bin/amqp-publish --url<span style=color:#666>=</span><span style=color:#b8860b>$BROKER_URL</span> -r job1 -p -b <span style=color:#b8860b>$f</span>
+</span></span><span style=display:flex><span><span style=color:#a2f;font-weight:700>done</span>
+</span></span></code></pre></div><p>You added 8 messages to the queue.</p><h2 id=create-a-container-image>Create a container image</h2><p>Now you are ready to create an image that you will run as a Job.</p><p>The job will use the <code>amqp-consume</code> utility to read the message
+from the queue and run the actual work. Here is a very simple
+example program:</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.32/content/en/examples/application/job/rabbitmq/worker.py download=application/job/rabbitmq/worker.py><code>application/job/rabbitmq/worker.py</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("application-job-rabbitmq-worker-py")' title="Copy application/job/rabbitmq/worker.py to clipboard"></img></div><div class=includecode id=application-job-rabbitmq-worker-py><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#080;font-style:italic>#!/usr/bin/env python</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#080;font-style:italic># Just prints standard out and sleeps for 10 seconds.</span>
+</span></span><span style=display:flex><span><span style=color:#a2f;font-weight:700>import</span> <span style=color:#00f;font-weight:700>sys</span>
+</span></span><span style=display:flex><span><span style=color:#a2f;font-weight:700>import</span> <span style=color:#00f;font-weight:700>time</span>
+</span></span><span style=display:flex><span><span style=color:#a2f>print</span>(<span style=color:#b44>&#34;Processing &#34;</span> <span style=color:#666>+</span> sys<span style=color:#666>.</span>stdin<span style=color:#666>.</span>readlines()[<span style=color:#666>0</span>])
+</span></span><span style=display:flex><span>time<span style=color:#666>.</span>sleep(<span style=color:#666>10</span>)
+</span></span></code></pre></div></div></div><p>Give the script execution permission:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>chmod +x worker.py
+</span></span></code></pre></div><p>Now, build an image. Make a temporary directory, change to it,
+download the <a href=/examples/application/job/rabbitmq/Dockerfile>Dockerfile</a>,
+and <a href=/examples/application/job/rabbitmq/worker.py>worker.py</a>. In either case,
+build the image with this command:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>docker build -t job-wq-1 .
+</span></span></code></pre></div><p>For the <a href=https://hub.docker.com/>Docker Hub</a>, tag your app image with
+your username and push to the Hub with the below commands. Replace
+<code>&lt;username></code> with your Hub username.</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>docker tag job-wq-1 &lt;username&gt;/job-wq-1
+</span></span><span style=display:flex><span>docker push &lt;username&gt;/job-wq-1
+</span></span></code></pre></div><p>If you are using an alternative container image registry, tag the
+image and push it there instead.</p><h2 id=defining-a-job>Defining a Job</h2><p>Here is a manifest for a Job. You'll need to make a copy of the Job manifest
+(call it <code>./job.yaml</code>),
+and edit the name of the container image to match the name you used.</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.32/content/en/examples/application/job/rabbitmq/job.yaml download=application/job/rabbitmq/job.yaml><code>application/job/rabbitmq/job.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("application-job-rabbitmq-job-yaml")' title="Copy application/job/rabbitmq/job.yaml to clipboard"></img></div><div class=includecode id=application-job-rabbitmq-job-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>batch/v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Job<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>job-wq-1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>completions</span>:<span style=color:#bbb> </span><span style=color:#666>8</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>parallelism</span>:<span style=color:#bbb> </span><span style=color:#666>2</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>template</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>job-wq-1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>c<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>gcr.io/&lt;project&gt;/job-wq-1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>env</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>BROKER_URL<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span>amqp://guest:guest@rabbitmq-service:5672<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>QUEUE<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>value</span>:<span style=color:#bbb> </span>job1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>restartPolicy</span>:<span style=color:#bbb> </span>OnFailure<span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><p>In this example, each pod works on one item from the queue and then exits.
+So, the completion count of the Job corresponds to the number of work items
+done. That is why the example manifest has <code>.spec.completions</code> set to <code>8</code>.</p><h2 id=running-the-job>Running the Job</h2><p>Now, run the Job:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># this assumes you downloaded and then edited the manifest already</span>
+</span></span><span style=display:flex><span>kubectl apply -f ./job.yaml
+</span></span></code></pre></div><p>You can wait for the Job to succeed, with a timeout:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># The check for condition name is case insensitive</span>
+</span></span><span style=display:flex><span>kubectl <span style=color:#a2f>wait</span> --for<span style=color:#666>=</span><span style=color:#b8860b>condition</span><span style=color:#666>=</span><span style=color:#a2f>complete</span> --timeout<span style=color:#666>=</span>300s job/job-wq-1
+</span></span></code></pre></div><p>Next, check on the Job:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl describe jobs/job-wq-1
+</span></span></code></pre></div><pre tabindex=0><code>Name:             job-wq-1
+Namespace:        default
+Selector:         controller-uid=41d75705-92df-11e7-b85e-fa163ee3c11f
+Labels:           controller-uid=41d75705-92df-11e7-b85e-fa163ee3c11f
+                  job-name=job-wq-1
+Annotations:      &lt;none&gt;
+Parallelism:      2
+Completions:      8
+Start Time:       Wed, 06 Sep 2022 16:42:02 +0000
+Pods Statuses:    0 Running / 8 Succeeded / 0 Failed
+Pod Template:
+  Labels:       controller-uid=41d75705-92df-11e7-b85e-fa163ee3c11f
+                job-name=job-wq-1
+  Containers:
+   c:
+    Image:      container-registry.example/causal-jigsaw-637/job-wq-1
+    Port:
+    Environment:
+      BROKER_URL:       amqp://guest:guest@rabbitmq-service:5672
+      QUEUE:            job1
+    Mounts:             &lt;none&gt;
+  Volumes:              &lt;none&gt;
+Events:
+  FirstSeen  LastSeen   Count    From    SubobjectPath    Type      Reason              Message
+  ─────────  ────────   ─────    ────    ─────────────    ──────    ──────              ───────
+  27s        27s        1        {job }                   Normal    SuccessfulCreate    Created pod: job-wq-1-hcobb
+  27s        27s        1        {job }                   Normal    SuccessfulCreate    Created pod: job-wq-1-weytj
+  27s        27s        1        {job }                   Normal    SuccessfulCreate    Created pod: job-wq-1-qaam5
+  27s        27s        1        {job }                   Normal    SuccessfulCreate    Created pod: job-wq-1-b67sr
+  26s        26s        1        {job }                   Normal    SuccessfulCreate    Created pod: job-wq-1-xe5hj
+  15s        15s        1        {job }                   Normal    SuccessfulCreate    Created pod: job-wq-1-w2zqe
+  14s        14s        1        {job }                   Normal    SuccessfulCreate    Created pod: job-wq-1-d6ppa
+  14s        14s        1        {job }                   Normal    SuccessfulCreate    Created pod: job-wq-1-p17e0
+</code></pre><p>All the pods for that Job succeeded! You're done.</p><h2 id=alternatives>Alternatives</h2><p>This approach has the advantage that you do not need to modify your "worker" program to be
+aware that there is a work queue. You can include the worker program unmodified in your container
+image.</p><p>Using this approach does require that you run a message queue service.
+If running a queue service is inconvenient, you may
+want to consider one of the other <a href=/docs/concepts/workloads/controllers/job/#job-patterns>job patterns</a>.</p><p>This approach creates a pod for every work item. If your work items only take a few seconds,
+though, creating a Pod for every work item may add a lot of overhead. Consider another
+design, such as in the <a href=/docs/tasks/job/fine-parallel-processing-work-queue/>fine parallel work queue example</a>,
+that executes multiple work items per Pod.</p><p>In this example, you used the <code>amqp-consume</code> utility to read the message
+from the queue and run the actual program. This has the advantage that you
+do not need to modify your program to be aware of the queue.
+The <a href=/docs/tasks/job/fine-parallel-processing-work-queue/>fine parallel work queue example</a>
+shows how to communicate with the work queue using a client library.</p><h2 id=caveats>Caveats</h2><p>If the number of completions is set to less than the number of items in the queue, then
+not all items will be processed.</p><p>If the number of completions is set to more than the number of items in the queue,
+then the Job will not appear to be completed, even though all items in the queue
+have been processed. It will start additional pods which will block waiting
+for a message.
+You would need to make your own mechanism to spot when there is work
+to do and measure the size of the queue, setting the number of completions to match.</p><p>There is an unlikely race with this pattern. If the container is killed in between the time
+that the message is acknowledged by the <code>amqp-consume</code> command and the time that the container
+exits with success, or if the node crashes before the kubelet is able to post the success of the pod
+back to the API server, then the Job will not appear to be complete, even though all items
+in the queue have been processed.</p></div><div class=td-content style=page-break-before:always><h1 id=pg-457c9dd93aed2b05615ed28dc38075d3>3 - Fine Parallel Processing Using a Work Queue</h1><p>In this example, you will run a Kubernetes Job that runs multiple parallel
+tasks as worker processes, each running as a separate Pod.</p><p>In this example, as each pod is created, it picks up one unit of work
+from a task queue, processes it, and repeats until the end of the queue is reached.</p><p>Here is an overview of the steps in this example:</p><ol><li><strong>Start a storage service to hold the work queue.</strong> In this example, you will use Redis to store
+work items. In the <a href=/docs/tasks/job/coarse-parallel-processing-work-queue/>previous example</a>,
+you used RabbitMQ. In this example, you will use Redis and a custom work-queue client library;
+this is because AMQP does not provide a good way for clients to
+detect when a finite-length work queue is empty. In practice you would set up a store such
+as Redis once and reuse it for the work queues of many jobs, and other things.</li><li><strong>Create a queue, and fill it with messages.</strong> Each message represents one task to be done. In
+this example, a message is an integer that we will do a lengthy computation on.</li><li><strong>Start a Job that works on tasks from the queue</strong>. The Job starts several pods. Each pod takes
+one task from the message queue, processes it, and repeats until the end of the queue is reached.</li></ol><h2 id=before-you-begin>Before you begin</h2><p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. It is recommended to run this tutorial on a cluster with at least two nodes that are not acting as control plane hosts. If you do not already have a
+cluster, you can create one by using
+<a href=https://minikube.sigs.k8s.io/docs/tutorials/multi_node/>minikube</a>
+or you can use one of these Kubernetes playgrounds:</p><ul><li><a href=https://killercoda.com/playgrounds/scenario/kubernetes>Killercoda</a></li><li><a href=https://kodekloud.com/public-playgrounds>KodeKloud</a></li><li><a href=https://labs.play-with-k8s.com/>Play with Kubernetes</a></li></ul><p>You will need a container image registry where you can upload images to run in your cluster.
+The example uses <a href=https://hub.docker.com/>Docker Hub</a>, but you could adapt it to a different
+container image registry.</p><p>This task example also assumes that you have Docker installed locally. You use Docker to
+build container images.</p><p>Be familiar with the basic,
+non-parallel, use of <a href=/docs/concepts/workloads/controllers/job/>Job</a>.</p><h2 id=starting-redis>Starting Redis</h2><p>For this example, for simplicity, you will start a single instance of Redis.
+See the <a href=https://github.com/kubernetes/examples/tree/master/guestbook>Redis Example</a> for an example
+of deploying Redis scalably and redundantly.</p><p>You could also download the following files directly:</p><ul><li><a href=/examples/application/job/redis/redis-pod.yaml><code>redis-pod.yaml</code></a></li><li><a href=/examples/application/job/redis/redis-service.yaml><code>redis-service.yaml</code></a></li><li><a href=/examples/application/job/redis/Dockerfile><code>Dockerfile</code></a></li><li><a href=/examples/application/job/redis/job.yaml><code>job.yaml</code></a></li><li><a href=/examples/application/job/redis/rediswq.py><code>rediswq.py</code></a></li><li><a href=/examples/application/job/redis/worker.py><code>worker.py</code></a></li></ul><p>To start a single instance of Redis, you need to create the redis pod and redis service:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl apply -f https://k8s.io/examples/application/job/redis/redis-pod.yaml
+</span></span><span style=display:flex><span>kubectl apply -f https://k8s.io/examples/application/job/redis/redis-service.yaml
+</span></span></code></pre></div><h2 id=filling-the-queue-with-tasks>Filling the queue with tasks</h2><p>Now let's fill the queue with some "tasks". In this example, the tasks are strings to be
+printed.</p><p>Start a temporary interactive pod for running the Redis CLI.</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl run -i --tty temp --image redis --command <span style=color:#b44>&#34;/bin/sh&#34;</span>
+</span></span></code></pre></div><pre tabindex=0><code>Waiting for pod default/redis2-c7h78 to be running, status is Pending, pod ready: false
+Hit enter for command prompt
+</code></pre><p>Now hit enter, start the Redis CLI, and create a list with some work items in it.</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>redis-cli -h redis
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-console data-lang=console><span style=display:flex><span><span style=color:#888>redis:6379&gt; rpush job2 &#34;apple&#34;
+</span></span></span><span style=display:flex><span><span style=color:#888>(integer) 1
+</span></span></span><span style=display:flex><span><span style=color:#888>redis:6379&gt; rpush job2 &#34;banana&#34;
+</span></span></span><span style=display:flex><span><span style=color:#888>(integer) 2
+</span></span></span><span style=display:flex><span><span style=color:#888>redis:6379&gt; rpush job2 &#34;cherry&#34;
+</span></span></span><span style=display:flex><span><span style=color:#888>(integer) 3
+</span></span></span><span style=display:flex><span><span style=color:#888>redis:6379&gt; rpush job2 &#34;date&#34;
+</span></span></span><span style=display:flex><span><span style=color:#888>(integer) 4
+</span></span></span><span style=display:flex><span><span style=color:#888>redis:6379&gt; rpush job2 &#34;fig&#34;
+</span></span></span><span style=display:flex><span><span style=color:#888>(integer) 5
+</span></span></span><span style=display:flex><span><span style=color:#888>redis:6379&gt; rpush job2 &#34;grape&#34;
+</span></span></span><span style=display:flex><span><span style=color:#888>(integer) 6
+</span></span></span><span style=display:flex><span><span style=color:#888>redis:6379&gt; rpush job2 &#34;lemon&#34;
+</span></span></span><span style=display:flex><span><span style=color:#888>(integer) 7
+</span></span></span><span style=display:flex><span><span style=color:#888>redis:6379&gt; rpush job2 &#34;melon&#34;
+</span></span></span><span style=display:flex><span><span style=color:#888>(integer) 8
+</span></span></span><span style=display:flex><span><span style=color:#888>redis:6379&gt; rpush job2 &#34;orange&#34;
+</span></span></span><span style=display:flex><span><span style=color:#888>(integer) 9
+</span></span></span><span style=display:flex><span><span style=color:#888>redis:6379&gt; lrange job2 0 -1
+</span></span></span><span style=display:flex><span><span style=color:#888>1) &#34;apple&#34;
+</span></span></span><span style=display:flex><span><span style=color:#888>2) &#34;banana&#34;
+</span></span></span><span style=display:flex><span><span style=color:#888>3) &#34;cherry&#34;
+</span></span></span><span style=display:flex><span><span style=color:#888>4) &#34;date&#34;
+</span></span></span><span style=display:flex><span><span style=color:#888>5) &#34;fig&#34;
+</span></span></span><span style=display:flex><span><span style=color:#888>6) &#34;grape&#34;
+</span></span></span><span style=display:flex><span><span style=color:#888>7) &#34;lemon&#34;
+</span></span></span><span style=display:flex><span><span style=color:#888>8) &#34;melon&#34;
+</span></span></span><span style=display:flex><span><span style=color:#888>9) &#34;orange&#34;
+</span></span></span></code></pre></div><p>So, the list with key <code>job2</code> will be the work queue.</p><p>Note: if you do not have Kube DNS setup correctly, you may need to change
+the first step of the above block to <code>redis-cli -h $REDIS_SERVICE_HOST</code>.</p><h2 id=create-an-image>Create a container image</h2><p>Now you are ready to create an image that will process the work in that queue.</p><p>You're going to use a Python worker program with a Redis client to read
+the messages from the message queue.</p><p>A simple Redis work queue client library is provided,
+called <code>rediswq.py</code> (<a href=/examples/application/job/redis/rediswq.py>Download</a>).</p><p>The "worker" program in each Pod of the Job uses the work queue
+client library to get work. Here it is:</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.32/content/en/examples/application/job/redis/worker.py download=application/job/redis/worker.py><code>application/job/redis/worker.py</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("application-job-redis-worker-py")' title="Copy application/job/redis/worker.py to clipboard"></img></div><div class=includecode id=application-job-redis-worker-py><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#080;font-style:italic>#!/usr/bin/env python</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a2f;font-weight:700>import</span> <span style=color:#00f;font-weight:700>time</span>
+</span></span><span style=display:flex><span><span style=color:#a2f;font-weight:700>import</span> <span style=color:#00f;font-weight:700>rediswq</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>host<span style=color:#666>=</span><span style=color:#b44>&#34;redis&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#080;font-style:italic># Uncomment next two lines if you do not have Kube-DNS working.</span>
+</span></span><span style=display:flex><span><span style=color:#080;font-style:italic># import os</span>
+</span></span><span style=display:flex><span><span style=color:#080;font-style:italic># host = os.getenv(&#34;REDIS_SERVICE_HOST&#34;)</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>q <span style=color:#666>=</span> rediswq<span style=color:#666>.</span>RedisWQ(name<span style=color:#666>=</span><span style=color:#b44>&#34;job2&#34;</span>, host<span style=color:#666>=</span>host)
+</span></span><span style=display:flex><span><span style=color:#a2f>print</span>(<span style=color:#b44>&#34;Worker with sessionID: &#34;</span> <span style=color:#666>+</span>  q<span style=color:#666>.</span>sessionID())
+</span></span><span style=display:flex><span><span style=color:#a2f>print</span>(<span style=color:#b44>&#34;Initial queue state: empty=&#34;</span> <span style=color:#666>+</span> <span style=color:#a2f>str</span>(q<span style=color:#666>.</span>empty()))
+</span></span><span style=display:flex><span><span style=color:#a2f;font-weight:700>while</span> <span style=color:#a2f;font-weight:700>not</span> q<span style=color:#666>.</span>empty():
+</span></span><span style=display:flex><span>  item <span style=color:#666>=</span> q<span style=color:#666>.</span>lease(lease_secs<span style=color:#666>=</span><span style=color:#666>10</span>, block<span style=color:#666>=</span><span style=color:#a2f;font-weight:700>True</span>, timeout<span style=color:#666>=</span><span style=color:#666>2</span>) 
+</span></span><span style=display:flex><span>  <span style=color:#a2f;font-weight:700>if</span> item <span style=color:#a2f;font-weight:700>is</span> <span style=color:#a2f;font-weight:700>not</span> <span style=color:#a2f;font-weight:700>None</span>:
+</span></span><span style=display:flex><span>    itemstr <span style=color:#666>=</span> item<span style=color:#666>.</span>decode(<span style=color:#b44>&#34;utf-8&#34;</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a2f>print</span>(<span style=color:#b44>&#34;Working on &#34;</span> <span style=color:#666>+</span> itemstr)
+</span></span><span style=display:flex><span>    time<span style=color:#666>.</span>sleep(<span style=color:#666>10</span>) <span style=color:#080;font-style:italic># Put your actual work here instead of sleep.</span>
+</span></span><span style=display:flex><span>    q<span style=color:#666>.</span>complete(item)
+</span></span><span style=display:flex><span>  <span style=color:#a2f;font-weight:700>else</span>:
+</span></span><span style=display:flex><span>    <span style=color:#a2f>print</span>(<span style=color:#b44>&#34;Waiting for work&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#a2f>print</span>(<span style=color:#b44>&#34;Queue empty, exiting&#34;</span>)
+</span></span></code></pre></div></div></div><p>You could also download <a href=/examples/application/job/redis/worker.py><code>worker.py</code></a>,
+<a href=/examples/application/job/redis/rediswq.py><code>rediswq.py</code></a>, and
+<a href=/examples/application/job/redis/Dockerfile><code>Dockerfile</code></a> files, then build
+the container image. Here's an example using Docker to do the image build:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>docker build -t job-wq-2 .
+</span></span></code></pre></div><h3 id=push-the-image>Push the image</h3><p>For the <a href=https://hub.docker.com/>Docker Hub</a>, tag your app image with
+your username and push to the Hub with the below commands. Replace
+<code>&lt;username></code> with your Hub username.</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>docker tag job-wq-2 &lt;username&gt;/job-wq-2
+</span></span><span style=display:flex><span>docker push &lt;username&gt;/job-wq-2
+</span></span></code></pre></div><p>You need to push to a public repository or <a href=/docs/concepts/containers/images/>configure your cluster to be able to access
+your private repository</a>.</p><h2 id=defining-a-job>Defining a Job</h2><p>Here is a manifest for the Job you will create:</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.32/content/en/examples/application/job/redis/job.yaml download=application/job/redis/job.yaml><code>application/job/redis/job.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("application-job-redis-job-yaml")' title="Copy application/job/redis/job.yaml to clipboard"></img></div><div class=includecode id=application-job-redis-job-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>batch/v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Job<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>job-wq-2<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>parallelism</span>:<span style=color:#bbb> </span><span style=color:#666>2</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>template</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>job-wq-2<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>c<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>gcr.io/myproject/job-wq-2<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>restartPolicy</span>:<span style=color:#bbb> </span>OnFailure<span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><div class="alert alert-info" role=alert><h4 class=alert-heading>Note:</h4>Be sure to edit the manifest to
+change <code>gcr.io/myproject</code> to your own path.</div><p>In this example, each pod works on several items from the queue and then exits when there are no more items.
+Since the workers themselves detect when the workqueue is empty, and the Job controller does not
+know about the workqueue, it relies on the workers to signal when they are done working.
+The workers signal that the queue is empty by exiting with success. So, as soon as <strong>any</strong> worker
+exits with success, the controller knows the work is done, and that the Pods will exit soon.
+So, you need to leave the completion count of the Job unset. The job controller will wait for
+the other pods to complete too.</p><h2 id=running-the-job>Running the Job</h2><p>So, now run the Job:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># this assumes you downloaded and then edited the manifest already</span>
+</span></span><span style=display:flex><span>kubectl apply -f ./job.yaml
+</span></span></code></pre></div><p>Now wait a bit, then check on the Job:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl describe jobs/job-wq-2
+</span></span></code></pre></div><pre tabindex=0><code>Name:             job-wq-2
+Namespace:        default
+Selector:         controller-uid=b1c7e4e3-92e1-11e7-b85e-fa163ee3c11f
+Labels:           controller-uid=b1c7e4e3-92e1-11e7-b85e-fa163ee3c11f
+                  job-name=job-wq-2
+Annotations:      &lt;none&gt;
+Parallelism:      2
+Completions:      &lt;unset&gt;
+Start Time:       Mon, 11 Jan 2022 17:07:59 +0000
+Pods Statuses:    1 Running / 0 Succeeded / 0 Failed
+Pod Template:
+  Labels:       controller-uid=b1c7e4e3-92e1-11e7-b85e-fa163ee3c11f
+                job-name=job-wq-2
+  Containers:
+   c:
+    Image:              container-registry.example/exampleproject/job-wq-2
+    Port:
+    Environment:        &lt;none&gt;
+    Mounts:             &lt;none&gt;
+  Volumes:              &lt;none&gt;
+Events:
+  FirstSeen    LastSeen    Count    From            SubobjectPath    Type        Reason            Message
+  ---------    --------    -----    ----            -------------    --------    ------            -------
+  33s          33s         1        {job-controller }                Normal      SuccessfulCreate  Created pod: job-wq-2-lglf8
+</code></pre><p>You can wait for the Job to succeed, with a timeout:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># The check for condition name is case insensitive</span>
+</span></span><span style=display:flex><span>kubectl <span style=color:#a2f>wait</span> --for<span style=color:#666>=</span><span style=color:#b8860b>condition</span><span style=color:#666>=</span><span style=color:#a2f>complete</span> --timeout<span style=color:#666>=</span>300s job/job-wq-2
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl logs pods/job-wq-2-7r7b2
+</span></span></code></pre></div><pre tabindex=0><code>Worker with sessionID: bbd72d0a-9e5c-4dd6-abf6-416cc267991f
+Initial queue state: empty=False
+Working on banana
+Working on date
+Working on lemon
+</code></pre><p>As you can see, one of the pods for this Job worked on several work units.</p><h2 id=alternatives>Alternatives</h2><p>If running a queue service or modifying your containers to use a work queue is inconvenient, you may
+want to consider one of the other
+<a href=/docs/concepts/workloads/controllers/job/#job-patterns>job patterns</a>.</p><p>If you have a continuous stream of background processing work to run, then
+consider running your background workers with a ReplicaSet instead,
+and consider running a background processing library such as
+<a href=https://github.com/resque/resque>https://github.com/resque/resque</a>.</p></div><div class=td-content style=page-break-before:always><h1 id=pg-9e63850014876afaebd1561f70bb8f6b>4 - Indexed Job for Parallel Processing with Static Work Assignment</h1><div class="feature-state-notice feature-stable"><span class=feature-state-name>FEATURE STATE:</span>
+<code>Kubernetes v1.24 [stable]</code></div><p>In this example, you will run a Kubernetes Job that uses multiple parallel
+worker processes.
+Each worker is a different container running in its own Pod. The Pods have an
+<em>index number</em> that the control plane sets automatically, which allows each Pod
+to identify which part of the overall task to work on.</p><p>The pod index is available in the <a class=glossary-tooltip title='A key-value pair that is used to attach arbitrary non-identifying metadata to objects.' data-toggle=tooltip data-placement=top href=/docs/concepts/overview/working-with-objects/annotations target=_blank aria-label=annotation>annotation</a>
+<code>batch.kubernetes.io/job-completion-index</code> as a string representing its
+decimal value. In order for the containerized task process to obtain this index,
+you can publish the value of the annotation using the <a href=/docs/concepts/workloads/pods/downward-api/>downward API</a>
+mechanism.
+For convenience, the control plane automatically sets the downward API to
+expose the index in the <code>JOB_COMPLETION_INDEX</code> environment variable.</p><p>Here is an overview of the steps in this example:</p><ol><li><strong>Define a Job manifest using indexed completion</strong>.
+The downward API allows you to pass the pod index annotation as an
+environment variable or file to the container.</li><li><strong>Start an <code>Indexed</code> Job based on that manifest</strong>.</li></ol><h2 id=before-you-begin>Before you begin</h2><p>You should already be familiar with the basic,
+non-parallel, use of <a href=/docs/concepts/workloads/controllers/job/>Job</a>.</p><p><p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. It is recommended to run this tutorial on a cluster with at least two nodes that are not acting as control plane hosts. If you do not already have a
+cluster, you can create one by using
+<a href=https://minikube.sigs.k8s.io/docs/tutorials/multi_node/>minikube</a>
+or you can use one of these Kubernetes playgrounds:</p><ul><li><a href=https://killercoda.com/playgrounds/scenario/kubernetes>Killercoda</a></li><li><a href=https://kodekloud.com/public-playgrounds>KodeKloud</a></li><li><a href=https://labs.play-with-k8s.com/>Play with Kubernetes</a></li></ul>Your Kubernetes server must be at or later than version v1.21.<p>To check the version, enter <code>kubectl version</code>.</p></p><h2 id=choose-an-approach>Choose an approach</h2><p>To access the work item from the worker program, you have a few options:</p><ol><li>Read the <code>JOB_COMPLETION_INDEX</code> environment variable. The Job
+<a class=glossary-tooltip title='A control loop that watches the shared state of the cluster through the apiserver and makes changes attempting to move the current state towards the desired state.' data-toggle=tooltip data-placement=top href=/docs/concepts/architecture/controller/ target=_blank aria-label=controller>controller</a>
+automatically links this variable to the annotation containing the completion
+index.</li><li>Read a file that contains the completion index.</li><li>Assuming that you can't modify the program, you can wrap it with a script
+that reads the index using any of the methods above and converts it into
+something that the program can use as input.</li></ol><p>For this example, imagine that you chose option 3 and you want to run the
+<a href=https://man7.org/linux/man-pages/man1/rev.1.html>rev</a> utility. This
+program accepts a file as an argument and prints its content reversed.</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>rev data.txt
+</span></span></code></pre></div><p>You'll use the <code>rev</code> tool from the
+<a href=https://hub.docker.com/_/busybox><code>busybox</code></a> container image.</p><p>As this is only an example, each Pod only does a tiny piece of work (reversing a short
+string). In a real workload you might, for example, create a Job that represents
+the
+task of producing 60 seconds of video based on scene data.
+Each work item in the video rendering Job would be to render a particular
+frame of that video clip. Indexed completion would mean that each Pod in
+the Job knows which frame to render and publish, by counting frames from
+the start of the clip.</p><h2 id=define-an-indexed-job>Define an Indexed Job</h2><p>Here is a sample Job manifest that uses <code>Indexed</code> completion mode:</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.32/content/en/examples/application/job/indexed-job.yaml download=application/job/indexed-job.yaml><code>application/job/indexed-job.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("application-job-indexed-job-yaml")' title="Copy application/job/indexed-job.yaml to clipboard"></img></div><div class=includecode id=application-job-indexed-job-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>batch/v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Job<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span><span style=color:#b44>&#39;indexed-job&#39;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>completions</span>:<span style=color:#bbb> </span><span style=color:#666>5</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>parallelism</span>:<span style=color:#bbb> </span><span style=color:#666>3</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>completionMode</span>:<span style=color:#bbb> </span>Indexed<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>template</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>restartPolicy</span>:<span style=color:#bbb> </span>Never<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>initContainers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span><span style=color:#b44>&#39;input&#39;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span><span style=color:#b44>&#39;docker.io/library/bash&#39;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>command</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:#b44>&#34;bash&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:#b44>&#34;-c&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- |<span style=color:#b44;font-style:italic>
+</span></span></span><span style=display:flex><span><span style=color:#b44;font-style:italic>          items=(foo bar baz qux xyz)
+</span></span></span><span style=display:flex><span><span style=color:#b44;font-style:italic>          echo ${items[$JOB_COMPLETION_INDEX]} &gt; /input/data.txt</span><span style=color:#bbb>          
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>volumeMounts</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>mountPath</span>:<span style=color:#bbb> </span>/input<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>input<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span><span style=color:#b44>&#39;worker&#39;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span><span style=color:#b44>&#39;docker.io/library/busybox&#39;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>command</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:#b44>&#34;rev&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:#b44>&#34;/input/data.txt&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>volumeMounts</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>mountPath</span>:<span style=color:#bbb> </span>/input<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>input<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>volumes</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>input<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>emptyDir</span>:<span style=color:#bbb> </span>{}<span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><p>In the example above, you use the builtin <code>JOB_COMPLETION_INDEX</code> environment
+variable set by the Job controller for all containers. An <a href=/docs/concepts/workloads/pods/init-containers/>init container</a>
+maps the index to a static value and writes it to a file that is shared with the
+container running the worker through an <a href=/docs/concepts/storage/volumes/#emptydir>emptyDir volume</a>.
+Optionally, you can <a href=/docs/tasks/inject-data-application/environment-variable-expose-pod-information/>define your own environment variable through the downward
+API</a>
+to publish the index to containers. You can also choose to load a list of values
+from a <a href=/docs/tasks/configure-pod-container/configure-pod-configmap/>ConfigMap as an environment variable or file</a>.</p><p>Alternatively, you can directly <a href=/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/#store-pod-fields>use the downward API to pass the annotation
+value as a volume file</a>,
+like shown in the following example:</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.32/content/en/examples/application/job/indexed-job-vol.yaml download=application/job/indexed-job-vol.yaml><code>application/job/indexed-job-vol.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("application-job-indexed-job-vol-yaml")' title="Copy application/job/indexed-job-vol.yaml to clipboard"></img></div><div class=includecode id=application-job-indexed-job-vol-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>batch/v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Job<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span><span style=color:#b44>&#39;indexed-job&#39;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>completions</span>:<span style=color:#bbb> </span><span style=color:#666>5</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>parallelism</span>:<span style=color:#bbb> </span><span style=color:#666>3</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>completionMode</span>:<span style=color:#bbb> </span>Indexed<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>template</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>restartPolicy</span>:<span style=color:#bbb> </span>Never<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span><span style=color:#b44>&#39;worker&#39;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span><span style=color:#b44>&#39;docker.io/library/busybox&#39;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>command</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:#b44>&#34;rev&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:#b44>&#34;/input/data.txt&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>volumeMounts</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- <span style=color:green;font-weight:700>mountPath</span>:<span style=color:#bbb> </span>/input<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>input<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>volumes</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>input<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>downwardAPI</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span><span style=color:green;font-weight:700>items</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>          </span>- <span style=color:green;font-weight:700>path</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;data.txt&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>            </span><span style=color:green;font-weight:700>fieldRef</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>              </span><span style=color:green;font-weight:700>fieldPath</span>:<span style=color:#bbb> </span>metadata.annotations[&#39;batch.kubernetes.io/job-completion-index&#39;]</span></span></code></pre></div></div></div><h2 id=running-the-job>Running the Job</h2><p>Now run the Job:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># This uses the first approach (relying on $JOB_COMPLETION_INDEX)</span>
+</span></span><span style=display:flex><span>kubectl apply -f https://kubernetes.io/examples/application/job/indexed-job.yaml
+</span></span></code></pre></div><p>When you create this Job, the control plane creates a series of Pods, one for each index you specified. The value of <code>.spec.parallelism</code> determines how many can run at once whereas <code>.spec.completions</code> determines how many Pods the Job creates in total.</p><p>Because <code>.spec.parallelism</code> is less than <code>.spec.completions</code>, the control plane waits for some of the first Pods to complete before starting more of them.</p><p>You can wait for the Job to succeed, with a timeout:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># The check for condition name is case insensitive</span>
+</span></span><span style=display:flex><span>kubectl <span style=color:#a2f>wait</span> --for<span style=color:#666>=</span><span style=color:#b8860b>condition</span><span style=color:#666>=</span><span style=color:#a2f>complete</span> --timeout<span style=color:#666>=</span>300s job/indexed-job
+</span></span></code></pre></div><p>Now, describe the Job and check that it was successful.</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl describe jobs/indexed-job
+</span></span></code></pre></div><p>The output is similar to:</p><pre tabindex=0><code>Name:              indexed-job
+Namespace:         default
+Selector:          controller-uid=bf865e04-0b67-483b-9a90-74cfc4c3e756
+Labels:            controller-uid=bf865e04-0b67-483b-9a90-74cfc4c3e756
+                   job-name=indexed-job
+Annotations:       &lt;none&gt;
+Parallelism:       3
+Completions:       5
+Start Time:        Thu, 11 Mar 2021 15:47:34 +0000
+Pods Statuses:     2 Running / 3 Succeeded / 0 Failed
+Completed Indexes: 0-2
+Pod Template:
+  Labels:  controller-uid=bf865e04-0b67-483b-9a90-74cfc4c3e756
+           job-name=indexed-job
+  Init Containers:
+   input:
+    Image:      docker.io/library/bash
+    Port:       &lt;none&gt;
+    Host Port:  &lt;none&gt;
+    Command:
+      bash
+      -c
+      items=(foo bar baz qux xyz)
+      echo ${items[$JOB_COMPLETION_INDEX]} &gt; /input/data.txt
+
+    Environment:  &lt;none&gt;
+    Mounts:
+      /input from input (rw)
+  Containers:
+   worker:
+    Image:      docker.io/library/busybox
+    Port:       &lt;none&gt;
+    Host Port:  &lt;none&gt;
+    Command:
+      rev
+      /input/data.txt
+    Environment:  &lt;none&gt;
+    Mounts:
+      /input from input (rw)
+  Volumes:
+   input:
+    Type:       EmptyDir (a temporary directory that shares a pod&#39;s lifetime)
+    Medium:
+    SizeLimit:  &lt;unset&gt;
+Events:
+  Type    Reason            Age   From            Message
+  ----    ------            ----  ----            -------
+  Normal  SuccessfulCreate  4s    job-controller  Created pod: indexed-job-njkjj
+  Normal  SuccessfulCreate  4s    job-controller  Created pod: indexed-job-9kd4h
+  Normal  SuccessfulCreate  4s    job-controller  Created pod: indexed-job-qjwsz
+  Normal  SuccessfulCreate  1s    job-controller  Created pod: indexed-job-fdhq5
+  Normal  SuccessfulCreate  1s    job-controller  Created pod: indexed-job-ncslj
+</code></pre><p>In this example, you run the Job with custom values for each index. You can
+inspect the output of one of the pods:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl logs indexed-job-fdhq5 <span style=color:#080;font-style:italic># Change this to match the name of a Pod from that Job</span>
+</span></span></code></pre></div><p>The output is similar to:</p><pre tabindex=0><code>xuq
+</code></pre></div><div class=td-content style=page-break-before:always><h1 id=pg-d65c40e1d2df81b94a09634c2432b055>5 - Job with Pod-to-Pod Communication</h1><p>In this example, you will run a Job in <a href=/blog/2021/04/19/introducing-indexed-jobs/>Indexed completion mode</a>
+configured such that the pods created by the Job can communicate with each other using pod hostnames rather
+than pod IP addresses.</p><p>Pods within a Job might need to communicate among themselves. The user workload running in each pod
+could query the Kubernetes API server to learn the IPs of the other Pods, but it's much simpler to
+rely on Kubernetes' built-in DNS resolution.</p><p>Jobs in Indexed completion mode automatically set the pods' hostname to be in the format of
+<code>${jobName}-${completionIndex}</code>. You can use this format to deterministically build
+pod hostnames and enable pod communication <em>without</em> needing to create a client connection to
+the Kubernetes control plane to obtain pod hostnames/IPs via API requests.</p><p>This configuration is useful for use cases where pod networking is required but you don't want
+to depend on a network connection with the Kubernetes API server.</p><h2 id=before-you-begin>Before you begin</h2><p>You should already be familiar with the basic use of <a href=/docs/concepts/workloads/controllers/job/>Job</a>.</p><p><p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. It is recommended to run this tutorial on a cluster with at least two nodes that are not acting as control plane hosts. If you do not already have a
+cluster, you can create one by using
+<a href=https://minikube.sigs.k8s.io/docs/tutorials/multi_node/>minikube</a>
+or you can use one of these Kubernetes playgrounds:</p><ul><li><a href=https://killercoda.com/playgrounds/scenario/kubernetes>Killercoda</a></li><li><a href=https://kodekloud.com/public-playgrounds>KodeKloud</a></li><li><a href=https://labs.play-with-k8s.com/>Play with Kubernetes</a></li></ul>Your Kubernetes server must be at or later than version v1.21.<p>To check the version, enter <code>kubectl version</code>.</p></p><div class="alert alert-info" role=alert><h4 class=alert-heading>Note:</h4>If you are using minikube or a similar tool, you may need to take
+<a href=https://minikube.sigs.k8s.io/docs/handbook/addons/ingress-dns/>extra steps</a>
+to ensure you have DNS.</div><h2 id=starting-a-job-with-pod-to-pod-communication>Starting a Job with pod-to-pod communication</h2><p>To enable pod-to-pod communication using pod hostnames in a Job, you must do the following:</p><ol><li><p>Set up a <a href=/docs/concepts/services-networking/service/#headless-services>headless Service</a>
+with a valid label selector for the pods created by your Job. The headless service must be
+in the same namespace as the Job. One easy way to do this is to use the
+<code>job-name: &lt;your-job-name></code> selector, since the <code>job-name</code> label will be automatically added
+by Kubernetes. This configuration will trigger the DNS system to create records of the hostnames
+of the pods running your Job.</p></li><li><p>Configure the headless service as subdomain service for the Job pods by including the following
+value in your Job template spec:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>subdomain</span>:<span style=color:#bbb> </span>&lt;headless-svc-name&gt;<span style=color:#bbb>
+</span></span></span></code></pre></div></li></ol><h3 id=example>Example</h3><p>Below is a working example of a Job with pod-to-pod communication via pod hostnames enabled.
+The Job is completed only after all pods successfully ping each other using hostnames.</p><div class="alert alert-info" role=alert><h4 class=alert-heading>Note:</h4>In the Bash script executed on each pod in the example below, the pod hostnames can be prefixed
+by the namespace as well if the pod needs to be reached from outside the namespace.</div><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Service<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>headless-svc<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>clusterIP</span>:<span style=color:#bbb> </span>None<span style=color:#bbb> </span><span style=color:#080;font-style:italic># clusterIP must be None to create a headless service</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>job-name</span>:<span style=color:#bbb> </span>example-job<span style=color:#bbb> </span><span style=color:#080;font-style:italic># must match Job name</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:#00f;font-weight:700>---</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>batch/v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Job<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>example-job<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>completions</span>:<span style=color:#bbb> </span><span style=color:#666>3</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>parallelism</span>:<span style=color:#bbb> </span><span style=color:#666>3</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>completionMode</span>:<span style=color:#bbb> </span>Indexed<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>template</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>subdomain</span>:<span style=color:#bbb> </span>headless-svc<span style=color:#bbb> </span><span style=color:#080;font-style:italic># has to match Service name</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>restartPolicy</span>:<span style=color:#bbb> </span>Never<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>example-workload<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>bash:latest<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>command</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- bash<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- -c<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- |<span style=color:#b44;font-style:italic>
+</span></span></span><span style=display:flex><span><span style=color:#b44;font-style:italic>          for i in 0 1 2
+</span></span></span><span style=display:flex><span><span style=color:#b44;font-style:italic>          do
+</span></span></span><span style=display:flex><span><span style=color:#b44;font-style:italic>            gotStatus=&#34;-1&#34;
+</span></span></span><span style=display:flex><span><span style=color:#b44;font-style:italic>            wantStatus=&#34;0&#34;             
+</span></span></span><span style=display:flex><span><span style=color:#b44;font-style:italic>            while [ $gotStatus -ne $wantStatus ]
+</span></span></span><span style=display:flex><span><span style=color:#b44;font-style:italic>            do                                       
+</span></span></span><span style=display:flex><span><span style=color:#b44;font-style:italic>              ping -c 1 example-job-${i}.headless-svc &gt; /dev/null 2&gt;&amp;1
+</span></span></span><span style=display:flex><span><span style=color:#b44;font-style:italic>              gotStatus=$?                
+</span></span></span><span style=display:flex><span><span style=color:#b44;font-style:italic>              if [ $gotStatus -ne $wantStatus ]; then
+</span></span></span><span style=display:flex><span><span style=color:#b44;font-style:italic>                echo &#34;Failed to ping pod example-job-${i}.headless-svc, retrying in 1 second...&#34;
+</span></span></span><span style=display:flex><span><span style=color:#b44;font-style:italic>                sleep 1
+</span></span></span><span style=display:flex><span><span style=color:#b44;font-style:italic>              fi
+</span></span></span><span style=display:flex><span><span style=color:#b44;font-style:italic>            done                                                         
+</span></span></span><span style=display:flex><span><span style=color:#b44;font-style:italic>            echo &#34;Successfully pinged pod: example-job-${i}.headless-svc&#34;
+</span></span></span><span style=display:flex><span><span style=color:#b44;font-style:italic>          done</span><span style=color:#bbb>          
+</span></span></span></code></pre></div><p>After applying the example above, reach each other over the network
+using: <code>&lt;pod-hostname>.&lt;headless-service-name></code>. You should see output similar to the following:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl logs example-job-0-qws42
+</span></span></code></pre></div><pre tabindex=0><code>Failed to ping pod example-job-0.headless-svc, retrying in 1 second...
+Successfully pinged pod: example-job-0.headless-svc
+Successfully pinged pod: example-job-1.headless-svc
+Successfully pinged pod: example-job-2.headless-svc
+</code></pre><div class="alert alert-info" role=alert><h4 class=alert-heading>Note:</h4>Keep in mind that the <code>&lt;pod-hostname>.&lt;headless-service-name></code> name format used
+in this example would not work with DNS policy set to <code>None</code> or <code>Default</code>.
+Refer to <a href=/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy>Pod's DNS Policy</a>.</div></div><div class=td-content style=page-break-before:always><h1 id=pg-da7c2b067953d239eb4457e8978ad8f6>6 - Parallel Processing using Expansions</h1><p>This task demonstrates running multiple <a class=glossary-tooltip title='A finite or batch task that runs to completion.' data-toggle=tooltip data-placement=top href=/docs/concepts/workloads/controllers/job/ target=_blank aria-label=Jobs>Jobs</a>
+based on a common template. You can use this approach to process batches of work in
+parallel.</p><p>For this example there are only three items: <em>apple</em>, <em>banana</em>, and <em>cherry</em>.
+The sample Jobs process each item by printing a string then pausing.</p><p>See <a href=#using-jobs-in-real-workloads>using Jobs in real workloads</a> to learn about how
+this pattern fits more realistic use cases.</p><h2 id=before-you-begin>Before you begin</h2><p>You should be familiar with the basic,
+non-parallel, use of <a href=/docs/concepts/workloads/controllers/job/>Job</a>.</p><p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. It is recommended to run this tutorial on a cluster with at least two nodes that are not acting as control plane hosts. If you do not already have a
+cluster, you can create one by using
+<a href=https://minikube.sigs.k8s.io/docs/tutorials/multi_node/>minikube</a>
+or you can use one of these Kubernetes playgrounds:</p><ul><li><a href=https://killercoda.com/playgrounds/scenario/kubernetes>Killercoda</a></li><li><a href=https://kodekloud.com/public-playgrounds>KodeKloud</a></li><li><a href=https://labs.play-with-k8s.com/>Play with Kubernetes</a></li></ul><p>For basic templating you need the command-line utility <code>sed</code>.</p><p>To follow the advanced templating example, you need a working installation of
+<a href=https://www.python.org/>Python</a>, and the Jinja2 template
+library for Python.</p><p>Once you have Python set up, you can install Jinja2 by running:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>pip install --user jinja2
+</span></span></code></pre></div><h2 id=create-jobs-based-on-a-template>Create Jobs based on a template</h2><p>First, download the following template of a Job to a file called <code>job-tmpl.yaml</code>.
+Here's what you'll download:</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.32/content/en/examples/application/job/job-tmpl.yaml download=application/job/job-tmpl.yaml><code>application/job/job-tmpl.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("application-job-job-tmpl-yaml")' title="Copy application/job/job-tmpl.yaml to clipboard"></img></div><div class=includecode id=application-job-job-tmpl-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>batch/v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Job<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>process-item-$ITEM<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>jobgroup</span>:<span style=color:#bbb> </span>jobexample<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>template</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>jobexample<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>jobgroup</span>:<span style=color:#bbb> </span>jobexample<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>c<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>busybox:1.28<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>command</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;sh&#34;</span>,<span style=color:#bbb> </span><span style=color:#b44>&#34;-c&#34;</span>,<span style=color:#bbb> </span><span style=color:#b44>&#34;echo Processing item $ITEM &amp;&amp; sleep 5&#34;</span>]<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>restartPolicy</span>:<span style=color:#bbb> </span>Never<span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># Use curl to download job-tmpl.yaml</span>
+</span></span><span style=display:flex><span>curl -L -s -O https://k8s.io/examples/application/job/job-tmpl.yaml
+</span></span></code></pre></div><p>The file you downloaded is not yet a valid Kubernetes
+<a class=glossary-tooltip title='A serialized specification of one or more Kubernetes API objects.' data-toggle=tooltip data-placement=top href='/docs/reference/glossary/?all=true#term-manifest' target=_blank aria-label=manifest>manifest</a>.
+Instead that template is a YAML representation of a Job object with some placeholders
+that need to be filled in before it can be used. The <code>$ITEM</code> syntax is not meaningful to Kubernetes.</p><h3 id=create-manifests-from-the-template>Create manifests from the template</h3><p>The following shell snippet uses <code>sed</code> to replace the string <code>$ITEM</code> with the loop
+variable, writing into a temporary directory named <code>jobs</code>. Run this now:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># Expand the template into multiple files, one for each item to be processed.</span>
+</span></span><span style=display:flex><span>mkdir ./jobs
+</span></span><span style=display:flex><span><span style=color:#a2f;font-weight:700>for</span> i in apple banana cherry
+</span></span><span style=display:flex><span><span style=color:#a2f;font-weight:700>do</span>
+</span></span><span style=display:flex><span>  cat job-tmpl.yaml | sed <span style=color:#b44>&#34;s/\$ITEM/</span><span style=color:#b8860b>$i</span><span style=color:#b44>/&#34;</span> &gt; ./jobs/job-<span style=color:#b8860b>$i</span>.yaml
+</span></span><span style=display:flex><span><span style=color:#a2f;font-weight:700>done</span>
+</span></span></code></pre></div><p>Check if it worked:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>ls jobs/
+</span></span></code></pre></div><p>The output is similar to this:</p><pre tabindex=0><code>job-apple.yaml
+job-banana.yaml
+job-cherry.yaml
+</code></pre><p>You could use any type of template language (for example: Jinja2; ERB), or
+write a program to generate the Job manifests.</p><h3 id=create-jobs-from-the-manifests>Create Jobs from the manifests</h3><p>Next, create all the Jobs with one kubectl command:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl create -f ./jobs
+</span></span></code></pre></div><p>The output is similar to this:</p><pre tabindex=0><code>job.batch/process-item-apple created
+job.batch/process-item-banana created
+job.batch/process-item-cherry created
+</code></pre><p>Now, check on the jobs:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get <span style=color:#a2f>jobs</span> -l <span style=color:#b8860b>jobgroup</span><span style=color:#666>=</span>jobexample
+</span></span></code></pre></div><p>The output is similar to this:</p><pre tabindex=0><code>NAME                  COMPLETIONS   DURATION   AGE
+process-item-apple    1/1           14s        22s
+process-item-banana   1/1           12s        21s
+process-item-cherry   1/1           12s        20s
+</code></pre><p>Using the <code>-l</code> option to kubectl selects only the Jobs that are part
+of this group of jobs (there might be other unrelated jobs in the system).</p><p>You can check on the Pods as well using the same
+<a class=glossary-tooltip title='Allows users to filter a list of resources based on labels.' data-toggle=tooltip data-placement=top href=/docs/concepts/overview/working-with-objects/labels/ target=_blank aria-label='label selector'>label selector</a>:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get pods -l <span style=color:#b8860b>jobgroup</span><span style=color:#666>=</span>jobexample
+</span></span></code></pre></div><p>The output is similar to:</p><pre tabindex=0><code>NAME                        READY     STATUS      RESTARTS   AGE
+process-item-apple-kixwv    0/1       Completed   0          4m
+process-item-banana-wrsf7   0/1       Completed   0          4m
+process-item-cherry-dnfu9   0/1       Completed   0          4m
+</code></pre><p>We can use this single command to check on the output of all jobs at once:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl logs -f -l <span style=color:#b8860b>jobgroup</span><span style=color:#666>=</span>jobexample
+</span></span></code></pre></div><p>The output should be:</p><pre tabindex=0><code>Processing item apple
+Processing item banana
+Processing item cherry
+</code></pre><h3 id=cleanup-1>Clean up</h3><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># Remove the Jobs you created</span>
+</span></span><span style=display:flex><span><span style=color:#080;font-style:italic># Your cluster automatically cleans up their Pods</span>
+</span></span><span style=display:flex><span>kubectl delete job -l <span style=color:#b8860b>jobgroup</span><span style=color:#666>=</span>jobexample
+</span></span></code></pre></div><h2 id=use-advanced-template-parameters>Use advanced template parameters</h2><p>In the <a href=#create-jobs-based-on-a-template>first example</a>, each instance of the template had one
+parameter, and that parameter was also used in the Job's name. However,
+<a href=/docs/concepts/overview/working-with-objects/names/#names>names</a> are restricted
+to contain only certain characters.</p><p>This slightly more complex example uses the
+<a href=https://palletsprojects.com/p/jinja/>Jinja template language</a> to generate manifests
+and then objects from those manifests, with a multiple parameters for each Job.</p><p>For this part of the task, you are going to use a one-line Python script to
+convert the template to a set of manifests.</p><p>First, copy and paste the following template of a Job object, into a file called <code>job.yaml.jinja2</code>:</p><pre tabindex=0><code class=language-liquid data-lang=liquid>{% set params = [{ &#34;name&#34;: &#34;apple&#34;, &#34;url&#34;: &#34;http://dbpedia.org/resource/Apple&#34;, },
+                  { &#34;name&#34;: &#34;banana&#34;, &#34;url&#34;: &#34;http://dbpedia.org/resource/Banana&#34;, },
+                  { &#34;name&#34;: &#34;cherry&#34;, &#34;url&#34;: &#34;http://dbpedia.org/resource/Cherry&#34; }]
+%}
+{% for p in params %}
+{% set name = p[&#34;name&#34;] %}
+{% set url = p[&#34;url&#34;] %}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: jobexample-{{ name }}
+  labels:
+    jobgroup: jobexample
+spec:
+  template:
+    metadata:
+      name: jobexample
+      labels:
+        jobgroup: jobexample
+    spec:
+      containers:
+      - name: c
+        image: busybox:1.28
+        command: [&#34;sh&#34;, &#34;-c&#34;, &#34;echo Processing URL {{ url }} &amp;&amp; sleep 5&#34;]
+      restartPolicy: Never
+{% endfor %}
+</code></pre><p>The above template defines two parameters for each Job object using a list of
+python dicts (lines 1-4). A <code>for</code> loop emits one Job manifest for each
+set of parameters (remaining lines).</p><p>This example relies on a feature of YAML. One YAML file can contain multiple
+documents (Kubernetes manifests, in this case), separated by <code>---</code> on a line
+by itself.
+You can pipe the output directly to <code>kubectl</code> to create the Jobs.</p><p>Next, use this one-line Python program to expand the template:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#a2f>alias</span> <span style=color:#b8860b>render_template</span><span style=color:#666>=</span><span style=color:#b44>&#39;python -c &#34;from jinja2 import Template; import sys; print(Template(sys.stdin.read()).render());&#34;&#39;</span>
+</span></span></code></pre></div><p>Use <code>render_template</code> to convert the parameters and template into a single
+YAML file containing Kubernetes manifests:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># This requires the alias you defined earlier</span>
+</span></span><span style=display:flex><span>cat job.yaml.jinja2 | render_template &gt; jobs.yaml
+</span></span></code></pre></div><p>You can view <code>jobs.yaml</code> to verify that the <code>render_template</code> script worked
+correctly.</p><p>Once you are happy that <code>render_template</code> is working how you intend,
+you can pipe its output into <code>kubectl</code>:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>cat job.yaml.jinja2 | render_template | kubectl apply -f -
+</span></span></code></pre></div><p>Kubernetes accepts and runs the Jobs you created.</p><h3 id=cleanup-2>Clean up</h3><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#080;font-style:italic># Remove the Jobs you created</span>
+</span></span><span style=display:flex><span><span style=color:#080;font-style:italic># Your cluster automatically cleans up their Pods</span>
+</span></span><span style=display:flex><span>kubectl delete job -l <span style=color:#b8860b>jobgroup</span><span style=color:#666>=</span>jobexample
+</span></span></code></pre></div><h2 id=using-jobs-in-real-workloads>Using Jobs in real workloads</h2><p>In a real use case, each Job performs some substantial computation, such as rendering a frame
+of a movie, or processing a range of rows in a database. If you were rendering a movie
+you would set <code>$ITEM</code> to the frame number. If you were processing rows from a database
+table, you would set <code>$ITEM</code> to represent the range of database rows to process.</p><p>In the task, you ran a command to collect the output from Pods by fetching
+their logs. In a real use case, each Pod for a Job writes its output to
+durable storage before completing. You can use a PersistentVolume for each Job,
+or an external storage service. For example, if you are rendering frames for a movie,
+use HTTP to <code>PUT</code> the rendered frame data to a URL, using a different URL for each
+frame.</p><h2 id=labels-on-jobs-and-pods>Labels on Jobs and Pods</h2><p>After you create a Job, Kubernetes automatically adds additional
+<a class=glossary-tooltip title='Tags objects with identifying attributes that are meaningful and relevant to users.' data-toggle=tooltip data-placement=top href=/docs/concepts/overview/working-with-objects/labels target=_blank aria-label=labels>labels</a> that
+distinguish one Job's pods from another Job's pods.</p><p>In this example, each Job and its Pod template have a label:
+<code>jobgroup=jobexample</code>.</p><p>Kubernetes itself pays no attention to labels named <code>jobgroup</code>. Setting a label
+for all the Jobs you create from a template makes it convenient to operate on all
+those Jobs at once.
+In the <a href=#create-jobs-based-on-a-template>first example</a> you used a template to
+create several Jobs. The template ensures that each Pod also gets the same label, so
+you can check on all Pods for these templated Jobs with a single command.</p><div class="alert alert-info" role=alert><h4 class=alert-heading>Note:</h4>The label key <code>jobgroup</code> is not special or reserved.
+You can pick your own labelling scheme.
+There are <a href=/docs/concepts/overview/working-with-objects/common-labels/#labels>recommended labels</a>
+that you can use if you wish.</div><h2 id=alternatives>Alternatives</h2><p>If you plan to create a large number of Job objects, you may find that:</p><ul><li>Even using labels, managing so many Jobs is cumbersome.</li><li>If you create many Jobs in a batch, you might place high load
+on the Kubernetes control plane. Alternatively, the Kubernetes API
+server could rate limit you, temporarily rejecting your requests with a 429 status.</li><li>You are limited by a <a class=glossary-tooltip title='Provides constraints that limit aggregate resource consumption per namespace.' data-toggle=tooltip data-placement=top href=/docs/concepts/policy/resource-quotas/ target=_blank aria-label='resource quota'>resource quota</a>
+on Jobs: the API server permanently rejects some of your requests
+when you create a great deal of work in one batch.</li></ul><p>There are other <a href=/docs/concepts/workloads/controllers/job/#job-patterns>job patterns</a>
+that you can use to process large amounts of work without creating very many Job
+objects.</p><p>You could also consider writing your own <a href=/docs/concepts/architecture/controller/>controller</a>
+to manage Job objects automatically.</p></div><div class=td-content style=page-break-before:always><h1 id=pg-ecb5ec00bbce2e57292c6687437beae0>7 - Handling retriable and non-retriable pod failures with Pod failure policy</h1><div class="feature-state-notice feature-stable" title="Feature Gate: JobPodFailurePolicy"><span class=feature-state-name>FEATURE STATE:</span>
+<code>Kubernetes v1.31 [stable]</code> (enabled by default: true)</div><p>This document shows you how to use the
+<a href=/docs/concepts/workloads/controllers/job/#pod-failure-policy>Pod failure policy</a>,
+in combination with the default
+<a href=/docs/concepts/workloads/controllers/job/#pod-backoff-failure-policy>Pod backoff failure policy</a>,
+to improve the control over the handling of container- or Pod-level failure
+within a <a class=glossary-tooltip title='A finite or batch task that runs to completion.' data-toggle=tooltip data-placement=top href=/docs/concepts/workloads/controllers/job/ target=_blank aria-label=Job>Job</a>.</p><p>The definition of Pod failure policy may help you to:</p><ul><li>better utilize the computational resources by avoiding unnecessary Pod retries.</li><li>avoid Job failures due to Pod disruptions (such <a class=glossary-tooltip title='Preemption logic in Kubernetes helps a pending Pod to find a suitable Node by evicting low priority Pods existing on that Node.' data-toggle=tooltip data-placement=top href=/docs/concepts/scheduling-eviction/pod-priority-preemption/#preemption target=_blank aria-label=preemption>preemption</a>,
+<a class=glossary-tooltip title='API-initiated eviction is the process by which you use the Eviction API to create an Eviction object that triggers graceful pod termination.' data-toggle=tooltip data-placement=top href=/docs/concepts/scheduling-eviction/api-eviction/ target=_blank aria-label='API-initiated eviction'>API-initiated eviction</a>
+or <a class=glossary-tooltip title='A core object consisting of three required properties: key, value, and effect. Taints prevent the scheduling of pods on nodes or node groups.' data-toggle=tooltip data-placement=top href=/docs/concepts/scheduling-eviction/taint-and-toleration/ target=_blank aria-label=taint>taint</a>-based eviction).</li></ul><h2 id=before-you-begin>Before you begin</h2><p>You should already be familiar with the basic use of <a href=/docs/concepts/workloads/controllers/job/>Job</a>.</p><p><p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. It is recommended to run this tutorial on a cluster with at least two nodes that are not acting as control plane hosts. If you do not already have a
+cluster, you can create one by using
+<a href=https://minikube.sigs.k8s.io/docs/tutorials/multi_node/>minikube</a>
+or you can use one of these Kubernetes playgrounds:</p><ul><li><a href=https://killercoda.com/playgrounds/scenario/kubernetes>Killercoda</a></li><li><a href=https://kodekloud.com/public-playgrounds>KodeKloud</a></li><li><a href=https://labs.play-with-k8s.com/>Play with Kubernetes</a></li></ul>Your Kubernetes server must be at or later than version v1.25.<p>To check the version, enter <code>kubectl version</code>.</p></p><h2 id=using-pod-failure-policy-to-avoid-unnecessary-pod-retries>Using Pod failure policy to avoid unnecessary Pod retries</h2><p>With the following example, you can learn how to use Pod failure policy to
+avoid unnecessary Pod restarts when a Pod failure indicates a non-retriable
+software bug.</p><p>First, create a Job based on the config:</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.32/content/en/examples//controllers/job-pod-failure-policy-failjob.yaml download=/controllers/job-pod-failure-policy-failjob.yaml><code>/controllers/job-pod-failure-policy-failjob.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("controllers-job-pod-failure-policy-failjob-yaml")' title="Copy /controllers/job-pod-failure-policy-failjob.yaml to clipboard"></img></div><div class=includecode id=controllers-job-pod-failure-policy-failjob-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>batch/v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Job<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>job-pod-failure-policy-failjob<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>completions</span>:<span style=color:#bbb> </span><span style=color:#666>8</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>parallelism</span>:<span style=color:#bbb> </span><span style=color:#666>2</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>template</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>restartPolicy</span>:<span style=color:#bbb> </span>Never<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>main<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>docker.io/library/bash:5<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>command</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;bash&#34;</span>]<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>args</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- -c<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- echo &#34;Hello world! I&#39;m going to exit with 42 to simulate a software bug.&#34; &amp;&amp; sleep 30 &amp;&amp; exit 42<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>backoffLimit</span>:<span style=color:#bbb> </span><span style=color:#666>6</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>podFailurePolicy</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>rules</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>action</span>:<span style=color:#bbb> </span>FailJob<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>onExitCodes</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>containerName</span>:<span style=color:#bbb> </span>main<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>operator</span>:<span style=color:#bbb> </span>In<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>values</span>:<span style=color:#bbb> </span>[<span style=color:#666>42</span>]<span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><p>by running:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl create -f job-pod-failure-policy-failjob.yaml
+</span></span></code></pre></div><p>After around 30s the entire Job should be terminated. Inspect the status of the Job by running:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl get <span style=color:#a2f>jobs</span> -l job-name<span style=color:#666>=</span>job-pod-failure-policy-failjob -o yaml
+</span></span></code></pre></div><p>In the Job status, the following conditions display:</p><ul><li><code>FailureTarget</code> condition: has a <code>reason</code> field set to <code>PodFailurePolicy</code> and
+a <code>message</code> field with more information about the termination, like
+<code>Container main for pod default/job-pod-failure-policy-failjob-8ckj8 failed with exit code 42 matching FailJob rule at index 0</code>.
+The Job controller adds this condition as soon as the Job is considered a failure.
+For details, see <a href=/docs/concepts/workloads/controllers/job/#termination-of-job-pods>Termination of Job Pods</a>.</li><li><code>Failed</code> condition: same <code>reason</code> and <code>message</code> as the <code>FailureTarget</code>
+condition. The Job controller adds this condition after all of the Job's Pods
+are terminated.</li></ul><p>For comparison, if the Pod failure policy was disabled it would take 6 retries
+of the Pod, taking at least 2 minutes.</p><h3 id=clean-up>Clean up</h3><p>Delete the Job you created:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl delete jobs/job-pod-failure-policy-failjob
+</span></span></code></pre></div><p>The cluster automatically cleans up the Pods.</p><h2 id=using-pod-failure-policy-to-ignore-pod-disruptions>Using Pod failure policy to ignore Pod disruptions</h2><p>With the following example, you can learn how to use Pod failure policy to
+ignore Pod disruptions from incrementing the Pod retry counter towards the
+<code>.spec.backoffLimit</code> limit.</p><div class="alert alert-caution" role=alert><h4 class=alert-heading>Caution:</h4>Timing is important for this example, so you may want to read the steps before
+execution. In order to trigger a Pod disruption it is important to drain the
+node while the Pod is running on it (within 90s since the Pod is scheduled).</div><ol><li><p>Create a Job based on the config:</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.32/content/en/examples//controllers/job-pod-failure-policy-ignore.yaml download=/controllers/job-pod-failure-policy-ignore.yaml><code>/controllers/job-pod-failure-policy-ignore.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("controllers-job-pod-failure-policy-ignore-yaml")' title="Copy /controllers/job-pod-failure-policy-ignore.yaml to clipboard"></img></div><div class=includecode id=controllers-job-pod-failure-policy-ignore-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>batch/v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Job<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>job-pod-failure-policy-ignore<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>completions</span>:<span style=color:#bbb> </span><span style=color:#666>4</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>parallelism</span>:<span style=color:#bbb> </span><span style=color:#666>2</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>template</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>restartPolicy</span>:<span style=color:#bbb> </span>Never<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>main<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>docker.io/library/bash:5<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>command</span>:<span style=color:#bbb> </span>[<span style=color:#b44>&#34;bash&#34;</span>]<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>args</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- -c<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span>- echo &#34;Hello world! I&#39;m going to exit with 0 (success).&#34; &amp;&amp; sleep 90 &amp;&amp; exit 0<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>backoffLimit</span>:<span style=color:#bbb> </span><span style=color:#666>0</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>podFailurePolicy</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>rules</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>action</span>:<span style=color:#bbb> </span>Ignore<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>onPodConditions</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>type</span>:<span style=color:#bbb> </span>DisruptionTarget<span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><p>by running:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl create -f job-pod-failure-policy-ignore.yaml
+</span></span></code></pre></div></li><li><p>Run this command to check the <code>nodeName</code> the Pod is scheduled to:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#b8860b>nodeName</span><span style=color:#666>=</span><span style=color:#a2f;font-weight:700>$(</span>kubectl get pods -l job-name<span style=color:#666>=</span>job-pod-failure-policy-ignore -o <span style=color:#b8860b>jsonpath</span><span style=color:#666>=</span><span style=color:#b44>&#39;{.items[0].spec.nodeName}&#39;</span><span style=color:#a2f;font-weight:700>)</span>
+</span></span></code></pre></div></li><li><p>Drain the node to evict the Pod before it completes (within 90s):</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl drain nodes/<span style=color:#b8860b>$nodeName</span> --ignore-daemonsets --grace-period<span style=color:#666>=</span><span style=color:#666>0</span>
+</span></span></code></pre></div></li><li><p>Inspect the <code>.status.failed</code> to check the counter for the Job is not incremented:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl get <span style=color:#a2f>jobs</span> -l job-name<span style=color:#666>=</span>job-pod-failure-policy-ignore -o yaml
+</span></span></code></pre></div></li><li><p>Uncordon the node:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl uncordon nodes/<span style=color:#b8860b>$nodeName</span>
+</span></span></code></pre></div></li></ol><p>The Job resumes and succeeds.</p><p>For comparison, if the Pod failure policy was disabled the Pod disruption would
+result in terminating the entire Job (as the <code>.spec.backoffLimit</code> is set to 0).</p><h3 id=cleaning-up>Cleaning up</h3><p>Delete the Job you created:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl delete jobs/job-pod-failure-policy-ignore
+</span></span></code></pre></div><p>The cluster automatically cleans up the Pods.</p><h2 id=using-pod-failure-policy-to-avoid-unnecessary-pod-retries-based-on-custom-pod-conditions>Using Pod failure policy to avoid unnecessary Pod retries based on custom Pod Conditions</h2><p>With the following example, you can learn how to use Pod failure policy to
+avoid unnecessary Pod restarts based on custom Pod Conditions.</p><div class="alert alert-info" role=alert><h4 class=alert-heading>Note:</h4>The example below works since version 1.27 as it relies on transitioning of
+deleted pods, in the <code>Pending</code> phase, to a terminal phase
+(see: <a href=/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase>Pod Phase</a>).</div><ol><li><p>First, create a Job based on the config:</p><div class="highlight code-sample"><div class=copy-code-icon><a href=https://raw.githubusercontent.com/kubernetes/website/release-1.32/content/en/examples//controllers/job-pod-failure-policy-config-issue.yaml download=/controllers/job-pod-failure-policy-config-issue.yaml><code>/controllers/job-pod-failure-policy-config-issue.yaml</code>
+</a><img src=/images/copycode.svg class=icon-copycode onclick='copyCode("controllers-job-pod-failure-policy-config-issue-yaml")' title="Copy /controllers/job-pod-failure-policy-config-issue.yaml to clipboard"></img></div><div class=includecode id=controllers-job-pod-failure-policy-config-issue-yaml><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>batch/v1<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Job<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>job-pod-failure-policy-config-issue<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>completions</span>:<span style=color:#bbb> </span><span style=color:#666>8</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>parallelism</span>:<span style=color:#bbb> </span><span style=color:#666>2</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>template</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>restartPolicy</span>:<span style=color:#bbb> </span>Never<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>main<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>        </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;non-existing-repo/non-existing-image:example&#34;</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>backoffLimit</span>:<span style=color:#bbb> </span><span style=color:#666>6</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>podFailurePolicy</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>rules</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>action</span>:<span style=color:#bbb> </span>FailJob<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>onPodConditions</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>- <span style=color:green;font-weight:700>type</span>:<span style=color:#bbb> </span>ConfigIssue<span style=color:#bbb>
+</span></span></span></code></pre></div></div></div><p>by running:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl create -f job-pod-failure-policy-config-issue.yaml
+</span></span></code></pre></div><p>Note that, the image is misconfigured, as it does not exist.</p></li><li><p>Inspect the status of the job's Pods by running:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl get pods -l job-name<span style=color:#666>=</span>job-pod-failure-policy-config-issue -o yaml
+</span></span></code></pre></div><p>You will see output similar to this:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:green;font-weight:700>containerStatuses</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span>- <span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>non-existing-repo/non-existing-image:example<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>   </span>...<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>   </span><span style=color:green;font-weight:700>state</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>   </span><span style=color:green;font-weight:700>waiting</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>message</span>:<span style=color:#bbb> </span>Back-off pulling image &#34;non-existing-repo/non-existing-image:example&#34;<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>reason</span>:<span style=color:#bbb> </span>ImagePullBackOff<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>      </span>...<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>phase</span>:<span style=color:#bbb> </span>Pending<span style=color:#bbb>
+</span></span></span></code></pre></div><p>Note that the pod remains in the <code>Pending</code> phase as it fails to pull the
+misconfigured image. This, in principle, could be a transient issue and the
+image could get pulled. However, in this case, the image does not exist so
+we indicate this fact by a custom condition.</p></li><li><p>Add the custom condition. First prepare the patch by running:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>cat <span style=color:#b44>&lt;&lt;EOF &gt; patch.yaml
+</span></span></span><span style=display:flex><span><span style=color:#b44>status:
+</span></span></span><span style=display:flex><span><span style=color:#b44>  conditions:
+</span></span></span><span style=display:flex><span><span style=color:#b44>  - type: ConfigIssue
+</span></span></span><span style=display:flex><span><span style=color:#b44>    status: &#34;True&#34;
+</span></span></span><span style=display:flex><span><span style=color:#b44>    reason: &#34;NonExistingImage&#34;
+</span></span></span><span style=display:flex><span><span style=color:#b44>    lastTransitionTime: &#34;$(date -u +&#34;%Y-%m-%dT%H:%M:%SZ&#34;)&#34;
+</span></span></span><span style=display:flex><span><span style=color:#b44>EOF</span>
+</span></span></code></pre></div><p>Second, select one of the pods created by the job by running:</p><pre tabindex=0><code>podName=$(kubectl get pods -l job-name=job-pod-failure-policy-config-issue -o jsonpath=&#39;{.items[0].metadata.name}&#39;)
+</code></pre><p>Then, apply the patch on one of the pods by running the following command:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl patch pod <span style=color:#b8860b>$podName</span> --subresource<span style=color:#666>=</span>status --patch-file<span style=color:#666>=</span>patch.yaml
+</span></span></code></pre></div><p>If applied successfully, you will get a notification like this:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>pod/job-pod-failure-policy-config-issue-k6pvp patched
+</span></span></code></pre></div></li><li><p>Delete the pod to transition it to <code>Failed</code> phase, by running the command:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl delete pods/<span style=color:#b8860b>$podName</span>
+</span></span></code></pre></div></li><li><p>Inspect the status of the Job by running:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl get <span style=color:#a2f>jobs</span> -l job-name<span style=color:#666>=</span>job-pod-failure-policy-config-issue -o yaml
+</span></span></code></pre></div><p>In the Job status, see a job <code>Failed</code> condition with the field <code>reason</code>
+equal <code>PodFailurePolicy</code>. Additionally, the <code>message</code> field contains a
+more detailed information about the Job termination, such as:
+<code>Pod default/job-pod-failure-policy-config-issue-k6pvp has condition ConfigIssue matching FailJob rule at index 0</code>.</p></li></ol><div class="alert alert-info" role=alert><h4 class=alert-heading>Note:</h4>In a production environment, the steps 3 and 4 should be automated by a
+user-provided controller.</div><h3 id=cleaning-up-1>Cleaning up</h3><p>Delete the Job you created:</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl delete jobs/job-pod-failure-policy-config-issue
+</span></span></code></pre></div><p>The cluster automatically cleans up the Pods.</p><h2 id=alternatives>Alternatives</h2><p>You could rely solely on the
+<a href=/docs/concepts/workloads/controllers/job/#pod-backoff-failure-policy>Pod backoff failure policy</a>,
+by specifying the Job's <code>.spec.backoffLimit</code> field. However, in many situations
+it is problematic to find a balance between setting a low value for <code>.spec.backoffLimit</code>
+to avoid unnecessary Pod retries, yet high enough to make sure the Job would
+not be terminated by Pod disruptions.</p></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-5 col-sm-7 text-center order-2 footer-main"><p><span class=copyright-notice>&copy; 2026 The Kubernetes Authors | Documentation Distributed under <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a></span></p><p><span class=copyright-notice>&copy; 2026 The Linux Foundation &reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href=https://www.linuxfoundation.org/trademark-usage class=light-text>Trademark Usage page</a></span></p><p><span class=certification-notice>ICP license: <a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></span></p></div><div class="col col-sm-2 text-xs-center order-1"><ul class="list-inline mb-0 footer-icons"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://youtube.com/kubernetescommunity aria-label><i class="fa-brands fa-youtube"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://discuss.kubernetes.io aria-label><i class="fa-solid fa-envelope"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://serverfault.com/questions/tagged/kubernetes aria-label><i class="fa-brands fa-stack-overflow"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://www.linkedin.com/company/kubernetes/ aria-label><i class="fa-brands fa-linkedin"></i></a></li></ul></div><div class="col col-sm-2 text-right text-xs-center order-3"><ul class="list-inline mb-0 footer-icons"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://k8s.dev/ aria-label><i class="fa-solid fa-laptop-code"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://github.com/kubernetes/kubernetes aria-label><i class="fa-brands fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href=https://slack.k8s.io aria-label><i class="fa-brands fa-slack"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title aria-label><a class=text-white target=_blank rel=noopener href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io" aria-label><i class="fa-solid fa-calendar-days"></i></a></li></ul></div></div></div></footer></div><script src=/js/script.js></script><script src=/js/main.js></script><script src=/js/split-1.6.0.js integrity=sha384-0blL3GqHy6+9fw0cyY2Aoiwg4onHAtslAs4OkqZY7UQBrR65/K4gI+hxLdWDrjpz></script><script>let splitInstance=null;function enableSplitter(e){e.matches?splitInstance||(splitInstance=Split(["#sidebarnav","#maindoc"],{sizes:[20,80],minSize:100})):splitInstance&&(splitInstance.destroy(),splitInstance=null)}const screenWidthMediaQuery=window.matchMedia("(min-width: 768px)"),eleNav=document.getElementById("sidebarnav");eleNav!==null&&(enableSplitter(screenWidthMediaQuery),screenWidthMediaQuery.addListener(enableSplitter))</script><script defer src=/js/detect-js.js></script></body></html>
