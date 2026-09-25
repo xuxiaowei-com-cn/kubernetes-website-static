@@ -1,0 +1,203 @@
+<!doctype html><html lang=zh-cn class=no-js><head><meta name=robots content="noindex, nofollow"><link rel=alternate hreflang=en href=https://kubernetes.xuxiaowei.com.cn/docs/reference/networking/><link rel=alternate hreflang=ja href=https://kubernetes.xuxiaowei.com.cn/ja/docs/reference/networking/><link rel=alternate hreflang=ko href=https://kubernetes.xuxiaowei.com.cn/ko/docs/reference/networking/><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.121.2"><link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/zh-cn/docs/reference/networking/><link rel="shortcut icon" type=image/png href=/images/kubernetes.png><link rel=icon type=image/png sizes=64x64 href=/icons/favicon-64.png><link rel=icon type=image/png sizes=32x32 href=/icons/favicon-32.png><link rel=icon type=image/png sizes=16x16 href=/icons/favicon-16.png><link rel=apple-touch-icon-256x256 href=/icons/apple-touch-icon-256x256.png><link rel=apple-touch-icon-196x196 href=/icons/apple-touch-icon-196x196.png><link rel=apple-touch-icon-192x192 href=/icons/apple-touch-icon-192x192.png><link rel=apple-touch-icon-180x180 href=/icons/apple-touch-icon-180x180.png><link rel=apple-touch-icon-167x167 href=/icons/apple-touch-icon-167x167.png><link rel=apple-touch-icon-160x160 href=/icons/apple-touch-icon-160x160.png><link rel=apple-touch-icon-152x152 href=/icons/apple-touch-icon-152x152.png><link rel=apple-touch-icon-120x120 href=/icons/apple-touch-icon-120x120.png><link rel=apple-touch-icon-76x76 href=/icons/apple-touch-icon-76x76.png><link rel=icon type=image/png href=/icons/icon-128x128.png sizes=128x128><meta name=theme-color content="#326de6"><title>网络参考 | Kubernetes</title><meta property="og:title" content="网络参考">
+<meta property="og:description" content="生产级别的容器编排系统"><meta property="og:type" content="website"><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/zh-cn/docs/reference/networking/"><meta itemprop=name content="网络参考"><meta itemprop=description content="生产级别的容器编排系统"><meta name=twitter:card content="summary"><meta name=twitter:title content="网络参考"><meta name=twitter:description content="生产级别的容器编排系统"><link href=/scss/main.css rel=stylesheet><link rel=manifest href=/manifest.webmanifest><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png"}</script><meta name=theme-color content="#326ce5"><style>.gutter{background-color:#eee;background-repeat:no-repeat;background-position:50%}.gutter.gutter-horizontal{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==);cursor:col-resize}#sidebarnav,#maindoc{max-width:100%}#maindoc{overflow-wrap:break-word}@media(max-width:768px){#sidebarnav{padding-left:15px;padding-right:15px}}</style><meta name=description content="Kubernetes 文档的这一部分提供了 Kubernetes 网络的参考详细信息。"><meta property="og:description" content="Kubernetes 文档的这一部分提供了 Kubernetes 网络的参考详细信息。"><meta name=twitter:description content="Kubernetes 文档的这一部分提供了 Kubernetes 网络的参考详细信息。"><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/zh-cn/docs/reference/networking/"><meta property="og:title" content="网络参考"><meta name=twitter:title content="网络参考"><meta name=twitter:image content="https://kubernetes.io/images/favicon.png"><meta name=twitter:image:alt content="Kubernetes"><meta property="og:image" content="/images/kubernetes-horizontal-color.png"><meta property="og:type" content="article"><script src=/js/jquery-3.6.0.min.js intregrity=sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK crossorigin=anonymous></script><script src=/js/split-1.6.0.js intregrity=sha384-0blL3GqHy6+9fw0cyY2Aoiwg4onHAtslAs4OkqZY7UQBrR65/K4gI+hxLdWDrjpz></script><script defer src=/js/dismiss_banner.js></script><link type=text/css rel=stylesheet href=/css/custom.css><script type=text/javascript>(function(e,t,n,s,o,i,a){e[n]=e[n]||function(){(e[n].q=e[n].q||[]).push(arguments)},i=t.createElement(s),i.async=1,i.src="https://www.clarity.ms/tag/"+o,a=t.getElementsByTagName(s)[0],a.parentNode.insertBefore(i,a)})(window,document,"clarity","script","ym5vfo77p1")</script></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-column flex-md-row td-navbar" data-auto-burger=primary><a class="navbar-brand img-fluid" href=/zh-cn/></a><div class="td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0"><li class="nav-item mr-2 mb-lg-0"><a class="nav-link active" href=/zh-cn/docs/>文档</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/zh-cn/blog/>Kubernetes 博客</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/zh-cn/training/>培训</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/zh-cn/partners/>合作伙伴</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/zh-cn/community/>社区</a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/zh-cn/case-studies/>案例分析</a></li><li class="nav-item mr-n3 mr-lg-0 dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>版本列表</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/zh-cn/releases>发布信息</a>
+<a class=dropdown-item href=https://xuxiaowei.io/t/1320/zh-cn/docs/reference/networking/>Kubernetes 文档说明</a>
+<a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn/zh-cn/docs/reference/networking/>v1.38</a>
+<a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn/zh-cn/docs/reference/networking/>v1.37</a>
+<a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn/zh-cn/docs/reference/networking/>v1.36</a>
+<a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn/zh-cn/docs/reference/networking/>v1.35</a>
+<a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn/zh-cn/docs/reference/networking/>v1.34</a>
+<a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn/zh-cn/docs/reference/networking/>v1.33</a>
+<a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn/zh-cn/docs/reference/networking/>v1.32</a>
+<a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn/zh-cn/docs/reference/networking/>v1.31</a>
+<a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn/zh-cn/docs/reference/networking/>v1.30</a>
+<a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn/zh-cn/docs/reference/networking/>v1.29</a>
+<a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn/zh-cn/docs/reference/networking/>v1.28</a>
+<a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn/zh-cn/docs/reference/networking/>v1.27</a>
+<a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn/zh-cn/docs/reference/networking/>v1.26</a>
+<a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn/zh-cn/docs/reference/networking/>v1.25</a>
+<a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn/zh-cn/docs/reference/networking/>v1.24</a>
+<a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn/zh-cn/docs/reference/networking/>v1.23</a>
+<a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn/zh-cn/docs/reference/networking/>v1.22</a>
+<a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn/zh-cn/docs/reference/networking/>v1.21</a>
+<a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn/zh-cn/docs/reference/networking/>v1.20</a></div></li><li class="nav-item mr-n4 mr-lg-0 dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdownMenuLink role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>中文 (Chinese)</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/reference/networking/>English</a>
+<a class=dropdown-item href=/ja/docs/reference/networking/>日本語 (Japanese)</a>
+<a class=dropdown-item href=/ko/docs/reference/networking/>한국어 (Korean)</a></div></li><li class="search-item nav-item mr-n4 mr-lg-0"><div class=search-bar><i class="search-icon fas fa-search"></i>
+<input type=search name=q data-search-page=/zh-cn/search/ class="search-input td-search-input" placeholder=搜索 aria-label=搜索 autocomplete=off></div></li></ul></div><button id=hamburger onclick=kub.toggleMenu() data-auto-burger-exclude><div></div></button></nav></header><div class="container-fluid td-outer"><div class=td-main><div class="row flex-xl-nowrap"><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><div class=td-content><div class="pageinfo pageinfo-primary d-print-none"><p>这是本节的多页打印视图。
+<a href=# onclick="return print(),!1">点击此处打印</a>.</p><p><a href=/zh-cn/docs/reference/networking/>返回本页常规视图</a>.</p></div><h1 class=title>网络参考</h1><ul><li>1: <a href=#pg-a097017db59d2768c0422adcd3f79efd>Service 所用的协议</a></li><li>2: <a href=#pg-5927c7cb60e78293efad3e86e45df77f>端口和协议</a></li><li>3: <a href=#pg-d59bf31808ffbe549a5b9ecfc354cfad>虚拟 IP 和服务代理</a></li></ul><div class=content><p>Kubernetes 文档的这一部分提供了 Kubernetes 网络的参考详细信息。</p></div></div><div class=td-content><h1 id=pg-a097017db59d2768c0422adcd3f79efd>1 - Service 所用的协议</h1><p>如果你配置 <a class=glossary-tooltip title='将运行在一组 Pods 上的应用程序公开为网络服务的抽象方法。' data-toggle=tooltip data-placement=top href=/zh-cn/docs/concepts/services-networking/service/ target=_blank aria-label=Service>Service</a>，
+你可以从 Kubernetes 支持的任何网络协议中选择一个协议。</p><p>Kubernetes 支持以下协议用于 Service：</p><ul><li><a href=#protocol-sctp><code>SCTP</code></a></li><li><a href=#protocol-tcp><code>TCP</code></a> <strong>（默认值）</strong></li><li><a href=#protocol-udp><code>UDP</code></a></li></ul><p>当你定义 Service 时，
+你还可以指定其使用的<a href=/zh-cn/docs/concepts/services-networking/service/#application-protocol>应用协议</a>。</p><p>本文详细说明了一些特殊场景，这些场景通常均使用 TCP 作为传输协议：</p><ul><li><a href=#protocol-http-special>HTTP</a> 和 <a href=#protocol-http-special>HTTPS</a></li><li><a href=#protocol-proxy-special>PROXY 协议</a></li><li><a href=#protocol-tls-special>TLS</a> 终止于负载均衡器处</li></ul><h2 id=protocol-support>支持的协议</h2><p>Service 端口的 <code>protocol</code> 有 3 个有效值：</p><h3 id=protocol-sctp><code>SCTP</code></h3><div class="feature-state-notice feature-stable"><span class=feature-state-name>特性状态：</span> <code>Kubernetes v1.20 [stable]</code></div><p>当使用支持 SCTP 流量的网络插件时，你可以为大多数 Service 使用 SCTP。
+对于 <code>type: LoadBalancer</code> Service，对 SCTP 的支持情况取决于提供此项设施的云供应商（大部分不支持）。</p><p>运行 Windows 的节点不支持 SCTP。</p><h4 id=caveat-sctp-multihomed>支持多宿主 SCTP 关联</h4><p>对多宿主 SCTP 关联的支持要求 CNI 插件可以支持为 Pod 分配多个接口和 IP 地址。</p><p>针对多宿主 SCTP 关联的 NAT 需要在对应的内核模块具有特殊的逻辑。</p><h3 id=protocol-tcp><code>TCP</code></h3><p>你可以将 TCP 用于任何类别的 Service，这是默认的网络协议。</p><h3 id=protocol-udp><code>UDP</code></h3><p>你可以将 UDP 用于大多数 Service。对于 <code>type: LoadBalancer</code> Service，
+UDP 的支持与否取决于提供此项设施的云供应商。</p><h2 id=special-cases>特殊场景</h2><h3 id=protocol-http-special>HTTP</h3><p>如果你的云供应商支持负载均衡，而且尤其是该云供应商的负载均衡器实现了 HTTP/HTTPS 反向代理，
+可将流量转发到该 Service 的后端端点，那么你就可以使用 LoadBalancer 模式的 Service 以便在
+Kubernetes 集群外部配置负载均衡器。</p><p>通常，你将 Service 协议设置为 <code>TCP</code>，
+并添加一个<a class=glossary-tooltip title=注解是以键值对的形式给资源对象附加随机的无法标识的元数据。 data-toggle=tooltip data-placement=top href=/zh-cn/docs/concepts/overview/working-with-objects/annotations/ target=_blank aria-label=注解>注解</a>
+（一般取决于你的云供应商）配置负载均衡器，以便在 HTTP 级别处理流量。
+此配置也可能包括为你的工作负载提供 HTTPS（基于 TLS 的 HTTP）并反向代理纯 HTTP。</p><div class="alert alert-info" role=alert><h4 class=alert-heading>说明：</h4><p>你也可以使用 <a class=glossary-tooltip title='Ingress 是对集群中服务的外部访问进行管理的 API 对象，典型的访问方式是 HTTP。' data-toggle=tooltip data-placement=top href=/zh-cn/docs/concepts/services-networking/ingress/ target=_blank aria-label=Ingress>Ingress</a> 来暴露 HTTP/HTTPS Service。</p></div><p>你可能还想指定连接的<a href=/zh-cn/docs/concepts/services-networking/service/#application-protocol>应用协议</a>是
+<code>http</code> 还是 <code>https</code>。如果从负载均衡器到工作负载的会话是不带 TLS 的 HTTP，请使用 <code>http</code>；
+如果从负载均衡器到工作负载的会话使用 TLS 加密，请使用 <code>https</code>。</p><h3 id=protocol-proxy-special>PROXY 协议</h3><p>如果你的云供应商支持此协议，你可以使用设置为 <code>type: LoadBalancer</code> 的 Service，
+在 Kubernetes 本身的外部配置负载均衡器，以转发用
+<a href=https://www.haproxy.org/download/2.5/doc/proxy-protocol.txt>PROXY 协议</a>封装的连接。</p><p>负载均衡器然后发送一个初始的八位元组系列来描述传入的连接，这类似于以下示例（PROXY 协议 v1）：</p><pre tabindex=0><code>PROXY TCP4 192.0.2.202 10.0.42.7 12345 7\r\n
+</code></pre><p>代理协议前导码之后的数据是来自客户端的原始数据。
+当任何一侧关闭连接时，负载均衡器也会触发连接关闭并在可行的情况下发送所有残留数据。</p><p>通常，你会将 Service 协议定义为 <code>TCP</code>。
+你还会设置一个特定于云供应商的注解，将负载均衡器配置为以 PROXY 协议封装所有传入的连接。</p><h3 id=protocol-tls-special>TLS</h3><p>如果你的云供应商支持 TLS，你可以使用设置为 <code>type: LoadBalancer</code> 的 Service
+作为设置外部反向代理的一种方式，其中从客户端到负载均衡器的连接是 TLS 加密的且该负载均衡器是
+TLS 对等服务器。从负载均衡器到工作负载的连接可以是 TLS，或可能是纯文本。
+你可以使用的确切选项取决于你的云供应商或自定义 Service 实现。</p><p>通常，你会将协议设置为 <code>TCP</code> 并设置一个注解（通常特定于你的云供应商），
+将负载均衡器配置为充当一个 TLS 服务器。你将使用特定于云供应商的机制来配置 TLS 身份
+（作为服务器，也可能作为连接到工作负载的客户端）。</p></div><div class=td-content style=page-break-before:always><h1 id=pg-5927c7cb60e78293efad3e86e45df77f>2 - 端口和协议</h1><p>当你在一个有严格网络边界的环境里运行 Kubernetes，例如拥有物理网络防火墙或者拥有公有云中虚拟网络的自有数据中心，
+了解 Kubernetes 组件使用了哪些端口和协议是非常有用的。</p><h2 id=control-plane>控制面</h2><table><thead><tr><th>协议</th><th>方向</th><th>端口范围</th><th>目的</th><th>使用者</th></tr></thead><tbody><tr><td>TCP</td><td>入站</td><td>6443</td><td>Kubernetes API 服务器</td><td>所有</td></tr><tr><td>TCP</td><td>入站</td><td>2379-2380</td><td>etcd 服务器客户端 API</td><td>kube-apiserver、etcd</td></tr><tr><td>TCP</td><td>入站</td><td>10250</td><td>kubelet API</td><td>自身、控制面</td></tr><tr><td>TCP</td><td>入站</td><td>10259</td><td>kube-scheduler</td><td>自身</td></tr><tr><td>TCP</td><td>入站</td><td>10257</td><td>kube-controller-manager</td><td>自身</td></tr></tbody></table><p>尽管 etcd 的端口也列举在控制面的部分，但你也可以在外部自己托管 etcd 集群或者自定义端口。</p><h2 id=node>工作节点</h2><table><thead><tr><th>协议</th><th>方向</th><th>端口范围</th><th>目的</th><th>使用者</th></tr></thead><tbody><tr><td>TCP</td><td>入站</td><td>10250</td><td>kubelet API</td><td>自身、控制面</td></tr><tr><td>TCP</td><td>入站</td><td>10256</td><td>kube-proxy</td><td>自身、负载均衡器</td></tr><tr><td>TCP</td><td>入站</td><td>30000-32767</td><td>NodePort Services†</td><td>所有</td></tr></tbody></table><p>† <a href=/zh-cn/docs/concepts/services-networking/service/>NodePort Service</a> 的默认端口范围。</p><p>所有默认端口都可以重新配置。当使用自定义的端口时，你需要打开这些端口来代替这里提到的默认端口。</p><p>一个常见的例子是 API 服务器的端口有时会配置为 443。或者你也可以使用默认端口，
+把 API 服务器放到一个监听 443 端口的负载均衡器后面，并且路由所有请求到 API 服务器的默认端口。</p></div><div class=td-content style=page-break-before:always><h1 id=pg-d59bf31808ffbe549a5b9ecfc354cfad>3 - 虚拟 IP 和服务代理</h1><p>Kubernetes <a class=glossary-tooltip title=一组工作机器，称为节点，会运行容器化应用程序。每个集群至少有一个工作节点。 data-toggle=tooltip data-placement=top href='/zh-cn/docs/reference/glossary/?all=true#term-cluster' target=_blank aria-label=集群>集群</a>中的每个
+<a class=glossary-tooltip title='Kubernetes 中的工作机器称作节点。' data-toggle=tooltip data-placement=top href=/zh-cn/docs/concepts/architecture/nodes/ target=_blank aria-label=节点>节点</a>会运行一个
+<a href=/zh-cn/docs/reference/command-line-tools-reference/kube-proxy/>kube-proxy</a>
+（除非你已经部署了自己的替换组件来替代 <code>kube-proxy</code>）。</p><p><code>kube-proxy</code> 组件负责除 <code>type</code> 为
+<a href=/zh-cn/docs/concepts/services-networking/service/#externalname><code>ExternalName</code></a>
+以外的<a class=glossary-tooltip title='将运行在一组 Pods 上的应用程序公开为网络服务的抽象方法。' data-toggle=tooltip data-placement=top href=/zh-cn/docs/concepts/services-networking/service/ target=_blank aria-label=服务>服务</a>，实现<strong>虚拟 IP</strong> 机制。</p><p>一个时不时出现的问题是，为什么 Kubernetes 依赖代理将入站流量转发到后端。
+其他方案呢？例如，是否可以配置具有多个 A 值（或 IPv6 的 AAAA）的 DNS 记录，
+使用轮询域名解析？</p><p>使用代理转发方式实现 Service 的原因有以下几个：</p><ul><li>DNS 的实现不遵守记录的 TTL 约定的历史由来已久，在记录过期后可能仍有结果缓存。</li><li>有些应用只做一次 DNS 查询，然后永久缓存结果。</li><li>即使应用程序和库进行了适当的重新解析，TTL 取值较低或为零的 DNS 记录可能会给 DNS 带来很大的压力，
+从而变得难以管理。</li></ul><p>在下文中，你可以了解到 kube-proxy 各种实现方式的工作原理。
+总的来说，你应该注意到，在运行 <code>kube-proxy</code> 时，
+可能会修改内核级别的规则（例如，可能会创建 iptables 规则），
+在某些情况下，这些规则直到重启才会被清理。
+因此，运行 kube-proxy 这件事应该只由了解在计算机上使用低级别、特权网络代理服务会带来的后果的管理员执行。
+尽管 <code>kube-proxy</code> 可执行文件支持 <code>cleanup</code> 功能，但这个功能并不是官方特性，因此只能根据具体情况使用。</p><p><a id=example></a>本文中的一些细节会引用这样一个例子：
+运行了 3 个 <a class=glossary-tooltip title='Pod 表示你的集群上一组正在运行的容器。' data-toggle=tooltip data-placement=top href=/zh-cn/docs/concepts/workloads/pods/ target=_blank aria-label=Pod>Pod</a>
+副本的无状态图像处理后端工作负载。
+这些副本是可互换的；前端不需要关心它们调用了哪个后端副本。
+即使组成这一组后端程序的 Pod 实际上可能会发生变化，
+前端客户端不应该也没必要知道，而且也不需要跟踪这一组后端的状态。</p><h2 id=proxy-modes>代理模式</h2><p>kube-proxy 会根据不同配置以不同的模式启动。</p><p>在 Linux 节点上，kube-proxy 的可用模式是：</p><dl><dt><a href=#proxy-mode-iptables><code>iptables</code></a></dt><dd>kube-proxy 在 Linux 上使用 iptables 配置数据包转发规则的一种模式。</dd><dt><a href=#proxy-mode-ipvs><code>ipvs</code></a></dt><dd>kube-proxy 使用 ipvs 配置数据包转发规则的一种模式。</dd></dl><p>Windows 上的 kube-proxy 只有一种模式可用：</p><dl><dt><a href=#proxy-mode-kernelspace><code>kernelspace</code></a></dt><dd>kube-proxy 在 Windows 内核中配置数据包转发规则的一种模式。</dd></dl><h3 id=proxy-mode-iptables><code>iptables</code> 代理模式</h3><p><strong>此代理模式仅适用于 Linux 节点。</strong></p><p>在这种模式下，kube-proxy 监视 Kubernetes
+<a class=glossary-tooltip title='控制平面是指容器编排层，它暴露 API 和接口来定义、部署容器和管理容器的生命周期。' data-toggle=tooltip data-placement=top href='/zh-cn/docs/reference/glossary/?all=true#term-control-plane' target=_blank aria-label=控制平面>控制平面</a>，获知对 Service 和 EndpointSlice
+<a class=glossary-tooltip title='Kubernetes 系统中的实体，代表了集群的部分状态。' data-toggle=tooltip data-placement=top href=/zh-cn/docs/concepts/overview/working-with-objects/#kubernetes-objects target=_blank aria-label=对象>对象</a>的添加和删除操作。
+对于每个 Service，kube-proxy 会添加 iptables 规则，这些规则捕获流向 Service 的 <code>clusterIP</code> 和 <code>port</code> 的流量，
+并将这些流量重定向到 Service 后端集合中的其中之一。
+对于每个端点，它会添加指向一个特定后端 Pod 的 iptables 规则。</p><p>默认情况下，iptables 模式下的 kube-proxy 会随机选择一个后端。</p><p>使用 iptables 处理流量的系统开销较低，因为流量由 Linux netfilter 处理，
+无需在用户空间和内核空间之间切换。这种方案也更为可靠。</p><p>如果 kube-proxy 以 iptables 模式运行，并且它选择的第一个 Pod 没有响应，
+那么连接会失败。这与用户空间模式不同：
+在后者这种情况下，kube-proxy 会检测到与第一个 Pod 的连接失败，
+并会自动用不同的后端 Pod 重试。</p><p>你可以使用 Pod <a href=/zh-cn/docs/concepts/workloads/pods/pod-lifecycle/#container-probes>就绪探针</a>来验证后端 Pod 是否健康。
+这样可以避免 kube-proxy 将流量发送到已知失败的 Pod 上。</p><figure class=diagram-medium><img src=/zh-cn/docs/images/services-iptables-overview.svg><figcaption><h4>iptables 模式下 Service 的虚拟 IP 机制</h4></figcaption></figure><h4 id=packet-processing-iptables>示例</h4><p>例如，考虑本页中<a href=#example>前面</a>描述的图像处理应用程序。
+当创建后端 Service 时，Kubernetes 控制平面会分配一个虚拟 IP 地址，例如 10.0.0.1。
+对于这个例子而言，假设 Service 端口是 1234。
+集群中的所有 kube-proxy 实例都会观察到新 Service 的创建。</p><p>当节点上的 kube-proxy 观察到新 Service 时，它会添加一系列 iptables 规则，
+这些规则从虚拟 IP 地址重定向到更多 iptables 规则，每个 Service 都定义了这些规则。
+每个 Service 规则链接到每个后端端点的更多规则，
+并且每个端点规则将流量重定向（使用目标 NAT）到后端。</p><p>当客户端连接到 Service 的虚拟 IP 地址时，iptables 规则会生效。
+会选择一个后端（基于会话亲和性或随机选择），并将数据包重定向到后端，无需重写客户端 IP 地址。</p><p>当流量通过节点端口或负载均衡器进入时，也会执行相同的基本流程，
+只是在这些情况下，客户端 IP 地址会被更改。</p><h4 id=optimizing-iptables-mode-performance>优化 iptables 模式性能</h4><p>在大型集群（有数万个 Pod 和 Service）中，当 Service（或其 EndpointSlice）发生变化时
+iptables 模式的 kube-proxy 在更新内核中的规则时可能要用较长时间。
+你可以通过（<code>kube-proxy --config &lt;path></code> 指定的）kube-proxy
+<a href=/zh-cn/docs/reference/config-api/kube-proxy-config.v1alpha1/>配置文件</a>的
+<a href=/zh-cn/docs/reference/config-api/kube-proxy-config.v1alpha1/#kubeproxy-config-k8s-io-v1alpha1-KubeProxyIPTablesConfiguration><code>iptables</code> 节</a>中的选项来调整
+kube-proxy 的同步行为：</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#00f;font-weight:700>...</span><span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:green;font-weight:700>iptables</span>:<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>minSyncPeriod</span>:<span style=color:#bbb> </span>1s<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>syncPeriod</span>:<span style=color:#bbb> </span>30s<span style=color:#bbb>
+</span></span></span><span style=display:flex><span><span style=color:#bbb></span><span style=color:#00f;font-weight:700>...</span><span style=color:#bbb>
+</span></span></span></code></pre></div><h5 id=minsyncperiod><code>minSyncPeriod</code></h5><p><code>minSyncPeriod</code> 参数设置尝试同步 iptables 规则与内核之间的最短时长。
+如果是 <code>0s</code>，那么每次有任一 Service 或 Endpoint 发生变更时，kube-proxy 都会立即同步这些规则。
+这种方式在较小的集群中可以工作得很好，但如果在很短的时间内很多东西发生变更时，它会导致大量冗余工作。
+例如，如果你有一个由 <a class=glossary-tooltip title=管理集群上的多副本应用。 data-toggle=tooltip data-placement=top href=/zh-cn/docs/concepts/workloads/controllers/deployment/ target=_blank aria-label=Deployment>Deployment</a>
+支持的 Service，共有 100 个 Pod，你删除了这个 Deployment，
+且设置了 <code>minSyncPeriod: 0s</code>，kube-proxy 最终会从 iptables 规则中逐个删除 Service 的 Endpoint，
+总共更新 100 次。使用较大的 <code>minSyncPeriod</code> 值时，多个 Pod 删除事件将被聚合在一起，
+因此 kube-proxy 最终可能会进行例如 5 次更新，每次移除 20 个端点，
+这样在 CPU 利用率方面更有效率，能够更快地同步所有变更。</p><p><code>minSyncPeriod</code> 的值越大，可以聚合的工作越多，
+但缺点是每个独立的变更可能最终要等待整个 <code>minSyncPeriod</code> 周期后才能被处理，
+这意味着 iptables 规则要用更多时间才能与当前的 API 服务器状态同步。</p><p>默认值 <code>1s</code> 适用于大多数集群，在大型集群中，可能需要将其设置为更大的值。
+（特别是，如果 kube-proxy 的 <code>sync_proxy_rules_duration_seconds</code> 指标表明平均时间远大于 1 秒，
+那么提高 <code>minSyncPeriod</code> 可能会使更新更有效率。）</p><h5 id=minimize-iptables-restore>更新原有的 <code>minSyncPeriod</code> 配置</h5><p>旧版本的 kube-proxy 在每次同步时为所有 Service 更新规则；
+这在大型集群中会造成性能问题（更新延迟），建议的解决方案是设置较大的 <code>minSyncPeriod</code>。
+自 Kubernetes v1.28 开始，kube-proxy 的 iptables 模式采用了更精简的方法，
+只有在 Service 或 EndpointSlice 实际发生变化时才会进行更新。</p><p>如果你之前覆盖了 <code>minSyncPeriod</code>，你应该尝试删除该覆盖并让 kube-proxy
+使用默认值（<code>1s</code>）或至少比升级前使用的值小。</p><p>如果你运行的不是 Kubernetes 1.30 版本的 kube-proxy，
+请检查你实际运行的版本的行为和相关建议。</p><h5 id=syncperiod><code>syncPeriod</code></h5><p><code>syncPeriod</code> 参数控制与单次 Service 和 EndpointSlice 的变更没有直接关系的少数同步操作。
+特别是，它控制 kube-proxy 在外部组件已干涉 kube-proxy 的 iptables 规则时通知的速度。
+在大型集群中，kube-proxy 也仅在每隔 <code>syncPeriod</code> 时长执行某些清理操作，以避免不必要的工作。</p><p>在大多数情况下，提高 <code>syncPeriod</code> 预计不会对性能产生太大影响，
+但在过去，有时将其设置为非常大的值（例如 <code>1h</code>）很有用。
+现在不再推荐这种做法，因为它对功能的破坏可能会超过对性能的改进。</p><h3 id=proxy-mode-ipvs>IPVS 代理模式</h3><p><strong>此代理模式仅适用于 Linux 节点。</strong></p><p>在 <code>ipvs</code> 模式下，kube-proxy 监视 Kubernetes Service 和 EndpointSlice，
+然后调用 <code>netlink</code> 接口创建 IPVS 规则，
+并定期与 Kubernetes Service 和 EndpointSlice 同步 IPVS 规则。
+该控制回路确保 IPVS 状态与期望的状态保持一致。
+访问 Service 时，IPVS 会将流量导向到某一个后端 Pod。</p><p>IPVS 代理模式基于 netfilter 回调函数，类似于 iptables 模式，
+但它使用哈希表作为底层数据结构，在内核空间中生效。
+这意味着 IPVS 模式下的 kube-proxy 比 iptables 模式下的 kube-proxy
+重定向流量的延迟更低，同步代理规则时性能也更好。
+与其他代理模式相比，IPVS 模式还支持更高的网络流量吞吐量。</p><p>IPVS 为将流量均衡到后端 Pod 提供了更多选择：</p><ul><li><p><code>rr</code>（轮询）：流量被平均分发给后端服务器。</p></li><li><p><code>wrr</code>（加权轮询）：流量基于服务器的权重被路由到后端服务器。
+高权重的服务器接收新的连接并处理比低权重服务器更多的请求。</p></li><li><p><code>lc</code>（最少连接）：将更多流量分配给活跃连接数较少的服务器。</p></li></ul><ul><li><p><code>wlc</code>（加权最少连接）：将更多流量按照服务器权重分配给连接数较少的服务器，即基于连接数除以权重。</p></li><li><p><code>lblc</code>（基于地域的最少连接）：如果服务器未超载且可用，则针对相同 IP 地址的流量被发送到同一后端服务器；
+否则，流量被发送到连接较少的服务器，并在未来的流量分配中保持这一分配决定。</p></li></ul><ul><li><code>lblcr</code>（带副本的基于地域的最少连接）：针对相同 IP 地址的流量被发送到连接数最少的服务器。
+如果所有后端服务器都超载，则选择连接较少的服务器并将其添加到目标集中。
+如果目标集在指定时间内未发生变化，则从此集合中移除负载最高的服务器，以避免副本的负载过高。</li></ul><ul><li><p><code>sh</code>（源哈希）：通过查找基于源 IP 地址的静态分配哈希表，将流量发送到某后端服务器。</p></li><li><p><code>dh</code>（目标哈希）：通过查找基于目标地址的静态分配哈希表，将流量发送到某后端服务器。</p></li></ul><ul><li><p><code>sed</code>（最短预期延迟）：流量被转发到具有最短预期延迟的后端服务器。
+如果流量被发送给服务器，预期延迟为 <code>(C + 1) / U</code>，其中 <code>C</code> 是服务器上的连接数，
+<code>U</code> 是服务器的固定服务速率（权重）。</p></li><li><p><code>nq</code>（永不排队）：流量被发送到一台空闲服务器（如果有的话），而不是等待一台快速服务器；
+如果所有服务器都忙碌，算法将退回到 <code>sed</code> 行为。</p></li></ul><div class="alert alert-info" role=alert><h4 class=alert-heading>说明：</h4><p>要在 IPVS 模式下运行 kube-proxy，必须在启动 kube-proxy 之前确保节点上的 IPVS 可用。</p><p>当 kube-proxy 以 IPVS 代理模式启动时，它会验证 IPVS 内核模块是否可用。
+如果未检测到 IPVS 内核模块，则 kube-proxy 会退回到 iptables 代理模式运行。</p></div><figure class=diagram-medium><img src=/zh-cn/docs/images/services-ipvs-overview.svg><figcaption><h4>IPVS 模式下 Service 的虚拟 IP 地址机制</h4></figcaption></figure><h3 id=proxy-mode-kernelspace><code>kernelspace</code> 代理模式</h3><p><strong>此代理模式仅适用于 Windows 节点。</strong></p><p>kube-proxy 在 Windows <strong>虚拟过滤平台</strong> (VFP)（Windows vSwitch 的扩展）中配置数据包过滤规则。
+这些规则处理节点级虚拟网络中的封装数据包，并重写数据包，使目标 IP 地址（和第 2 层信息）正确，
+以便将数据包路由到正确的目的地。Windows VFP 类似于 Linux <code>nftables</code> 或 <code>iptables</code> 等工具。
+Windows VFP 是最初为支持虚拟机网络而实现的 <strong>Hyper-V Switch</strong> 的扩展。</p><p>当节点上的 Pod 将流量发送到某虚拟 IP 地址，且 kube-proxy 选择不同节点上的 Pod
+作为负载均衡目标时，<code>kernelspace</code> 代理模式会重写该数据包以将其发送到对应目标后端 Pod。
+Windows 主机网络服务（HSN）会配置数据包重写规则，确保返回流量看起来来自虚拟 IP 地址，
+而不是特定的后端 Pod。</p><h4 id=windows-direct-server-return><code>kernelspace</code> 模式的 Direct Server Return（DSR）</h4><div class="feature-state-notice feature-alpha"><span class=feature-state-name>特性状态：</span> <code>Kubernetes v1.14 [alpha]</code></div><p>作为基本操作的替代方案，托管服务后端 Pod 的节点可以直接应用数据包重写，
+而不用将此工作交给运行客户端 Pod 的节点来执行。这称为 <strong>Direct Server Return（DSR）</strong>。</p><p>要使用这种技术，你必须使用 <code>--enable-dsr</code> 命令行参数运行 kube-proxy <strong>并</strong>启用
+<code>WinDSR</code> <a href=/zh-cn/docs/reference/command-line-tools-reference/feature-gates/>特性门控</a>。</p><p>即使两个 Pod 在同一节点上运行，DSR 也可优化 Pod 的返回流量。</p><h2 id=session-affinity>会话亲和性</h2><p>在这些代理模型中，绑定到 Service IP:Port 的流量被代理到合适的后端，
+客户端不需要知道任何关于 Kubernetes、Service 或 Pod 的信息。</p><p>如果要确保来自特定客户端的连接每次都传递给同一个 Pod，
+你可以通过设置 Service 的 <code>.spec.sessionAffinity</code> 为 <code>ClientIP</code>
+来设置基于客户端 IP 地址的会话亲和性（默认为 <code>None</code>）。</p><h3 id=session-stickiness-timeout>会话粘性超时</h3><p>你还可以通过设置 Service 的 <code>.spec.sessionAffinityConfig.clientIP.timeoutSeconds</code>
+来设置最大会话粘性时间（默认值为 10800，即 3 小时）。</p><div class="alert alert-info" role=alert><h4 class=alert-heading>说明：</h4><p>在 Windows 上不支持为 Service 设置最大会话粘性时间。</p></div><h2 id=ip-address-assignment-to-services>将 IP 地址分配给 Service</h2><p>与实际路由到固定目标的 Pod IP 地址不同，Service IP 实际上不是由单个主机回答的。
+相反，kube-proxy 使用数据包处理逻辑（例如 Linux 的 iptables）
+来定义<strong>虚拟</strong> IP 地址，这些地址会按需被透明重定向。</p><p>当客户端连接到 VIP 时，其流量会自动传输到适当的端点。
+实际上，Service 的环境变量和 DNS 是根据 Service 的虚拟 IP 地址（和端口）填充的。</p><h3 id=avoiding-collisions>避免冲突</h3><p>Kubernetes 的主要哲学之一是，
+你不应需要在完全不是你的问题的情况下面对可能导致你的操作失败的情形。
+对于 Service 资源的设计，也就是如果你选择的端口号可能与其他人的选择冲突，
+就不应该让你自己选择 IP 地址。这是一种失败隔离。</p><p>为了允许你为 Service 选择 IP 地址，我们必须确保没有任何两个 Service 会发生冲突。
+Kubernetes 通过从为 <a class=glossary-tooltip title='提供 Kubernetes API 服务的控制面组件。' data-toggle=tooltip data-placement=top href=/zh-cn/docs/concepts/overview/components/#kube-apiserver target=_blank aria-label='API 服务器'>API 服务器</a>配置的
+<code>service-cluster-ip-range</code> CIDR 范围内为每个 Service 分配自己的 IP 地址来实现这一点。</p><h4 id=ip-地址分配追踪>IP 地址分配追踪</h4><p>为了确保每个 Service 都获得唯一的 IP，内部分配器在创建每个 Service
+之前更新 <a class=glossary-tooltip title='一致且高可用的键值存储，用作 Kubernetes 所有集群数据的后台数据库。' data-toggle=tooltip data-placement=top href=/zh-cn/docs/tasks/administer-cluster/configure-upgrade-etcd/ target=_blank aria-label=etcd>etcd</a> 中的全局分配映射，这种更新操作具有原子性。
+映射对象必须存在于数据库中，这样 Service 才能获得 IP 地址分配，
+否则创建将失败，并显示无法分配 IP 地址。</p><p>在控制平面中，后台控制器负责创建该映射（从使用内存锁定的旧版本的 Kubernetes 迁移时需要这一映射）。
+Kubernetes 还使用控制器来检查无效的分配（例如，因管理员干预而导致无效分配）
+以及清理已分配但没有 Service 使用的 IP 地址。</p><div class="feature-state-notice feature-alpha"><span class=feature-state-name>特性状态：</span> <code>Kubernetes v1.27 [alpha]</code></div><p>如果你启用 <code>MultiCIDRServiceAllocator</code> <a href=/zh-cn/docs/reference/command-line-tools-reference/feature-gate/>特性门控</a>和
+<a href=/zh-cn/docs/tasks/administer-cluster/enable-disable-api/><code>networking.k8s.io/v1alpha1</code> API 组</a>，
+控制平面将用一个新的分配器替换现有的 etcd 分配器，使用 IPAddress 对象而不是内部的全局分配映射。
+与每个 Service 关联的 ClusterIP 地址将有一个对应的 IPAddress 对象。</p><p>后台控制器也被一个新的控制器取代，来处理新的 IPAddress 对象和从旧的分配器模型的迁移。</p><p>新分配器的主要好处之一是它取消了对 <code>service-cluster-ip-range</code> 的大小限制，对 IPv4 没有大小限制，
+对于 IPv6 用户可以使用等于或大于 /64 的掩码（以前是 /108）。</p><p>用户现在能够检查分配给他们的 Service 的 IP 地址，Kubernetes 扩展，
+如 <a href=https://gateway-api.sigs.k8s.io/>Gateway</a> API
+可以使用这个新的 IPAddress 对象类别来增强 Kubernetes 的网络能力，解除内置 Service API 的限制。</p><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get services
+</span></span></code></pre></div><pre tabindex=0><code>NAME         TYPE        CLUSTER-IP        EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   2001:db8:1:2::1   &lt;none&gt;        443/TCP   3d1h
+</code></pre><div class=highlight><pre tabindex=0 style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kubectl get ipaddresses
+</span></span></code></pre></div><pre tabindex=0><code>NAME              PARENTREF
+2001:db8:1:2::1   services/default/kubernetes
+2001:db8:1:2::a   services/kube-system/kube-dns
+</code></pre><h4 id=service-ip-static-sub-range>Service 虚拟 IP 地址的地址段</h4><div class="feature-state-notice feature-stable"><span class=feature-state-name>特性状态：</span> <code>Kubernetes v1.26 [stable]</code></div><p>Kubernetes 根据配置的 <code>service-cluster-ip-range</code> 的大小使用公式
+<code>min(max(16, cidrSize / 16), 256)</code> 将 <code>ClusterIP</code> 范围分为两段。
+该公式可以解释为：介于 16 和 256 之间，并在上下界之间存在渐进阶梯函数的分配。</p><p>Kubernetes 优先通过从高段中选择来为 Service 分配动态 IP 地址，
+这意味着如果要将特定 IP 地址分配给 <code>type: ClusterIP</code> Service，
+则应手动从<strong>低</strong>段中分配 IP 地址。该方法降低了分配导致冲突的风险。</p><p>如果你禁用 <code>ServiceIPStaticSubrange</code>
+<a href=/zh-cn/docs/reference/command-line-tools-reference/feature-gates/>特性门控</a>，
+则 Kubernetes 用于手动分配和动态分配的 IP 共享单个地址池，这适用于 <code>type: ClusterIP</code> 的 Service。</p><h2 id=traffic-policies>流量策略</h2><p>你可以设置 <code>.spec.internalTrafficPolicy</code> 和 <code>.spec.externalTrafficPolicy</code>
+字段来控制 Kubernetes 如何将流量路由到健康（“就绪”）的后端。</p><h3 id=internal-traffic-policy>内部流量策略</h3><div class="feature-state-notice feature-stable"><span class=feature-state-name>特性状态：</span> <code>Kubernetes v1.26 [stable]</code></div><p>你可以设置 <code>.spec.internalTrafficPolicy</code> 字段来控制来自内部源的流量如何被路由。
+有效值为 <code>Cluster</code> 和 <code>Local</code>。
+将字段设置为 <code>Cluster</code> 会将内部流量路由到所有准备就绪的端点，
+将字段设置为 <code>Local</code> 仅会将流量路由到本地节点准备就绪的端点。
+如果流量策略为 <code>Local</code> 但没有本地节点端点，那么 kube-proxy 会丢弃该流量。</p><h3 id=external-traffic-policy>外部流量策略</h3><p>你可以设置 <code>.spec.externalTrafficPolicy</code> 字段来控制从外部源路由的流量。
+有效值为 <code>Cluster</code> 和 <code>Local</code>。
+将字段设置为 <code>Cluster</code> 会将外部流量路由到所有准备就绪的端点，
+将字段设置为 <code>Local</code> 仅会将流量路由到本地节点上准备就绪的端点。
+如果流量策略为 <code>Local</code> 并且没有本地节点端点，
+那么 kube-proxy 不会转发与相关 Service 相关的任何流量。</p><h3 id=traffic-to-terminating-endpoints>流向正终止的端点的流量</h3><div class="feature-state-notice feature-stable"><span class=feature-state-name>特性状态：</span> <code>Kubernetes v1.28 [stable]</code></div><p>如果为 kube-proxy 启用了 <code>ProxyTerminatingEndpoints</code>
+<a href=/zh-cn/docs/reference/command-line-tools-reference/feature-gates/>特性门控</a>且流量策略为 <code>Local</code>，
+则节点的 kube-proxy 将使用更复杂的算法为 Service 选择端点。
+启用此特性时，kube-proxy 会检查节点是否具有本地端点以及是否所有本地端点都标记为正在终止过程中。
+如果有本地端点并且<strong>所有</strong>本地端点都被标记为处于终止过程中，
+则 kube-proxy 会将转发流量到这些正在终止过程中的端点。
+否则，kube-proxy 会始终选择将流量转发到并未处于终止过程中的端点。</p><p>这种对处于终止过程中的端点的转发行为使得 <code>NodePort</code> 和 <code>LoadBalancer</code> Service
+能有条不紊地腾空设置了 <code>externalTrafficPolicy: Local</code> 时的连接。</p><p>当一个 Deployment 被滚动更新时，处于负载均衡器后端的节点可能会将该 Deployment 的 N 个副本缩减到
+0 个副本。在某些情况下，外部负载均衡器可能在两次执行健康检查探针之间将流量发送到具有 0 个副本的节点。
+将流量路由到处于终止过程中的端点可确保正在缩减 Pod 的节点能够正常接收流量，
+并逐渐降低指向那些处于终止过程中的 Pod 的流量。
+到 Pod 完成终止时，外部负载均衡器应该已经发现节点的健康检查失败并从后端池中完全移除该节点。</p><h2 id=接下来>接下来</h2><p>要了解有关 Service 的更多信息，
+请阅读<a href=/zh-cn/docs/tutorials/services/connect-applications-service/>使用 Service 连接应用</a>。</p><p>也可以：</p><ul><li>阅读 <a href=/zh-cn/docs/concepts/services-networking/service/>Service</a> 了解其概念</li><li>阅读 <a href=/zh-cn/docs/concepts/services-networking/ingress/>Ingress</a> 了解其概念</li><li>阅读 <a href=/zh-cn/docs/reference/kubernetes-api/service-resources/service-v1/>API 参考</a>进一步了解 Service API</li></ul></div></main></div></div><footer class=d-print-none><div class=footer__links><nav><a class=text-white href=/zh-cn/docs/home/>文档</a>
+<a class=text-white href=/zh-cn/blog/>博客</a>
+<a class=text-white href=/zh-cn/training/>培训</a>
+<a class=text-white href=/zh-cn/partners/>合作伙伴</a>
+<a class=text-white href=/zh-cn/community/>社区</a>
+<a class=text-white href=/zh-cn/case-studies/>案例分析</a></nav></div><div class=container-fluid><div class=row><div class="col-6 col-sm-2 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="User mailing list" aria-label="User mailing list"><a class=text-white target=_blank href=https://discuss.kubernetes.io><i class="fa fa-envelope"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=X(Twitter) aria-label=X(Twitter)><a class=text-white target=_blank href=https://twitter.com/kubernetesio><i class="fab fa-x-twitter"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Calendar aria-label=Calendar><a class=text-white target=_blank href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io"><i class="fas fa-calendar-alt"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Youtube aria-label=Youtube><a class=text-white target=_blank href=https://youtube.com/kubernetescommunity><i class="fab fa-youtube"></i></a></li></ul></div><div class="col-6 col-sm-2 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank href=https://github.com/kubernetes/kubernetes><i class="fab fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Slack aria-label=Slack><a class=text-white target=_blank href=https://slack.k8s.io><i class="fab fa-slack"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Contribute aria-label=Contribute><a class=text-white target=_blank href=https://git.k8s.io/community/contributors/guide><i class="fas fa-edit"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="Stack Overflow" aria-label="Stack Overflow"><a class=text-white target=_blank href=https://stackoverflow.com/questions/tagged/kubernetes><i class="fab fa-stack-overflow"></i></a></li></ul></div><div class="col-12 col-sm-8 text-center order-sm-2"><small class=text-white>&copy; 2026 The Kubernetes 作者 | 文档发布基于 <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a> 授权许可</small><br><small class=text-white>Copyright &copy; 2026 Linux 基金会&reg;。保留所有权利。Linux 基金会已注册并使用商标。如需了解 Linux 基金会的商标列表，请访问<a href=https://www.linuxfoundation.org/trademark-usage class=light-text>商标使用页面</a></small><br><small class=text-white>ICP 许可： <a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></small></div></div></div></footer></div><script src=/js/jquery-3.6.0.min.js integrity=sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK crossorigin=anonymous></script><script src=/js/popper-1.16.1.min.js intregrity=sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN crossorigin=anonymous></script><script src=/js/bootstrap-4.6.1.min.js integrity=sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2 crossorigin=anonymous></script><script src=/js/script.js></script><script src=/js/main.min.b8b5957f4ba9b582bc3696c8cbed20dde33f789d0fe3255f10fdc7adecf38b7e.js integrity="sha256-uLWVf0uptYK8NpbIy+0g3eM/eJ0P4yVfEP3Hrezzi34=" crossorigin=anonymous></script><script>let splitInstance=null;function enableSplitter(e){e.matches?splitInstance||(splitInstance=Split(["#sidebarnav","#maindoc"],{sizes:[20,80],minSize:100})):splitInstance&&(splitInstance.destroy(),splitInstance=null)}const screenWidthMediaQuery=window.matchMedia("(min-width: 768px)"),eleNav=document.getElementById("sidebarnav");eleNav!==null&&(enableSplitter(screenWidthMediaQuery),screenWidthMediaQuery.addListener(enableSplitter))</script></body></html>
