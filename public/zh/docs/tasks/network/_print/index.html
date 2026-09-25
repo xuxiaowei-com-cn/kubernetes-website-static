@@ -1,0 +1,275 @@
+<!doctype html><html lang=zh class=no-js><head><meta name=ROBOTS content="NOINDEX, NOFOLLOW"><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','G-JPP6RFM2BP')</script><script type=text/javascript>(function(a,e,b,f,g,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},c=e.createElement(f),c.async=1,c.src="https://www.clarity.ms/tag/"+g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d)})(window,document,"clarity","script","yn9rvoeqkq")</script><link rel=alternate hreflang=en href=https://kubernetes.xuxiaowei.com.cn/docs/tasks/network/><link rel=alternate hreflang=ko href=https://kubernetes.xuxiaowei.com.cn/ko/docs/tasks/network/><link rel=alternate hreflang=ja href=https://kubernetes.xuxiaowei.com.cn/ja/docs/tasks/network/><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.82.0"><link rel=canonical type=text/html href=https://kubernetes.xuxiaowei.com.cn/zh/docs/tasks/network/><link rel="shortcut icon" type=image/png href=/images/favicon.png><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=manifest href=/manifest.webmanifest><link rel=apple-touch-icon href=/images/kubernetes-192x192.png><title>网络 | Kubernetes</title><meta property="og:title" content="网络"><meta property="og:description" content="了解如何为你的集群配置网络。"><meta property="og:type" content="website"><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/zh/docs/tasks/network/"><meta property="og:site_name" content="Kubernetes"><meta itemprop=name content="网络"><meta itemprop=description content="了解如何为你的集群配置网络。"><meta name=twitter:card content="summary"><meta name=twitter:title content="网络"><meta name=twitter:description content="了解如何为你的集群配置网络。"><link rel=preload href=/scss/main.min.2bbe15e23a72484890a6360ddac122a7d063e40191d1eee00e88ba2045a42fc5.css as=style><link href=/scss/main.min.2bbe15e23a72484890a6360ddac122a7d063e40191d1eee00e88ba2045a42fc5.css rel=stylesheet integrity><script src=/js/jquery-3.3.1.min.js integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin=anonymous></script><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","url":"https://kubernetes.io","logo":"https://kubernetes.io/images/favicon.png"}</script><meta name=theme-color content="#326ce5"><link rel=stylesheet href=/css/feature-states.css><meta name=description content="了解如何为你的集群配置网络。"><meta property="og:description" content="了解如何为你的集群配置网络。"><meta name=twitter:description content="了解如何为你的集群配置网络。"><meta property="og:url" content="https://kubernetes.xuxiaowei.com.cn/zh/docs/tasks/network/"><meta property="og:title" content="网络"><meta name=twitter:title content="网络"><meta name=twitter:image content="https://kubernetes.io/images/favicon.png"><meta name=twitter:image:alt content="Kubernetes"><meta property="og:image" content="/images/kubernetes-horizontal-color.png"><meta property="og:type" content="article"><script src=/js/script.js></script></head><body class=td-section><header><nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-row td-navbar" data-auto-burger=primary><a class=navbar-brand href=/zh/></a><div class="td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0"><li class="nav-item mr-2 mb-lg-0"><a class="nav-link active" href=/zh/docs/>文档</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/zh/blog/>Kubernetes 博客</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/zh/training/>培训</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/zh/partners/>合作伙伴</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/zh/community/>社区</span></a></li><li class="nav-item mr-2 mb-lg-0"><a class=nav-link href=/zh/case-studies/>案例分析</span></a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>版本列表</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/releases>Release Information</a>
+<a class=dropdown-item href=https://xuxiaowei.io/t/1320/zh/docs/tasks/network/>Kubernetes 文档说明</a>
+<a class=dropdown-item href=https://kubernetes-v1-38.xuxiaowei.com.cn/zh/docs/tasks/network/>v1.38</a>
+<a class=dropdown-item href=https://kubernetes-v1-37.xuxiaowei.com.cn/zh/docs/tasks/network/>v1.37</a>
+<a class=dropdown-item href=https://kubernetes-v1-36.xuxiaowei.com.cn/zh/docs/tasks/network/>v1.36</a>
+<a class=dropdown-item href=https://kubernetes-v1-35.xuxiaowei.com.cn/zh/docs/tasks/network/>v1.35</a>
+<a class=dropdown-item href=https://kubernetes-v1-34.xuxiaowei.com.cn/zh/docs/tasks/network/>v1.34</a>
+<a class=dropdown-item href=https://kubernetes-v1-33.xuxiaowei.com.cn/zh/docs/tasks/network/>v1.33</a>
+<a class=dropdown-item href=https://kubernetes-v1-32.xuxiaowei.com.cn/zh/docs/tasks/network/>v1.32</a>
+<a class=dropdown-item href=https://kubernetes-v1-31.xuxiaowei.com.cn/zh/docs/tasks/network/>v1.31</a>
+<a class=dropdown-item href=https://kubernetes-v1-30.xuxiaowei.com.cn/zh/docs/tasks/network/>v1.30</a>
+<a class=dropdown-item href=https://kubernetes-v1-29.xuxiaowei.com.cn/zh/docs/tasks/network/>v1.29</a>
+<a class=dropdown-item href=https://kubernetes-v1-28.xuxiaowei.com.cn/zh/docs/tasks/network/>v1.28</a>
+<a class=dropdown-item href=https://kubernetes-v1-27.xuxiaowei.com.cn/zh/docs/tasks/network/>v1.27</a>
+<a class=dropdown-item href=https://kubernetes-v1-26.xuxiaowei.com.cn/zh/docs/tasks/network/>v1.26</a>
+<a class=dropdown-item href=https://kubernetes-v1-25.xuxiaowei.com.cn/zh/docs/tasks/network/>v1.25</a>
+<a class=dropdown-item href=https://kubernetes-v1-24.xuxiaowei.com.cn/zh/docs/tasks/network/>v1.24</a>
+<a class=dropdown-item href=https://kubernetes-v1-23.xuxiaowei.com.cn/zh/docs/tasks/network/>v1.23</a>
+<a class=dropdown-item href=https://kubernetes-v1-22.xuxiaowei.com.cn/zh/docs/tasks/network/>v1.22</a>
+<a class=dropdown-item href=https://kubernetes-v1-21.xuxiaowei.com.cn/zh/docs/tasks/network/>v1.21</a>
+<a class=dropdown-item href=https://kubernetes-v1-20.xuxiaowei.com.cn/zh/docs/tasks/network/>v1.20</a></div></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href=# id=navbarDropdownMenuLink role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>中文 Chinese</a><div class="dropdown-menu dropdown-menu-right" aria-labelledby=navbarDropdownMenuLink><a class=dropdown-item href=/docs/tasks/network/>English</a>
+<a class=dropdown-item href=/ko/docs/tasks/network/>한국어 Korean</a>
+<a class=dropdown-item href=/ja/docs/tasks/network/>日本語 Japanese</a></div></li></ul></div><button id=hamburger onclick=kub.toggleMenu() data-auto-burger-exclude><div></div></button></nav></header><div class="container-fluid td-outer"><div class=td-main><div class="row flex-xl-nowrap"><div class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none"></div><div class="d-none d-xl-block col-xl-2 td-toc d-print-none"></div><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><div class=td-content><div class="pageinfo pageinfo-primary d-print-none"><p>这是本节的多页打印视图。
+<a href=# onclick="return print(),!1">点击此处打印</a>.</p><p><a href=/zh/docs/tasks/network/>返回本页常规视图</a>.</p></div><h1 class=title>网络</h1><div class=lead>了解如何为你的集群配置网络。</div><ul><li>1: <a href=#pg-2edb5b02ea1e646c333c9fe4d5f02ff1>使用 HostAliases 向 Pod /etc/hosts 文件添加条目</a></li><li>2: <a href=#pg-eebac062766222247063d6513f95c7b2>验证 IPv4/IPv6 双协议栈</a></li></ul><div class=content></div></div><div class=td-content><h1 id=pg-2edb5b02ea1e646c333c9fe4d5f02ff1>1 - 使用 HostAliases 向 Pod /etc/hosts 文件添加条目</h1><p>当 DNS 配置以及其它选项不合理的时候，通过向 Pod 的 /etc/hosts 文件中添加条目，
+可以在 Pod 级别覆盖对主机名的解析。你可以通过 PodSpec 的 HostAliases
+字段来添加这些自定义条目。</p><p>建议通过使用 HostAliases 来进行修改，因为该文件由 Kubelet 管理，并且
+可以在 Pod 创建/重启过程中被重写。</p><h2 id=默认-hosts-文件内容>默认 hosts 文件内容</h2><p>让我们从一个 Nginx Pod 开始，该 Pod 被分配一个 IP：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl run nginx --image nginx --generator<span style=color:#666>=</span>run-pod/v1
+</code></pre></div><pre><code>pod/nginx created
+</code></pre><p>检查 Pod IP：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pods --output<span style=color:#666>=</span>wide
+</code></pre></div><pre><code>NAME     READY     STATUS    RESTARTS   AGE    IP           NODE
+nginx    1/1       Running   0          13s    10.200.0.4   worker0
+</code></pre><p>主机文件的内容如下所示：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl <span style=color:#a2f>exec</span> nginx -- cat /etc/hosts
+</code></pre></div><pre><code># Kubernetes-managed hosts file.
+127.0.0.1	localhost
+::1	localhost ip6-localhost ip6-loopback
+fe00::0	ip6-localnet
+fe00::0	ip6-mcastprefix
+fe00::1	ip6-allnodes
+fe00::2	ip6-allrouters
+10.200.0.4	nginx
+</code></pre><p>默认情况下，hosts 文件只包含 IPv4 和 IPv6 的样板内容，像 <code>localhost</code> 和主机名称。</p><h2 id=通过-hostaliases-增加额外条目>通过 HostAliases 增加额外条目</h2><p>除了默认的样板内容，我们可以向 hosts 文件添加额外的条目。
+例如，要将 <code>foo.local</code>、<code>bar.local</code> 解析为 <code>127.0.0.1</code>，
+将 <code>foo.remote</code>、 <code>bar.remote</code> 解析为 <code>10.1.2.3</code>，我们可以在
+<code>.spec.hostAliases</code> 下为 Pod 配置 HostAliases。</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/main/content/zh/examples/service/networking/hostaliases-pod.yaml download=service/networking/hostaliases-pod.yaml><code>service/networking/hostaliases-pod.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('service-networking-hostaliases-pod-yaml')" title="Copy service/networking/hostaliases-pod.yaml to clipboard"></img></div><div class=includecode id=service-networking-hostaliases-pod-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>hostaliases-pod<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>restartPolicy</span>:<span style=color:#bbb> </span>Never<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>hostAliases</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>ip</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;127.0.0.1&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>hostnames</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:#b44>&#34;foo.local&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:#b44>&#34;bar.local&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>ip</span>:<span style=color:#bbb> </span><span style=color:#b44>&#34;10.1.2.3&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>hostnames</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:#b44>&#34;foo.remote&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:#b44>&#34;bar.remote&#34;</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>containers</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>cat-hosts<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>image</span>:<span style=color:#bbb> </span>busybox<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>command</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- cat<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>args</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:#b44>&#34;/etc/hosts&#34;</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>你可以使用以下命令用此配置启动 Pod：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f hostaliases-pod.yaml
+</code></pre></div><pre><code>pod/hostaliases-pod created
+</code></pre><p>检查 Pod 详情，查看其 IPv4 地址和状态：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pod --output<span style=color:#666>=</span>wide
+</code></pre></div><pre><code>NAME                READY     STATUS      RESTARTS   AGE       IP              NODE
+hostaliases-pod     0/1       Completed   0          6s        10.200.0.5      worker0
+</code></pre><p>hosts 文件的内容看起来类似如下这样：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl logs hostaliases-pod
+</code></pre></div><pre><code># Kubernetes-managed hosts file.
+127.0.0.1	localhost
+::1	localhost ip6-localhost ip6-loopback
+fe00::0	ip6-localnet
+fe00::0	ip6-mcastprefix
+fe00::1	ip6-allnodes
+fe00::2	ip6-allrouters
+10.200.0.5	hostaliases-pod
+
+# Entries added by HostAliases.
+127.0.0.1	foo.local	bar.local
+10.1.2.3	foo.remote	bar.remote
+</code></pre><p>在最下面额外添加了一些条目。</p><h2 id=为什么-kubelet-管理-hosts-文件>为什么 kubelet 管理 hosts 文件？</h2><p>kubelet <a href=https://github.com/kubernetes/kubernetes/issues/14633>管理</a> Pod
+中每个容器的 hosts 文件，避免 Docker 在容器已经启动之后去
+<a href=https://github.com/moby/moby/issues/17190>修改</a> 该文件。</p><blockquote class="caution callout"><div><strong>注意：</strong><p>请避免手工更改容器内的 hosts 文件内容。</p><p>如果你对 hosts 文件做了手工修改，这些修改都会在容器退出时丢失。</p></div></blockquote></div><div class=td-content style=page-break-before:always><h1 id=pg-eebac062766222247063d6513f95c7b2>2 - 验证 IPv4/IPv6 双协议栈</h1><p>本文分享了如何验证 IPv4/IPv6 双协议栈的 Kubernetes 集群。</p><h2 id=准备开始>准备开始</h2><ul><li>提供程序对双协议栈网络的支持 (云供应商或其他方式必须能够为 Kubernetes 节点
+提供可路由的 IPv4/IPv6 网络接口)</li><li>一个能够支持双协议栈的
+<a href=/zh/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/>网络插件</a>，
+（如 kubenet 或 Calico）。</li><li><a href=/zh/docs/concepts/services-networking/dual-stack/>启用双协议栈</a> 集群</li></ul><h2 id=验证寻址>验证寻址</h2><h3 id=验证节点寻址>验证节点寻址</h3><p>每个双协议栈节点应分配一个 IPv4 块和一个 IPv6 块。
+通过运行以下命令来验证是否配置了 IPv4/IPv6 Pod 地址范围。
+将示例节点名称替换为集群中的有效双协议栈节点。
+在此示例中，节点的名称为 <code>k8s-linuxpool1-34450317-0</code>：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get nodes k8s-linuxpool1-34450317-0 -o go-template --template<span style=color:#666>=</span><span style=color:#b44>&#39;{{range .spec.podCIDRs}}{{printf &#34;%s\n&#34; .}}{{end}}&#39;</span>
+</code></pre></div><pre><code>10.244.1.0/24
+a00:100::/24
+</code></pre><p>应该分配一个 IPv4 块和一个 IPv6 块。</p><p>验证节点是否检测到 IPv4 和 IPv6 接口。用集群中的有效节点替换节点名称。
+在此示例中，节点名称为 <code>k8s-linuxpool1-34450317-0</code>：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get nodes k8s-linuxpool1-34450317-0 -o go-template --template<span style=color:#666>=</span><span style=color:#b44>&#39;{{range .status.addresses}}{{printf &#34;%s: %s \n&#34; .type .address}}{{end}}&#39;</span>
+</code></pre></div><pre><code>Hostname: k8s-linuxpool1-34450317-0
+InternalIP: 10.240.0.5
+InternalIP: 2001:1234:5678:9abc::5
+</code></pre><h3 id=验证-pod-寻址>验证 Pod 寻址</h3><p>验证 Pod 已分配了 IPv4 和 IPv6 地址。用集群中的有效 Pod 替换 Pod 名称。
+在此示例中，Pod 名称为 <code>pod01</code>：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pods pod01 -o go-template --template<span style=color:#666>=</span><span style=color:#b44>&#39;{{range .status.podIPs}}{{printf &#34;%s \n&#34; .ip}}{{end}}&#39;</span>
+</code></pre></div><pre><code>10.244.1.4
+a00:100::4
+</code></pre><p>你也可以通过 <code>status.podIPs</code> 使用 Downward API 验证 Pod IP。
+以下代码段演示了如何通过容器内称为 <code>MY_POD_IPS</code> 的环境变量公开 Pod 的 IP 地址。</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>env</span>:<span style=color:#bbb>
+</span><span style=color:#bbb></span>- <span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>MY_POD_IPS<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>valueFrom</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>fieldRef</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>fieldPath</span>:<span style=color:#bbb> </span>status.podIPs<span style=color:#bbb>
+</span></code></pre></div><p>使用以下命令打印出容器内部 <code>MY_POD_IPS</code> 环境变量的值。
+该值是一个逗号分隔的列表，与 Pod 的 IPv4 和 IPv6 地址相对应。</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl <span style=color:#a2f>exec</span> -it pod01 -- <span style=color:#a2f>set</span> | grep MY_POD_IPS
+</code></pre></div><pre><code>MY_POD_IPS=10.244.1.4,a00:100::4
+</code></pre><p>Pod 的 IP 地址也将被写入容器内的 <code>/etc/hosts</code> 文件中。
+在双栈 Pod 上执行 cat <code>/etc/hosts</code> 命令操作。
+从输出结果中，你可以验证 Pod 的 IPv4 和 IPv6 地址。</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl <span style=color:#a2f>exec</span> -it pod01 -- cat /etc/hosts
+</code></pre></div><pre><code># Kubernetes-managed hosts file.
+127.0.0.1    localhost
+::1    localhost ip6-localhost ip6-loopback
+fe00::0    ip6-localnet
+fe00::0    ip6-mcastprefix
+fe00::1    ip6-allnodes
+fe00::2    ip6-allrouters
+10.244.1.4    pod01
+a00:100::4    pod01
+</code></pre><h2 id=验证服务>验证服务</h2><p>创建以下未显式定义 <code>.spec.ipFamilyPolicy</code> 的 Service。
+Kubernetes 将从首个配置的 <code>service-cluster-ip-range</code> 给 Service 分配集群 IP，
+并将 <code>.spec.ipFamilyPolicy</code> 设置为 <code>SingleStack</code>。</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/main/content/zh/examples/service/networking/dual-stack-default-svc.yaml download=service/networking/dual-stack-default-svc.yaml><code>service/networking/dual-stack-default-svc.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('service-networking-dual-stack-default-svc-yaml')" title="Copy service/networking/dual-stack-default-svc.yaml to clipboard"></img></div><div class=includecode id=service-networking-dual-stack-default-svc-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Service<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>my-service<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>MyApp<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>MyApp<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>ports</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>protocol</span>:<span style=color:#bbb> </span>TCP<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>port</span>:<span style=color:#bbb> </span><span style=color:#666>80</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>使用 <code>kubectl</code> 查看 Service 的 YAML 定义。</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get svc my-service -o yaml
+</code></pre></div><p>该 Service 通过在 kube-controller-manager 的 <code>--service-cluster-ip-range</code>
+标志设置的第一个配置范围，将 <code>.spec.ipFamilyPolicy</code> 设置为 <code>SingleStack</code>，
+将 <code>.spec.clusterIP</code> 设置为 IPv4 地址。</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Service<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>my-service<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>namespace</span>:<span style=color:#bbb> </span>default<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>clusterIP</span>:<span style=color:#bbb> </span><span style=color:#666>10.0.217.164</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>clusterIPs</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:#666>10.0.217.164</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>ipFamilies</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- IPv4<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>ipFamilyPolicy</span>:<span style=color:#bbb> </span>SingleStack<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>ports</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>port</span>:<span style=color:#bbb> </span><span style=color:#666>80</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>protocol</span>:<span style=color:#bbb> </span>TCP<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>targetPort</span>:<span style=color:#bbb> </span><span style=color:#666>9376</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>MyApp<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>sessionAffinity</span>:<span style=color:#bbb> </span>None<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>type</span>:<span style=color:#bbb> </span>ClusterIP<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>status</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>loadBalancer</span>:<span style=color:#bbb> </span>{}<span style=color:#bbb>
+</span></code></pre></div><p>创建以下显示定义 <code>.spec.ipFamilies</code> 数组中的第一个元素为 IPv6 的 Service。
+Kubernetes 将 <code>service-cluster-ip-range</code> 配置的 IPv6 地址范围给 Service 分配集群 IP，
+并将 <code>.spec.ipFamilyPolicy</code> 设置为 <code>SingleStack</code>。</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/main/content/zh/examples/service/networking/dual-stack-ipfamilies-ipv6.yaml download=service/networking/dual-stack-ipfamilies-ipv6.yaml><code>service/networking/dual-stack-ipfamilies-ipv6.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('service-networking-dual-stack-ipfamilies-ipv6-yaml')" title="Copy service/networking/dual-stack-ipfamilies-ipv6.yaml to clipboard"></img></div><div class=includecode id=service-networking-dual-stack-ipfamilies-ipv6-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Service<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>my-service<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>MyApp<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>ipFamilies</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- IPv6<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>MyApp<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>ports</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>protocol</span>:<span style=color:#bbb> </span>TCP<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>port</span>:<span style=color:#bbb> </span><span style=color:#666>80</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>使用 <code>kubectl</code> 查看 Service 的 YAML 定义。</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get svc my-service -o yaml
+</code></pre></div><p>该 Service 通过在 kube-controller-manager 的 <code>--service-cluster-ip-range</code>
+标志设置的 IPv6 地址范围，将 <code>.spec.ipFamilyPolicy</code> 设置为 <code>SingleStack</code>，
+将 <code>.spec.clusterIP</code> 设置为 IPv6 地址。</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Service<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>MyApp<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>my-service<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>clusterIP</span>:<span style=color:#bbb> </span>fd00::5118<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>clusterIPs</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- fd00::5118<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>ipFamilies</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- IPv6<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>ipFamilyPolicy</span>:<span style=color:#bbb> </span>SingleStack<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>ports</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- <span style=color:green;font-weight:700>port</span>:<span style=color:#bbb> </span><span style=color:#666>80</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>protocol</span>:<span style=color:#bbb> </span>TCP<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>targetPort</span>:<span style=color:#bbb> </span><span style=color:#666>80</span><span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>MyApp<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>sessionAffinity</span>:<span style=color:#bbb> </span>None<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>type</span>:<span style=color:#bbb> </span>ClusterIP<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>status</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>loadBalancer</span>:<span style=color:#bbb> </span>{}<span style=color:#bbb>
+</span></code></pre></div><p>创建以下显式定义 <code>.spec.ipFamilyPolicy</code> 为 <code>PreferDualStack</code> 的 Service。
+Kubernetes 将分配 IPv4 和 IPv6 地址（因为该集群启用了双栈），
+并根据 <code>.spec.ipFamilies</code> 数组中第一个元素的地址族，
+从 <code>.spec.ClusterIPs</code> 列表中选择 <code>.spec.ClusterIP</code>。</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/main/content/zh/examples/service/networking/dual-stack-preferred-svc.yaml download=service/networking/dual-stack-preferred-svc.yaml><code>service/networking/dual-stack-preferred-svc.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('service-networking-dual-stack-preferred-svc-yaml')" title="Copy service/networking/dual-stack-preferred-svc.yaml to clipboard"></img></div><div class=includecode id=service-networking-dual-stack-preferred-svc-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Service<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>my-service<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>MyApp<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>ipFamilyPolicy</span>:<span style=color:#bbb> </span>PreferDualStack<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>MyApp<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>ports</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>protocol</span>:<span style=color:#bbb> </span>TCP<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>port</span>:<span style=color:#bbb> </span><span style=color:#666>80</span><span style=color:#bbb>
+</span></code></pre></div></div></div><blockquote class="note callout"><div><strong>说明：</strong><p><code>kubectl get svc</code> 命令将仅在 <code>CLUSTER-IP</code> 字段中显示主 IP。</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get svc -l <span style=color:#b8860b>app</span><span style=color:#666>=</span>MyApp
+
+NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT<span style=color:#666>(</span>S<span style=color:#666>)</span>   AGE
+my-service   ClusterIP   fe80:20d::d06b   &lt;none&gt;        80/TCP    9s
+</code></pre></div></div></blockquote><p>使用 <code>kubectl describe</code> 验证服务是否从 IPv4 和 IPv6 地址块中获取了集群 IP。
+然后你就可以通过 IP 和端口，验证对服务的访问。</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl describe svc -l <span style=color:#b8860b>app</span><span style=color:#666>=</span>MyApp
+</code></pre></div><pre><code>Name:              my-service
+Namespace:         default
+Labels:            app=MyApp
+Annotations:       &lt;none&gt;
+Selector:          app=MyApp
+Type:              ClusterIP
+IP Family Policy:  PreferDualStack
+IP Families:       IPv4,IPv6
+IP:                10.0.216.242
+IPs:               10.0.216.242,fd00::af55
+Port:              &lt;unset&gt;  80/TCP
+TargetPort:        9376/TCP
+Endpoints:         &lt;none&gt;
+Session Affinity:  None
+Events:            &lt;none&gt;
+</code></pre><h3 id=创建双协议栈负载均衡服务>创建双协议栈负载均衡服务</h3><p>如果云提供商支持配置启用 IPv6 的外部负载均衡器，则创建如下 Service 时将
+<code>.spec.ipFamilyPolicy</code> 设置为 <code>PreferDualStack</code>, 并将 <code>spec.ipFamilies</code> 字段
+的第一个元素设置为 <code>IPv6</code>，将 <code>type</code> 字段设置为 <code>LoadBalancer</code>：</p><div class=highlight><div class=copy-code-icon style=text-align:right><a href=https://raw.githubusercontent.com/kubernetes/website/main/content/zh/examples/service/networking/dual-stack-prefer-ipv6-lb-svc.yaml download=service/networking/dual-stack-prefer-ipv6-lb-svc.yaml><code>service/networking/dual-stack-prefer-ipv6-lb-svc.yaml</code></a>
+<img src=/images/copycode.svg style=max-height:24px;cursor:pointer onclick="copyCode('service-networking-dual-stack-prefer-ipv6-lb-svc-yaml')" title="Copy service/networking/dual-stack-prefer-ipv6-lb-svc.yaml to clipboard"></img></div><div class=includecode id=service-networking-dual-stack-prefer-ipv6-lb-svc-yaml><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:green;font-weight:700>apiVersion</span>:<span style=color:#bbb> </span>v1<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>kind</span>:<span style=color:#bbb> </span>Service<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>metadata</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>name</span>:<span style=color:#bbb> </span>my-service<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>labels</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>MyApp<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:green;font-weight:700>spec</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>ipFamilyPolicy</span>:<span style=color:#bbb> </span>PreferDualStack<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>ipFamilies</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span>- IPv6<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>type</span>:<span style=color:#bbb> </span>LoadBalancer<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>selector</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:green;font-weight:700>app</span>:<span style=color:#bbb> </span>MyApp<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:green;font-weight:700>ports</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span>- <span style=color:green;font-weight:700>protocol</span>:<span style=color:#bbb> </span>TCP<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:green;font-weight:700>port</span>:<span style=color:#bbb> </span><span style=color:#666>80</span><span style=color:#bbb>
+</span></code></pre></div></div></div><p>检查服务：</p><div class=highlight><pre style=background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get svc -l <span style=color:#b8860b>app</span><span style=color:#666>=</span>MyApp
+</code></pre></div><p>验证服务是否从 IPv6 地址块中接收到 <code>CLUSTER-IP</code> 地址以及 <code>EXTERNAL-IP</code>。
+然后，你可以通过 IP 和端口验证对服务的访问。</p><pre><code>NAME         TYPE           CLUSTER-IP   EXTERNAL-IP        PORT(S)        AGE
+my-service   LoadBalancer   fd00::7ebc   2603:1030:805::5   80:30790/TCP   35s
+</code></pre></div></main></div></div><footer class=d-print-none><div class=footer__links><nav><a class=text-white href=/zh/docs/home/>主页</a>
+<a class=text-white href=/zh/blog/>博客</a>
+<a class=text-white href=/zh/training/>培训</a>
+<a class=text-white href=/zh/partners/>合作伙伴</a>
+<a class=text-white href=/zh/community/>社区</a>
+<a class=text-white href=/zh/case-studies/>案例分析</a></nav></div><div class=container-fluid><div class=row><div class="col-6 col-sm-2 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="User mailing list" aria-label="User mailing list"><a class=text-white target=_blank href=https://discuss.kubernetes.io><i class="fa fa-envelope"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank href=https://twitter.com/kubernetesio><i class="fab fa-twitter"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Calendar aria-label=Calendar><a class=text-white target=_blank href="https://calendar.google.com/calendar/embed?src=calendar%40kubernetes.io"><i class="fas fa-calendar-alt"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Youtube aria-label=Youtube><a class=text-white target=_blank href=https://youtube.com/kubernetescommunity><i class="fab fa-youtube"></i></a></li></ul></div><div class="col-6 col-sm-2 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank href=https://github.com/kubernetes/kubernetes><i class="fab fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Slack aria-label=Slack><a class=text-white target=_blank href=https://slack.k8s.io><i class="fab fa-slack"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Contribute aria-label=Contribute><a class=text-white target=_blank href=https://git.k8s.io/community/contributors/guide><i class="fas fa-edit"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="Stack Overflow" aria-label="Stack Overflow"><a class=text-white target=_blank href=https://stackoverflow.com/questions/tagged/kubernetes><i class="fab fa-stack-overflow"></i></a></li></ul></div><div class="col-12 col-sm-8 text-center order-sm-2"><small class=text-white>&copy; 2026 The Kubernetes 作者 | 文档发布基于 <a href=https://git.k8s.io/website/LICENSE class=light-text>CC BY 4.0</a> 授权许可</small><br><small class=text-white>Copyright &copy; 2026 Linux 基金会&reg;。保留所有权利。Linux 基金会已注册并使用商标。如需了解 Linux 基金会的商标列表，请访问<a href=https://www.linuxfoundation.org/trademark-usage class=light-text>商标使用页面</a></small><br><small class=text-white><a href=https://beian.miit.gov.cn/ target=_blank rel=noopener>鲁ICP备19009036号-1</a></small></div></div></div></footer></div><script src=/js/popper-1.14.3.min.js integrity=sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49 crossorigin=anonymous></script><script src=/js/bootstrap-4.3.1.min.js integrity=sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM crossorigin=anonymous></script><script src=/js/main.min.223905d4acc5f7b370e2af585c8a5b56ce39b2fddddd6dffb6f6c3428927fe2c.js integrity="sha256-IjkF1KzF97Nw4q9YXIpbVs45sv3d3W3/tvbDQokn/iw=" crossorigin=anonymous></script></body></html>
